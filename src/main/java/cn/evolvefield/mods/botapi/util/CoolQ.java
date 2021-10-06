@@ -11,14 +11,14 @@ public class CoolQ {
     public static final String LINE_CHAR = "\n";
 
     public static String clearImage(String str) {
-        String regex = "\\[CQ:image,[(\\s\\S)]*\\]";
+        String regex = "\\[CQ:image,[(\\s\\S)]*]";
         Pattern p = Pattern.compile(regex);
         Matcher m = p.matcher(str);
         return m.replaceAll("").trim();
     }
 
     public static String replaceAt(String origin) {
-        String regex = "\\[CQ:at,qq=(\\d*)\\]";
+        String regex = "\\[CQ:at,qq=(\\d*)]";
         Pattern p = Pattern.compile(regex);
         Matcher m = p.matcher(origin);
 

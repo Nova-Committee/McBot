@@ -21,7 +21,7 @@ public class StatusCommand {
         String host = ModConfig.wsHOST.get();
         int port = ModConfig.wsPORT.get();
         String key = ModConfig.KEY.get();
-        String toSend = "目标服务器:" + host + ":" + port + "\n"
+        String toSend = "GO_CQHTTP服务器:" + host + ":" + port + "\n"
                 + "key:" + key + "\n"
                 + "全局服务开启:" + clientEnabled + "\n"
                 + "接收消息开启:" + receiveEnabled + "\n"

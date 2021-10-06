@@ -1,19 +1,16 @@
 package cn.evolvefield.mods.botapi.service;
 
-
 import cn.evolvefield.mods.botapi.BotApi;
-import cn.evolvefield.mods.botapi.config.ModConfig;
 import cn.evolvefield.mods.botapi.command.Invoke;
+import cn.evolvefield.mods.botapi.config.ModConfig;
 import cn.evolvefield.mods.botapi.event.TickEventHandler;
 import cn.evolvefield.mods.botapi.message.MessageJson;
 import cn.evolvefield.mods.botapi.message.SendMessage;
 import cn.evolvefield.mods.botapi.util.CoolQ;
-import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import net.minecraftforge.event.ServerChatEvent;
 
-import static cn.evolvefield.mods.botapi.network.WebSocket.WebSocketChannelSupervise.sendToAll;
+public class MessageHandlerService {
 
-public class MessageService {
     /**
      * 向已连接的服务端发送消息
      * @param event 需要处理的事件
@@ -25,8 +22,8 @@ public class MessageService {
     }
 
     /**
-     * 处理服务器数据包并于本地服务端发送聊天信息
-     * @param serverPacket 服务器来源数据包
+     * 处理服务器数据并于本地服务端发送聊天信息
+     * @param msg 服务器来源数据
      */
     public static void receiveMessage(String msg) {
         MessageJson serverMessage;
@@ -34,31 +31,29 @@ public class MessageService {
         String name;
         long sourceId;
         long groupId;
-        try{
+        //try{
             serverMessage = new MessageJson(msg);
 
+
             text = serverMessage.getRaw_message();
-            text = CoolQ.replaceAt(text);
-            text = CoolQ.clearImage(text);
-            text = CoolQ.replaceCharset(text);
+
             sourceId = serverMessage.getUser_id();
             groupId = serverMessage.getGroup_id();
             name = serverMessage.getNickname();
-            if( groupId == ModConfig.GROUP_ID.get()){
+            if(groupId == ModConfig.GROUP_ID.get()){
                 if(text.startsWith("!")){
                     Invoke.invokeCommand(text);
                 }
-                else{
+                else if(!text.startsWith("[CQ:")){
                     String toSend = String.format("§b[§lQQ§r§b]§a<%s>§f %s", name, text);
                     TickEventHandler.getToSendQueue().add(toSend);
                 }
-
             }
 
-        } catch (NullPointerException e) {
-            BotApi.LOGGER.error("接收到非法包", e);
-            e.printStackTrace();
-        }
+        //} catch (NullPointerException e) {
+            //BotApi.LOGGER.error("接收到非法包", e);
+            //e.printStackTrace();
+        //}
 
     }
 }

@@ -3,7 +3,7 @@ package cn.evolvefield.mods.botapi.network.WebSocket;
 import cn.evolvefield.mods.botapi.BotApi;
 import cn.evolvefield.mods.botapi.config.ModConfig;
 import cn.evolvefield.mods.botapi.service.ClientThreadService;
-import cn.evolvefield.mods.botapi.service.MessageService;
+import cn.evolvefield.mods.botapi.service.MessageHandlerService;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelPromise;
@@ -46,7 +46,7 @@ public class WebSocketClientHandler extends SimpleChannelInboundHandler<Object> 
             if (ModConfig.RECEIVE_ENABLED.get()) {
                 TextWebSocketFrame textFrame = (TextWebSocketFrame) msg;
                 //BotApi.LOGGER.info(textFrame.text());
-                MessageService.receiveMessage(textFrame.text());
+                MessageHandlerService.receiveMessage(textFrame.text());
             }
         }
     }

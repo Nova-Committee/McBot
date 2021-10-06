@@ -41,7 +41,7 @@ public class SendMessage {
                   message = URLEncoder.encode(message, "utf-8");
                   URL url = new URL("http://" + ModConfig.sendHOST.get() + ":" +ModConfig.sendPORT.get() +
                           "/send_group_msg?group_id=" + group_id + "&message=" + message);
-                  BotApi.LOGGER.info(url.toString());
+                  //BotApi.LOGGER.info(url.toString());
                   url.openStream();
             } catch (IOException e) {
                   e.printStackTrace();
