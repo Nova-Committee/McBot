@@ -4,8 +4,8 @@ import cn.evolvefield.mods.botapi.config.ModConfig;
 import cn.evolvefield.mods.botapi.service.ClientThreadService;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
-import net.minecraftforge.fml.event.server.FMLServerStoppingEvent;
+import net.minecraftforge.fmlserverevents.FMLServerStartingEvent;
+import net.minecraftforge.fmlserverevents.FMLServerStoppingEvent;
 
 
 @Mod.EventBusSubscriber

@@ -3,7 +3,7 @@ package cn.evolvefield.mods.botapi.event;
 
 import cn.evolvefield.mods.botapi.config.ModConfig;
 import cn.evolvefield.mods.botapi.message.SendMessage;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -30,7 +30,7 @@ public class PlayerEventHandler {
 
     @SubscribeEvent
     public static void playerDeadEvent(LivingDeathEvent event) {
-        if (event.getEntity() instanceof PlayerEntity && ModConfig.SEND_ENABLED.get()) {
+        if (event.getEntity() instanceof Player && ModConfig.SEND_ENABLED.get()) {
             String message = event.getSource().getLocalizedDeathMessage(event.getEntityLiving()).getString();
             SendMessage.Group(ModConfig.GROUP_ID.get(),String.format(message, event.getEntity().getDisplayName().getString()));
         }

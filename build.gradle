@@ -12,11 +12,11 @@ buildscript {
 apply plugin: 'net.minecraftforge.gradle'
 
 group = 'cn.evolvefield.mods'
-version = '1.16.5-1.2.0'
+version = '1.17.1-1.2.1'
 
 java {
     archivesBaseName = 'Bot-Connect'
-    toolchain.languageVersion = JavaLanguageVersion.of(8)
+    toolchain.languageVersion = JavaLanguageVersion.of(16)
 }
 
 tasks.withType(JavaCompile) {
@@ -26,8 +26,7 @@ tasks.withType(JavaCompile) {
 
 minecraft {
 
-    mappings channel: 'official', version: '1.16.5'
-
+    mappings channel: 'official', version: '1.17.1'
     runs {
         client {
             workingDirectory project.file('run')
@@ -80,8 +79,7 @@ repositories {
 
 dependencies {
 
-    minecraft 'net.minecraftforge:forge:1.16.5-36.2.1'
-
+    minecraft "net.minecraftforge:forge:${mc_version}-${forge_version}"
 }
 
 // Example for how to get properties into the manifest for reading at runtime.
