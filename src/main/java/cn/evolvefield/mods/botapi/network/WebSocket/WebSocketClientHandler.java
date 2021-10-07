@@ -1,7 +1,6 @@
 package cn.evolvefield.mods.botapi.network.WebSocket;
 
 import cn.evolvefield.mods.botapi.BotApi;
-import cn.evolvefield.mods.botapi.config.ModConfig;
 import cn.evolvefield.mods.botapi.service.ClientThreadService;
 import cn.evolvefield.mods.botapi.service.MessageHandlerService;
 import io.netty.channel.ChannelFuture;
@@ -11,7 +10,6 @@ import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.FullHttpResponse;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import io.netty.handler.codec.http.websocketx.WebSocketClientHandshaker;
-
 import io.netty.handler.codec.http.websocketx.WebSocketHandshakeException;
 import org.apache.logging.log4j.Logger;
 
@@ -43,7 +41,7 @@ public class WebSocketClientHandler extends SimpleChannelInboundHandler<Object> 
 
         //处理文本请求
         if (msg instanceof TextWebSocketFrame) {
-            if (ModConfig.RECEIVE_ENABLED.get()) {
+            if (BotApi.config.getCommon().isRECEIVE_ENABLED()) {
                 TextWebSocketFrame textFrame = (TextWebSocketFrame) msg;
                 //BotApi.LOGGER.info(textFrame.text());
                 MessageHandlerService.receiveMessage(textFrame.text());

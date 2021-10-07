@@ -1,6 +1,6 @@
 package cn.evolvefield.mods.botapi.service;
 
-import cn.evolvefield.mods.botapi.config.ModConfig;
+import cn.evolvefield.mods.botapi.BotApi;
 import cn.evolvefield.mods.botapi.network.WebSocket.WebSocketClient;
 
 public class ClientThreadService {
@@ -11,9 +11,21 @@ public class ClientThreadService {
             client.interrupt();
         }
         client = new WebSocketClient(
-                ModConfig.wsHOST.get(),
-                ModConfig.wsPORT.get(),
-                ModConfig.KEY.get());
+                BotApi.config.getCommon().getWsHOST(),
+                BotApi.config.getCommon().getWsPORT(),
+                BotApi.config.getCommon().getKEY());
+        client.start();
+    }
+
+    public static void runWebSocketClient(String host, int port, String key) {
+        int delay = 0;
+        if (client != null) {
+            client.interrupt();
+        }
+        client = new WebSocketClient(
+                host,
+                port,
+                key);
         client.start();
     }
     /**

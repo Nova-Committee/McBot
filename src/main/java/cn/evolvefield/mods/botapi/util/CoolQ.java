@@ -1,7 +1,7 @@
 package cn.evolvefield.mods.botapi.util;
 
 
-import cn.evolvefield.mods.botapi.config.ModConfig;
+import cn.evolvefield.mods.botapi.BotApi;
 import cn.evolvefield.mods.botapi.message.SendMessage;
 
 import java.util.regex.Matcher;
@@ -25,7 +25,7 @@ public class CoolQ {
         try {
             while (m.find()) {
                 String username = SendMessage.getUsernameFromInfo(
-                        SendMessage.getProfile(ModConfig.GROUP_ID.get(), Long.parseLong(m.group(1)))
+                        SendMessage.getProfile(BotApi.config.getCommon().getGroupId(), Long.parseLong(m.group(1)))
                 );
 
                 origin = m.replaceFirst("@" + username);

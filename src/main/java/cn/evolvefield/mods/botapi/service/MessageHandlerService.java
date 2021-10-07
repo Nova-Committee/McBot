@@ -2,11 +2,9 @@ package cn.evolvefield.mods.botapi.service;
 
 import cn.evolvefield.mods.botapi.BotApi;
 import cn.evolvefield.mods.botapi.command.Invoke;
-import cn.evolvefield.mods.botapi.config.ModConfig;
 import cn.evolvefield.mods.botapi.event.TickEventHandler;
 import cn.evolvefield.mods.botapi.message.MessageJson;
 import cn.evolvefield.mods.botapi.message.SendMessage;
-import cn.evolvefield.mods.botapi.util.CoolQ;
 import net.minecraftforge.event.ServerChatEvent;
 
 public class MessageHandlerService {
@@ -17,7 +15,7 @@ public class MessageHandlerService {
      */
     public static void sendMessage(ServerChatEvent event) {
 
-        SendMessage.Group(ModConfig.GROUP_ID.get(),String.format("[MC]<%s> %s", event.getPlayer().getDisplayName().getString(), event.getMessage()));
+        SendMessage.Group(BotApi.config.getCommon().getGroupId(),String.format("[MC]<%s> %s", event.getPlayer().getDisplayName().getFormattedText(), event.getMessage()));
         //sendToAll(new TextWebSocketFrame("/send_group_msg?group_id=" + ModConfig.GROUP_ID.get() + "&message=" + event.getMessage()));
     }
 
@@ -40,7 +38,7 @@ public class MessageHandlerService {
             sourceId = serverMessage.getUser_id();
             groupId = serverMessage.getGroup_id();
             name = serverMessage.getNickname();
-            if(groupId == ModConfig.GROUP_ID.get()){
+            if(groupId == BotApi.config.getCommon().getGroupId()){
                 if(text.startsWith("!")){
                     Invoke.invokeCommand(text);
                 }

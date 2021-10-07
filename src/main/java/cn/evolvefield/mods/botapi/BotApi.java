@@ -1,55 +1,87 @@
 package cn.evolvefield.mods.botapi;
 
-import cn.evolvefield.mods.botapi.config.ModConfig;
-import net.minecraft.server.MinecraftServer;
+
+import cn.evolvefield.mods.botapi.command.CommandTree;
+import cn.evolvefield.mods.botapi.config.BotConfig;
+import cn.evolvefield.mods.botapi.service.ClientThreadService;
+import com.google.gson.Gson;
+import net.minecraft.client.Minecraft;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
-import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
-import net.minecraftforge.fml.event.server.FMLServerAboutToStartEvent;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.fml.loading.FMLPaths;
-import net.minecraftforge.fml.server.ServerLifecycleHooks;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
+import net.minecraftforge.fml.common.event.FMLServerStoppingEvent;
+import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-@Mod("botapi")
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+
+@Mod(modid = BotApi.MODID)
 public class BotApi {
 
     public static final String MODID = "botapi";
     public static final Logger LOGGER = LogManager.getLogger();
-    public static MinecraftServer SERVER = ServerLifecycleHooks.getCurrentServer();
+    public static Path CONFIG_FOLDER ;
+    private static Gson GSON = new Gson();
+    public static BotConfig config ;
 
 
-    public BotApi() {
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::enqueueIMC);
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::processIMC);
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::doClientStuff);
-        MinecraftForge.EVENT_BUS.register(this);
-    }
 
-    private void setup(final FMLCommonSetupEvent event) {
-        ModConfig.setup(FMLPaths.CONFIGDIR.get().resolve(MODID + ".toml"));
-    }
-
-    private void doClientStuff(final FMLClientSetupEvent event) {
-    }
-
-    private void enqueueIMC(final InterModEnqueueEvent event) {
-    }
-
-    private void processIMC(final InterModProcessEvent event) {
+    @Mod.EventHandler
+    public void preInit(FMLPreInitializationEvent event) throws IOException {
+        LOGGER.debug("Hello from QQ");
+        CONFIG_FOLDER = event.getModConfigurationDirectory().toPath();
+        config = new BotConfig();
 
     }
 
-    @SubscribeEvent
-    public void init(FMLServerAboutToStartEvent event){
-        SERVER = event.getServer();
+    @Mod.EventHandler
+    public void onServerStarting(FMLServerStartingEvent event)
+    {
+        event.registerServerCommand(new CommandTree());
+        if (config.getCommon().isENABLED()) {
+            ClientThreadService.runWebSocketClient();
+        }
+        //加载配置
+
+        if (!CONFIG_FOLDER.toFile().isDirectory()) {
+            try {
+                Files.createDirectories(CONFIG_FOLDER);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        Path configPath = CONFIG_FOLDER.resolve(config.getConfigName() + ".json");
+        if (configPath.toFile().isFile()) {
+            try {
+                config = GSON.fromJson(FileUtils.readFileToString(configPath.toFile(), StandardCharsets.UTF_8),
+                        BotConfig.class);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            try {
+                FileUtils.write(configPath.toFile(), GSON.toJson(config), StandardCharsets.UTF_8);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
+
+    @Mod.EventHandler
+    public static void onExitEvent(FMLServerStoppingEvent event) {
+        ClientThreadService.stopWebSocketClient();
+    }
+
+
+
+
 
 
 
