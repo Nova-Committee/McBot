@@ -21,7 +21,7 @@ public class TickEventHandler {
     @SubscribeEvent
     public static void onTickEvent(TickEvent.WorldTickEvent event) {
         String toSend = toSendQueue.poll();
-        if (!event.world.isRemote && toSend != null) {
+        if (!event.world.isRemote && toSend != null ) {
             ITextComponent textComponents = new TextComponentString(toSend);
             event.world.getMinecraftServer().getPlayerList().sendMessage(textComponents, false);
         }

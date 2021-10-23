@@ -5,8 +5,6 @@ import cn.evolvefield.mods.botapi.command.CommandTree;
 import cn.evolvefield.mods.botapi.config.BotConfig;
 import cn.evolvefield.mods.botapi.service.ClientThreadService;
 import com.google.gson.Gson;
-import net.minecraft.client.Minecraft;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
@@ -15,13 +13,12 @@ import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-@Mod(modid = BotApi.MODID)
+@Mod(modid = BotApi.MODID,serverSideOnly = true, acceptableRemoteVersions = "*")
 public class BotApi {
 
     public static final String MODID = "botapi";

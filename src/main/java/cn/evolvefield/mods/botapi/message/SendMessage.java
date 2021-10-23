@@ -36,14 +36,16 @@ public class SendMessage {
 
       }
       public static void Group(long group_id, String message) {
-            try {
-                  message = URLEncoder.encode(message, "utf-8");
-                  URL url = new URL("http://" + BotApi.config.getCommon().getSendHOST() + ":" +BotApi.config.getCommon().getSendPORT() +
-                          "/send_group_msg?group_id=" + group_id + "&message=" + message);
-                  //BotApi.LOGGER.info(url.toString());
-                  url.openStream();
-            } catch (IOException e) {
-                  e.printStackTrace();
+            if(BotApi.config.getCommon().isSEND_ENABLED()) {
+                  try {
+                        message = URLEncoder.encode(message, "utf-8");
+                        URL url = new URL("http://" + BotApi.config.getCommon().getSendHOST() + ":" + BotApi.config.getCommon().getSendPORT() +
+                                "/send_group_msg?group_id=" + group_id + "&message=" + message);
+                        //BotApi.LOGGER.info(url.toString());
+                        url.openStream();
+                  } catch (IOException e) {
+                        e.printStackTrace();
+                  }
             }
 
       }

@@ -36,7 +36,7 @@ public class ReceiveCommand extends CommandBase {
 
     @Override
     public String getUsage(ICommandSender sender) {
-        return "/mcbot " + this.command + "<true|false>";
+        return "/mcbot " + this.command + "<all|chat|cmd> " + "<true|false>";
     }
 
 
@@ -44,7 +44,7 @@ public class ReceiveCommand extends CommandBase {
     public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos targetPos) {
         if (args.length == 1)
         {
-            return getListOfStringsMatchingLastWord(args, "true", "false");
+            return getListOfStringsMatchingLastWord(args, "all", "chat", "cmd");
         }
 
         return Collections.emptyList();
@@ -53,19 +53,51 @@ public class ReceiveCommand extends CommandBase {
     @Override
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
         boolean isEnabled ;
-
-        isEnabled = parseBoolean(args[0]);
-
-        BotApi.config.getCommon().setRECEIVE_ENABLED(isEnabled);
-        ConfigManger.saveBotConfig(BotApi.config);
-
-        if (isEnabled)
-        {
-            sender.sendMessage(new TextComponentString("接收消息开关已被设置为打开"));
-        }
-        else
-        {
-            sender.sendMessage(new TextComponentString("接收消息开关已被设置为关闭"));
+        isEnabled = parseBoolean(args[1]);
+        switch (args[0]){
+            default:{
+                sender.sendMessage(new TextComponentString("参数不合法"));
+                break;
+            }
+            case "all":{
+                BotApi.config.getCommon().setRECEIVE_ENABLED(isEnabled);
+                ConfigManger.saveBotConfig(BotApi.config);
+                if (isEnabled)
+                {
+                    sender.sendMessage(new TextComponentString("接收消息开关已被设置为打开"));
+                }
+                else
+                {
+                    sender.sendMessage(new TextComponentString("接收消息开关已被设置为关闭"));
+                }
+                break;
+            }
+            case "chat":{
+                BotApi.config.getCommon().setR_CHAT_ENABLE(isEnabled);
+                ConfigManger.saveBotConfig(BotApi.config);
+                if (isEnabled)
+                {
+                    sender.sendMessage(new TextComponentString("接收群内聊天消息开关已被设置为打开"));
+                }
+                else
+                {
+                    sender.sendMessage(new TextComponentString("接收群内聊天游戏消息开关已被设置为关闭"));
+                }
+                break;
+            }
+            case "cmd":{
+                BotApi.config.getCommon().setR_COMMAND_ENABLED(isEnabled);
+                ConfigManger.saveBotConfig(BotApi.config);
+                if (isEnabled)
+                {
+                    sender.sendMessage(new TextComponentString("接收群内查询命令消息开关已被设置为打开"));
+                }
+                else
+                {
+                    sender.sendMessage(new TextComponentString("接收群内查询命令消息开关已被设置为关闭"));
+                }
+                break;
+            }
         }
     }
 }

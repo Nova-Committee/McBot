@@ -15,7 +15,9 @@ public class MessageHandlerService {
      */
     public static void sendMessage(ServerChatEvent event) {
 
-        SendMessage.Group(BotApi.config.getCommon().getGroupId(),String.format("[MC]<%s> %s", event.getPlayer().getDisplayName().getFormattedText(), event.getMessage()));
+
+        SendMessage.Group(BotApi.config.getCommon().getGroupId(),String.format("[MC]<%s> %s", event.getUsername(), event.getMessage()));
+
         //sendToAll(new TextWebSocketFrame("/send_group_msg?group_id=" + ModConfig.GROUP_ID.get() + "&message=" + event.getMessage()));
     }
 
@@ -29,29 +31,29 @@ public class MessageHandlerService {
         String name;
         long sourceId;
         long groupId;
-        //try{
+
+        if(!msg.isEmpty() ){
             serverMessage = new MessageJson(msg);
-
-
             text = serverMessage.getRaw_message();
 
             sourceId = serverMessage.getUser_id();
             groupId = serverMessage.getGroup_id();
             name = serverMessage.getNickname();
-            if(groupId == BotApi.config.getCommon().getGroupId()){
-                if(text.startsWith("!")){
+            if( groupId == BotApi.config.getCommon().getGroupId() && BotApi.config.getCommon().isRECEIVE_ENABLED()){
+                if(text.startsWith("!") && BotApi.config.getCommon().isR_COMMAND_ENABLED()){
                     Invoke.invokeCommand(text);
                 }
-                else if(!text.startsWith("[CQ:")){
+                else if(!text.startsWith("[CQ:") && BotApi.config.getCommon().isR_CHAT_ENABLE()){
                     String toSend = String.format("§b[§lQQ§r§b]§a<%s>§f %s", name, text);
                     TickEventHandler.getToSendQueue().add(toSend);
                 }
             }
+        }
 
-        //} catch (NullPointerException e) {
-            //BotApi.LOGGER.error("接收到非法包", e);
-            //e.printStackTrace();
-        //}
+
+
+
+
 
     }
 }

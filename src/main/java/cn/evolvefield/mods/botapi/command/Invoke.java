@@ -14,8 +14,10 @@ import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.server.command.TextComponentHelper;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
 
 public class Invoke {
     private static final DecimalFormat TIME_FORMATTER = new DecimalFormat("########0.000");
@@ -24,28 +26,36 @@ public class Invoke {
     public static void invokeCommand(String command) {
         String commandBody = command.substring(1);
 
+        List<String> temp = new ArrayList<>();
         if("tps".equals(commandBody)) {
-            MinecraftServer SERVER = FMLCommonHandler.instance().getMinecraftServerInstance().getServer();
-            String outPut;
-//            for (Integer dimId : DimensionManager.getIDs())
-//            {
-//                double worldTickTime = mean(SERVER.worldTickTimes.get(dimId)) * 1.0E-6D;
-//                double worldTPS = Math.min(1000.0/worldTickTime, 20);
-//                outPut = String.format("%s : TPS: %d", getDimensionPrefix(dimId),  TIME_FORMATTER.format(worldTPS));
-//            }
+            MinecraftServer SERVER = FMLCommonHandler.instance().getMinecraftServerInstance();
+            String outPut = "服务器TPS";
+            for (Integer dimId : DimensionManager.getIDs())
+            {
+                double worldTickTime = mean(SERVER.worldTickTimes.get(dimId)) * 1.0E-6D;
+                double worldTPS = Math.min( 1000.0 / worldTickTime, 20);
+                temp.add(String.format("%s : TPS: %s ", getDimensionPrefix(dimId),  TIME_FORMATTER.format(worldTPS)));
 
-            double overTickTime = mean(SERVER.worldTickTimes.get(0)) * 1.0E-6D;
-            double overTPS = Math.min(1000.0 / overTickTime, 20);
-            double netherTickTime = mean(SERVER.worldTickTimes.get(1)) * 1.0E-6D;
-            double netherTPS = Math.min(1000.0 / netherTickTime, 20);
-            double endTickTime = mean(SERVER.worldTickTimes.get(2)) * 1.0E-6D;
-            double endTPS = Math.min(1000.0 / endTickTime, 20);
-
-            outPut = String.format("主世界 TPS: %.2f", overTPS)
-                    +"\n" + String.format("下界 TPS: %.2f", netherTPS)
-                    +"\n" + String.format("末地 TPS: %.2f", endTPS);
-            //BotApi.LOGGER.info(outPut);
+            }
+            BotApi.LOGGER.info(temp);
+            String tpsOut = temp.stream().reduce("", (listString, tps) ->
+                    listString.length() == 0 ? tps : listString + ", " + tps);
+            outPut += "\n" + tpsOut;
             SendMessage.Group(BotApi.config.getCommon().getGroupId(), outPut);
+            BotApi.LOGGER.info(outPut);
+//            double overTickTime = mean(SERVER.worldTickTimes.get(0)) * 1.0E-6D;
+//            double overTPS = Math.min(1000.0 / overTickTime, 20);
+//            double netherTickTime = mean(SERVER.worldTickTimes.get(1)) * 1.0E-6D;
+//            double netherTPS = Math.min(1000.0 / netherTickTime, 20);
+//            double endTickTime = mean(SERVER.worldTickTimes.get(2)) * 1.0E-6D;
+//            double endTPS = Math.min(1000.0 / endTickTime, 20);
+//
+//            outPut = String.format("主世界 TPS: %.2f", overTPS)
+//                    +"\n" + String.format("下界 TPS: %.2f", netherTPS)
+//                    +"\n" + String.format("末地 TPS: %.2f", endTPS);
+//
+//            BotApi.LOGGER.info(outPut);
+
         }
 
         else if("list".equals(commandBody)) {
@@ -69,7 +79,7 @@ public class Invoke {
 
     private static long mean(long[] values) {
         long sum = Arrays.stream(values)
-                .reduce(0L, (total, item) -> total + item);
+                .reduce(0L, Long::sum);
 
         return sum / values.length;
     }

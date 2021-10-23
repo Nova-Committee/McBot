@@ -41,11 +41,11 @@ public class WebSocketClientHandler extends SimpleChannelInboundHandler<Object> 
 
         //处理文本请求
         if (msg instanceof TextWebSocketFrame) {
-            if (BotApi.config.getCommon().isRECEIVE_ENABLED()) {
+
                 TextWebSocketFrame textFrame = (TextWebSocketFrame) msg;
                 //BotApi.LOGGER.info(textFrame.text());
                 MessageHandlerService.receiveMessage(textFrame.text());
-            }
+
         }
     }
     @Override
