@@ -11,7 +11,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 public class ChatEventHandler {
     @SubscribeEvent
     public static void onChatEvent(ServerChatEvent event) {
-        if (BotApi.config.getCommon().isS_CHAT_ENABLE()) {
+        if (BotApi.config.getCommon().isS_CHAT_ENABLE() && BotApi.config.getCommon().isENABLED()) {
             MessageHandlerService.sendMessage(event);
         }
     }

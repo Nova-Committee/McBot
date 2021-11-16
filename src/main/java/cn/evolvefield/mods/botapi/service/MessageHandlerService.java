@@ -6,13 +6,15 @@ import cn.evolvefield.mods.botapi.event.TickEventHandler;
 import cn.evolvefield.mods.botapi.message.MessageJson;
 import cn.evolvefield.mods.botapi.message.SendMessage;
 import net.minecraftforge.event.ServerChatEvent;
+import net.minecraftforge.fml.common.eventhandler.Event;
 
 public class MessageHandlerService {
 
     /**
      * 向已连接的服务端发送消息
-     * @param event 需要处理的事件
+     * @param event 需要处理的聊天事件
      */
+
     public static void sendMessage(ServerChatEvent event) {
 
 

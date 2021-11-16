@@ -64,37 +64,41 @@ public class ReceiveCommand extends CommandBase {
                 ConfigManger.saveBotConfig(BotApi.config);
                 if (isEnabled)
                 {
-                    sender.sendMessage(new TextComponentString("接收消息开关已被设置为打开"));
+                    sender.sendMessage(new TextComponentString("接收所有群消息开关已被设置为打开"));
                 }
                 else
                 {
-                    sender.sendMessage(new TextComponentString("接收消息开关已被设置为关闭"));
+                    sender.sendMessage(new TextComponentString("接收所有群消息开关已被设置为关闭"));
                 }
                 break;
             }
             case "chat":{
                 BotApi.config.getCommon().setR_CHAT_ENABLE(isEnabled);
-                ConfigManger.saveBotConfig(BotApi.config);
                 if (isEnabled)
                 {
+                    BotApi.config.getCommon().setRECEIVE_ENABLED(true);
+                    ConfigManger.saveBotConfig(BotApi.config);
                     sender.sendMessage(new TextComponentString("接收群内聊天消息开关已被设置为打开"));
                 }
                 else
                 {
-                    sender.sendMessage(new TextComponentString("接收群内聊天游戏消息开关已被设置为关闭"));
+                    ConfigManger.saveBotConfig(BotApi.config);
+                    sender.sendMessage(new TextComponentString("接收群内聊天消息开关已被设置为关闭"));
                 }
                 break;
             }
             case "cmd":{
                 BotApi.config.getCommon().setR_COMMAND_ENABLED(isEnabled);
-                ConfigManger.saveBotConfig(BotApi.config);
                 if (isEnabled)
                 {
-                    sender.sendMessage(new TextComponentString("接收群内查询命令消息开关已被设置为打开"));
+                    BotApi.config.getCommon().setRECEIVE_ENABLED(true);
+                    ConfigManger.saveBotConfig(BotApi.config);
+                    sender.sendMessage(new TextComponentString("接收群内命令消息开关已被设置为打开"));
                 }
                 else
                 {
-                    sender.sendMessage(new TextComponentString("接收群内查询命令消息开关已被设置为关闭"));
+                    ConfigManger.saveBotConfig(BotApi.config);
+                    sender.sendMessage(new TextComponentString("接收群内命令消息开关已被设置为关闭"));
                 }
                 break;
             }
