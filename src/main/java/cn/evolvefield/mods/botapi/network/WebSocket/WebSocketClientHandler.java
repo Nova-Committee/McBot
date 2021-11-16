@@ -43,7 +43,6 @@ public class WebSocketClientHandler extends SimpleChannelInboundHandler<Object> 
         if (msg instanceof TextWebSocketFrame) {
 
                 TextWebSocketFrame textFrame = (TextWebSocketFrame) msg;
-                //BotApi.LOGGER.info(textFrame.text());
                 MessageHandlerService.receiveMessage(textFrame.text());
 
         }

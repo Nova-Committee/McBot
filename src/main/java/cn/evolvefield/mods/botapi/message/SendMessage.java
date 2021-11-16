@@ -17,6 +17,9 @@ public class SendMessage {
                   message = URLEncoder.encode(message, "utf-8");
                   URL url = new URL("http://" + BotApi.config.getCommon().getSendHOST() + ":" + BotApi.config.getCommon().getSendPORT() +
                           "/send_private_msg?user_id=" + user_id + "&message=" + message);
+                  if(BotApi.config.getCommon().isDebuggable()){
+                        BotApi.LOGGER.info("向用户" + user_id + "发送消息" + message);
+                  }
                   url.openStream();
             } catch (IOException e) {
                   e.printStackTrace();
@@ -29,6 +32,9 @@ public class SendMessage {
                   message = URLEncoder.encode(message, "utf-8");
                   URL url = new URL("http://" + BotApi.config.getCommon().getSendHOST() + ":" + BotApi.config.getCommon().getSendPORT() +
                           "/send_private_msg?user_id=" + user_id + "&group_id=" + group_id + "&message=" + message);
+                  if(BotApi.config.getCommon().isDebuggable()){
+                        BotApi.LOGGER.info("向群" + group_id + "内的" + user_id +"发送消息" + message);
+                  }
                   url.openStream();
             } catch (IOException e) {
                   e.printStackTrace();
@@ -41,7 +47,9 @@ public class SendMessage {
                         message = URLEncoder.encode(message, "utf-8");
                         URL url = new URL("http://" + BotApi.config.getCommon().getSendHOST() + ":" + BotApi.config.getCommon().getSendPORT() +
                                 "/send_group_msg?group_id=" + group_id + "&message=" + message);
-                        //BotApi.LOGGER.info(url.toString());
+                        if(BotApi.config.getCommon().isDebuggable()){
+                              BotApi.LOGGER.info("向群" + group_id + "发送消息" + message);
+                        }
                         url.openStream();
                   } catch (IOException e) {
                         e.printStackTrace();

@@ -35,13 +35,18 @@ public class MessageHandlerService {
         long groupId;
 
         if(!msg.isEmpty() ){
-            serverMessage = new MessageJson(msg);
-            text = serverMessage.getRaw_message();
 
+            serverMessage = new MessageJson(msg);
+
+            text = serverMessage.getRaw_message();
             sourceId = serverMessage.getUser_id();
             groupId = serverMessage.getGroup_id();
             name = serverMessage.getNickname();
+
             if( groupId == BotApi.config.getCommon().getGroupId() && BotApi.config.getCommon().isRECEIVE_ENABLED()){
+                if(BotApi.config.getCommon().isDebuggable()){
+                    BotApi.LOGGER.info("收到群" + groupId + "发送消息" + text);
+                }
                 if(text.startsWith("!") && BotApi.config.getCommon().isR_COMMAND_ENABLED()){
                     Invoke.invokeCommand(text);
                 }

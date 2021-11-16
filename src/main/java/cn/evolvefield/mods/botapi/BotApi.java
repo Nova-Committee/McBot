@@ -3,6 +3,7 @@ package cn.evolvefield.mods.botapi;
 
 import cn.evolvefield.mods.botapi.command.CommandTree;
 import cn.evolvefield.mods.botapi.config.BotConfig;
+import cn.evolvefield.mods.botapi.config.ConfigManger;
 import cn.evolvefield.mods.botapi.service.ClientThreadService;
 import com.google.gson.Gson;
 import net.minecraftforge.fml.common.Mod;
@@ -45,30 +46,7 @@ public class BotApi {
             ClientThreadService.runWebSocketClient();
         }
         //加载配置
-
-        if (!CONFIG_FOLDER.toFile().isDirectory()) {
-            try {
-                Files.createDirectories(CONFIG_FOLDER);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        Path configPath = CONFIG_FOLDER.resolve(config.getConfigName() + ".json");
-        if (configPath.toFile().isFile()) {
-            try {
-                config = GSON.fromJson(FileUtils.readFileToString(configPath.toFile(), StandardCharsets.UTF_8),
-                        BotConfig.class);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        } else {
-            try {
-                FileUtils.write(configPath.toFile(), GSON.toJson(config), StandardCharsets.UTF_8);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+        ConfigManger.initBotConfig();
     }
 
     @Mod.EventHandler

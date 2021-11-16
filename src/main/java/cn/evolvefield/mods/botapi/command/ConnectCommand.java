@@ -76,16 +76,16 @@ public class ConnectCommand  extends CommandBase {
                             BotApi.config.getCommon().setSendHOST(matcher.group(1));
                             BotApi.config.getCommon().setSendPORT(Integer.parseInt(matcher.group(2)));
                             ConfigManger.saveBotConfig(BotApi.config);
-                            sender.sendMessage(new TextComponentString("已保存，正在尝试建立连接"));
-                            ClientThreadService.runWebSocketClient();
+                            sender.sendMessage(new TextComponentString("已保存，正在尝试建立http连接"));
+                            //ClientThreadService.runWebSocketClient();
                         } else {
                             sender.sendMessage(new TextComponentString("格式错误"));
                         }
                         break;
                     }
                     case 1: {
-                        sender.sendMessage(new TextComponentString("尝试建立连接"));
-                        ClientThreadService.runWebSocketClient();
+                        sender.sendMessage(new TextComponentString("尝试建立http连接"));
+                        //ClientThreadService.runWebSocketClient();
                         break;
                     }
                 }
@@ -107,7 +107,7 @@ public class ConnectCommand  extends CommandBase {
                             BotApi.config.getCommon().setWsPORT(Integer.parseInt(matcher.group(2)));
                             BotApi.config.getCommon().setKEY(args[2]);
                             ConfigManger.saveBotConfig(BotApi.config);
-                            sender.sendMessage(new TextComponentString("已保存，正在尝试建立连接"));
+                            sender.sendMessage(new TextComponentString("已保存，正在尝试建立webSocket连接"));
                             ClientThreadService.runWebSocketClient();
                         } else {
                             sender.sendMessage(new TextComponentString("格式错误"));
@@ -122,7 +122,7 @@ public class ConnectCommand  extends CommandBase {
                             BotApi.config.getCommon().setWsHOST(matcher.group(1));
                             BotApi.config.getCommon().setWsPORT(Integer.parseInt(matcher.group(2)));
                             ConfigManger.saveBotConfig(BotApi.config);
-                            sender.sendMessage(new TextComponentString("已保存，正在尝试建立连接"));
+                            sender.sendMessage(new TextComponentString("已保存，正在尝试建立webSocket连接"));
                             ClientThreadService.runWebSocketClient();
                         } else {
                             sender.sendMessage(new TextComponentString("格式错误"));
