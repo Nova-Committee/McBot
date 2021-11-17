@@ -1,6 +1,6 @@
 package cn.evolvefield.mods.botapi.event;
-import cn.evolvefield.mods.botapi.config.ModConfig;
-import cn.evolvefield.mods.botapi.service.MessageService;
+import cn.evolvefield.mods.botapi.BotApi;
+import cn.evolvefield.mods.botapi.service.MessageHandlerService;
 import net.minecraftforge.event.ServerChatEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -10,8 +10,8 @@ import net.minecraftforge.fml.common.Mod;
 public class ChatEventHandler {
     @SubscribeEvent
     public static void onChatEvent(ServerChatEvent event) {
-        if (ModConfig.SEND_ENABLED.get()) {
-            MessageService.sendMessage(event);
+        if (BotApi.config.getCommon().isS_CHAT_ENABLE() && BotApi.config.getCommon().isENABLED()) {
+            MessageHandlerService.sendMessage(event);
         }
     }
 }

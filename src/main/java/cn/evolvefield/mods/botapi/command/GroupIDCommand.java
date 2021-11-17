@@ -1,9 +1,8 @@
 package cn.evolvefield.mods.botapi.command;
 
-
 import cn.evolvefield.mods.botapi.BotApi;
 import cn.evolvefield.mods.botapi.config.ConfigManger;
-import cn.evolvefield.mods.botapi.service.ClientThreadService;
+import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import net.minecraft.commands.CommandRuntimeException;
@@ -11,20 +10,24 @@ import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.TextComponent;
 
+import static net.minecraft.commands.Commands.literal;
 
-public class DisconnectCommand {
+public class GroupIDCommand {
+
+
     public static ArgumentBuilder<CommandSourceStack, ?> register() {
-        return Commands.literal("disconnect").executes(DisconnectCommand::execute);
+        return literal("setID")
+                .then(Commands.argument("QQGroupID", IntegerArgumentType.integer())
+                        .executes(GroupIDCommand::execute));
     }
     public static int execute(CommandContext<CommandSourceStack> context) throws CommandRuntimeException {
-        boolean isSuccess = ClientThreadService.stopWebSocketClient();
-        if (isSuccess) {
-            context.getSource().sendSuccess(new TextComponent("WebSocket已断开连接"), true);
-        } else {
-            context.getSource().sendSuccess(new TextComponent("WebSocket目前未连接"), true);
-        }
-        BotApi.config.getCommon().setENABLED(false);
+        int id = context.getArgument("QQGroupID",Integer.class);
+        BotApi.config.getCommon().setGroupId(id);
         ConfigManger.saveBotConfig(BotApi.config);
+        context.getSource().sendSuccess(
+                new TextComponent("已设置互通的群号为:" + id), true);
         return 0;
     }
+
+
 }
