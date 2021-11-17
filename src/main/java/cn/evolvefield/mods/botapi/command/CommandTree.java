@@ -12,7 +12,7 @@ public class CommandTree extends CommandTreeBase {
         this.addSubcommand(new SendCommand("send"));
         this.addSubcommand(new StatusCommand("status"));
         this.addSubcommand(new GroupIDCommand("setID"));
-
+        this.addSubcommand(new DebugCommand("debug"));
     }
 
     @Override

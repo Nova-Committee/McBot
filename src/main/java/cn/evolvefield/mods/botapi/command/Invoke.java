@@ -42,19 +42,10 @@ public class Invoke {
                     listString.length() == 0 ? tps : listString + ", " + tps);
             outPut += "\n" + tpsOut;
             SendMessage.Group(BotApi.config.getCommon().getGroupId(), outPut);
-            BotApi.LOGGER.info(outPut);
-//            double overTickTime = mean(SERVER.worldTickTimes.get(0)) * 1.0E-6D;
-//            double overTPS = Math.min(1000.0 / overTickTime, 20);
-//            double netherTickTime = mean(SERVER.worldTickTimes.get(1)) * 1.0E-6D;
-//            double netherTPS = Math.min(1000.0 / netherTickTime, 20);
-//            double endTickTime = mean(SERVER.worldTickTimes.get(2)) * 1.0E-6D;
-//            double endTPS = Math.min(1000.0 / endTickTime, 20);
-//
-//            outPut = String.format("主世界 TPS: %.2f", overTPS)
-//                    +"\n" + String.format("下界 TPS: %.2f", netherTPS)
-//                    +"\n" + String.format("末地 TPS: %.2f", endTPS);
-//
-//            BotApi.LOGGER.info(outPut);
+            if(BotApi.config.getCommon().isDebuggable()){
+                BotApi.LOGGER.info("处理命令tps:" + outPut);
+            }
+
 
         }
 
@@ -71,7 +62,9 @@ public class Invoke {
                 result += "\n" + "玩家列表: " + userList;
             }
 
-            //BotApi.LOGGER.info(result);
+            if(BotApi.config.getCommon().isDebuggable()){
+                BotApi.LOGGER.info("处理命令list:" + result);
+            }
             SendMessage.Group(BotApi.config.getCommon().getGroupId(), result);
         }
 

@@ -47,6 +47,7 @@ public class StatusCommand  extends CommandBase {
         boolean sDeathEnabled = BotApi.config.getCommon().isS_DEATH_ENABLE();
         boolean sAchievementsEnabled = BotApi.config.getCommon().isS_ADVANCE_ENABLE();
 
+        boolean debuggable = BotApi.config.getCommon().isDebuggable();
         boolean connected = ClientThreadService.client != null;
         String host = BotApi.config.getCommon().getWsHOST();
         int port = BotApi.config.getCommon().getWsPORT();
@@ -62,6 +63,7 @@ public class StatusCommand  extends CommandBase {
                 + "发送玩家离开消息状态:" + sLeaveEnabled + "\n"
                 + "发送玩家死亡消息状态:" + sDeathEnabled + "\n"
                 + "发送玩家成就消息状态:" + sAchievementsEnabled + "\n"
+                + "开发者模式状态:" + debuggable + "\n"
                 + "WebSocket Key:" + key + "\n"
                 + "WebSocket连接状态:" + connected;
         sender.sendMessage(new TextComponentString(toSend));
