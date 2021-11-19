@@ -60,9 +60,9 @@ public class BotApi {
     }
 
     private void onServerStarting(FMLServerStartingEvent event){
-        if (BotApi.config.getCommon().isENABLED()) {
-            ClientThreadService.runWebSocketClient();
-        }
+//        if (BotApi.config.getCommon().isENABLED()) {
+//            ClientThreadService.runWebSocketClient();
+//        }
         //加载配置
         ConfigManger.initBotConfig();
     }
