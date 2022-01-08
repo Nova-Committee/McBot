@@ -12,7 +12,7 @@ buildscript {
 apply plugin: 'net.minecraftforge.gradle'
 
 group = 'cn.evolvefield.mods'
-version = '1.12.2-1.4.2'
+version = '1.12.2-1.4.4'
 
 java {
     archivesBaseName = 'Bot-Connect'
@@ -81,7 +81,7 @@ repositories {
 
 dependencies {
 
-    minecraft 'net.minecraftforge:forge:1.12.2-14.23.5.2854'
+    minecraft 'net.minecraftforge:forge:1.12.2-14.23.5.2860'
 }
 
 // Example for how to get properties into the manifest for reading at runtime.

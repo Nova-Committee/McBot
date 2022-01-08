@@ -35,7 +35,7 @@ public class StatusCommand  extends CommandBase {
 
     @Override
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
-        boolean clientEnabled = BotApi.config.getCommon().isENABLED();
+        boolean clientEnabled = BotApi.config.getCommon().isEnable();
         
         boolean receiveEnabled = BotApi.config.getCommon().isRECEIVE_ENABLED();
         boolean rChatEnabled = BotApi.config.getCommon().isR_CHAT_ENABLE();
@@ -49,9 +49,9 @@ public class StatusCommand  extends CommandBase {
 
         boolean debuggable = BotApi.config.getCommon().isDebuggable();
         boolean connected = ClientThreadService.client != null;
-        String host = BotApi.config.getCommon().getWsHOST();
-        int port = BotApi.config.getCommon().getWsPORT();
-        String key = BotApi.config.getCommon().getKEY();
+        String host = BotApi.config.getCommon().getWsHost();
+        int port = BotApi.config.getCommon().getWsPort();
+        String key = BotApi.config.getCommon().getWsKey();
         String toSend = "姬妻人服务状态:\n" +
                 "GO_CQHTTP服务器:" + host + ":" + port + "\n"
                 + "全局服务状态:" + clientEnabled + "\n"

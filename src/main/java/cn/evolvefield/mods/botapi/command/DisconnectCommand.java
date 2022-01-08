@@ -43,7 +43,7 @@ public class DisconnectCommand extends CommandBase {
         } else {
             sender.sendMessage(new TextComponentString("WebSocket目前未连接"));
         }
-        BotApi.config.getCommon().setENABLED(false);
+        BotApi.config.getCommon().setEnable(false);
         ConfigManger.saveBotConfig(BotApi.config);
 
     }

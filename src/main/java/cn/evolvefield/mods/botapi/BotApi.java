@@ -10,13 +10,10 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.event.FMLServerStoppingEvent;
-import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.nio.file.Path;
 
 @Mod(modid = BotApi.MODID,serverSideOnly = true, acceptableRemoteVersions = "*")
@@ -42,7 +39,7 @@ public class BotApi {
     public void onServerStarting(FMLServerStartingEvent event)
     {
         event.registerServerCommand(new CommandTree());
-        if (config.getCommon().isENABLED()) {
+        if (config.getCommon().isEnable()) {
             ClientThreadService.runWebSocketClient();
         }
         //加载配置

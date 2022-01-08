@@ -22,10 +22,12 @@ public class WebSocketChannelSupervise {
         GlobalGroup.remove(channel);
         ChannelMap.remove(channel.id().asShortText());
     }
+
     public static Channel findChannel(String id) {
         return GlobalGroup.find(ChannelMap.get(id));
     }
 
+    //发送消息
     public static void sendToAll(TextWebSocketFrame tws) {
         GlobalGroup.writeAndFlush(tws);
     }

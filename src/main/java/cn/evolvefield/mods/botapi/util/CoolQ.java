@@ -1,9 +1,6 @@
 package cn.evolvefield.mods.botapi.util;
 
 
-import cn.evolvefield.mods.botapi.BotApi;
-import cn.evolvefield.mods.botapi.message.SendMessage;
-
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -24,11 +21,11 @@ public class CoolQ {
 
         try {
             while (m.find()) {
-                String username = SendMessage.getUsernameFromInfo(
-                        SendMessage.getProfile(BotApi.config.getCommon().getGroupId(), Long.parseLong(m.group(1)))
-                );
+//                String username = SendMessage.getUsernameFromInfo(
+//                        SendMessage.getProfile(BotApi.config.getCommon().getGroupId(), Long.parseLong(m.group(1)))
+//                );
 
-                origin = m.replaceFirst("@" + username);
+                //origin = m.replaceFirst("@" + username);
                 m = p.matcher(origin);
             }
         } catch (Exception e) {

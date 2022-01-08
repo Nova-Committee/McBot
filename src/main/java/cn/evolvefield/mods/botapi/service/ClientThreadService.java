@@ -11,9 +11,9 @@ public class ClientThreadService {
             client.interrupt();
         }
         client = new WebSocketClient(
-                BotApi.config.getCommon().getWsHOST(),
-                BotApi.config.getCommon().getWsPORT(),
-                BotApi.config.getCommon().getKEY());
+                BotApi.config.getCommon().getWsHost(),
+                BotApi.config.getCommon().getWsPort(),
+                BotApi.config.getCommon().getWsKey());
         client.start();
     }
 

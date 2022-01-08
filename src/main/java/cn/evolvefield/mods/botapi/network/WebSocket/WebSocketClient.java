@@ -39,6 +39,7 @@ public class WebSocketClient extends Thread{
         this.key = key;
         setUncaughtExceptionHandler((thread, throwable) -> {
             logger.warn("连接出错，将结束客户端线程:", throwable);
+            logger.warn("请检查Go-cqhttp是否开启");
             ClientThreadService.stopWebSocketClient();
         });
     }
