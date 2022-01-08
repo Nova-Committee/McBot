@@ -2,7 +2,7 @@ package cn.evolvefield.mods.botapi.command;
 
 
 import cn.evolvefield.mods.botapi.BotApi;
-import cn.evolvefield.mods.botapi.message.SendMessage;
+import cn.evolvefield.mods.botapi.api.SendMessage;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.server.level.ServerPlayer;

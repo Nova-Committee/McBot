@@ -23,7 +23,7 @@ public class DisconnectCommand {
         } else {
             context.getSource().sendSuccess(new TextComponent("WebSocket目前未连接"), true);
         }
-        BotApi.config.getCommon().setENABLED(false);
+        BotApi.config.getCommon().setEnable(false);
         ConfigManger.saveBotConfig(BotApi.config);
         return 0;
     }

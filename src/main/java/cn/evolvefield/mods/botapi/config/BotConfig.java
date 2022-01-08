@@ -25,20 +25,20 @@ public class BotConfig implements IConfig{
     public static class Common {
         @SerializedName("groupId")
         private long groupId = 0;
-        @SerializedName("wsHOST")
-        private String wsHOST = "127.0.0.1";
-        @SerializedName("wsPORT")
-        private int wsPORT = 6700;
-        @SerializedName("KEY")
-        private String KEY = "";
-        @SerializedName("ENABLED")
-        private boolean ENABLED = true;
-        @SerializedName("sendHOST")
-        private String sendHOST = "127.0.0.1";
-        @SerializedName("sendPORT")
-        private int sendPORT = 5700;
-        @SerializedName("debuggable")
-        private boolean debuggable = false;
+        @SerializedName("wsHost")
+        private String wsHost = "127.0.0.1";
+        @SerializedName("wsPort")
+        private int wsPort = 6700;
+        @SerializedName("wsKey")
+        private String wsKey = "";
+        @SerializedName("Enable")
+        private boolean Enable = true;
+        @SerializedName("Debuggable")
+        private boolean Debuggable = false;
+        @SerializedName("welcomeNotice")
+        private String welcomeNotice = "欢迎加群~";
+        @SerializedName("leaveNotice")
+        private String leaveNotice = "有人离开了我们qwq";
 
         @SerializedName("RECEIVE_ENABLED")
         private boolean RECEIVE_ENABLED = true;
@@ -59,6 +59,23 @@ public class BotConfig implements IConfig{
         @SerializedName("S_ADVANCE_ENABLE")
         private boolean S_ADVANCE_ENABLE = true;
 
+
+        public String getWelcomeNotice() {
+            return welcomeNotice;
+        }
+
+        public void setWelcomeNotice(String welcomeNotice) {
+            this.welcomeNotice = welcomeNotice;
+        }
+
+        public String getLeaveNotice() {
+            return leaveNotice;
+        }
+
+        public void setLeaveNotice(String leaveNotice) {
+            this.leaveNotice = leaveNotice;
+        }
+
         public long getGroupId() {
             return groupId;
         }
@@ -67,62 +84,45 @@ public class BotConfig implements IConfig{
             this.groupId = groupId;
         }
 
-        public int getWsPORT() {
-            return wsPORT;
+        public int getWsPort() {
+            return wsPort;
         }
 
-        public void setWsPORT(int wsPORT) {
-            this.wsPORT = wsPORT;
+        public void setWsPort(int wsPort) {
+            this.wsPort = wsPort;
         }
 
-        public String getWsHOST() {
-            return wsHOST;
+        public String getWsHost() {
+            return wsHost;
         }
 
-        public void setWsHOST(String wsHOST) {
-            this.wsHOST = wsHOST;
+        public void setWsHost(String wsHost) {
+            this.wsHost = wsHost;
         }
 
-        public String getKEY() {
-            return KEY;
+        public String getWsKey() {
+            return wsKey;
         }
 
-        public void setKEY(String KEY) {
-            this.KEY = KEY;
+        public void setWsKey(String wsKey) {
+            this.wsKey = wsKey;
         }
 
-        public boolean isENABLED() {
-            return ENABLED;
+        public boolean isEnable() {
+            return Enable;
         }
 
-        public void setENABLED(boolean ENABLED) {
-            this.ENABLED = ENABLED;
-        }
-
-        public String getSendHOST() {
-            return sendHOST;
-        }
-
-        public void setSendHOST(String sendHOST) {
-            this.sendHOST = sendHOST;
-        }
-
-        public int getSendPORT() {
-            return sendPORT;
-        }
-
-        public void setSendPORT(int sendPORT) {
-            this.sendPORT = sendPORT;
+        public void setEnable(boolean enable) {
+            this.Enable = enable;
         }
 
         public boolean isDebuggable() {
-            return debuggable;
+            return Debuggable;
         }
 
         public void setDebuggable(boolean debuggable) {
-            this.debuggable = debuggable;
+            this.Debuggable = debuggable;
         }
-
 
         public boolean isRECEIVE_ENABLED() {
             return RECEIVE_ENABLED;

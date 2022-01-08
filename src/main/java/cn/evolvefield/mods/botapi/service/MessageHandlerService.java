@@ -4,8 +4,8 @@ package cn.evolvefield.mods.botapi.service;
 import cn.evolvefield.mods.botapi.BotApi;
 import cn.evolvefield.mods.botapi.command.Invoke;
 import cn.evolvefield.mods.botapi.event.TickEventHandler;
-import cn.evolvefield.mods.botapi.message.MessageJson;
-import cn.evolvefield.mods.botapi.message.SendMessage;
+import cn.evolvefield.mods.botapi.api.MessageJson;
+import cn.evolvefield.mods.botapi.api.SendMessage;
 import net.minecraftforge.event.ServerChatEvent;
 
 public class MessageHandlerService {
