@@ -1,8 +1,8 @@
 package cn.evolvefield.mods.botapi;
 
-import cn.evolvefield.mods.botapi.config.BotConfig;
-import cn.evolvefield.mods.botapi.config.ConfigManger;
-import cn.evolvefield.mods.botapi.service.ClientThreadService;
+import cn.evolvefield.mods.botapi.common.config.BotConfig;
+import cn.evolvefield.mods.botapi.common.config.ConfigManger;
+import cn.evolvefield.mods.botapi.core.service.ClientThreadService;
 import com.google.gson.Gson;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.common.MinecraftForge;
@@ -16,7 +16,7 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLPaths;
 import net.minecraftforge.fmllegacy.server.ServerLifecycleHooks;
 import net.minecraftforge.fmlserverevents.FMLServerAboutToStartEvent;
-import net.minecraftforge.fmlserverevents.FMLServerStartingEvent;
+import net.minecraftforge.fmlserverevents.FMLServerStartedEvent;
 import net.minecraftforge.fmlserverevents.FMLServerStoppingEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -39,14 +39,13 @@ public class BotApi {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::processIMC);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::doClientStuff);
         MinecraftForge.EVENT_BUS.register(this);
-        MinecraftForge.EVENT_BUS.addListener(this::onServerStarting);
+        MinecraftForge.EVENT_BUS.addListener(this::onServerStarted);
         MinecraftForge.EVENT_BUS.addListener(this::onServerStopping);
 
     }
 
     private void setup(final FMLCommonSetupEvent event) {
         CONFIG_FOLDER = FMLPaths.CONFIGDIR.get();
-        config = new BotConfig();
     }
 
     private void doClientStuff(final FMLClientSetupEvent event) {
@@ -59,9 +58,9 @@ public class BotApi {
 
     }
 
-    private void onServerStarting(FMLServerStartingEvent event){
+    private void onServerStarted(FMLServerStartedEvent event){
         //加载配置
-        ConfigManger.initBotConfig();
+        config = ConfigManger.initBotConfig();
         if (BotApi.config.getCommon().isEnable()) {
             ClientThreadService.runWebSocketClient();
         }

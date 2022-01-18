@@ -1,8 +1,8 @@
-package cn.evolvefield.mods.botapi.network.WebSocket;
+package cn.evolvefield.mods.botapi.core.network.WebSocket;
 
 
 import cn.evolvefield.mods.botapi.BotApi;
-import cn.evolvefield.mods.botapi.service.ClientThreadService;
+import cn.evolvefield.mods.botapi.core.service.ClientThreadService;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
@@ -39,6 +39,7 @@ public class WebSocketClient extends Thread{
         this.key = key;
         setUncaughtExceptionHandler((thread, throwable) -> {
             logger.warn("连接出错，将结束客户端线程:", throwable);
+            logger.warn("请检查Go-cqhttp是否开启");
             ClientThreadService.stopWebSocketClient();
         });
     }

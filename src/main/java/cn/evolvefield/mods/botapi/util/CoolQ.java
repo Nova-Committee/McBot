@@ -1,9 +1,6 @@
 package cn.evolvefield.mods.botapi.util;
 
 
-import cn.evolvefield.mods.botapi.BotApi;
-import cn.evolvefield.mods.botapi.api.SendMessage;
-
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 

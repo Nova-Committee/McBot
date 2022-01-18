@@ -1,4 +1,4 @@
-package cn.evolvefield.mods.botapi.network.WebSocket;
+package cn.evolvefield.mods.botapi.core.network.WebSocket;
 
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;

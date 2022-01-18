@@ -7,7 +7,7 @@ import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 
 import java.util.List;
 
-import static cn.evolvefield.mods.botapi.network.WebSocket.WebSocketChannelSupervise.sendToAll;
+import static cn.evolvefield.mods.botapi.core.network.WebSocket.WebSocketChannelSupervise.sendToAll;
 
 public class SendMessage {
 

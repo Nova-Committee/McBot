@@ -1,11 +1,11 @@
-package cn.evolvefield.mods.botapi.service;
+package cn.evolvefield.mods.botapi.core.service;
 
 
 import cn.evolvefield.mods.botapi.BotApi;
-import cn.evolvefield.mods.botapi.command.Invoke;
-import cn.evolvefield.mods.botapi.event.TickEventHandler;
 import cn.evolvefield.mods.botapi.api.MessageJson;
 import cn.evolvefield.mods.botapi.api.SendMessage;
+import cn.evolvefield.mods.botapi.common.command.Invoke;
+import cn.evolvefield.mods.botapi.init.events.TickEventHandler;
 import net.minecraftforge.event.ServerChatEvent;
 
 public class MessageHandlerService {
@@ -16,7 +16,6 @@ public class MessageHandlerService {
     public static void sendMessage(ServerChatEvent event) {
 
         SendMessage.Group(BotApi.config.getCommon().getGroupId(),String.format("[MC]<%s> %s", event.getPlayer().getDisplayName().getString(), event.getMessage()));
-        //sendToAll(new TextWebSocketFrame("/send_group_msg?group_id=" + ModConfig.GROUP_ID.get() + "&message=" + event.getMessage()));
     }
 
     /**

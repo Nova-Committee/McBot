@@ -1,7 +1,7 @@
-package cn.evolvefield.mods.botapi.event;
+package cn.evolvefield.mods.botapi.init.events;
 
 
-import cn.evolvefield.mods.botapi.command.*;
+import cn.evolvefield.mods.botapi.common.command.*;
 import com.mojang.brigadier.CommandDispatcher;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;

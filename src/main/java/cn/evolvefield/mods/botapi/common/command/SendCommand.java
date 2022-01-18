@@ -1,7 +1,7 @@
-package cn.evolvefield.mods.botapi.command;
+package cn.evolvefield.mods.botapi.common.command;
 
 import cn.evolvefield.mods.botapi.BotApi;
-import cn.evolvefield.mods.botapi.config.ConfigManger;
+import cn.evolvefield.mods.botapi.common.config.ConfigManger;
 import com.mojang.brigadier.arguments.BoolArgumentType;
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
@@ -34,7 +34,27 @@ public class SendCommand {
                 .then(literal("achievements")
                         .then(Commands.argument("enabled", BoolArgumentType.bool())
                                 .executes(SendCommand::achievementsExecute)))
+                .then(literal("welcome")
+                        .then(Commands.argument("enabled", BoolArgumentType.bool())
+                                .executes(SendCommand::welcomeExecute)))
                 ;
+    }
+
+    public static int welcomeExecute(CommandContext<CommandSourceStack> context) throws CommandRuntimeException {
+        boolean isEnabled = context.getArgument("enabled", Boolean.class);
+        BotApi.config.getCommon().setS_WELCOME_ENABLE(isEnabled);
+        ConfigManger.saveBotConfig(BotApi.config);
+        if (isEnabled)
+        {
+            context.getSource().sendSuccess(
+                    new TextComponent("发送新人加入QQ群的消息开关已被设置为打开"), true);
+        }
+        else
+        {
+            context.getSource().sendSuccess(
+                    new TextComponent("发送新人加入QQ群的消息开关已被设置为关闭"), true);
+        }
+        return 0;
     }
 
     public static int allExecute(CommandContext<CommandSourceStack> context) throws CommandRuntimeException {
