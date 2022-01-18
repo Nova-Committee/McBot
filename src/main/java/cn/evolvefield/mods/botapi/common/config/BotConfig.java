@@ -1,4 +1,4 @@
-package cn.evolvefield.mods.botapi.config;
+package cn.evolvefield.mods.botapi.common.config;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -48,6 +48,8 @@ public class BotConfig implements IConfig{
         private boolean R_CHAT_ENABLE = true;
         @SerializedName("SEND_ENABLED")
         private boolean SEND_ENABLED = true;
+        @SerializedName("WELCOME_ENABLE")
+        private boolean S_WELCOME_ENABLE = true;
         @SerializedName("JOIN_ENABLE")
         private boolean S_JOIN_ENABLE = true;
         @SerializedName("LEAVE_ENABLE")
@@ -59,6 +61,13 @@ public class BotConfig implements IConfig{
         @SerializedName("S_ADVANCE_ENABLE")
         private boolean S_ADVANCE_ENABLE = true;
 
+        public void setS_WELCOME_ENABLE(boolean s_WELCOME_ENABLE) {
+            S_WELCOME_ENABLE = s_WELCOME_ENABLE;
+        }
+
+        public boolean isS_WELCOME_ENABLE() {
+            return S_WELCOME_ENABLE;
+        }
 
         public String getWelcomeNotice() {
             return welcomeNotice;

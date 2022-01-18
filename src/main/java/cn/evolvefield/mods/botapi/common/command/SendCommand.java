@@ -1,7 +1,7 @@
-package cn.evolvefield.mods.botapi.command;
+package cn.evolvefield.mods.botapi.common.command;
 
 import cn.evolvefield.mods.botapi.BotApi;
-import cn.evolvefield.mods.botapi.config.ConfigManger;
+import cn.evolvefield.mods.botapi.common.config.ConfigManger;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
@@ -66,6 +66,19 @@ public class SendCommand extends CommandBase {
                 else
                 {
                     sender.sendMessage(new TextComponentString("发送消息开关已被设置为关闭"));
+                }
+                break;
+            }
+            case "welcome":{
+                BotApi.config.getCommon().setS_WELCOME_ENABLE(isEnabled);
+                ConfigManger.saveBotConfig(BotApi.config);
+                if (isEnabled)
+                {
+                    sender.sendMessage(new TextComponentString("发送新人加入QQ群的消息开关已被设置为打开"));
+                }
+                else
+                {
+                    sender.sendMessage(new TextComponentString("发送新人加入QQ群的消息开关已被设置为关闭"));
                 }
                 break;
             }

@@ -1,7 +1,7 @@
-package cn.evolvefield.mods.botapi.event;
+package cn.evolvefield.mods.botapi.init.event;
 
 import cn.evolvefield.mods.botapi.BotApi;
-import cn.evolvefield.mods.botapi.service.MessageHandlerService;
+import cn.evolvefield.mods.botapi.core.service.MessageHandlerService;
 import net.minecraftforge.event.ServerChatEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;

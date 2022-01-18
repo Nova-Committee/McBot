@@ -1,4 +1,4 @@
-package cn.evolvefield.mods.botapi.config;
+package cn.evolvefield.mods.botapi.common.config;
 
 public interface IConfig {
     /**

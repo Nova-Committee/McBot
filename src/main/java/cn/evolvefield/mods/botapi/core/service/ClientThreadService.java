@@ -1,7 +1,7 @@
-package cn.evolvefield.mods.botapi.service;
+package cn.evolvefield.mods.botapi.core.service;
 
 import cn.evolvefield.mods.botapi.BotApi;
-import cn.evolvefield.mods.botapi.network.WebSocket.WebSocketClient;
+import cn.evolvefield.mods.botapi.core.network.WebSocket.WebSocketClient;
 
 public class ClientThreadService {
     public static WebSocketClient client;

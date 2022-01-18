@@ -1,8 +1,8 @@
-package cn.evolvefield.mods.botapi.network.WebSocket;
+package cn.evolvefield.mods.botapi.core.network.WebSocket;
 
 
 import cn.evolvefield.mods.botapi.BotApi;
-import cn.evolvefield.mods.botapi.service.ClientThreadService;
+import cn.evolvefield.mods.botapi.core.service.ClientThreadService;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;

@@ -1,5 +1,6 @@
 package cn.evolvefield.mods.botapi.api;
 
+
 import cn.evolvefield.mods.botapi.util.json.JSONObject;
 
 public class MessageJson {

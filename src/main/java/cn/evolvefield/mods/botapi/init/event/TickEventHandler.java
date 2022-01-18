@@ -1,4 +1,4 @@
-package cn.evolvefield.mods.botapi.event;
+package cn.evolvefield.mods.botapi.init.event;
 
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;

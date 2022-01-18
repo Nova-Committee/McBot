@@ -1,13 +1,14 @@
 package cn.evolvefield.mods.botapi;
 
 
-import cn.evolvefield.mods.botapi.command.CommandTree;
-import cn.evolvefield.mods.botapi.config.BotConfig;
-import cn.evolvefield.mods.botapi.config.ConfigManger;
-import cn.evolvefield.mods.botapi.service.ClientThreadService;
+import cn.evolvefield.mods.botapi.common.command.CommandTree;
+import cn.evolvefield.mods.botapi.common.config.BotConfig;
+import cn.evolvefield.mods.botapi.common.config.ConfigManger;
+import cn.evolvefield.mods.botapi.core.service.ClientThreadService;
 import com.google.gson.Gson;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLServerStartedEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.event.FMLServerStoppingEvent;
 import org.apache.logging.log4j.LogManager;
@@ -22,7 +23,6 @@ public class BotApi {
     public static final String MODID = "botapi";
     public static final Logger LOGGER = LogManager.getLogger();
     public static Path CONFIG_FOLDER ;
-    private static Gson GSON = new Gson();
     public static BotConfig config ;
 
 
@@ -39,15 +39,22 @@ public class BotApi {
     public void onServerStarting(FMLServerStartingEvent event)
     {
         event.registerServerCommand(new CommandTree());
+    }
+
+    @Mod.EventHandler
+    public void onServerStarted(FMLServerStartedEvent event)
+    {
+        //加载配置
+        config = ConfigManger.initBotConfig();
         if (config.getCommon().isEnable()) {
             ClientThreadService.runWebSocketClient();
         }
-        //加载配置
-        ConfigManger.initBotConfig();
+
     }
 
     @Mod.EventHandler
     public static void onExitEvent(FMLServerStoppingEvent event) {
+        ConfigManger.saveBotConfig(config);
         ClientThreadService.stopWebSocketClient();
     }
 

@@ -1,8 +1,8 @@
-package cn.evolvefield.mods.botapi.command;
+package cn.evolvefield.mods.botapi.common.command;
 
 
 import cn.evolvefield.mods.botapi.BotApi;
-import cn.evolvefield.mods.botapi.service.ClientThreadService;
+import cn.evolvefield.mods.botapi.core.service.ClientThreadService;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;

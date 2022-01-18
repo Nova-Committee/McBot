@@ -1,4 +1,4 @@
-package cn.evolvefield.mods.botapi.command;
+package cn.evolvefield.mods.botapi.common.command;
 
 import net.minecraft.command.ICommandSender;
 import net.minecraftforge.server.command.CommandTreeBase;

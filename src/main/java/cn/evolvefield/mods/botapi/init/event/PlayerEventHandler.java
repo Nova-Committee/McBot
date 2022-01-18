@@ -1,4 +1,4 @@
-package cn.evolvefield.mods.botapi.event;
+package cn.evolvefield.mods.botapi.init.event;
 
 
 import cn.evolvefield.mods.botapi.BotApi;
