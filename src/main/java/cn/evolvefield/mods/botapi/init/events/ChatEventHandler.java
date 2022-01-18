@@ -1,4 +1,4 @@
-package cn.evolvefield.mods.botapi.init.event;
+package cn.evolvefield.mods.botapi.init.events;
 import cn.evolvefield.mods.botapi.BotApi;
 import cn.evolvefield.mods.botapi.core.service.MessageHandlerService;
 import net.minecraftforge.event.ServerChatEvent;

@@ -2,7 +2,7 @@ package cn.evolvefield.mods.botapi.common.command;
 
 
 import cn.evolvefield.mods.botapi.BotApi;
-import cn.evolvefield.mods.botapi.config.ConfigManger;
+import cn.evolvefield.mods.botapi.common.config.ConfigManger;
 import cn.evolvefield.mods.botapi.core.service.ClientThreadService;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.ArgumentBuilder;

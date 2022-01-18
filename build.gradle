@@ -17,7 +17,7 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'org.parchmentmc.librarian.forgegradle'
 
 group = 'cn.evolvefield.mods'
-version = '1.18.1-1.5.1'
+version = 'forge-1.18.1-1.5.2'
 
 java {
     archivesBaseName = 'Bot-Connect'

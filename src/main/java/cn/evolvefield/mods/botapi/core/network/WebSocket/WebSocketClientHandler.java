@@ -43,7 +43,6 @@ public class WebSocketClientHandler extends SimpleChannelInboundHandler<Object> 
 
                 TextWebSocketFrame textFrame = (TextWebSocketFrame) frame;
                 MessageHandlerService.receiveMessage(textFrame.text());
-                logger.info(textFrame.text());
             } else if (frame instanceof CloseWebSocketFrame) {
                 ch.close();
             }
