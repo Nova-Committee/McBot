@@ -69,11 +69,16 @@ public class MessageHandlerService {
                         }
                         break;
                     case "notice":
-                        if (noticeType.equals("group_increase")) {
-                            SendMessage.Group(BotApi.config.getCommon().getGroupId(), BotApi.config.getCommon().getWelcomeNotice());
-                        } else if (noticeType.equals("group_decrease")) {
-                            SendMessage.Group(BotApi.config.getCommon().getGroupId(), BotApi.config.getCommon().getLeaveNotice());
+                        if(BotApi.config.getCommon().isS_WELCOME_ENABLE()
+                                && BotApi.config.getCommon().isSEND_ENABLED()
+                                && groupId == BotApi.config.getCommon().getGroupId()){
+                            if (noticeType.equals("group_increase")) {
+                                SendMessage.Group(BotApi.config.getCommon().getGroupId(), BotApi.config.getCommon().getWelcomeNotice());
+                            } else if (noticeType.equals("group_decrease")) {
+                                SendMessage.Group(BotApi.config.getCommon().getGroupId(), BotApi.config.getCommon().getLeaveNotice());
+                            }
                         }
+
                 }
             }
 

@@ -1,6 +1,5 @@
 buildscript {
     repositories {
-        // These repositories are only for Gradle plugins, put any other repositories in the repository block further below
         maven { url = 'https://maven.minecraftforge.net' }
         mavenCentral()
     }
@@ -12,10 +11,10 @@ buildscript {
 apply plugin: 'net.minecraftforge.gradle'
 
 group = 'cn.evolvefield.mods'
-version = 'forge-1.12.2-1.5.2'
+version = '1.12.2-1.5.3'
 
 java {
-    archivesBaseName = 'Bot-Connect'
+    archivesBaseName = 'Bot-Connect-forge'
     toolchain.languageVersion = JavaLanguageVersion.of(8)
 }
 

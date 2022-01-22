@@ -3,7 +3,9 @@ package cn.evolvefield.mods.botapi.init.event;
 
 import cn.evolvefield.mods.botapi.BotApi;
 import cn.evolvefield.mods.botapi.api.SendMessage;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.scoreboard.ScorePlayerTeam;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
@@ -33,8 +35,10 @@ public class PlayerEventHandler {
 
     @SubscribeEvent
     public static void playerDeadEvent(LivingDeathEvent event) {
-        if (event.getEntity() instanceof EntityPlayer && BotApi.config.getCommon().isS_DEATH_ENABLE() && BotApi.config.getCommon().isEnable()) {
-            String message = event.getSource().getDeathMessage(event.getEntityLiving()).getUnformattedText();
+        if (event.getEntity() instanceof EntityPlayerMP && BotApi.config.getCommon().isS_DEATH_ENABLE() && BotApi.config.getCommon().isEnable()) {
+
+            String message = event.getEntityLiving().getCombatTracker().getDeathMessage().getUnformattedText();
+                    //event.getSource().getDeathMessage(event.getEntityLiving()).getUnformattedText();
             SendMessage.Group(BotApi.config.getCommon().getGroupId(),String.format(message, ScorePlayerTeam.formatPlayerName(event.getEntity().getTeam(), event.getEntity().getName())));
         }
     }
