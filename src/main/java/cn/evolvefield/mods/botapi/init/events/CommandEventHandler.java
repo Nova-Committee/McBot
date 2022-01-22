@@ -18,6 +18,9 @@ public class CommandEventHandler {
         CommandRegistrationCallback.EVENT.register((dispatcher, dedicated) -> {
                     dispatcher.register(
                             Commands.literal("mcbot")
+                                    .then(Commands.literal("connect").executes(ConnectCommand::receiveExecute)));
+                    dispatcher.register(
+                            Commands.literal("mcbot")
                                     .then(Commands.literal("disconnect").executes(DisconnectCommand::execute)));
                     dispatcher.register(
                             Commands.literal("mcbot")

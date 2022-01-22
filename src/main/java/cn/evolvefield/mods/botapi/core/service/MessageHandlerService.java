@@ -6,6 +6,7 @@ import cn.evolvefield.mods.botapi.common.command.Invoke;
 import cn.evolvefield.mods.botapi.api.message.MessageJson;
 import cn.evolvefield.mods.botapi.api.message.SendMessage;
 import cn.evolvefield.mods.botapi.init.callbacks.ServerLevelEvents;
+import cn.evolvefield.mods.botapi.init.events.TickEventHandler;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
 
@@ -61,16 +62,20 @@ public class MessageHandlerService {
                                     Invoke.invokeCommand(text);
                                 } else if (!text.startsWith("[CQ:") && BotApi.config.getCommon().isR_CHAT_ENABLE()) {
                                     String toSend = String.format("§b[§lQQ§r§b]§a<%s>§f %s", name, text);
-                                    //TickEventHandler.getToSendQueue().add(toSend);
+                                    TickEventHandler.getToSendQueue().add(toSend);
                                 }
                             }
                         }
                         break;
                     case "notice":
-                        if (noticeType.equals("group_increase")) {
-                            SendMessage.Group(BotApi.config.getCommon().getGroupId(), BotApi.config.getCommon().getWelcomeNotice());
-                        } else if (noticeType.equals("group_decrease")) {
-                            SendMessage.Group(BotApi.config.getCommon().getGroupId(), BotApi.config.getCommon().getLeaveNotice());
+                        if(BotApi.config.getCommon().isS_WELCOME_ENABLE()
+                                && BotApi.config.getCommon().isSEND_ENABLED()
+                                && groupId == BotApi.config.getCommon().getGroupId()){
+                            if (noticeType.equals("group_increase")) {
+                                SendMessage.Group(BotApi.config.getCommon().getGroupId(), BotApi.config.getCommon().getWelcomeNotice());
+                            } else if (noticeType.equals("group_decrease")) {
+                                SendMessage.Group(BotApi.config.getCommon().getGroupId(), BotApi.config.getCommon().getLeaveNotice());
+                            }
                         }
                 }
             }
