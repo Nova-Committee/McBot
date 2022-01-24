@@ -13,58 +13,44 @@ import static cn.evolvefield.mods.botapi.core.network.WebSocket.WebSocketChannel
 public class SendMessage {
 
       public static void Private(long user_id, String message){
-            JSONObject data = new JSONObject();
-            JSONObject params = new JSONObject();
-            data.put("action", "send_private_msg");
+            if(BotApi.config.getCommon().isEnable()) {
 
-            params.put("user_id", user_id);
-            params.put("message", message);
-            data.put("params", params);
-            if(BotApi.config.getCommon().isDebuggable()){
-                  BotApi.LOGGER.info("向用户" + user_id + "发送消息" + message);
+                  JSONObject data = new JSONObject();
+                  JSONObject params = new JSONObject();
+                  data.put("action", "send_private_msg");
+
+                  params.put("user_id", user_id);
+                  params.put("message", message);
+                  data.put("params", params);
+                  if (BotApi.config.getCommon().isDebuggable()) {
+                        BotApi.LOGGER.info("向用户" + user_id + "发送消息" + message);
+                  }
+                  sendToAll(new TextWebSocketFrame(data.toString()));
             }
-            sendToAll(new TextWebSocketFrame(data.toString()));
       }
 
 
       public static void Group(long group_id, String message) {
-            JSONObject data = new JSONObject();
-            JSONObject params = new JSONObject();
-            data.put("action", "send_group_msg");
+            if(BotApi.config.getCommon().isEnable()){
+                  JSONObject data = new JSONObject();
+                  JSONObject params = new JSONObject();
+                  data.put("action", "send_group_msg");
 
-            params.put("group_id", group_id);
-            params.put("message", message);
-            data.put("params", params);
-            if(BotApi.config.getCommon().isDebuggable()){
-                  BotApi.LOGGER.info("向群" + group_id + "发送消息" + message);
+                  params.put("group_id", group_id);
+                  params.put("message", message);
+                  data.put("params", params);
+                  if(BotApi.config.getCommon().isDebuggable()){
+                        BotApi.LOGGER.info("向群" + group_id + "发送消息" + message);
+                  }
+                  sendToAll(new TextWebSocketFrame(data.toString()));
             }
-            sendToAll(new TextWebSocketFrame(data.toString()));
+
       }
 
-//      public static JSONObject getProfile(long group, long userId) {
-//
-//      }
 
 
       private static final JSONObject errorObject = new JSONObject("{\"retcode\": 1}");
 
-      //获取群成员信息
-//      public static JSONObject getProfile(long group, long userId) {
-//
-//            try {
-//                  String resp = HttpRequest.post("http://" + BotApi.config.getCommon().getSendHOST() + ":" + BotApi.config.getCommon().getSendPORT() +
-//                                  "/get_group_member_info?group_id=" + group + "&user_id=" + userId)
-//                          .trustAllCerts()
-//                          .trustAllHosts()
-//                          .connectTimeout(60000)
-//                          .readTimeout(60000)
-//                          .body();
-//                  return new JSONObject(resp);
-//            } catch (JSONException e) {
-//                  e.printStackTrace();
-//                  return errorObject;
-//            }
-//      }
 
       //获取用户名信息
       public static String getUsernameFromInfo(JSONObject userInfo) {

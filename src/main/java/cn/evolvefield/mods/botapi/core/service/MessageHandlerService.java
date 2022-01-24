@@ -18,7 +18,6 @@ public class MessageHandlerService {
      */
     public static void sendMessage(Player player, String message) {
 
-        SendMessage.Group(BotApi.config.getCommon().getGroupId(),String.format("[MC]<%s> %s", player.getDisplayName().getString(), message));
     }
 
     /**
