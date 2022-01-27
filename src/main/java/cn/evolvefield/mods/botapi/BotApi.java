@@ -2,6 +2,7 @@ package cn.evolvefield.mods.botapi;
 
 import cn.evolvefield.mods.botapi.common.config.BotConfig;
 import cn.evolvefield.mods.botapi.common.config.ConfigManger;
+import cn.evolvefield.mods.botapi.core.tick.TickTimeService;
 import cn.evolvefield.mods.botapi.init.events.ChatEventHandler;
 import cn.evolvefield.mods.botapi.init.events.CommandEventHandler;
 
@@ -33,6 +34,7 @@ public class BotApi implements ModInitializer {
 
     public static MinecraftServer SERVER = null;
 
+    public static TickTimeService service;
     public BotApi(){
 
     }
@@ -58,6 +60,7 @@ public class BotApi implements ModInitializer {
 
     private void onServerStarted(MinecraftServer server){
         SERVER = server;
+        service = (TickTimeService) server;
         //加载配置
         config = ConfigManger.initBotConfig();
         if (BotApi.config.getCommon().isEnable()) {

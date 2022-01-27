@@ -18,17 +18,20 @@ public class Invoke {
         String commandBody = command.substring(1);
 
         if ("tps".equals(commandBody)) {
-            double overTickTime = BotApi.SERVER.getNextTickTime() * 1.0E-6D;
-            double overTPS = Math.min(1000.0 / overTickTime, 20);
-//            double netherTickTime = mean(BotApi.SERVER.getTickTime(Level.NETHER)) * 1.0E-6D;
+            double overTPS = BotApi.service.recentTps()[0];
+//            double overTickTime = BotApi.SERVER.getNextTickTime() * 1.0E-6D;
+//            double overTPS = Math.min(1000.0 / overTickTime, 20);
+//            double netherTickTime = mean(TickEventHandler.getTickTime(Level.NETHER)) * 1.0E-6D;
 //            double netherTPS = Math.min(1000.0 / netherTickTime, 20);
-//            double endTickTime = mean(BotApi.SERVER.getTickTime(Level.END)) * 1.0E-6D;
+//            double endTickTime = mean(TickEventHandler.getTickTime(Level.END)) * 1.0E-6D;
 //            double endTPS = Math.min(1000.0 / endTickTime, 20);
 
             String outPut = String.format("主世界 TPS: %.2f", overTPS)
                     //+"\n" + String.format("下界 TPS: %.2f", netherTPS)
-                    //+"\n" + String.format("末地 TPS: %.2f", endTPS)
+                   // +"\n" + String.format("末地 TPS: %.2f", endTPS)
                     ;
+           //BotApi.LOGGER.info(BotApi.SERVER.getNextTickTime() + overTickTime);
+
             if (BotApi.config.getCommon().isDebuggable()) {
                 BotApi.LOGGER.info("处理命令tps:" + outPut);
             }
@@ -56,7 +59,7 @@ public class Invoke {
 
     private static long mean(long[] values) {
         long sum = Arrays.stream(values)
-                .reduce(0L, (total, item) -> total + item);
+                .reduce(0L, Long::sum);
 
         return sum / values.length;
     }
