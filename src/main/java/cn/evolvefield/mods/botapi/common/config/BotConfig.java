@@ -40,33 +40,49 @@ public class BotConfig implements IConfig {
         @SerializedName("leaveNotice")
         private String leaveNotice = "有人离开了我们qwq";
 
+        @SerializedName("commandStart")
+        private String commandStart = "!";
+
+        @SerializedName("languageSelect")
+        private String languageSelect = "zh_cn";
+
         @SerializedName("RECEIVE_ENABLED")
         private boolean RECEIVE_ENABLED = true;
         @SerializedName("R_COMMAND_ENABLED")
         private boolean R_COMMAND_ENABLED = true;
         @SerializedName("R_CHAT_ENABLE")
         private boolean R_CHAT_ENABLE = true;
+
         @SerializedName("SEND_ENABLED")
         private boolean SEND_ENABLED = true;
-        @SerializedName("WELCOME_ENABLE")
+        @SerializedName("S_WELCOME_ENABLE")
         private boolean S_WELCOME_ENABLE = true;
-        @SerializedName("JOIN_ENABLE")
+        @SerializedName("S_JOIN_ENABLE")
         private boolean S_JOIN_ENABLE = true;
-        @SerializedName("LEAVE_ENABLE")
+        @SerializedName("S_LEAVE_ENABLE")
         private boolean S_LEAVE_ENABLE = true;
-        @SerializedName("DEATH_ENABLE")
+        @SerializedName("S_DEATH_ENABLE")
         private boolean S_DEATH_ENABLE = true;
         @SerializedName("S_CHAT_ENABLE")
         private boolean S_CHAT_ENABLE = true;
         @SerializedName("S_ADVANCE_ENABLE")
         private boolean S_ADVANCE_ENABLE = true;
 
-        public void setS_WELCOME_ENABLE(boolean s_WELCOME_ENABLE) {
-            S_WELCOME_ENABLE = s_WELCOME_ENABLE;
+
+        public void setLanguageSelect(String languageSelect) {
+            this.languageSelect = languageSelect;
         }
 
-        public boolean isS_WELCOME_ENABLE() {
-            return S_WELCOME_ENABLE;
+        public String getLanguageSelect() {
+            return languageSelect;
+        }
+
+        public String getCommandStart() {
+            return commandStart;
+        }
+
+        public void setCommandStart(String commandStart) {
+            this.commandStart = commandStart;
         }
 
         public String getWelcomeNotice() {
@@ -163,6 +179,14 @@ public class BotConfig implements IConfig {
 
         public void setSEND_ENABLED(boolean SEND_ENABLED) {
             this.SEND_ENABLED = SEND_ENABLED;
+        }
+
+        public void setS_WELCOME_ENABLE(boolean s_WELCOME_ENABLE) {
+            S_WELCOME_ENABLE = s_WELCOME_ENABLE;
+        }
+
+        public boolean isS_WELCOME_ENABLE() {
+            return S_WELCOME_ENABLE;
         }
 
         public boolean isS_JOIN_ENABLE() {

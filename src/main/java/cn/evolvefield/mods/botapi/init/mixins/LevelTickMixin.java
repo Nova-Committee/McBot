@@ -1,25 +1,21 @@
 package cn.evolvefield.mods.botapi.init.mixins;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.util.function.BooleanSupplier;
-
 import cn.evolvefield.mods.botapi.core.tick.MinecraftServerAccess;
 import cn.evolvefield.mods.botapi.core.tick.TickTimeService;
-import cn.evolvefield.mods.botapi.util.RollingAverage;
-import cn.evolvefield.mods.botapi.util.TickTimes;
+import cn.evolvefield.mods.botapi.util.tick.RollingAverage;
+import cn.evolvefield.mods.botapi.util.tick.TickTimes;
+import cn.evolvefield.mods.botapi.util.tick.TickUtil;
 import net.minecraft.server.MinecraftServer;
 import org.jetbrains.annotations.NotNull;
-import org.spongepowered.asm.mixin.Final;
-import org.spongepowered.asm.mixin.Implements;
-import org.spongepowered.asm.mixin.Interface;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.Unique;
+import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
+
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.function.BooleanSupplier;
 
 /**
  * Adds TPS and tick time rolling averages.
@@ -54,15 +50,22 @@ abstract class LevelTickMixin implements MinecraftServerAccess {
             }
             final long diff = tickStartTimeNanos - this.previousTime;
             this.previousTime = tickStartTimeNanos;
-            final BigDecimal currentTps = RollingAverage.TPS_BASE.divide(new BigDecimal(diff), 30, RoundingMode.HALF_UP);
-            this.tps5s.add(currentTps, diff);
-            this.tps1m.add(currentTps, diff);
-            this.tps5m.add(currentTps, diff);
-            this.tps15m.add(currentTps, diff);
+            if (diff > 0) {
+                final BigDecimal currentTps = RollingAverage.TPS_BASE.divide(new BigDecimal(diff), 30, RoundingMode.HALF_UP);
+                this.tps5s.add(currentTps, diff);
+                this.tps1m.add(currentTps, diff);
+                this.tps5m.add(currentTps, diff);
+                this.tps15m.add(currentTps, diff);
+            }
+
         }
     }
 
 
+    @Override
+    public double averageMspt() {
+        return TickUtil.toMilliSeconds(TickUtil.average(this.tickTimes));
+    }
 
     @Override
     public double @NotNull [] recentTps() {

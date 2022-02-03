@@ -1,6 +1,6 @@
 package cn.evolvefield.mods.botapi.core.tick;
 
-import cn.evolvefield.mods.botapi.util.TickTimes;
+import cn.evolvefield.mods.botapi.util.tick.TickTimes;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -13,8 +13,9 @@ public interface MinecraftServerAccess {
 
     public double @NotNull [] recentTps();
 
-    @NotNull
-    TickTimes tickTimes5s();
+    double averageMspt();
+
+    @NotNull TickTimes tickTimes5s();
 
     @NotNull TickTimes tickTimes10s();
 

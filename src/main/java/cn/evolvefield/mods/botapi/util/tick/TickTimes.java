@@ -1,4 +1,4 @@
-package cn.evolvefield.mods.botapi.util;
+package cn.evolvefield.mods.botapi.util.tick;
 
 /**
  * Description:

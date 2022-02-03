@@ -19,6 +19,7 @@ public class Invoke {
 
         if ("tps".equals(commandBody)) {
             double overTPS = BotApi.service.recentTps()[0];
+            double overMspt = BotApi.service.averageMspt();
 //            double overTickTime = BotApi.SERVER.getNextTickTime() * 1.0E-6D;
 //            double overTPS = Math.min(1000.0 / overTickTime, 20);
 //            double netherTickTime = mean(TickEventHandler.getTickTime(Level.NETHER)) * 1.0E-6D;
@@ -27,6 +28,7 @@ public class Invoke {
 //            double endTPS = Math.min(1000.0 / endTickTime, 20);
 
             String outPut = String.format("主世界 TPS: %.2f", overTPS)
+                    + "\n" + String.format("主世界 MSPT: %.2f", overMspt)
                     //+"\n" + String.format("下界 TPS: %.2f", netherTPS)
                    // +"\n" + String.format("末地 TPS: %.2f", endTPS)
                     ;

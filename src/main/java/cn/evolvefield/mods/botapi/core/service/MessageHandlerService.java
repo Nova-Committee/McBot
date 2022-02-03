@@ -2,12 +2,10 @@ package cn.evolvefield.mods.botapi.core.service;
 
 
 import cn.evolvefield.mods.botapi.BotApi;
-import cn.evolvefield.mods.botapi.common.command.Invoke;
 import cn.evolvefield.mods.botapi.api.message.MessageJson;
 import cn.evolvefield.mods.botapi.api.message.SendMessage;
-import cn.evolvefield.mods.botapi.init.callbacks.ServerLevelEvents;
+import cn.evolvefield.mods.botapi.common.command.Invoke;
 import cn.evolvefield.mods.botapi.init.events.TickEventHandler;
-import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
 
 public class MessageHandlerService {
@@ -57,7 +55,7 @@ public class MessageHandlerService {
                                 if (BotApi.config.getCommon().isDebuggable()) {
                                     BotApi.LOGGER.info("收到群" + groupId + "发送消息" + text);
                                 }
-                                if (text.startsWith("!") && BotApi.config.getCommon().isR_COMMAND_ENABLED()) {
+                                if (text.startsWith(BotApi.config.getCommon().getCommandStart()) && BotApi.config.getCommon().isR_COMMAND_ENABLED()) {
                                     Invoke.invokeCommand(text);
                                 } else if (!text.startsWith("[CQ:") && BotApi.config.getCommon().isR_CHAT_ENABLE()) {
                                     String toSend = String.format("§b[§lQQ§r§b]§a<%s>§f %s", name, text);
