@@ -4,11 +4,11 @@ import org.jetbrains.annotations.NotNull;
 
 public class TickUtil {
     public static double toMilliseconds(final long time) {
-        return time * 1.0E-4D;
+        return time * 1.0E-6D;
     }
 
     public static double toMilliseconds(final double time) {
-        return time * 1.0E-4D;
+        return time * 1.0E-6D;
     }
 
     public static double average(final long @NotNull [] longs) {

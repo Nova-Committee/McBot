@@ -74,8 +74,8 @@ abstract class LevelTickMixin implements TickTimeService {
         final LongSummaryStatistics statistics = LongStream.of(tickTimes5s.times()).filter(NOT_ZERO).summaryStatistics();
         //System.out.println(statistics.getAverage());
         double mspt = TickUtil.toMilliseconds(statistics.getAverage());
-        if (mspt >= 50) {
-            mspt = 50;
+        if (mspt >= 5) {
+            mspt = 5;
         }
         return mspt;
     }
