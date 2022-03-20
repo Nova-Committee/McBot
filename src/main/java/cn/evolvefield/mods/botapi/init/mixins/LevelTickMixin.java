@@ -1,13 +1,15 @@
 package cn.evolvefield.mods.botapi.init.mixins;
 
-import cn.evolvefield.mods.botapi.core.tick.MinecraftServerAccess;
 import cn.evolvefield.mods.botapi.core.tick.TickTimeService;
 import cn.evolvefield.mods.botapi.util.tick.RollingAverage;
 import cn.evolvefield.mods.botapi.util.tick.TickTimes;
 import cn.evolvefield.mods.botapi.util.tick.TickUtil;
 import net.minecraft.server.MinecraftServer;
 import org.jetbrains.annotations.NotNull;
-import org.spongepowered.asm.mixin.*;
+import org.spongepowered.asm.mixin.Final;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -15,15 +17,17 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.LongSummaryStatistics;
 import java.util.function.BooleanSupplier;
+import java.util.function.LongPredicate;
+import java.util.stream.LongStream;
 
 /**
  * Adds TPS and tick time rolling averages.
  */
 @Unique
 @Mixin(MinecraftServer.class)
-@Implements({@Interface(iface = TickTimeService.class, prefix = "botapi$")})
-abstract class LevelTickMixin implements MinecraftServerAccess {
+abstract class LevelTickMixin implements TickTimeService {
     private final TickTimes tickTimes5s = new TickTimes(100);
     private final TickTimes tickTimes10s = new TickTimes(200);
     private final TickTimes tickTimes60s = new TickTimes(1200);
@@ -35,8 +39,13 @@ abstract class LevelTickMixin implements MinecraftServerAccess {
 
     private long previousTime;
 
-    @Shadow private int tickCount;
-    @Shadow @Final public long[] tickTimes;
+    @Shadow
+    private int tickCount;
+    @Shadow
+    @Final
+    public long[] tickTimes;
+
+    private static final LongPredicate NOT_ZERO = l -> l != 0;
 
     @Inject(method = "tickServer", at = @At("RETURN"), locals = LocalCapture.CAPTURE_FAILHARD)
     public void injectTick(final BooleanSupplier var1, final CallbackInfo ci, final long tickStartTimeNanos, final long tickDurationNanos) {
@@ -50,13 +59,11 @@ abstract class LevelTickMixin implements MinecraftServerAccess {
             }
             final long diff = tickStartTimeNanos - this.previousTime;
             this.previousTime = tickStartTimeNanos;
-            if (diff > 0) {
-                final BigDecimal currentTps = RollingAverage.TPS_BASE.divide(new BigDecimal(diff), 30, RoundingMode.HALF_UP);
-                this.tps5s.add(currentTps, diff);
-                this.tps1m.add(currentTps, diff);
-                this.tps5m.add(currentTps, diff);
-                this.tps15m.add(currentTps, diff);
-            }
+            final BigDecimal currentTps = RollingAverage.TPS_BASE.divide(new BigDecimal(diff), 30, RoundingMode.HALF_UP);
+            this.tps5s.add(currentTps, diff);
+            this.tps1m.add(currentTps, diff);
+            this.tps5m.add(currentTps, diff);
+            this.tps15m.add(currentTps, diff);
 
         }
     }
@@ -64,7 +71,13 @@ abstract class LevelTickMixin implements MinecraftServerAccess {
 
     @Override
     public double averageMspt() {
-        return TickUtil.toMilliSeconds(TickUtil.average(this.tickTimes));
+        final LongSummaryStatistics statistics = LongStream.of(tickTimes5s.times()).filter(NOT_ZERO).summaryStatistics();
+        //System.out.println(statistics.getAverage());
+        double mspt = TickUtil.toMilliseconds(statistics.getAverage());
+        if (mspt >= 50) {
+            mspt = 50;
+        }
+        return mspt;
     }
 
     @Override

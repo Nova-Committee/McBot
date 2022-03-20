@@ -1,14 +1,13 @@
 package cn.evolvefield.mods.botapi;
 
+import cn.evolvefield.mods.botapi.api.data.BindData;
 import cn.evolvefield.mods.botapi.common.config.BotConfig;
 import cn.evolvefield.mods.botapi.common.config.ConfigManger;
-import cn.evolvefield.mods.botapi.core.tick.TickTimeService;
-import cn.evolvefield.mods.botapi.init.events.ChatEventHandler;
-import cn.evolvefield.mods.botapi.init.events.CommandEventHandler;
-
 import cn.evolvefield.mods.botapi.core.service.ClientThreadService;
-import cn.evolvefield.mods.botapi.init.events.PlayerEventHandler;
-import cn.evolvefield.mods.botapi.init.events.TickEventHandler;
+import cn.evolvefield.mods.botapi.core.service.MySqlService;
+import cn.evolvefield.mods.botapi.core.tick.TickTimeService;
+import cn.evolvefield.mods.botapi.init.handler.*;
+import cn.evolvefield.mods.botapi.util.FileUtil;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.loader.api.FabricLoader;
@@ -17,6 +16,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.nio.file.Path;
+import java.sql.Connection;
 
 
 /**
@@ -29,27 +29,27 @@ public class BotApi implements ModInitializer {
 
     public static final String MODID = "botapi";
     public static final Logger LOGGER = LogManager.getLogger();
-    public static Path CONFIG_FOLDER ;
-    public static BotConfig config ;
-
+    public static Path CONFIG_FOLDER;
+    public static BotConfig config;
     public static MinecraftServer SERVER = null;
-
     public static TickTimeService service;
-    public BotApi(){
+    public static Connection connection;
+
+    public BotApi() {
 
     }
 
     @Override
     public void onInitialize() {
-        CONFIG_FOLDER = FabricLoader.getInstance().getConfigDir();
+        CONFIG_FOLDER = FabricLoader.getInstance().getConfigDir().resolve("botapi");
+        FileUtil.checkFolder(CONFIG_FOLDER);
 
         ServerLifecycleEvents.SERVER_STARTED.register(this::onServerStarted);
 
         ServerLifecycleEvents.SERVER_STOPPING.register(this::onServerStopping);
-
-
         CommandEventHandler.init();
         PlayerEventHandler.init();
+        BotEventHandler.init();
         ChatEventHandler.init();
         TickEventHandler.init();
     }
@@ -58,18 +58,26 @@ public class BotApi implements ModInitializer {
         return SERVER;
     }
 
-    private void onServerStarted(MinecraftServer server){
+    private void onServerStarted(MinecraftServer server) {
         SERVER = server;
         service = (TickTimeService) server;
         //加载配置
         config = ConfigManger.initBotConfig();
+        //绑定数据加载
+        BindData.init();
         if (BotApi.config.getCommon().isEnable()) {
             ClientThreadService.runWebSocketClient();
+            if (BotApi.config.getCommon().isSQL_ENABLED()) {
+                System.out.println("▌ §a开始连接数据库 §6┈━═☆");
+                connection = MySqlService.Join();
+            }
+
         }
     }
 
     private void onServerStopping(MinecraftServer server){
         ConfigManger.saveBotConfig(config);
+        BindData.save();
         ClientThreadService.stopWebSocketClient();
     }
 }

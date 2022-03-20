@@ -1,4 +1,4 @@
-package cn.evolvefield.mods.botapi.init.events;
+package cn.evolvefield.mods.botapi.init.handler;
 
 import com.google.common.collect.Maps;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;

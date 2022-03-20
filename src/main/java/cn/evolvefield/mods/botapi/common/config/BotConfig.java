@@ -2,13 +2,11 @@ package cn.evolvefield.mods.botapi.common.config;
 
 import com.google.gson.annotations.SerializedName;
 
-public class BotConfig implements IConfig {
-    @Override
+public class BotConfig {
+
     public String getConfigName() {
         return "botapi";
     }
-
-
 
     public Common getCommon() {
         return common;
@@ -23,6 +21,8 @@ public class BotConfig implements IConfig {
 
 
     public static class Common {
+        @SerializedName("frame")
+        private String frame = "0";//0 --- go-cqhttp/// 1 ---- mirai
         @SerializedName("groupId")
         private long groupId = 0;
         @SerializedName("wsHost")
@@ -39,12 +39,35 @@ public class BotConfig implements IConfig {
         private String welcomeNotice = "欢迎加群~";
         @SerializedName("leaveNotice")
         private String leaveNotice = "有人离开了我们qwq";
-
         @SerializedName("commandStart")
         private String commandStart = "!";
-
+        @SerializedName("bindCommand")
+        private String bindCommand = "bind";
+        @SerializedName("whiteListCommand")
+        private String whiteListCommand = "white";
+        @SerializedName("bindSuccess")
+        private String bindSuccess =
+                "绑定成功 ┈━═☆\n" +
+                        "成功绑定账号: %Player%\n" +
+                        "你他妈绑定成功了呢~\"";
+        @SerializedName("bindFail")
+        private String bindFail =
+                "绑定失败 ┈━═☆\n" +
+                        "你的QQ已经绑定或 %Player% 已被绑定\n" +
+                        "你他妈不能再绑定了呢~";
+        @SerializedName("bindNotOnline")
+        private String bindNotOnline =
+                "玩家不在线 ┈━═☆\n" +
+                        "%Player% 不在线或者不存在哦\n" +
+                        "还他妈不上线搁这玩QQ呢~";
+        @SerializedName("qqPrefix")
+        private String qqPrefix = "MC";
         @SerializedName("languageSelect")
         private String languageSelect = "zh_cn";
+        @SerializedName("SQL_ENABLED")
+        private boolean SQL_ENABLED = false;
+        @SerializedName("WHITELIST_ENABLED")
+        private boolean WHITELIST_ENABLED = false;
 
         @SerializedName("RECEIVE_ENABLED")
         private boolean RECEIVE_ENABLED = true;
@@ -52,53 +75,27 @@ public class BotConfig implements IConfig {
         private boolean R_COMMAND_ENABLED = true;
         @SerializedName("R_CHAT_ENABLE")
         private boolean R_CHAT_ENABLE = true;
-
         @SerializedName("SEND_ENABLED")
         private boolean SEND_ENABLED = true;
-        @SerializedName("S_WELCOME_ENABLE")
+        @SerializedName("WELCOME_ENABLE")
         private boolean S_WELCOME_ENABLE = true;
-        @SerializedName("S_JOIN_ENABLE")
+        @SerializedName("JOIN_ENABLE")
         private boolean S_JOIN_ENABLE = true;
-        @SerializedName("S_LEAVE_ENABLE")
+        @SerializedName("LEAVE_ENABLE")
         private boolean S_LEAVE_ENABLE = true;
-        @SerializedName("S_DEATH_ENABLE")
+        @SerializedName("DEATH_ENABLE")
         private boolean S_DEATH_ENABLE = true;
         @SerializedName("S_CHAT_ENABLE")
         private boolean S_CHAT_ENABLE = true;
         @SerializedName("S_ADVANCE_ENABLE")
         private boolean S_ADVANCE_ENABLE = true;
 
-
-        public void setLanguageSelect(String languageSelect) {
-            this.languageSelect = languageSelect;
+        public String getFrame() {
+            return frame;
         }
 
-        public String getLanguageSelect() {
-            return languageSelect;
-        }
-
-        public String getCommandStart() {
-            return commandStart;
-        }
-
-        public void setCommandStart(String commandStart) {
-            this.commandStart = commandStart;
-        }
-
-        public String getWelcomeNotice() {
-            return welcomeNotice;
-        }
-
-        public void setWelcomeNotice(String welcomeNotice) {
-            this.welcomeNotice = welcomeNotice;
-        }
-
-        public String getLeaveNotice() {
-            return leaveNotice;
-        }
-
-        public void setLeaveNotice(String leaveNotice) {
-            this.leaveNotice = leaveNotice;
+        public void setFrame(String frame) {
+            this.frame = frame;
         }
 
         public long getGroupId() {
@@ -149,6 +146,86 @@ public class BotConfig implements IConfig {
             this.Debuggable = debuggable;
         }
 
+        public String getBindFail() {
+            return bindFail;
+        }
+
+        public String getBindNotOnline() {
+            return bindNotOnline;
+        }
+
+        public String getBindSuccess() {
+            return bindSuccess;
+        }
+
+        public String getBindCommand() {
+            return bindCommand;
+        }
+
+        public void setBindCommand(String bindCommand) {
+            this.bindCommand = bindCommand;
+        }
+
+        public String getWhiteListCommand() {
+            return whiteListCommand;
+        }
+
+        public String getQqPrefix() {
+            return qqPrefix;
+        }
+
+        public void setQqPrefix(String qqPrefix) {
+            this.qqPrefix = qqPrefix;
+        }
+
+        public String getCommandStart() {
+            return commandStart;
+        }
+
+        public void setCommandStart(String commandStart) {
+            this.commandStart = commandStart;
+        }
+
+        public String getLanguageSelect() {
+            return languageSelect;
+        }
+
+        public void setLanguageSelect(String languageSelect) {
+            this.languageSelect = languageSelect;
+        }
+
+        public boolean isSQL_ENABLED() {
+            return SQL_ENABLED;
+        }
+
+        public boolean isWHITELIST_ENABLED() {
+            return WHITELIST_ENABLED;
+        }
+
+        public boolean isS_WELCOME_ENABLE() {
+            return S_WELCOME_ENABLE;
+        }
+
+        public void setS_WELCOME_ENABLE(boolean s_WELCOME_ENABLE) {
+            S_WELCOME_ENABLE = s_WELCOME_ENABLE;
+        }
+
+        public String getWelcomeNotice() {
+            return welcomeNotice;
+        }
+
+        public void setWelcomeNotice(String welcomeNotice) {
+            this.welcomeNotice = welcomeNotice;
+        }
+
+        public String getLeaveNotice() {
+            return leaveNotice;
+        }
+
+        public void setLeaveNotice(String leaveNotice) {
+            this.leaveNotice = leaveNotice;
+        }
+
         public boolean isRECEIVE_ENABLED() {
             return RECEIVE_ENABLED;
         }
@@ -179,14 +256,6 @@ public class BotConfig implements IConfig {
 
         public void setSEND_ENABLED(boolean SEND_ENABLED) {
             this.SEND_ENABLED = SEND_ENABLED;
-        }
-
-        public void setS_WELCOME_ENABLE(boolean s_WELCOME_ENABLE) {
-            S_WELCOME_ENABLE = s_WELCOME_ENABLE;
-        }
-
-        public boolean isS_WELCOME_ENABLE() {
-            return S_WELCOME_ENABLE;
         }
 
         public boolean isS_JOIN_ENABLE() {

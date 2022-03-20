@@ -1,8 +1,10 @@
 package cn.evolvefield.mods.botapi.core.network.WebSocket;
 
 import cn.evolvefield.mods.botapi.BotApi;
+import cn.evolvefield.mods.botapi.core.bot.CQHttpBot;
+import cn.evolvefield.mods.botapi.core.bot.MiraiBot;
 import cn.evolvefield.mods.botapi.core.service.ClientThreadService;
-import cn.evolvefield.mods.botapi.core.service.MessageHandlerService;
+import cn.evolvefield.mods.botapi.util.json.JSONObject;
 import io.netty.channel.*;
 import io.netty.handler.codec.http.FullHttpResponse;
 import io.netty.handler.codec.http.websocketx.*;
@@ -36,13 +38,24 @@ public class WebSocketClientHandler extends SimpleChannelInboundHandler<Object> 
             return;
         }
 
-        if (msg instanceof WebSocketFrame) {
-            WebSocketFrame frame = (WebSocketFrame) msg;
+        if (msg instanceof WebSocketFrame frame) {
             if (frame instanceof TextWebSocketFrame) {
                 //处理文本请求
 
-                TextWebSocketFrame textFrame = (TextWebSocketFrame) frame;
-                MessageHandlerService.receiveMessage(textFrame.text());
+                String jsonStr = ((TextWebSocketFrame) frame).text();
+                //MessageHandlerService.receiveMessage(textFrame.text());
+
+                JSONObject json = new JSONObject(jsonStr);
+
+                if (BotApi.config.getCommon().isDebuggable()) {
+                    System.out.println(jsonStr);
+                }
+
+                if (BotApi.config.getCommon().getFrame().equals("0")) {
+                    new CQHttpBot(jsonStr, json);
+                } else if (BotApi.config.getCommon().getFrame().equals("1")) {
+                    new MiraiBot(jsonStr, json);
+                }
             } else if (frame instanceof CloseWebSocketFrame) {
                 ch.close();
             }

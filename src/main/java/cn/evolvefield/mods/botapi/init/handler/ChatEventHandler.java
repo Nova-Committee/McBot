@@ -1,8 +1,7 @@
-package cn.evolvefield.mods.botapi.init.events;
+package cn.evolvefield.mods.botapi.init.handler;
 
 import cn.evolvefield.mods.botapi.BotApi;
 import cn.evolvefield.mods.botapi.api.message.SendMessage;
-import cn.evolvefield.mods.botapi.core.service.MessageHandlerService;
 import cn.evolvefield.mods.botapi.init.callbacks.ServerLevelEvents;
 
 /**

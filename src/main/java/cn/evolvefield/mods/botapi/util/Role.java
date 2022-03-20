@@ -2,7 +2,6 @@ package cn.evolvefield.mods.botapi.util;
 
 
 import cn.evolvefield.mods.botapi.util.json.JSONObject;
-
 public class Role {
 
     public enum UserRole {

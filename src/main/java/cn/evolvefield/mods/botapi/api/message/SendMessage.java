@@ -2,6 +2,8 @@ package cn.evolvefield.mods.botapi.api.message;
 
 
 import cn.evolvefield.mods.botapi.BotApi;
+import cn.evolvefield.mods.botapi.core.network.WebSocket.WebSocketChannelSupervise;
+import cn.evolvefield.mods.botapi.util.MsgUtil;
 import cn.evolvefield.mods.botapi.util.json.JSONObject;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 
@@ -37,17 +39,32 @@ public class SendMessage {
                   data.put("action", "send_group_msg");
 
                   params.put("group_id", group_id);
-                  params.put("message", message);
-                  data.put("params", params);
-                  if(BotApi.config.getCommon().isDebuggable()){
-                        BotApi.LOGGER.info("向群" + group_id + "发送消息" + message);
-                  }
-                  sendToAll(new TextWebSocketFrame(data.toString()));
+                params.put("message", message);
+                data.put("params", params);
+                if (BotApi.config.getCommon().isDebuggable()) {
+                    BotApi.LOGGER.info("向群" + group_id + "发送消息" + message);
+                }
+                sendToAll(new TextWebSocketFrame(data.toString()));
             }
 
       }
 
+    public static void Group(long group_id, Object message) {
+        if (BotApi.config.getCommon().isEnable()) {
+            JSONObject data = new JSONObject();
+            JSONObject params = new JSONObject();
+            data.put("action", "send_group_msg");
 
+            params.put("group_id", group_id);
+            params.put("message", MsgUtil.setListMessage((List<String>) message));
+            data.put("params", params);
+            if (BotApi.config.getCommon().isDebuggable()) {
+                BotApi.LOGGER.info("向群" + group_id + "发送消息" + message);
+            }
+            WebSocketChannelSupervise.sendToAll(new TextWebSocketFrame(data.toString()));
+        }
+
+    }
 
       private static final JSONObject errorObject = new JSONObject("{\"retcode\": 1}");
 
