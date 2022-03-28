@@ -91,7 +91,7 @@ public class CQHttpBot {
                 this.sub_type = json.getString("sub_type");//事件子类型
 
                 if (Json.contains("group_id")) {
-                    this.temp_source = new JSONObject(json.get("sender")).getLong("group_id");//临时消息来源
+                    this.temp_source = json.getJSONObject("sender").getLong("group_id");//临时消息来源
                 } else {
                     this.temp_source = 0;
                 }
@@ -150,8 +150,8 @@ public class CQHttpBot {
                     this.message_id = 0;
                 }
                 if (Json.contains("file")) {//上传文件数据
-                    this.file_name = new JSONObject(json.get("file")).getString("name");//上传文件名字
-                    this.file_size = new JSONObject(json.get("file")).getLong("size");//上传文件大小
+                    this.file_name = json.getJSONObject("file").getString("name");//上传文件名字
+                    this.file_size = json.getJSONObject("file").getLong("size");//上传文件大小
                 } else {
                     this.file_name = null;
                     this.file_size = 0;
@@ -162,17 +162,6 @@ public class CQHttpBot {
                     this.target_id = null;
                 }
 
-//                if(BotApi.config.getCommon().isS_WELCOME_ENABLE()
-//                        && BotApi.config.getCommon().isSEND_ENABLED()
-//                        && group_id == BotApi.config.getCommon().getGroupId()){
-//                    if(notice_type != null){
-//                        if (notice_type.equals("group_increase")) {
-//                            SendMessage.SendGroupMsg(BotApi.config.getCommon().getGroupId(), BotApi.config.getCommon().getWelcomeNotice());
-//                        } else if (notice_type.equals("group_decrease")) {
-//                            SendMessage.SendGroupMsg(BotApi.config.getCommon().getGroupId(), BotApi.config.getCommon().getLeaveNotice());
-//                        }
-//                    }
-//                }
 
                 NoticeEvent event = new NoticeEvent(Json, self_id, sub_type, notice_type, group_id, user_id, operator_id, duration, message_id, file_name, file_size, target_id);
                 BotEvents.NOTICE_MSG_EVENT.invoker().onNoticeMsg(event);
