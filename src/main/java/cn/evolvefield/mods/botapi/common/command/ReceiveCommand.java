@@ -60,7 +60,7 @@ public class ReceiveCommand extends CommandBase {
                 break;
             }
             case "all":{
-                BotApi.config.getCommon().setRECEIVE_ENABLED(isEnabled);
+                BotApi.config.getStatus().setRECEIVE_ENABLED(isEnabled);
                 ConfigManger.saveBotConfig(BotApi.config);
                 if (isEnabled)
                 {
@@ -73,10 +73,10 @@ public class ReceiveCommand extends CommandBase {
                 break;
             }
             case "chat":{
-                BotApi.config.getCommon().setR_CHAT_ENABLE(isEnabled);
+                BotApi.config.getStatus().setR_CHAT_ENABLE(isEnabled);
                 if (isEnabled)
                 {
-                    BotApi.config.getCommon().setRECEIVE_ENABLED(true);
+                    BotApi.config.getStatus().setRECEIVE_ENABLED(true);
                     ConfigManger.saveBotConfig(BotApi.config);
                     sender.sendMessage(new TextComponentString("接收群内聊天消息开关已被设置为打开"));
                 }
@@ -88,10 +88,10 @@ public class ReceiveCommand extends CommandBase {
                 break;
             }
             case "cmd":{
-                BotApi.config.getCommon().setR_COMMAND_ENABLED(isEnabled);
+                BotApi.config.getStatus().setR_COMMAND_ENABLED(isEnabled);
                 if (isEnabled)
                 {
-                    BotApi.config.getCommon().setRECEIVE_ENABLED(true);
+                    BotApi.config.getStatus().setRECEIVE_ENABLED(true);
                     ConfigManger.saveBotConfig(BotApi.config);
                     sender.sendMessage(new TextComponentString("接收群内命令消息开关已被设置为打开"));
                 }

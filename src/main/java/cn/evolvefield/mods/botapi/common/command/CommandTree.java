@@ -6,13 +6,17 @@ import net.minecraftforge.server.command.CommandTreeBase;
 public class CommandTree extends CommandTreeBase {
     public CommandTree () {
 
-        this.addSubcommand(new ConnectCommand("connect"));
+        this.addSubcommand(new ConnectCommand());
         this.addSubcommand(new DisconnectCommand("disconnect"));
         this.addSubcommand(new ReceiveCommand("receive"));
         this.addSubcommand(new SendCommand("send"));
         this.addSubcommand(new StatusCommand("status"));
-        this.addSubcommand(new GroupIDCommand("setID"));
+        this.addSubcommand(new GroupIDCommand("setGroup"));
+        this.addSubcommand(new FrameCommand("setFrame"));
+        this.addSubcommand(new BotIDCommand("setBot"));
+        this.addSubcommand(new VerifyKeyCommand("setVerifyKey"));
         this.addSubcommand(new DebugCommand("debug"));
+        this.addSubcommand(new HelpCommand("help"));
     }
 
     @Override

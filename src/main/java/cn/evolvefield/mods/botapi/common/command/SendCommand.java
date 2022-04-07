@@ -57,7 +57,7 @@ public class SendCommand extends CommandBase {
                 break;
             }
             case "all":{
-                BotApi.config.getCommon().setSEND_ENABLED(isEnabled);
+                BotApi.config.getStatus().setSEND_ENABLED(isEnabled);
                 ConfigManger.saveBotConfig(BotApi.config);
                 if (isEnabled)
                 {
@@ -70,7 +70,7 @@ public class SendCommand extends CommandBase {
                 break;
             }
             case "welcome":{
-                BotApi.config.getCommon().setS_WELCOME_ENABLE(isEnabled);
+                BotApi.config.getStatus().setS_WELCOME_ENABLE(isEnabled);
                 ConfigManger.saveBotConfig(BotApi.config);
                 if (isEnabled)
                 {
@@ -83,10 +83,10 @@ public class SendCommand extends CommandBase {
                 break;
             }
             case "join":{
-                BotApi.config.getCommon().setS_JOIN_ENABLE(isEnabled);
+                BotApi.config.getStatus().setS_JOIN_ENABLE(isEnabled);
                 if (isEnabled)
                 {
-                    BotApi.config.getCommon().setSEND_ENABLED(true);
+                    BotApi.config.getStatus().setSEND_ENABLED(true);
                     ConfigManger.saveBotConfig(BotApi.config);
                     sender.sendMessage(new TextComponentString("发送玩家加入游戏消息开关已被设置为打开"));
                 }
@@ -98,10 +98,10 @@ public class SendCommand extends CommandBase {
                 break;
             }
             case "leave":{
-                BotApi.config.getCommon().setS_LEAVE_ENABLE(isEnabled);
+                BotApi.config.getStatus().setS_LEAVE_ENABLE(isEnabled);
                 if (isEnabled)
                 {
-                    BotApi.config.getCommon().setSEND_ENABLED(true);
+                    BotApi.config.getStatus().setSEND_ENABLED(true);
                     ConfigManger.saveBotConfig(BotApi.config);
                     sender.sendMessage(new TextComponentString("发送玩家离开游戏消息开关已被设置为打开"));
                 }
@@ -113,10 +113,10 @@ public class SendCommand extends CommandBase {
                 break;
             }
             case "death":{
-                BotApi.config.getCommon().setS_DEATH_ENABLE(isEnabled);
+                BotApi.config.getStatus().setS_DEATH_ENABLE(isEnabled);
                 if (isEnabled)
                 {
-                    BotApi.config.getCommon().setSEND_ENABLED(true);
+                    BotApi.config.getStatus().setSEND_ENABLED(true);
                     ConfigManger.saveBotConfig(BotApi.config);
                     sender.sendMessage(new TextComponentString("发送玩家死亡游戏消息开关已被设置为打开"));
                 }
@@ -128,10 +128,10 @@ public class SendCommand extends CommandBase {
                 break;
             }
             case "chat":{
-                BotApi.config.getCommon().setS_CHAT_ENABLE(isEnabled);
+                BotApi.config.getStatus().setS_CHAT_ENABLE(isEnabled);
                 if (isEnabled)
                 {
-                    BotApi.config.getCommon().setSEND_ENABLED(true);
+                    BotApi.config.getStatus().setSEND_ENABLED(true);
                     ConfigManger.saveBotConfig(BotApi.config);
                     sender.sendMessage(new TextComponentString("发送玩家聊天游戏消息开关已被设置为打开"));
                 }
@@ -143,10 +143,10 @@ public class SendCommand extends CommandBase {
                 break;
             }
             case "achievements":{
-                BotApi.config.getCommon().setS_ADVANCE_ENABLE(isEnabled);
+                BotApi.config.getStatus().setS_ADVANCE_ENABLE(isEnabled);
                 if (isEnabled)
                 {
-                    BotApi.config.getCommon().setSEND_ENABLED(true);
+                    BotApi.config.getStatus().setSEND_ENABLED(true);
                     ConfigManger.saveBotConfig(BotApi.config);
                     sender.sendMessage(new TextComponentString("发送玩家成就游戏消息开关已被设置为打开"));
                 }

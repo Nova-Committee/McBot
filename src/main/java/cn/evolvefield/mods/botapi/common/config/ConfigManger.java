@@ -10,7 +10,6 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-import static cn.evolvefield.mods.botapi.BotApi.CONFIG_FOLDER;
 
 public class ConfigManger {
     private static final Gson GSON = new Gson();
@@ -36,7 +35,7 @@ public class ConfigManger {
             }
         } else {
             try {
-                FileUtils.write(configPath.toFile(), GSON.toJson(config), StandardCharsets.UTF_8);
+                FileUtils.write(configPath.toFile(), JSONFormat.formatJson(GSON.toJson(config)), StandardCharsets.UTF_8);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -46,14 +45,14 @@ public class ConfigManger {
     }
 
     public static void saveBotConfig(BotConfig config) {
-        if (!CONFIG_FOLDER.toFile().isDirectory()) {
+        if (!BotApi.CONFIG_FOLDER.toFile().isDirectory()) {
             try {
-                Files.createDirectories(CONFIG_FOLDER);
+                Files.createDirectories(BotApi.CONFIG_FOLDER);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-        Path configPath = CONFIG_FOLDER.resolve(config.getConfigName() + ".json");
+        Path configPath = BotApi.CONFIG_FOLDER.resolve(config.getConfigName() + ".json");
         try {
             FileUtils.write(configPath.toFile(), JSONFormat.formatJson(GSON.toJson(config)), StandardCharsets.UTF_8);
         } catch (IOException e) {
