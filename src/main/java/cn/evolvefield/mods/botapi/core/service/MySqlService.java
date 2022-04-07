@@ -41,7 +41,7 @@ public class MySqlService {
                 } else {
                     System.out.println("§7[§a§l*§7] §c创建表单失败请检查数据库");
                 }
-                //statement.executeQuery(sql);
+                statement.executeQuery(sql);
             } catch (SQLException throwables) {
                 System.out.println("§7[§a§l*§7] §c创建表单失败请检查数据库");
                 throwables.printStackTrace();

@@ -16,19 +16,19 @@ import net.minecraft.world.entity.LivingEntity;
 public class PlayerEventHandler {
     public static void init() {
         PlayerEvents.PLAYER_LOGGED_IN.register((world, player) -> {
-            if (BotApi.config.getCommon().isS_JOIN_ENABLE() && BotApi.config.getCommon().isSEND_ENABLED()){
+            if (BotApi.config.getStatus().isS_JOIN_ENABLE() && BotApi.config.getStatus().isSEND_ENABLED()) {
                 SendMessage.Group(BotApi.config.getCommon().getGroupId(), player.getDisplayName().getString() + " 加入了服务器");
             }
         });
 
         PlayerEvents.PLAYER_LOGGED_OUT.register((world, player) -> {
-            if (BotApi.config.getCommon().isS_LEAVE_ENABLE() && BotApi.config.getCommon().isSEND_ENABLED()){
-                SendMessage.Group(BotApi.config.getCommon().getGroupId(),player.getDisplayName().getString() + " 离开了服务器");
+            if (BotApi.config.getStatus().isS_LEAVE_ENABLE() && BotApi.config.getStatus().isSEND_ENABLED()) {
+                SendMessage.Group(BotApi.config.getCommon().getGroupId(), player.getDisplayName().getString() + " 离开了服务器");
             }
         });
 
         PlayerEvents.PLAYER_DEATH.register((source, player) -> {
-            if (player != null && BotApi.config.getCommon().isS_DEATH_ENABLE() && BotApi.config.getCommon().isSEND_ENABLED()) {
+            if (player != null && BotApi.config.getStatus().isS_DEATH_ENABLE() && BotApi.config.getStatus().isSEND_ENABLED()) {
                 LivingEntity livingEntity2 = player.getKillCredit();
                 String string = "botapi.death.attack." + source.msgId;
                 String string2 = string + ".player";
@@ -38,7 +38,7 @@ public class PlayerEventHandler {
         });
 
         PlayerEvents.PLAYER_ADVANCEMENT.register((player, advancement) -> {
-            if ( BotApi.config.getCommon().isS_ADVANCE_ENABLE() && advancement.getDisplay() != null && BotApi.config.getCommon().isSEND_ENABLED()) {
+            if (BotApi.config.getStatus().isS_ADVANCE_ENABLE() && advancement.getDisplay() != null && BotApi.config.getStatus().isSEND_ENABLED()) {
                 String msg = I18a.get("botapi.chat.type.advancement." + advancement.getDisplay().getFrame().getName(), player.getDisplayName().getString(), I18a.get(advancement.getDisplay().getTitle().getString()));
                 SendMessage.Group(BotApi.config.getCommon().getGroupId(), msg);
             }

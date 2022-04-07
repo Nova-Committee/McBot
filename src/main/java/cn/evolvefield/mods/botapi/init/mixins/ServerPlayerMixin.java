@@ -21,23 +21,23 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class ServerPlayerMixin {
     @Inject(method = "tick()V", at = @At(value = "HEAD"))
     public void ServerPlayer_tick(CallbackInfo ci) {
-        ServerPlayer player = (ServerPlayer)(Object)this;
-        ServerLevel world = (ServerLevel)player.getCommandSenderWorld();
+        ServerPlayer player = (ServerPlayer) (Object) this;
+        ServerLevel world = (ServerLevel) player.getCommandSenderWorld();
 
         PlayerEvents.PLAYER_TICK.invoker().onTick(world, player);
     }
 
     @Inject(method = "die(Lnet/minecraft/world/damagesource/DamageSource;)V", at = @At(value = "HEAD"))
     public void ServerPlayer_die(DamageSource damageSource, CallbackInfo ci) {
-        ServerPlayer player = (ServerPlayer)(Object)this;
-        ServerLevel world = (ServerLevel)player.getCommandSenderWorld();
+        ServerPlayer player = (ServerPlayer) (Object) this;
+        ServerLevel world = (ServerLevel) player.getCommandSenderWorld();
 
         PlayerEvents.PLAYER_DEATH.invoker().onDeath(damageSource, player);
     }
 
     @Inject(method = "changeDimension(Lnet/minecraft/server/level/ServerLevel;)Lnet/minecraft/world/entity/Entity;", at = @At(value = "RETURN"))
     public void ServerPlayer_changeDimension(ServerLevel serverLevel, CallbackInfoReturnable<Boolean> ci) {
-        ServerPlayer player = (ServerPlayer)(Object)this;
+        ServerPlayer player = (ServerPlayer) (Object) this;
 
         PlayerEvents.PLAYER_CHANGE_DIMENSION.invoker().onChangeDimension(serverLevel, player);
     }

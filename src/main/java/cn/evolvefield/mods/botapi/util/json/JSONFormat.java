@@ -16,8 +16,7 @@ public class JSONFormat {
      * @param json 未格式化的JSON字符串。
      * @return 格式化的JSON字符串。
      */
-    public static String formatJson(String json)
-    {
+    public static String formatJson(String json) {
         StringBuffer result = new StringBuffer();
 
         int length = json.length();
@@ -25,17 +24,14 @@ public class JSONFormat {
         char key = 0;
 
         //遍历输入字符串。
-        for (int i = 0; i < length; i++)
-        {
+        for (int i = 0; i < length; i++) {
             //1、获取当前字符。
             key = json.charAt(i);
 
             //2、如果当前字符是前方括号、前花括号做如下处理：
-            if((key == '[') || (key == '{') )
-            {
+            if ((key == '[') || (key == '{')) {
                 //（1）如果前面还有字符，并且字符为“：”，打印：换行和缩进字符字符串。
-                if((i - 1 > 0) && (json.charAt(i - 1) == ':'))
-                {
+                if ((i - 1 > 0) && (json.charAt(i - 1) == ':')) {
                     result.append('\n');
                     result.append(indent(number));
                 }
@@ -55,8 +51,7 @@ public class JSONFormat {
             }
 
             //3、如果当前字符是后方括号、后花括号做如下处理：
-            if((key == ']') || (key == '}') )
-            {
+            if ((key == ']') || (key == '}')) {
                 //（1）后方括号、后花括号，的前面必须换行。打印：换行。
                 result.append('\n');
 
@@ -68,8 +63,7 @@ public class JSONFormat {
                 result.append(key);
 
                 //（4）如果当前字符后面还有字符，并且字符不为“，”，打印：换行。
-                if(((i + 1) < length) && (json.charAt(i + 1) != ','))
-                {
+                if (((i + 1) < length) && (json.charAt(i + 1) != ',')) {
                     result.append('\n');
                 }
 
@@ -78,8 +72,7 @@ public class JSONFormat {
             }
 
             //4、如果当前字符是逗号。逗号后面换行，并缩进，不改变缩进次数。
-            if((key == ','))
-            {
+            if ((key == ',')) {
                 result.append(key);
                 result.append('\n');
                 result.append(indent(number));
@@ -99,11 +92,9 @@ public class JSONFormat {
      * @param number 缩进次数。
      * @return 指定缩进次数的字符串。
      */
-    private static String indent(int number)
-    {
+    private static String indent(int number) {
         StringBuffer result = new StringBuffer();
-        for(int i = 0; i < number; i++)
-        {
+        for (int i = 0; i < number; i++) {
             result.append(SPACE);
         }
         return result.toString();

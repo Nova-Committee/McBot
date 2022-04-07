@@ -11,10 +11,10 @@ import cn.evolvefield.mods.botapi.init.callbacks.ServerLevelEvents;
  * Version: 1.0
  */
 public class ChatEventHandler {
-    public static void init(){
+    public static void init() {
         ServerLevelEvents.Server_Chat.register((player, message, component) -> {
-            if (BotApi.config.getCommon().isS_CHAT_ENABLE() && BotApi.config.getCommon().isSEND_ENABLED()) {
-                SendMessage.Group(BotApi.config.getCommon().getGroupId(),String.format("[MC]<%s> %s", player.getDisplayName().getString(), message));
+            if (BotApi.config.getStatus().isS_CHAT_ENABLE() && BotApi.config.getStatus().isSEND_ENABLED()) {
+                SendMessage.Group(BotApi.config.getCommon().getGroupId(), String.format("[MC]<%s> %s", player.getDisplayName().getString(), message));
             }
         });
     }

@@ -2,107 +2,146 @@ package cn.evolvefield.mods.botapi.api.message;
 
 
 import cn.evolvefield.mods.botapi.BotApi;
-import cn.evolvefield.mods.botapi.core.network.WebSocket.WebSocketChannelSupervise;
+import cn.evolvefield.mods.botapi.core.bot.BotData;
+import cn.evolvefield.mods.botapi.core.service.WebSocketService;
 import cn.evolvefield.mods.botapi.util.MsgUtil;
+import cn.evolvefield.mods.botapi.util.json.JSONArray;
 import cn.evolvefield.mods.botapi.util.json.JSONObject;
-import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 
 import java.util.List;
-
-import static cn.evolvefield.mods.botapi.core.network.WebSocket.WebSocketChannelSupervise.sendToAll;
 
 
 public class SendMessage {
 
-      public static void Private(long user_id, String message){
-            if(BotApi.config.getCommon().isEnable()) {
+    private static final JSONObject errorObject = new JSONObject("{\"retcode\": 1}");
 
-                  JSONObject data = new JSONObject();
-                  JSONObject params = new JSONObject();
-                  data.put("action", "send_private_msg");
-
-                  params.put("user_id", user_id);
-                  params.put("message", message);
-                  data.put("params", params);
-                  if (BotApi.config.getCommon().isDebuggable()) {
-                        BotApi.LOGGER.info("向用户" + user_id + "发送消息" + message);
-                  }
-                  sendToAll(new TextWebSocketFrame(data.toString()));
-            }
-      }
-
-
-      public static void Group(long group_id, String message) {
-            if(BotApi.config.getCommon().isEnable()){
-                  JSONObject data = new JSONObject();
-                  JSONObject params = new JSONObject();
-                  data.put("action", "send_group_msg");
-
-                  params.put("group_id", group_id);
-                params.put("message", message);
-                data.put("params", params);
-                if (BotApi.config.getCommon().isDebuggable()) {
-                    BotApi.LOGGER.info("向群" + group_id + "发送消息" + message);
-                }
-                sendToAll(new TextWebSocketFrame(data.toString()));
-            }
-
-      }
-
-    public static void Group(long group_id, Object message) {
+    public static void Temp(long user_id, long group_id, String message) {
         if (BotApi.config.getCommon().isEnable()) {
             JSONObject data = new JSONObject();
             JSONObject params = new JSONObject();
-            data.put("action", "send_group_msg");
+            if (BotApi.config.getCommon().getFrame().equalsIgnoreCase("cqhttp")) {
+                data.put("action", "send_private_msg");
+                params.put("group_id", group_id);
+                params.put("user_id", user_id);
+                params.put("message", message);
+                data.put("params", params);
+                WebSocketService.client.send(data.toString());
+                if (BotApi.config.getCommon().isDebuggable()) {
+                    BotApi.LOGGER.info("向群：" + group_id + "的用户：" + user_id + "发送临时消息" + message);
+                }
 
-            params.put("group_id", group_id);
-            params.put("message", MsgUtil.setListMessage((List<String>) message));
-            data.put("params", params);
-            if (BotApi.config.getCommon().isDebuggable()) {
-                BotApi.LOGGER.info("向群" + group_id + "发送消息" + message);
+            } else if (BotApi.config.getCommon().getFrame().equalsIgnoreCase("mirai")) {
+
+                data.put("sessionKey", BotData.getSessionKey());
+                data.put("qq", user_id);
+                data.put("group", group_id);
+                data.put("messageChain", MsgUtil.getMessage(message));
+
+                JSONObject main = new JSONObject();
+                main.put("syncId", "");
+                main.put("command", "sendTempMessage");
+                main.put("content", data);
+
+                WebSocketService.client.send(main.toString());
+                if (BotApi.config.getCommon().isDebuggable()) {
+                    BotApi.LOGGER.info("向群：" + group_id + "的用户：" + user_id + "发送临时消息" + main);
+                }
+            } else {
+                BotApi.LOGGER.warn("§c未找到机器人框架.");
             }
-            WebSocketChannelSupervise.sendToAll(new TextWebSocketFrame(data.toString()));
         }
 
     }
 
-      private static final JSONObject errorObject = new JSONObject("{\"retcode\": 1}");
+    public static void Group(long group_id, String message) {
+        if (BotApi.config.getCommon().isEnable()) {
+            JSONObject data = new JSONObject();
+            JSONObject params = new JSONObject();
+            if (BotApi.config.getCommon().getFrame().equalsIgnoreCase("cqhttp")) {
+                data.put("action", "send_group_msg");
+                params.put("group_id", group_id);
+                params.put("message", message);
+                data.put("params", params);
+                WebSocketService.client.send(data.toString());
+                if (BotApi.config.getCommon().isDebuggable()) {
+                    BotApi.LOGGER.info("向群" + group_id + "发送消息" + message);
+                }
 
+            } else if (BotApi.config.getCommon().getFrame().equalsIgnoreCase("mirai")) {
 
-      //获取用户名信息
-      public static String getUsernameFromInfo(JSONObject userInfo) {
-            if (userInfo == null) {
-                  return "";
-            }
+                data.put("sessionKey", BotData.getSessionKey());
+                data.put("target", group_id);
+                data.put("messageChain", MsgUtil.getMessage(message));
 
-            if (userInfo.getNumber("retcode").intValue() != 0) {
-                  return "";
-            }
+                JSONObject main = new JSONObject();
+                main.put("syncId", "");
+                main.put("command", "sendGroupMessage");
+                main.put("content", data);
 
-            String username = userInfo.getJSONObject("data").getString("card");
-            if (username.equals("")) {
-                  username = userInfo.getJSONObject("data").getString("nickname");
-            }
-
-            return username;
-      }
-
-      public static String setListMessage(List msg) {
-            if (msg.size() <= 1) {
-                  return (String)msg.get(0);
+                WebSocketService.client.send(main.toString());
+                if (BotApi.config.getCommon().isDebuggable()) {
+                    BotApi.LOGGER.info("向群" + group_id + "发送消息" + main);
+                }
             } else {
-                  String Message = null;
-
-                  for (Object o : msg) {
-                        String a = (String) o;
-                        if (Message == null) {
-                              Message = a;
-                        } else {
-                              Message = Message + "\n" + a;
-                        }
-                  }
-
-                  return Message;
+                BotApi.LOGGER.warn("§c未找到机器人框架.");
             }
-      }
+
+        }
+    }
+
+    public static void Group(long group_id, List<String> message) {
+        if (BotApi.config.getCommon().isEnable()) {
+            JSONObject data = new JSONObject();
+            JSONObject params = new JSONObject();
+            JSONArray array = new JSONArray();
+            if (BotApi.config.getCommon().getFrame().equalsIgnoreCase("cqhttp")) {
+                data.put("action", "send_group_msg");
+                params.put("group_id", group_id);
+                params.put("message", MsgUtil.setListMessage(message));
+                data.put("params", params);
+                WebSocketService.client.send(data.toString());
+                if (BotApi.config.getCommon().isDebuggable()) {
+                    BotApi.LOGGER.info("向群" + group_id + "发送消息" + data);
+                }
+
+            } else if (BotApi.config.getCommon().getFrame().equalsIgnoreCase("mirai")) {
+
+                data.put("sessionKey", BotData.getSessionKey());
+                data.put("target", group_id);
+                data.put("messageChain", MsgUtil.getMessage(message));
+
+                JSONObject main = new JSONObject();
+                main.put("syncId", "");
+                main.put("command", "sendGroupMessage");
+                main.put("content", data);
+
+                WebSocketService.client.send(main.toString());
+                if (BotApi.config.getCommon().isDebuggable()) {
+                    BotApi.LOGGER.info("向群" + group_id + "发送消息" + main);
+                }
+            } else {
+                BotApi.LOGGER.warn("§c未找到机器人框架.");
+            }
+        }
+
+    }
+
+    //获取用户名信息
+    public static String getUsernameFromInfo(JSONObject userInfo) {
+        if (userInfo == null) {
+            return "";
+        }
+
+        if (userInfo.getNumber("retcode").intValue() != 0) {
+            return "";
+        }
+
+        String username = userInfo.getJSONObject("data").getString("card");
+        if (username.equals("")) {
+            username = userInfo.getJSONObject("data").getString("nickname");
+        }
+
+        return username;
+    }
+
 }

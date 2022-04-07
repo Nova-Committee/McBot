@@ -11,7 +11,7 @@ public class ReceiveCommand {
 
     public static int allExecute(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
         boolean isEnabled = context.getArgument("enabled", Boolean.class);
-        BotApi.config.getCommon().setRECEIVE_ENABLED(isEnabled);
+        BotApi.config.getStatus().setRECEIVE_ENABLED(isEnabled);
         ConfigManger.saveBotConfig(BotApi.config);
         if (isEnabled) {
             context.getSource().sendSuccess(
@@ -25,9 +25,9 @@ public class ReceiveCommand {
 
     public static int chatExecute(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
         boolean isEnabled = context.getArgument("enabled", Boolean.class);
-        BotApi.config.getCommon().setR_CHAT_ENABLE(isEnabled);
+        BotApi.config.getStatus().setR_CHAT_ENABLE(isEnabled);
         if (isEnabled) {
-            BotApi.config.getCommon().setRECEIVE_ENABLED(true);
+            BotApi.config.getStatus().setRECEIVE_ENABLED(true);
             ConfigManger.saveBotConfig(BotApi.config);
             context.getSource().sendSuccess(
                     new TextComponent("接收群内聊天消息开关已被设置为打开"), true);
@@ -42,9 +42,9 @@ public class ReceiveCommand {
 
     public static int cmdExecute(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
         boolean isEnabled = context.getArgument("enabled", Boolean.class);
-        BotApi.config.getCommon().setR_COMMAND_ENABLED(isEnabled);
+        BotApi.config.getStatus().setR_COMMAND_ENABLED(isEnabled);
         if (isEnabled) {
-            BotApi.config.getCommon().setRECEIVE_ENABLED(true);
+            BotApi.config.getStatus().setRECEIVE_ENABLED(true);
             ConfigManger.saveBotConfig(BotApi.config);
             context.getSource().sendSuccess(
                     new TextComponent("接收群内命令消息开关已被设置为打开"), true);

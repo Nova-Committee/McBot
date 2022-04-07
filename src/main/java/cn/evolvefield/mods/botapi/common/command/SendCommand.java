@@ -13,7 +13,7 @@ public class SendCommand {
 
     public static int welcomeExecute(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
         boolean isEnabled = context.getArgument("enabled", Boolean.class);
-        BotApi.config.getCommon().setS_WELCOME_ENABLE(isEnabled);
+        BotApi.config.getStatus().setS_WELCOME_ENABLE(isEnabled);
         ConfigManger.saveBotConfig(BotApi.config);
         if (isEnabled) {
             context.getSource().sendSuccess(
@@ -27,7 +27,7 @@ public class SendCommand {
 
     public static int allExecute(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
         boolean isEnabled = context.getArgument("enabled", Boolean.class);
-        BotApi.config.getCommon().setSEND_ENABLED(isEnabled);
+        BotApi.config.getStatus().setSEND_ENABLED(isEnabled);
         ConfigManger.saveBotConfig(BotApi.config);
         if (isEnabled) {
             context.getSource().sendSuccess(
@@ -41,9 +41,9 @@ public class SendCommand {
 
     public static int joinExecute(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
         boolean isEnabled = context.getArgument("enabled", Boolean.class);
-        BotApi.config.getCommon().setS_JOIN_ENABLE(isEnabled);
+        BotApi.config.getStatus().setS_JOIN_ENABLE(isEnabled);
         if (isEnabled) {
-            BotApi.config.getCommon().setSEND_ENABLED(true);
+            BotApi.config.getStatus().setSEND_ENABLED(true);
             ConfigManger.saveBotConfig(BotApi.config);
             context.getSource().sendSuccess(
                     new TextComponent("发送玩家加入游戏消息开关已被设置为打开"), true);
@@ -57,9 +57,9 @@ public class SendCommand {
 
     public static int leaveExecute(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
         boolean isEnabled = context.getArgument("enabled", Boolean.class);
-        BotApi.config.getCommon().setS_LEAVE_ENABLE(isEnabled);
+        BotApi.config.getStatus().setS_LEAVE_ENABLE(isEnabled);
         if (isEnabled) {
-            BotApi.config.getCommon().setSEND_ENABLED(true);
+            BotApi.config.getStatus().setSEND_ENABLED(true);
             ConfigManger.saveBotConfig(BotApi.config);
             context.getSource().sendSuccess(
                     new TextComponent("发送玩家离开游戏消息开关已被设置为打开"), true);
@@ -73,9 +73,9 @@ public class SendCommand {
 
     public static int deathExecute(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
         boolean isEnabled = context.getArgument("enabled", Boolean.class);
-        BotApi.config.getCommon().setS_DEATH_ENABLE(isEnabled);
+        BotApi.config.getStatus().setS_DEATH_ENABLE(isEnabled);
         if (isEnabled) {
-            BotApi.config.getCommon().setSEND_ENABLED(true);
+            BotApi.config.getStatus().setSEND_ENABLED(true);
             ConfigManger.saveBotConfig(BotApi.config);
             context.getSource().sendSuccess(
                     new TextComponent("发送玩家死亡游戏消息开关已被设置为打开"), true);
@@ -89,9 +89,9 @@ public class SendCommand {
 
     public static int chatExecute(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
         boolean isEnabled = context.getArgument("enabled", Boolean.class);
-        BotApi.config.getCommon().setS_CHAT_ENABLE(isEnabled);
+        BotApi.config.getStatus().setS_CHAT_ENABLE(isEnabled);
         if (isEnabled) {
-            BotApi.config.getCommon().setSEND_ENABLED(true);
+            BotApi.config.getStatus().setSEND_ENABLED(true);
             ConfigManger.saveBotConfig(BotApi.config);
             context.getSource().sendSuccess(
                     new TextComponent("发送玩家聊天游戏消息开关已被设置为打开"), true);
@@ -105,9 +105,9 @@ public class SendCommand {
 
     public static int achievementsExecute(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
         boolean isEnabled = context.getArgument("enabled", Boolean.class);
-        BotApi.config.getCommon().setS_ADVANCE_ENABLE(isEnabled);
+        BotApi.config.getStatus().setS_ADVANCE_ENABLE(isEnabled);
         if (isEnabled) {
-            BotApi.config.getCommon().setSEND_ENABLED(true);
+            BotApi.config.getStatus().setSEND_ENABLED(true);
             ConfigManger.saveBotConfig(BotApi.config);
             context.getSource().sendSuccess(
                     new TextComponent("发送玩家成就游戏消息开关已被设置为打开"), true);

@@ -17,4 +17,5 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * present at any level in the class hierarchy, then the method will
  * not be serialized from the bean into the JSONObject.
  */
-public @interface JSONPropertyIgnore { }
+public @interface JSONPropertyIgnore {
+}

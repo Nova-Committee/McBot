@@ -17,12 +17,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
  */
 @Mixin(value = PlayerList.class, priority = 1001)
 public class PlayerListMixin {
-    @Inject(method = "placeNewPlayer", at = @At(value= "TAIL"))
+    @Inject(method = "placeNewPlayer", at = @At(value = "TAIL"))
     public void PlayerList_placeNewPlayer(Connection connection, ServerPlayer player, CallbackInfo ci) {
         PlayerEvents.PLAYER_LOGGED_IN.invoker().onPlayerLoggedIn(player.level, player);
     }
 
-    @Inject(method = "remove", at = @At(value= "HEAD"))
+    @Inject(method = "remove", at = @At(value = "HEAD"))
     public void PlayerList_remove(ServerPlayer player, CallbackInfo ci) {
         PlayerEvents.PLAYER_LOGGED_OUT.invoker().onPlayerLoggedOut(player.level, player);
     }

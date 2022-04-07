@@ -11,7 +11,7 @@ public class GroupIDCommand {
 
 
     public static int execute(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
-        int id = context.getArgument("QQGroupID", Integer.class);
+        long id = context.getArgument("GroupId", Long.class);
         BotApi.config.getCommon().setGroupId(id);
         ConfigManger.saveBotConfig(BotApi.config);
         context.getSource().sendSuccess(

@@ -21,12 +21,13 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(value = ServerGamePacketListenerImpl.class, priority = 1001)
 public class ServerGamePacketListenerImplMixin {
 
-    @Shadow public ServerPlayer player;
+    @Shadow
+    public ServerPlayer player;
 
     @Inject(method = "handleChat(Lnet/minecraft/server/network/TextFilter$FilteredText;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/players/PlayerList;broadcastMessage(Lnet/minecraft/network/chat/Component;Ljava/util/function/Function;Lnet/minecraft/network/chat/ChatType;Ljava/util/UUID;)V"))
-    public void SGPLI_handleChat(TextFilter.FilteredText filteredText, CallbackInfo ci){
+    public void SGPLI_handleChat(TextFilter.FilteredText filteredText, CallbackInfo ci) {
         String s1 = filteredText.getRaw();
         Component component2 = new TranslatableComponent("chat.type.text", this.player.getDisplayName(), s1);
-        ServerLevelEvents.Server_Chat.invoker().onChat(this.player ,s1 , component2);
+        ServerLevelEvents.Server_Chat.invoker().onChat(this.player, s1, component2);
     }
 }

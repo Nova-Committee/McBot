@@ -17,8 +17,9 @@ import net.minecraft.world.level.block.state.BlockState;
  * Version: 1.0
  */
 public final class PlayerEvents {
-    public PlayerEvents(){}
-    
+    public PlayerEvents() {
+    }
+
     public static final Event<Player_Tick> PLAYER_TICK = EventFactory.createArrayBacked(PlayerEvents.Player_Tick.class, callbacks -> (world, player) -> {
         for (PlayerEvents.Player_Tick callback : callbacks) {
             callback.onTick(world, player);

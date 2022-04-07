@@ -12,7 +12,9 @@ import net.minecraft.server.level.ServerPlayer;
  * Version: 1.0
  */
 public final class ServerLevelEvents {
-    public ServerLevelEvents(){}
+    public ServerLevelEvents() {
+    }
+
     public static final Event<ServerLevelEvents.Server_Chat> Server_Chat = EventFactory.createArrayBacked(ServerLevelEvents.Server_Chat.class, callbacks -> (player, message, component) -> {
         for (ServerLevelEvents.Server_Chat callback : callbacks) {
             callback.onChat(player, message, component);

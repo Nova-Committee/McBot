@@ -3,8 +3,9 @@ package cn.evolvefield.mods.botapi;
 import cn.evolvefield.mods.botapi.api.data.BindData;
 import cn.evolvefield.mods.botapi.common.config.BotConfig;
 import cn.evolvefield.mods.botapi.common.config.ConfigManger;
-import cn.evolvefield.mods.botapi.core.service.ClientThreadService;
+import cn.evolvefield.mods.botapi.core.bot.BotHandler;
 import cn.evolvefield.mods.botapi.core.service.MySqlService;
+import cn.evolvefield.mods.botapi.core.service.WebSocketService;
 import cn.evolvefield.mods.botapi.core.tick.TickTimeService;
 import cn.evolvefield.mods.botapi.init.handler.*;
 import cn.evolvefield.mods.botapi.util.FileUtil;
@@ -54,7 +55,7 @@ public class BotApi implements ModInitializer {
         TickEventHandler.init();
     }
 
-    public MinecraftServer getServer(){
+    public MinecraftServer getServer() {
         return SERVER;
     }
 
@@ -65,19 +66,24 @@ public class BotApi implements ModInitializer {
         config = ConfigManger.initBotConfig();
         //绑定数据加载
         BindData.init();
+        //连接框架与数据库
         if (BotApi.config.getCommon().isEnable()) {
-            ClientThreadService.runWebSocketClient();
+            BotHandler.init();
             if (BotApi.config.getCommon().isSQL_ENABLED()) {
-                System.out.println("▌ §a开始连接数据库 §6┈━═☆");
+                LOGGER.info("▌ §a开始连接数据库 §6┈━═☆");
                 connection = MySqlService.Join();
             }
 
         }
     }
 
-    private void onServerStopping(MinecraftServer server){
+    private void onServerStopping(MinecraftServer server) {
         ConfigManger.saveBotConfig(config);
         BindData.save();
-        ClientThreadService.stopWebSocketClient();
+        if (WebSocketService.client != null) {
+            WebSocketService.client.close();
+        }
+        LOGGER.info("▌ §c正在关闭群服互联 §a┈━═☆");
+
     }
 }
