@@ -23,10 +23,13 @@ public class ConnectCommand {
         var matcher = pattern.matcher(parameter);
         if (matcher.find()) {
             BotData.setWs("ws://" + parameter);
+            BotApi.config.getCommon().setWsCommon("ws://" + parameter);
             BotData.setBotFrame("cqhttp");
+            BotApi.config.getCommon().setFrame("cqhttp");
             context.getSource().sendSuccess(new TextComponent("尝试链接框架" + ChatFormatting.LIGHT_PURPLE + "cqhttp"), true);
             WebSocketService.main(BotData.getWs());
             BotApi.config.getStatus().setRECEIVE_ENABLED(true);
+            BotApi.config.getCommon().setEnable(true);
             ConfigManger.saveBotConfig(BotApi.config);
 
             return 1;
@@ -44,10 +47,13 @@ public class ConnectCommand {
         var matcher = pattern.matcher(parameter);
         if (matcher.find()) {
             BotData.setWs("ws://" + parameter);
+            BotApi.config.getMirai().setWsMirai("ws://" + parameter);
             BotData.setBotFrame("mirai");
+            BotApi.config.getCommon().setFrame("mirai");
             context.getSource().sendSuccess(new TextComponent("尝试链接框架" + ChatFormatting.LIGHT_PURPLE + "mirai"), true);
             WebSocketService.main(BotData.getWs() + "/all?verifyKey=" + BotData.getVerifyKey() + "&qq=" + BotData.getQQId());
             BotApi.config.getStatus().setRECEIVE_ENABLED(true);
+            BotApi.config.getCommon().setEnable(true);
             ConfigManger.saveBotConfig(BotApi.config);
 
             return 1;
@@ -63,6 +69,7 @@ public class ConnectCommand {
         context.getSource().sendSuccess(new TextComponent("尝试链接框架" + ChatFormatting.LIGHT_PURPLE + "cqhttp"), true);
         WebSocketService.main(BotApi.config.getCommon().getWsCommon());
         BotApi.config.getStatus().setRECEIVE_ENABLED(true);
+        BotApi.config.getCommon().setEnable(true);
         ConfigManger.saveBotConfig(BotApi.config);
         return 1;
 
@@ -74,6 +81,7 @@ public class ConnectCommand {
         context.getSource().sendSuccess(new TextComponent("尝试链接框架" + ChatFormatting.LIGHT_PURPLE + "mirai"), true);
         WebSocketService.main(BotApi.config.getMirai().getWsMirai() + "/all?verifyKey=" + BotData.getVerifyKey() + "&qq=" + BotData.getQQId());
         BotApi.config.getStatus().setRECEIVE_ENABLED(true);
+        BotApi.config.getCommon().setEnable(true);
         ConfigManger.saveBotConfig(BotApi.config);
 
         return 1;
