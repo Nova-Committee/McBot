@@ -40,6 +40,7 @@ public class PlayerEventHandler {
         }
     }
 
+
     @SubscribeEvent
     public static void playerAdvancementEvent(AdvancementEvent event) {
         if (BotApi.config.getStatus().isS_ADVANCE_ENABLE() && event.getAdvancement().getDisplay() != null && BotApi.config.getStatus().isSEND_ENABLED()) {
@@ -47,4 +48,5 @@ public class PlayerEventHandler {
             SendMessage.Group(BotApi.config.getCommon().getGroupId(), message);
         }
     }
+
 }

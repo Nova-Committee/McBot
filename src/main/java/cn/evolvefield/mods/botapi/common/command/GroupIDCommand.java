@@ -31,7 +31,7 @@ public class GroupIDCommand extends CommandBase {
 
     @Override
     public String getUsage(ICommandSender sender) {
-        return "/mcbot " + this.command + "<QQGroupId>>";
+        return "/mcbot " + this.command + "<GroupId>>";
     }
 
 

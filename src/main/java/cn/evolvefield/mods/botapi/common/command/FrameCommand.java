@@ -3,12 +3,12 @@ package cn.evolvefield.mods.botapi.common.command;
 import cn.evolvefield.mods.botapi.BotApi;
 import cn.evolvefield.mods.botapi.common.config.ConfigManger;
 import cn.evolvefield.mods.botapi.core.bot.BotData;
-import com.mojang.realmsclient.gui.ChatFormatting;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextFormatting;
 
 public class FrameCommand extends CommandBase {
 
@@ -45,7 +45,7 @@ public class FrameCommand extends CommandBase {
         BotData.setBotFrame(args[0]);
         ConfigManger.saveBotConfig(BotApi.config);
 
-        sender.sendMessage(new TextComponentString("已设置机器人框架为:" + ChatFormatting.LIGHT_PURPLE + args[0]));
+        sender.sendMessage(new TextComponentString("已设置机器人框架为:" + TextFormatting.LIGHT_PURPLE + args[0]));
 
 
     }

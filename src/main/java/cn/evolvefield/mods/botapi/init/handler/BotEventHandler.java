@@ -23,17 +23,20 @@ public class BotEventHandler {
     @SubscribeEvent
     public static void GroupEventHandler(GroupMessageEvent event) {
 
-        if (event.getGroupId() == BotApi.config.getCommon().getGroupId() && BotApi.config.getStatus().isRECEIVE_ENABLED()) {
+        if (event.getGroupId() == BotApi.config.getCommon().getGroupId()
+                && BotApi.config.getStatus().isRECEIVE_ENABLED()) {
 
             if (BotData.getBotFrame().equalsIgnoreCase("cqhttp")) {
                 if (BotApi.config.getCommon().isDebuggable()) {
                     BotApi.LOGGER.info("收到群" + event.getGroupId() + "发送消息" + event.getMessage());
                 }
-                if (event.getMessage().startsWith(BotApi.config.getCmd().getCommandStart()) && BotApi.config.getStatus().isR_COMMAND_ENABLED()) {
+                if (event.getMessage().startsWith(BotApi.config.getCmd().getCommandStart())
+                        && BotApi.config.getStatus().isR_COMMAND_ENABLED()) {
 
                     Invoke.invokeCommand(event);
 
-                } else if (!event.getMessage().startsWith("[CQ:") && BotApi.config.getStatus().isR_CHAT_ENABLE()) {
+                } else if (!event.getMessage().startsWith("[CQ:") && BotApi.config.getStatus().isR_CHAT_ENABLE()
+                        && event.getUserId() != BotApi.config.getCommon().getBotId()) {
                     String toSend = String.format("§b[§lQQ§r§b]§a<%s>§f %s", event.getNickName(), event.getMessage());
                     TickEventHandler.getToSendQueue().add(toSend);
                 }
@@ -44,16 +47,19 @@ public class BotEventHandler {
                     }
                     System.out.println(event.getMiraiMessage().get(1).getText());
                 }
-                if (event.getMiraiMessage().get(1).getText().startsWith(BotApi.config.getCmd().getCommandStart()) && BotApi.config.getStatus().isR_COMMAND_ENABLED()) {
+                if (event.getMiraiMessage().get(1).getText().startsWith(BotApi.config.getCmd().getCommandStart())
+                        && BotApi.config.getStatus().isR_COMMAND_ENABLED()) {
 
                     Invoke.invokeCommand(event);
 
-                } else if (!event.getMiraiMessage().get(1).getText().startsWith(BotApi.config.getCmd().getCommandStart()) && BotApi.config.getStatus().isR_CHAT_ENABLE()) {
+                } else if (!event.getMiraiMessage().get(1).getText().startsWith(BotApi.config.getCmd().getCommandStart())
+                        && BotApi.config.getStatus().isR_CHAT_ENABLE()
+                        && event.getUserId() != BotApi.config.getCommon().getBotId()) {
                     String toSend = String.format("§b[§lQQ§r§b]§a<%s>§f %s", event.getNickName(), event.getMiraiMessage().get(1).getText());
                     TickEventHandler.getToSendQueue().add(toSend);
                 }
             } else {
-                System.out.println("错误");
+                BotApi.LOGGER.error("§b[群服互联] §c错误");
             }
 
         }

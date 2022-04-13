@@ -40,10 +40,13 @@ public class MiraiCmd extends CommandBase {
             Matcher matcher = pattern.matcher(parameter);
             if (matcher.find()) {
                 BotData.setWs("ws://" + parameter);
+                BotApi.config.getMirai().setWsMirai("ws://" + parameter);
                 BotData.setBotFrame("mirai");
+                BotApi.config.getCommon().setFrame("mirai");
                 sender.sendMessage(new TextComponentString("尝试链接框架" + TextFormatting.LIGHT_PURPLE + "mirai"));
                 WebSocketService.main(BotData.getWs() + "/all?verifyKey=" + BotData.getVerifyKey() + "&qq=" + BotData.getQQId());
                 BotApi.config.getStatus().setRECEIVE_ENABLED(true);
+                BotApi.config.getCommon().setEnable(true);
                 ConfigManger.saveBotConfig(BotApi.config);
 
 
@@ -54,6 +57,7 @@ public class MiraiCmd extends CommandBase {
             sender.sendMessage(new TextComponentString("尝试链接框架" + TextFormatting.LIGHT_PURPLE + "mirai"));
             WebSocketService.main(BotApi.config.getMirai().getWsMirai() + "/all?verifyKey=" + BotData.getVerifyKey() + "&qq=" + BotData.getQQId());
             BotApi.config.getStatus().setRECEIVE_ENABLED(true);
+            BotApi.config.getCommon().setEnable(true);
             ConfigManger.saveBotConfig(BotApi.config);
         }
     }
