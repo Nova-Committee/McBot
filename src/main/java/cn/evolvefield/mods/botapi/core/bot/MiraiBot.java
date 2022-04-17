@@ -2,6 +2,7 @@ package cn.evolvefield.mods.botapi.core.bot;
 
 import cn.evolvefield.mods.botapi.BotApi;
 import cn.evolvefield.mods.botapi.api.events.GroupMessageEvent;
+import cn.evolvefield.mods.botapi.api.events.NoticeEvent;
 import cn.evolvefield.mods.botapi.api.events.PrivateMessageEvent;
 import cn.evolvefield.mods.botapi.api.message.MiraiMessage;
 import cn.evolvefield.mods.botapi.util.json.JSONArray;
@@ -68,7 +69,7 @@ public class MiraiBot {
             //发送人信息
             JSONObject sender = data.getJSONObject("sender");
             user_id = sender.getLong("id");
-            nickname = sender.getString("nickname");
+            nickname = sender.getString("memberName");
 
             //触发好友事件
             PrivateMessageEvent event = new PrivateMessageEvent(Json, raw_message, user_id, nickname);
@@ -76,7 +77,7 @@ public class MiraiBot {
         }
 
         //临时会话
-        if (type.equals("TempMessage ")) {
+        if (type.equals("TempMessage")) {
             //聊天消息
             JSONArray jsonArray = data.getJSONArray("messageChain");
             raw_message = getMessageList(jsonArray);
@@ -115,6 +116,48 @@ public class MiraiBot {
 
             //触发群聊事件
             GroupMessageEvent event = new GroupMessageEvent(Json, raw_message, user_id, permission, memberName, group_id, group_name);
+            MinecraftForge.EVENT_BUS.post(event);
+
+        }
+
+        //通知消息
+        if (type.equals("MemberJoinEvent")) {
+            //触发人消息
+            if (data.has("member")) {
+                JSONObject member = data.getJSONObject("member");
+                user_id = member.getLong("id");
+                memberName = member.getString("memberName");
+                permission = member.getString("permission");
+
+                //群信息
+                JSONObject group = member.getJSONObject("group");
+                group_id = group.getLong("id");
+                group_name = group.getString("name");
+            }
+
+            //触发群聊事件
+            NoticeEvent event = new NoticeEvent(Json, type, user_id, group_id);
+            MinecraftForge.EVENT_BUS.post(event);
+
+        }
+
+        //通知消息
+        if (type.equals("MemberLeaveEventQuit")) {
+            //触发人消息
+            if (data.has("member")) {
+                JSONObject member = data.getJSONObject("member");
+                user_id = member.getLong("id");
+                memberName = member.getString("memberName");
+                permission = member.getString("permission");
+
+                //群信息
+                JSONObject group = member.getJSONObject("group");
+                group_id = group.getLong("id");
+                group_name = group.getString("name");
+            }
+
+            //触发群聊事件
+            NoticeEvent event = new NoticeEvent(Json, type, user_id, group_id);
             MinecraftForge.EVENT_BUS.post(event);
 
         }

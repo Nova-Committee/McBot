@@ -7,6 +7,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 import java.util.LinkedList;
+import java.util.Objects;
 import java.util.Queue;
 
 @Mod.EventBusSubscriber()
@@ -23,7 +24,7 @@ public class TickEventHandler {
         String toSend = toSendQueue.poll();
         if (!event.world.isRemote && toSend != null ) {
             ITextComponent textComponents = new TextComponentString(toSend);
-            event.world.getMinecraftServer().getPlayerList().sendMessage(textComponents, false);
+            Objects.requireNonNull(event.world.getMinecraftServer()).getPlayerList().sendMessage(textComponents, false);
         }
     }
 }

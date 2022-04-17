@@ -57,14 +57,17 @@ public class MiraiMessage {
             case "Source": {
                 System.out.println("§7[§a§l*§7] §a消息ID: §e" + id);
                 System.out.println("§7[§a§l*§7] §a消息时间截: §e" + time);
+                break;
             }
             case "Plain":
                 System.out.println("§7[§a§l*§7] §a消息文本: §e" + text);
+                break;
             case "Image": {
                 System.out.println("§7[§a§l*§7] §a图片的imageId: §e" + imageId);
                 System.out.println("§7[§a§l*§7] §a图片的URL: §e" + url);
                 System.out.println("§7[§a§l*§7] §a图片的路径: §e" + path);
                 System.out.println("§7[§a§l*§7] §aBase64编码: §e" + base64);
+                break;
             }
             case "Quote": {
                 System.out.println("§7[§a§l*§7] §a消息ID: §e" + id);
@@ -77,11 +80,12 @@ public class MiraiMessage {
                     mm.deBug();
                 }
                 System.out.println("§c————————————");
-                return;
+                break;
             }
             case "At": {
                 System.out.println("§7[§a§l*§7] §aAt成员: §e" + target);
                 System.out.println("§7[§a§l*§7] §a显示文字: §e" + display);
+                break;
             }
         }
         System.out.println("§7————————————");

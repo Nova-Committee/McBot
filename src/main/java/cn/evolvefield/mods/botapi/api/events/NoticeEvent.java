@@ -11,17 +11,20 @@ import net.minecraftforge.fml.common.eventhandler.Event;
  */
 public class NoticeEvent extends Event {
     private final String Json;//原始文本
-    private final long self_id;//机器人qq
-    private final String sub_type;//事件子类型
-    private final String notice_type;//通知类型
+    private long self_id;//机器人qq
+    private String sub_type;//事件子类型
+    private String notice_type;//通知类型
     private final long group_id;//事件触发群
     private final long user_id;//事件触发人QQ
-    private final long operator_id;//操作者QQ
-    private final String duration;//被禁言时长
-    private final long message_id;//消息ID、被撤回的消息ID
-    private final String file_name;//上传文件名字
-    private final long file_size;//上传文件大小
-    private final String target_id;//被戳、运气王QQ
+    private long operator_id;//操作者QQ
+    private String duration;//被禁言时长
+    private long message_id;//消息ID、被撤回的消息ID
+    private String file_name;//上传文件名字
+    private long file_size;//上传文件大小
+    private String target_id;//被戳、运气王QQ
+
+
+    private String mirai_type;//mirai事件类型
 
 
     public NoticeEvent(String Json, long self_id, String sub_type, String notice_type, long group_id, long user_id, long operator_id, String duration, long message_id, String file_name, long file_size, String target_id) {
@@ -37,6 +40,13 @@ public class NoticeEvent extends Event {
         this.file_name = file_name;
         this.file_size = file_size;
         this.target_id = target_id;
+    }
+
+    public NoticeEvent(String Json, String notice_type, long group_id, long user_id) {
+        this.Json = Json;
+        this.mirai_type = notice_type;
+        this.group_id = group_id;
+        this.user_id = user_id;
     }
 
     public long getGroup_id() {

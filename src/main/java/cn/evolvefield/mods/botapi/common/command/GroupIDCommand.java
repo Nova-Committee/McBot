@@ -2,6 +2,7 @@ package cn.evolvefield.mods.botapi.common.command;
 
 import cn.evolvefield.mods.botapi.BotApi;
 import cn.evolvefield.mods.botapi.common.config.ConfigManger;
+import cn.evolvefield.mods.botapi.core.bot.BotData;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
@@ -42,7 +43,7 @@ public class GroupIDCommand extends CommandBase {
         long id ;
 
         id = parseLong(args[0]);
-
+        BotData.setGroupId(id);
         BotApi.config.getCommon().setGroupId(id);
         ConfigManger.saveBotConfig(BotApi.config);
 

@@ -61,7 +61,7 @@ public class PrivateMessageEvent extends Event {
 
     //getter
     public long getGroupId() {
-        return user_id;
+        return group_id;
     }
 
     public String getGroupName() {

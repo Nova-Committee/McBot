@@ -1,15 +1,12 @@
 package cn.evolvefield.mods.botapi.api.data;
 
 import cn.evolvefield.mods.botapi.BotApi;
-import cn.evolvefield.mods.botapi.util.json.JSONArray;
-import cn.evolvefield.mods.botapi.util.json.JSONFormat;
-import cn.evolvefield.mods.botapi.util.json.JSONObject;
-import org.apache.commons.io.FileUtils;
+import cn.evolvefield.mods.botapi.util.JsonUtil;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
@@ -21,26 +18,23 @@ import java.util.*;
  * Version: 1.0
  */
 public class BindData {
-    public static JSONArray allData;
-    public static Map<String, Long> bindMap = new HashMap<>();
+    public static JsonArray allData;
+    public static Map<Long, String> bindMap = new HashMap<>();
     static Path dataPath;
-    static String content;
 
     public static void init() {
         dataPath = BotApi.CONFIG_FOLDER.resolve("data.json");
         if (dataPath.toFile().isFile()) {
-            try {
-                content = FileUtils.readFileToString(dataPath.toFile(), StandardCharsets.UTF_8);
-                JSONObject data = new JSONObject(content);
-                if (data.has("BindData")) {
-                    allData = data.getJSONArray("BindData");
-                    for (int i = 0; i < allData.length(); i++) {
-                        JSONObject subObj = allData.getJSONObject(i);
-                        bindMap.put(subObj.getString("name"), subObj.getLong("QQ"));
+            allData = JsonUtil.getArray(dataPath.toFile(), "BindData");
+            if (!allData.isJsonNull()) {
+                for (int i = 0; i < allData.size(); i++) {
+                    JsonElement sub = allData.get(i);
+                    if (sub instanceof JsonObject) {
+                        JsonObject subObj = (JsonObject) sub;
+                        if (subObj.has("QQ") && subObj.has("name"))
+                            bindMap.put(subObj.get("QQ").getAsLong(), subObj.get("name").getAsString());
                     }
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
             }
         } else {
             try {
@@ -55,48 +49,43 @@ public class BindData {
 
     public static void save() {
 
-        try {
-            JSONObject data = new JSONObject();
-            OutputStreamWriter osw = new OutputStreamWriter(new FileOutputStream(dataPath.toFile()), StandardCharsets.UTF_8);
-            for (Map.Entry<String, Long> entry : bindMap.entrySet()) {
-                JSONObject subData = new JSONObject();
-                subData.put("name", entry.getKey());
-                subData.put("QQ", entry.getValue());
-                data.accumulate("BindData", subData);
-            }
+        JsonArray bindData = new JsonArray();
+        JsonObject sub = new JsonObject();
 
-            osw.write(JSONFormat.formatJson(data.toString()));
-            osw.flush();//清空缓冲区，强制输出数据
-            osw.close();//关闭输出流
-        } catch (IOException e) {
-            e.printStackTrace();
+        for (Map.Entry<Long, String> entry : bindMap.entrySet()) {
+            sub.addProperty("name", entry.getValue());
+            sub.addProperty("QQ", entry.getKey());
         }
-
+        bindData.add(sub);
+        JsonUtil.update(dataPath.toFile(), "BindData", bindData);
 
     }
 
     public static boolean addBindData(String playerName, long qqId) {
-        bindMap.put(playerName, qqId);
+        if (bindMap.containsKey(playerName)) {
+            return false;
+        }
+        bindMap.put(qqId, playerName);
         save();
         return true;
     }
 
     public static boolean setBindData(String playerName, long qqId) {
         if (bindMap.containsKey(playerName)) {
-            bindMap.replace(playerName, qqId);
+            bindMap.replace(qqId, playerName);
             save();
             return true;
         }
         return false;
     }
 
-    public static boolean delBindData(String playerName) {
-        bindMap.remove(playerName);
+    public static boolean delBindData(long qqId) {
+        bindMap.remove(qqId);
         return true;
     }
 
-    public static long getBindDataQQ(String playerName) {
-        return bindMap.get(playerName);
+    public static String getBindDataQQ(long qqId) {
+        return bindMap.get(qqId);
     }
 
 

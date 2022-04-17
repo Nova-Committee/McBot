@@ -10,6 +10,7 @@ public class BotData {
     private static String ws;
     private static String BotFrame;
     private static long QQId;
+    private static long GroupId;
     private static String VerifyKey;
     private static String SessionKey;
 
@@ -30,6 +31,14 @@ public class BotData {
 
     public static void setSessionKey(String sessionKey) {
         SessionKey = sessionKey;
+    }
+
+    public static long getGroupId() {
+        return GroupId;
+    }
+
+    public static void setGroupId(long groupId) {
+        GroupId = groupId;
     }
 
     public static long getQQId() {

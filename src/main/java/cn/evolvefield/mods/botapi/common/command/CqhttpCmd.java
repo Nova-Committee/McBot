@@ -49,17 +49,12 @@ public class CqhttpCmd extends CommandBase {
                 BotApi.config.getCommon().setEnable(true);
                 ConfigManger.saveBotConfig(BotApi.config);
 
-
             } else {
                 sender.sendMessage(new TextComponentString(TextFormatting.RED + "参数错误❌"));
             }
-        } else {
-            sender.sendMessage(new TextComponentString("尝试链接框架" + TextFormatting.LIGHT_PURPLE + "cqhttp"));
-            WebSocketService.main(BotApi.config.getCommon().getWsCommon());
-            BotApi.config.getStatus().setRECEIVE_ENABLED(true);
-            BotApi.config.getCommon().setEnable(true);
-            ConfigManger.saveBotConfig(BotApi.config);
+            return;
         }
+
 
     }
 }

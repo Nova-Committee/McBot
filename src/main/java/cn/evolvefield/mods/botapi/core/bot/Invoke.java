@@ -94,28 +94,28 @@ public class Invoke {
                 return;
             }
 
-            String BindPlay = formatMsg[1];
+            String bindPlayName = formatMsg[1];
             List<String> msg = new ArrayList<>();
 
 
-            if (SERVER.getPlayerList().getPlayerByUsername(BindPlay) == null) {
+            if (SERVER.getPlayerList().getPlayerByUsername(bindPlayName) == null) {
                 String m = BotApi.config.getCmd().getBindNotOnline();
-                msg.add(m.replace("%Player%", BindPlay));
+                msg.add(m.replace("%Player%", bindPlayName));
                 SendMessage.Group(BotApi.config.getCommon().getGroupId(), msg);
                 return;
             }
 
-            if (BindApi.addBind(event.getUserId(), BindPlay)) {
+            if (BindApi.addBind(event.getUserId(), bindPlayName)) {
                 String m = BotApi.config.getCmd().getBindSuccess();
-                msg.add(m.replace("%Player%", BindPlay));
+                msg.add(m.replace("%Player%", bindPlayName));
 
             } else {
                 String m = BotApi.config.getCmd().getBindFail();
-                msg.add(m.replace("%Player%", BindPlay));
+                msg.add(m.replace("%Player%", bindPlayName));
             }
 
             if (BotApi.config.getCommon().isDebuggable()) {
-                BotApi.LOGGER.info("处理命令bind:" + msg + "PlayerName:" + BindPlay);
+                BotApi.LOGGER.info("处理命令bind:" + msg + "PlayerName:" + bindPlayName);
             }
 
             SendMessage.Group(BotApi.config.getCommon().getGroupId(), msg);
