@@ -23,7 +23,7 @@ public class TickEventHandler {
 
 
     public static void init() {
-        ServerTickEvents.START_WORLD_TICK.register(world -> {
+        ServerTickEvents.END_WORLD_TICK.register(world -> {
             String toSend = toSendQueue.poll();
             if (BotApi.config != null
                     && !world.isClientSide

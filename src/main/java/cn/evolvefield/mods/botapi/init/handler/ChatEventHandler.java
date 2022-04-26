@@ -26,7 +26,8 @@ public class ChatEventHandler {
                                                 && BotApi.config.getCmd().getMcChatPrefix().equals(split[0]) ? split[1] : message));
                 } else {
                     for (long id : BotApi.config.getCommon().getGroupIdList())
-                        BotApi.bot.sendGroupMsg(id,
+                        BotApi.bot.sendGroupMsg(
+                                id,
                                 String.format("[" + BotApi.config.getCmd().getMcPrefix() + "]<%s> %s",
                                         player.getDisplayName().getString(),
                                         BotApi.config.getCmd().isMcChatPrefixEnable()

@@ -43,7 +43,7 @@ public class PlayerEventHandler {
             if (player != null && BotApi.config.getStatus().isS_DEATH_ENABLE() && BotApi.config.getStatus().isSEND_ENABLED()) {
                 LivingEntity livingEntity2 = player.getKillCredit();
                 String string = "botapi.death.attack." + source.msgId;
-                String msg = livingEntity2 != null ? I18n.get(string2, player.getDisplayName().getString(), livingEntity2.getDisplayName().getString()) : I18n.get(string, player.getDisplayName().getString());
+                String msg = livingEntity2 != null ? I18n.get(string, player.getDisplayName().getString(), livingEntity2.getDisplayName().getString()) : I18n.get(string, player.getDisplayName().getString());
 
                 if (BotApi.config.getCommon().isGuildOn() && !BotApi.config.getCommon().getChannelIdList().isEmpty()) {
                     for (String id : BotApi.config.getCommon().getChannelIdList())
