@@ -1,9 +1,6 @@
 package cn.evolvefield.mods.botapi.init.callbacks;
 
-import cn.evolvefield.mods.botapi.api.events.GroupMessageEvent;
-import cn.evolvefield.mods.botapi.api.events.NoticeEvent;
-import cn.evolvefield.mods.botapi.api.events.PrivateMessageEvent;
-import cn.evolvefield.mods.botapi.api.events.RequestEvent;
+import cn.evolvefield.mods.botapi.api.events.*;
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
 
@@ -29,6 +26,13 @@ public class BotEvents {
             callback.onNoticeMsg(event);
         }
     });
+
+    public static final Event<BotEvents.ChannelGroupMsg> CHANNEL_GROUP_MSG_EVENT = EventFactory.createArrayBacked(BotEvents.ChannelGroupMsg.class, callbacks -> (event) -> {
+        for (BotEvents.ChannelGroupMsg callback : callbacks) {
+            callback.onChannelGroupMsg(event);
+        }
+    });
+
     public static final Event<BotEvents.RequestMsg> REQUEST_MSG_EVENT = EventFactory.createArrayBacked(BotEvents.RequestMsg.class, callbacks -> (event) -> {
         for (BotEvents.RequestMsg callback : callbacks) {
             callback.onRequestMsg(event);
@@ -51,6 +55,11 @@ public class BotEvents {
     @FunctionalInterface
     public interface NoticeMsg {
         void onNoticeMsg(NoticeEvent event);
+    }
+
+    @FunctionalInterface
+    public interface ChannelGroupMsg {
+        void onChannelGroupMsg(ChannelGroupMessageEvent event);
     }
 
     @FunctionalInterface

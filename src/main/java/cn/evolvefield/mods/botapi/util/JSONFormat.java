@@ -1,4 +1,4 @@
-package cn.evolvefield.mods.botapi.util.json;
+package cn.evolvefield.mods.botapi.util;
 
 /**
  * @author cnlimiter

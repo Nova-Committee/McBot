@@ -1,15 +1,12 @@
 package cn.evolvefield.mods.botapi.api.data;
 
 import cn.evolvefield.mods.botapi.BotApi;
-import cn.evolvefield.mods.botapi.util.json.JSONArray;
-import cn.evolvefield.mods.botapi.util.json.JSONFormat;
-import cn.evolvefield.mods.botapi.util.json.JSONObject;
-import org.apache.commons.io.FileUtils;
+import cn.evolvefield.mods.botapi.util.JsonUtil;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
@@ -21,27 +18,41 @@ import java.util.*;
  * Version: 1.0
  */
 public class BindData {
-    public static JSONArray allData;
-    public static Map<String, Long> bindMap = new HashMap<>();
+    public static JsonArray groupData;
+    public static JsonArray guildData;
+
+    public static Map<Long, String> groupBindMap = new HashMap<>();
+
+    public static Map<String, String> guildBindMap = new HashMap<>();
+
     static Path dataPath;
-    static String content;
 
     public static void init() {
         dataPath = BotApi.CONFIG_FOLDER.resolve("data.json");
         if (dataPath.toFile().isFile()) {
-            try {
-                content = FileUtils.readFileToString(dataPath.toFile(), StandardCharsets.UTF_8);
-                JSONObject data = new JSONObject(content);
-                if (data.has("BindData")) {
-                    allData = data.getJSONArray("BindData");
-                    for (int i = 0; i < allData.length(); i++) {
-                        JSONObject subObj = allData.getJSONObject(i);
-                        bindMap.put(subObj.getString("name"), subObj.getLong("QQ"));
+            groupData = JsonUtil.getArray(dataPath.toFile(), "groupData");
+            if (!groupData.isJsonNull()) {
+                for (int i = 0; i < groupData.size(); i++) {
+                    JsonElement sub = groupData.get(i);
+                    if (sub instanceof JsonObject) {
+                        JsonObject subObj = (JsonObject) sub;
+                        if (subObj.has("QQ") && subObj.has("name"))
+                            groupBindMap.put(subObj.get("QQ").getAsLong(), subObj.get("name").getAsString());
                     }
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
             }
+            guildData = JsonUtil.getArray(dataPath.toFile(), "guildData");
+            if (!guildData.isJsonNull()) {
+                for (int i = 0; i < guildData.size(); i++) {
+                    JsonElement sub = guildData.get(i);
+                    if (sub instanceof JsonObject) {
+                        JsonObject subObj = (JsonObject) sub;
+                        if (subObj.has("tinyId") && subObj.has("name"))
+                            guildBindMap.put(subObj.get("tinyId").getAsString(), subObj.get("name").getAsString());
+                    }
+                }
+            }
+
         } else {
             try {
                 Files.createFile(dataPath);
@@ -54,51 +65,90 @@ public class BindData {
     }
 
     public static void save() {
+        saveGroup();
+        saveGuild();
+    }
 
-        try {
-            JSONObject data = new JSONObject();
-            OutputStreamWriter osw = new OutputStreamWriter(new FileOutputStream(dataPath.toFile()), StandardCharsets.UTF_8);
-            for (Map.Entry<String, Long> entry : bindMap.entrySet()) {
-                JSONObject subData = new JSONObject();
-                subData.put("name", entry.getKey());
-                subData.put("QQ", entry.getValue());
-                data.accumulate("BindData", subData);
-            }
+    private static void saveGroup() {
+        JsonArray groupData = new JsonArray();
+        JsonObject sub = new JsonObject();
 
-            osw.write(JSONFormat.formatJson(data.toString()));
-            osw.flush();//清空缓冲区，强制输出数据
-            osw.close();//关闭输出流
-        } catch (IOException e) {
-            e.printStackTrace();
+        for (Map.Entry<Long, String> entry : groupBindMap.entrySet()) {
+            sub.addProperty("name", entry.getValue());
+            sub.addProperty("QQ", entry.getKey());
         }
-
+        groupData.add(sub);
+        JsonUtil.update(dataPath.toFile(), "groupData", groupData);
 
     }
 
-    public static boolean addBindData(String playerName, long qqId) {
-        bindMap.put(playerName, qqId);
-        save();
+    private static void saveGuild() {
+        JsonArray guildData = new JsonArray();
+        JsonObject sub1 = new JsonObject();
+
+        for (Map.Entry<String, String> entry : guildBindMap.entrySet()) {
+            sub1.addProperty("name", entry.getValue());
+            sub1.addProperty("tinyId", entry.getKey());
+        }
+
+        guildData.add(sub1);
+        JsonUtil.update(dataPath.toFile(), "guildData", guildData);
+
+    }
+
+    public static boolean addGroupBindData(String playerName, long qqId) {
+        if (groupBindMap.containsKey(qqId)) {
+            return false;
+        }
+        groupBindMap.put(qqId, playerName);
+        saveGroup();
         return true;
     }
 
-    public static boolean setBindData(String playerName, long qqId) {
-        if (bindMap.containsKey(playerName)) {
-            bindMap.replace(playerName, qqId);
-            save();
+    public static boolean addGuildBindData(String playerName, String tinyId) {
+        if (guildBindMap.containsKey(tinyId)) {
+            return false;
+        }
+        guildBindMap.put(tinyId, playerName);
+        saveGuild();
+        return true;
+    }
+
+    public static boolean setGroupBindData(String playerName, long qqId) {
+        if (groupBindMap.containsKey(qqId)) {
+            groupBindMap.replace(qqId, playerName);
+            saveGroup();
             return true;
         }
         return false;
     }
 
-    public static boolean delBindData(String playerName) {
-        bindMap.remove(playerName);
+    public static boolean setGuildBindData(String playerName, String tinyId) {
+        if (guildBindMap.containsKey(tinyId)) {
+            guildBindMap.replace(tinyId, playerName);
+            saveGuild();
+            return true;
+        }
+        return false;
+    }
+
+    public static boolean delGroupBindData(long qqId) {
+        groupBindMap.remove(qqId);
         return true;
     }
 
-    public static long getBindDataQQ(String playerName) {
-        return bindMap.get(playerName);
+    public static boolean delGuildBindData(String tinyId) {
+        groupBindMap.remove(tinyId);
+        return true;
     }
 
+    public static String getGroupBindDataQQ(long qqId) {
+        return groupBindMap.get(qqId);
+    }
+
+    public static String getGuildBindDataId(String tinyId) {
+        return guildBindMap.get(tinyId);
+    }
 
     public static Object getKey(Map map, Object value) {
         Set set = map.entrySet(); //通过entrySet()方法把map中的每个键值对变成对应成Set集合中的一个对象

@@ -3,6 +3,7 @@ package cn.evolvefield.mods.botapi.core.bot;
 
 import cn.evolvefield.mods.botapi.BotApi;
 import cn.evolvefield.mods.botapi.api.data.BindApi;
+import cn.evolvefield.mods.botapi.api.events.ChannelGroupMessageEvent;
 import cn.evolvefield.mods.botapi.api.events.GroupMessageEvent;
 import cn.evolvefield.mods.botapi.api.message.SendMessage;
 import com.google.common.collect.Lists;
@@ -27,7 +28,55 @@ import java.util.Objects;
 
 public class Invoke {
 
+    public static void invokeChannelCmd(ChannelGroupMessageEvent event) {
+        String message = "";
+        String bindCommand = BotApi.config.getCmd().getBindCommand();
+        String whiteListCommand = BotApi.config.getCmd().getWhiteListCommand();
+        if (BotData.getBotFrame().equalsIgnoreCase("cqhttp")) {
+            message = event.getMessage();
+            String[] formatMsg = message.split(" ");
+            String commandBody = formatMsg[0].substring(1);
 
+            if (commandBody.equals("tps")) {
+                SendMessage.ChannelGroup(event.getGuild_id(), event.getChannel_id(), tpsCmd());
+
+            } else if (commandBody.equals("list")) {
+                SendMessage.ChannelGroup(event.getGuild_id(), event.getChannel_id(), listCmd());
+            } else if (commandBody.startsWith(bindCommand)) {
+                if (formatMsg.length == 1) {
+                    SendMessage.ChannelGroup(event.getGuild_id(), event.getChannel_id(), "请输入有效的游戏名");
+                    return;
+                }
+
+                String bindPlayName = formatMsg[1];
+                List<String> msg = new ArrayList<>();
+
+
+                if (BotApi.SERVER.getPlayerList().getPlayerByName(bindPlayName) == null) {
+                    String m = BotApi.config.getCmd().getBindNotOnline();
+                    msg.add(m.replace("%Player%", bindPlayName));
+                    SendMessage.ChannelGroup(event.getGuild_id(), event.getChannel_id(), msg);
+                    return;
+                }
+
+                if (BindApi.addGuidBind(event.getTiny_id(), bindPlayName)) {
+                    String m = BotApi.config.getCmd().getBindSuccess();
+                    msg.add(m.replace("%Player%", bindPlayName));
+
+                } else {
+                    String m = BotApi.config.getCmd().getBindFail();
+                    msg.add(m.replace("%Player%", bindPlayName));
+                }
+
+                if (BotApi.config.getCommon().isDebuggable()) {
+                    BotApi.LOGGER.info("处理命令bind:" + msg + "PlayerName:" + bindPlayName);
+                }
+
+                SendMessage.ChannelGroup(event.getGuild_id(), event.getChannel_id(), msg);
+
+            }
+        }
+    }
     public static void invokeCommand(GroupMessageEvent event) {
         String message = "";
         String bindCommand = BotApi.config.getCmd().getBindCommand();
@@ -59,36 +108,10 @@ public class Invoke {
 
     private static void memberMsgParse(GroupMessageEvent event, String message, String bindCommand, String commandBody, String[] formatMsg) {
         if (commandBody.equals("tps")) {
-            double overTPS = BotApi.service.recentTps()[0];
-            double overMspt = BotApi.service.averageMspt();
-
-
-            String outPut = String.format("主世界 TPS: %.2f", overTPS)
-                    + "\n" + String.format("主世界 MSPT: %.2f", overMspt);
-
-            if (BotApi.config.getCommon().isDebuggable()) {
-                BotApi.LOGGER.info("处理命令tps:" + outPut);
-            }
-            SendMessage.Group(BotApi.config.getCommon().getGroupId(), outPut);
+            SendMessage.Group(BotApi.config.getCommon().getGroupId(), tpsCmd());
         } else if (commandBody.equals("list")) {
-            List<ServerPlayer> users = BotApi.SERVER.getPlayerList().getPlayers();
-
-            String result = "在线玩家数量: " + users.size();
-
-            if (users.size() > 0) {
-                Component userList = users.stream()
-                        .map(Player::getDisplayName)
-                        .reduce(new TextComponent(""), (listString, user) ->
-                                listString.getString().length() == 0 ? user : new TextComponent(listString.getString() + ", " + user.getString())
-                        );
-                result += "\n" + "玩家列表: " + userList.getString();
-            }
-            if (BotApi.config.getCommon().isDebuggable()) {
-                BotApi.LOGGER.info("处理命令list:" + result);
-            }
-            SendMessage.Group(BotApi.config.getCommon().getGroupId(), result);
+            SendMessage.Group(BotApi.config.getCommon().getGroupId(), listCmd());
         } else if (commandBody.startsWith(bindCommand)) {
-
 
             if (formatMsg.length == 1) {
                 SendMessage.Group(BotApi.config.getCommon().getGroupId(), "请输入有效的游戏名");
@@ -106,7 +129,7 @@ public class Invoke {
                 return;
             }
 
-            if (BindApi.addBind(event.getUserId(), BindPlay)) {
+            if (BindApi.addGroupBind(event.getUserId(), BindPlay)) {
                 String m = BotApi.config.getCmd().getBindSuccess();
                 msg.add(m.replace("%Player%", BindPlay));
 
@@ -227,6 +250,39 @@ public class Invoke {
             }
 
         }
+    }
+
+    private static String tpsCmd() {
+        double overTPS = BotApi.service.recentTps()[0];
+        double overMspt = BotApi.service.averageMspt();
+
+
+        String outPut = String.format("主世界 TPS: %.2f", overTPS)
+                + "\n" + String.format("主世界 MSPT: %.2f", overMspt);
+
+        if (BotApi.config.getCommon().isDebuggable()) {
+            BotApi.LOGGER.info("处理命令tps:" + outPut);
+        }
+        return outPut;
+    }
+
+    private static String listCmd() {
+        List<ServerPlayer> users = BotApi.SERVER.getPlayerList().getPlayers();
+
+        String result = "在线玩家数量: " + users.size();
+
+        if (users.size() > 0) {
+            Component userList = users.stream()
+                    .map(Player::getDisplayName)
+                    .reduce(new TextComponent(""), (listString, user) ->
+                            listString.getString().length() == 0 ? user : new TextComponent(listString.getString() + ", " + user.getString())
+                    );
+            result += "\n" + "玩家列表: " + userList.getString();
+        }
+        if (BotApi.config.getCommon().isDebuggable()) {
+            BotApi.LOGGER.info("处理命令list:" + result);
+        }
+        return result;
     }
 
     private static long mean(long[] values) {

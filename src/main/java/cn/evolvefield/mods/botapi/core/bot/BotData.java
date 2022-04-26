@@ -1,5 +1,7 @@
 package cn.evolvefield.mods.botapi.core.bot;
 
+import java.util.List;
+
 /**
  * Description:持久层数据
  * Author: cnlimiter
@@ -10,6 +12,9 @@ public class BotData {
     private static String ws;
     private static String BotFrame;
     private static long QQId;
+    private static long GroupId;
+    private static String guildId;
+    private static List<String> channelIdList;
     private static String VerifyKey;
     private static String SessionKey;
 
@@ -30,6 +35,34 @@ public class BotData {
 
     public static void setSessionKey(String sessionKey) {
         SessionKey = sessionKey;
+    }
+
+    public static long getGroupId() {
+        return GroupId;
+    }
+
+    public static void setGroupId(long groupId) {
+        GroupId = groupId;
+    }
+
+    public static String getGuildId() {
+        return guildId;
+    }
+
+    public static void setGuildId(String guildId) {
+        BotData.guildId = guildId;
+    }
+
+    public static List<String> getChannelIdList() {
+        return channelIdList;
+    }
+
+    public static void setChannelIdList(List<String> channelIdList) {
+        BotData.channelIdList = channelIdList;
+    }
+
+    public static void addChannelId(String channelId) {
+        channelIdList.add(channelId);
     }
 
     public static long getQQId() {

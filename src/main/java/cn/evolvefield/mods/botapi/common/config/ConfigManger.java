@@ -1,7 +1,7 @@
 package cn.evolvefield.mods.botapi.common.config;
 
 import cn.evolvefield.mods.botapi.BotApi;
-import cn.evolvefield.mods.botapi.util.json.JSONFormat;
+import cn.evolvefield.mods.botapi.util.JSONFormat;
 import com.google.gson.Gson;
 import org.apache.commons.io.FileUtils;
 

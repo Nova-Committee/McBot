@@ -2,6 +2,9 @@ package cn.evolvefield.mods.botapi.common.config;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class BotConfig {
 
     public String getConfigName() {
@@ -278,6 +281,12 @@ public class BotConfig {
     public static class Common {
         @SerializedName("frame")
         private String frame = "cqhttp";//go-cqhttp///mirai
+        @SerializedName("guild_on")
+        private boolean guildOn = false;
+        @SerializedName("guild_id")
+        private String guildId = "";
+        @SerializedName("channel_id_list")
+        private List<String> channelIdList = new ArrayList<>();
         @SerializedName("group_id")
         private long groupId = 0;
         @SerializedName("bot_id")
@@ -325,12 +334,44 @@ public class BotConfig {
             this.groupId = groupId;
         }
 
+        public String getGuildId() {
+            return guildId;
+        }
+
+        public void setGuildId(String guildId) {
+            this.guildId = guildId;
+        }
+
+        public List<String> getChannelIdList() {
+            return channelIdList;
+        }
+
+        public void setChannelIdList(List<String> channelIdList) {
+            this.channelIdList = channelIdList;
+        }
+
+        public void removeChannelId(String channelId) {
+            this.channelIdList.remove(channelId);
+        }
+
+        public void addChannelId(String channelId) {
+            this.channelIdList.add(channelId);
+        }
+
         public long getMasterId() {
             return masterId;
         }
 
         public void setMasterId(long masterId) {
             this.masterId = masterId;
+        }
+
+        public boolean isGuildOn() {
+            return guildOn;
+        }
+
+        public void setGuildOn(boolean guildOn) {
+            this.guildOn = guildOn;
         }
 
         public boolean isAutoOpen() {

@@ -13,7 +13,13 @@ public class BotHandler {
     public static void init() {
         BotApi.LOGGER.info("▌ §a开始对接机器人框架 §6┈━═☆");
         if (BotApi.config.getCommon().getFrame().equalsIgnoreCase("cqhttp")) {
+            if (BotApi.config.getCommon().isGuildOn()) {
+                BotData.setGuildId(BotApi.config.getCommon().getGuildId());
+                BotData.setChannelIdList(BotApi.config.getCommon().getChannelIdList());
+            }
             BotData.setWs(BotApi.config.getCommon().getWsCommon());
+            BotData.setQQId(BotApi.config.getCommon().getBotId());
+            BotData.setGroupId(BotApi.config.getCommon().getGroupId());
             BotData.setBotFrame("cqhttp");
 
             if (BotApi.config.getCommon().isAutoOpen()) {
@@ -23,6 +29,7 @@ public class BotHandler {
         } else if (BotApi.config.getCommon().getFrame().equalsIgnoreCase("mirai")) {
             BotData.setWs(BotApi.config.getMirai().getWsMirai());
             BotData.setQQId(BotApi.config.getCommon().getBotId());
+            BotData.setGroupId(BotApi.config.getCommon().getGroupId());
             BotData.setVerifyKey(BotApi.config.getMirai().getVerifyKey());
             BotData.setBotFrame("mirai");
 

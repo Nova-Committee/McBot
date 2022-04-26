@@ -15,6 +15,44 @@ public class SendMessage {
 
     private static final JSONObject errorObject = new JSONObject("{\"retcode\": 1}");
 
+    public static void ChannelGroup(String guild_id, String channel_id, String message) {
+        if (BotApi.config.getCommon().isEnable()) {
+            JSONObject data = new JSONObject();
+            JSONObject params = new JSONObject();
+            if (BotApi.config.getCommon().getFrame().equalsIgnoreCase("cqhttp") && BotApi.config.getCommon().isGuildOn()) {
+                data.put("action", "send_guild_channel_msg");
+                params.put("guild_id", guild_id);
+                params.put("channel_id", channel_id);
+                params.put("message", message);
+                data.put("params", params);
+                WebSocketService.client.send(data.toString());
+                if (BotApi.config.getCommon().isDebuggable()) {
+                    BotApi.LOGGER.info("向频道：" + guild_id + "的子频道：" + channel_id + "发送消息" + message);
+                }
+
+            }
+        }
+    }
+
+    public static void ChannelGroup(String guild_id, String channel_id, List<String> message) {
+        if (BotApi.config.getCommon().isEnable()) {
+            JSONObject data = new JSONObject();
+            JSONObject params = new JSONObject();
+            if (BotApi.config.getCommon().getFrame().equalsIgnoreCase("cqhttp") && BotApi.config.getCommon().isGuildOn()) {
+                data.put("action", "send_guild_channel_msg");
+                params.put("guild_id", guild_id);
+                params.put("channel_id", channel_id);
+                params.put("message", MsgUtil.setListMessage(message));
+                data.put("params", params);
+                WebSocketService.client.send(data.toString());
+                if (BotApi.config.getCommon().isDebuggable()) {
+                    BotApi.LOGGER.info("向频道：" + guild_id + "的子频道：" + channel_id + "发送消息" + message);
+                }
+
+            }
+        }
+    }
+
     public static void Temp(long user_id, long group_id, String message) {
         if (BotApi.config.getCommon().isEnable()) {
             JSONObject data = new JSONObject();

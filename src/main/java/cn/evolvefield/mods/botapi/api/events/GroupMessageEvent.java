@@ -16,7 +16,7 @@ public class GroupMessageEvent {
     private final long user_id;//发送人qq
     private final String json;//消息原始文本
     private long self_id;//机器人qq
-    private long message_id;//收到消息ID
+    private String message_id;//收到消息ID
     private String message;//收到消息
     private String role;//cqhttp角色权限
     private String sub_type;//消息子类型
@@ -25,7 +25,7 @@ public class GroupMessageEvent {
     private String permission;//Mirai角色权限
 
     //cq-http框架触发事件
-    public GroupMessageEvent(String json, long self_id, long message_id, String message, long group_id, String nickname, String role, long user_id, String sub_type) {
+    public GroupMessageEvent(String json, long self_id, String message_id, String message, long group_id, String nickname, String role, long user_id, String sub_type) {
         this.self_id = self_id;
         this.message_id = message_id;
         this.message = message;
@@ -66,7 +66,7 @@ public class GroupMessageEvent {
         return this.self_id;
     }
 
-    public long getMessageId() {
+    public String getMessageId() {
         return this.message_id;
     }
 

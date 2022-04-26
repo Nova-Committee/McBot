@@ -15,7 +15,6 @@ import java.sql.SQLException;
 public class BindApi {
     //获取某玩家的绑定QQ
     public static long getBindQQ(String Player) {
-        if (BotApi.config.getCommon().isSQL_ENABLED()) {
             try {
                 String sql = "SELECT * FROM bot_player_data";
                 PreparedStatement statement = BotApi.connection.prepareStatement(sql);
@@ -31,34 +30,38 @@ public class BindApi {
                 return 0;
             }
             return 0;
-        }
-        return BindData.getBindDataQQ(Player);
 
     }
 
     //获取某QQ的绑定玩家
-    public static String getBindPlayer(long QQId) {
-        try {
-            String sql = "SELECT * FROM bot_player_data";
-            PreparedStatement statement = BotApi.connection.prepareStatement(sql);
-            ResultSet rs = statement.executeQuery(sql);
-            //历遍所有结果
-            while (rs.next()) {
-                if (rs.getLong("QQ") == QQId) {
-                    return rs.getString("Player");
+    public static String getGroupBindPlayer(long QQId) {
+        if (BotApi.config.getCommon().isSQL_ENABLED()) {
+            try {
+                String sql = "SELECT * FROM bot_player_data";
+                PreparedStatement statement = BotApi.connection.prepareStatement(sql);
+                ResultSet rs = statement.executeQuery(sql);
+                //历遍所有结果
+                while (rs.next()) {
+                    if (rs.getLong("QQ") == QQId) {
+                        return rs.getString("Player");
+                    }
                 }
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+                return null;
             }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-            return null;
         }
-        return null;
+        return BindData.getGroupBindDataQQ(QQId);
 
 
     }
 
+    public static String getGuidBindPlayer(String tinyId) {
+        return BindData.getGuildBindDataId(tinyId);
+    }
+
     //设置某QQ的绑定玩家
-    public static Boolean setBind(long QQId, String Player) {
+    public static Boolean setGroupBind(long QQId, String Player) {
         if (BotApi.config.getCommon().isSQL_ENABLED()) {
 
             try {
@@ -82,11 +85,15 @@ public class BindApi {
             return false;
 
         }
-        return BindData.setBindData(Player, QQId);
+        return BindData.setGroupBindData(Player, QQId);
+    }
+
+    public static Boolean setGuildBind(String tinyId, String Player) {
+        return BindData.setGuildBindData(Player, tinyId);
     }
 
     //删除绑定玩家
-    public static Boolean delBind(String Player) {
+    public static Boolean delGroupBind(long qqId) {
         if (BotApi.config.getCommon().isSQL_ENABLED()) {
 
             try {
@@ -97,9 +104,9 @@ public class BindApi {
 
                 //历遍所有结果
                 while (rs.next()) {
-                    if (rs.getString("Player").equalsIgnoreCase(Player)) {
+                    if (rs.getLong("QQ") == qqId) {
                         //要执行的SQL语句
-                        sql = "DELETE FROM bot_player_data WHERE Player='" + Player + "'";
+                        sql = "DELETE FROM bot_player_data WHERE QQ='" + qqId + "'";
                         statement.executeUpdate(sql);
                         return true;
                     }
@@ -110,12 +117,16 @@ public class BindApi {
             }
             return false;
         }
-        return BindData.delBindData(Player);
+        return BindData.delGroupBindData(qqId);
 
     }
 
+    public static Boolean delGuildBind(String tinyId) {
+        return BindData.delGuildBindData(tinyId);
+    }
+
     //新增绑定玩家
-    public static Boolean addBind(long QQId, String Player) {
+    public static Boolean addGroupBind(long QQId, String Player) {
         if (BotApi.config.getCommon().isSQL_ENABLED()) {
 
             try {
@@ -152,6 +163,10 @@ public class BindApi {
             }
             return true;
         }
-        return BindData.addBindData(Player, QQId);
+        return BindData.addGroupBindData(Player, QQId);
+    }
+
+    public static Boolean addGuidBind(String tinyId, String Player) {
+        return BindData.addGuildBindData(Player, tinyId);
     }
 }
