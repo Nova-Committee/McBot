@@ -4,9 +4,6 @@ chat.botapi.type.advancement.goal=%s 实现了目标 %s
 
 
 
-
-
-
 death.attack.anvil=%1$s被坠落的铁砧压扁了
 death.attack.arrow=%1$s被%2$s射杀
 death.attack.arrow.item=%1$s被%2$s用%3$s射杀
@@ -56,8 +53,6 @@ death.fell.assist.item=%1$s因为%2$s使用了%3$s注定要摔死
 death.fell.finish=%1$s摔伤得太重并被%2$s完结了生命
 death.fell.finish.item=%1$s摔伤得太重并被%2$s用%3$s完结了生命
 death.fell.killer=%1$s注定要摔死
-
-
 
 
 

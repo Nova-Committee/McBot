@@ -27,6 +27,16 @@ public class NoticeEvent extends Event {
     private String mirai_type;//mirai事件类型
 
 
+    public NoticeEvent(String Json, long self_id, String sub_type, String notice_type, long group_id, long user_id, long operator_id) {
+        this.Json = Json;
+        this.self_id = self_id;
+        this.sub_type = sub_type;
+        this.notice_type = notice_type;
+        this.group_id = group_id;
+        this.user_id = user_id;
+        this.operator_id = operator_id;
+    }
+
     public NoticeEvent(String Json, long self_id, String sub_type, String notice_type, long group_id, long user_id, long operator_id, String duration, long message_id, String file_name, long file_size, String target_id) {
         this.Json = Json;
         this.self_id = self_id;

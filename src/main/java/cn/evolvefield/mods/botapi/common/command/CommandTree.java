@@ -17,6 +17,9 @@ public class CommandTree extends CommandTreeBase {
         this.addSubcommand(new VerifyKeyCommand("setVerifyKey"));
         this.addSubcommand(new DebugCommand("debug"));
         this.addSubcommand(new HelpCommand("help"));
+        this.addSubcommand(new GuildIDCommand("setGuild"));
+        this.addSubcommand(new AddChannelIDCommand("addChannelId"));
+
     }
 
     @Override

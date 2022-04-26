@@ -2,10 +2,7 @@ package cn.evolvefield.mods.botapi.init.handler;
 
 import cn.evolvefield.mods.botapi.BotApi;
 import cn.evolvefield.mods.botapi.api.data.BindApi;
-import cn.evolvefield.mods.botapi.api.events.GroupMessageEvent;
-import cn.evolvefield.mods.botapi.api.events.NoticeEvent;
-import cn.evolvefield.mods.botapi.api.events.PrivateMessageEvent;
-import cn.evolvefield.mods.botapi.api.events.RequestEvent;
+import cn.evolvefield.mods.botapi.api.events.*;
 import cn.evolvefield.mods.botapi.api.message.MiraiMessage;
 import cn.evolvefield.mods.botapi.api.message.SendMessage;
 import cn.evolvefield.mods.botapi.core.bot.BotData;
@@ -42,7 +39,7 @@ public class BotEventHandler {
 
                     Invoke.invokeCommand(event);
 
-                } else if (!event.getMessage().startsWith("[CQ:") && BotApi.config.getStatus().isR_CHAT_ENABLE()
+                } else if (!event.getMessage().contains("[CQ:") && BotApi.config.getStatus().isR_CHAT_ENABLE()
                         && event.getUserId() != BotApi.config.getCommon().getBotId()) {
                     String toSend = String.format("§b[§lQQ§r§b]§a<%s>§f %s", event.getNickName(), event.getMessage());
                     TickEventHandler.getToSendQueue().add(toSend);
@@ -76,8 +73,8 @@ public class BotEventHandler {
     public static void PrivateEventHandler(PrivateMessageEvent event) {
 
         if (event.getGroupId() == BotData.getGroupId()) {
-            if (BindApi.getBindPlayer(event.getUserId()) != null) {
-                String senderName = BindApi.getBindPlayer(event.getUserId());
+            if (BindApi.getGroupBindPlayer(event.getUserId()) != null) {
+                String senderName = BindApi.getGroupBindPlayer(event.getUserId());
                 if (BotData.getBotFrame().equalsIgnoreCase("cqhttp")) {
                     if (event.getMessage().startsWith("@")) {
                         String playerName = event.getMessage().substring(1);
@@ -139,6 +136,30 @@ public class BotEventHandler {
             }
 
 
+        }
+    }
+
+    @SubscribeEvent
+    public static void ChannelGroupEventHandler(ChannelGroupMessageEvent event) {
+
+        if (event.getGuild_id().equals(BotApi.config.getCommon().getGuildId())
+                && BotApi.config.getCommon().getChannelIdList().contains(event.getChannel_id())
+        ) {
+            if (BotData.getBotFrame().equalsIgnoreCase("cqhttp")) {
+                if (BotApi.config.getCommon().isDebuggable()) {
+                    BotApi.LOGGER.info("收到频道:" + event.getGuild_id() + "的子频道:" + event.getChannel_id() + "发送消息" + event.getMessage());
+                }
+                if (event.getMessage().startsWith(BotApi.config.getCmd().getCommandStart())
+                        && BotApi.config.getStatus().isR_COMMAND_ENABLED()) {
+
+                    Invoke.invokeChannelCmd(event);
+
+                } else if (!event.getMessage().contains("[CQ:") && BotApi.config.getStatus().isR_CHAT_ENABLE()
+                ) {
+                    String toSend = String.format("§b[§lQQ§r§b]§a<%s>§f %s", event.getNickname(), event.getMessage());
+                    TickEventHandler.getToSendQueue().add(toSend);
+                }
+            }
         }
     }
 

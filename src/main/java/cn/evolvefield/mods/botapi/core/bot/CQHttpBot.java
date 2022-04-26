@@ -1,9 +1,6 @@
 package cn.evolvefield.mods.botapi.core.bot;
 
-import cn.evolvefield.mods.botapi.api.events.GroupMessageEvent;
-import cn.evolvefield.mods.botapi.api.events.NoticeEvent;
-import cn.evolvefield.mods.botapi.api.events.PrivateMessageEvent;
-import cn.evolvefield.mods.botapi.api.events.RequestEvent;
+import cn.evolvefield.mods.botapi.api.events.*;
 import cn.evolvefield.mods.botapi.util.json.JSONObject;
 import net.minecraftforge.common.MinecraftForge;
 
@@ -18,7 +15,16 @@ public class CQHttpBot {
     private String message_type;//消息类型
 
     private long self_id;//机器人qq
-    private long message_id;//消息ID、被撤回的消息ID
+    private String message_id;//消息ID、被撤回的消息ID
+
+    private String guild_id;//频道ID
+
+    private String channel_id;//子频道ID
+
+    private String tiny_id;//消息发送者ID
+
+    private String self_tiny_id;//机器人者ID
+
     private String raw_message;//收到消息
     private long group_id;//消息群号
     private String nickname;//发送人昵称
@@ -69,7 +75,7 @@ public class CQHttpBot {
             //群聊事件
             if (message_type.equalsIgnoreCase("group")) {
                 this.self_id = json.getLong("self_id");//机器人qq
-                this.message_id = json.getLong("message_id");//消息ID、被撤回的消息ID
+                this.message_id = json.getString("message_id");//消息ID、被撤回的消息ID
                 this.raw_message = json.getString("raw_message");//收到消息
                 this.group_id = json.getLong("group_id");//消息群号
                 this.nickname = json.getJSONObject("sender").getString("nickname");//发送人昵称
@@ -97,11 +103,28 @@ public class CQHttpBot {
                     this.temp_source = 0;
                 }
 
-                this.message_id = json.getLong("message_id");//消息id
+                this.message_id = json.getString("message_id");//消息id
 
                 PrivateMessageEvent event = new PrivateMessageEvent(Json, self_id, raw_message, nickname, user_id, sub_type, temp_source, message_id);
                 MinecraftForge.EVENT_BUS.post(event);
             }
+
+            //频道消息支持
+            if (message_type.equalsIgnoreCase("guild")) {
+                this.sub_type = json.getString("sub_type");//事件子类型
+                this.guild_id = json.getString("guild_id");
+                this.channel_id = json.getString("channel_id");
+                this.tiny_id = json.optJSONObject("sender").optString("tiny_id");
+                this.nickname = json.optJSONObject("sender").optString("nickname");//发送人昵称
+                this.self_tiny_id = json.getString("self_tiny_id");
+
+                this.message_id = json.getString("message_id");
+                this.raw_message = json.getString("message");//收到消息
+
+                ChannelGroupMessageEvent event = new ChannelGroupMessageEvent(Json, sub_type, guild_id, channel_id, self_tiny_id, tiny_id, nickname, message_id, raw_message);
+                MinecraftForge.EVENT_BUS.post(event);
+            }
+
         }
 
 
@@ -146,9 +169,9 @@ public class CQHttpBot {
                     this.duration = null;
                 }
                 if (Json.contains("message_id")) {//消息ID、被撤回的消息ID
-                    this.message_id = json.getLong("message_id");
+                    this.message_id = json.getString("message_id");
                 } else {
-                    this.message_id = 0;
+                    this.message_id = null;
                 }
                 if (Json.contains("file")) {//上传文件数据
                     this.file_name = json.getJSONObject("file").getString("name");//上传文件名字
@@ -164,7 +187,7 @@ public class CQHttpBot {
                 }
 
 
-                NoticeEvent event = new NoticeEvent(Json, self_id, sub_type, notice_type, group_id, user_id, operator_id, duration, message_id, file_name, file_size, target_id);
+                NoticeEvent event = new NoticeEvent(Json, self_id, sub_type, notice_type, group_id, user_id, operator_id);
                 MinecraftForge.EVENT_BUS.post(event);
             }
 
