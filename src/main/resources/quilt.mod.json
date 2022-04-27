@@ -1,0 +1,39 @@
+{
+	"schema_version": 1,
+	"quilt_loader": {
+		"group": "cn.evolvefield.mods",
+		"id": "botapi",
+		"version": "${version}",
+		"metadata": {
+			"name": "Bot-Connect",
+			"description": "Adds chat linking between QQ and Minecraft and QQ commands to request server data.",
+			"contributors": {
+				"cnlimiter": "Owner"
+			},
+			"contact": {
+				"homepage": "https://wiki.nova-committee.cn/project-1/doc-1/",
+				"sources": "https://github.com/EvolveField/Bot-Connect"
+			},
+			"icon": "assets/botapi/icon.png"
+		},
+		"intermediate_mappings": "net.fabricmc:intermediary",
+		"entrypoints": {
+			"init": "com.example.example_mod.ExampleMod"
+		},
+		"depends": [
+			{
+				"id": "quilt_loader",
+				"versions": ">=0.16.0-"
+			},
+			{
+				"id": "quilted_fabric_api",
+				"versions": ">=1.0.0-"
+			},
+			{
+				"id": "minecraft",
+				"versions": ">=1.18.2"
+			}
+		]
+	},
+	"mixin": "example_mod.mixins.json"
+}
