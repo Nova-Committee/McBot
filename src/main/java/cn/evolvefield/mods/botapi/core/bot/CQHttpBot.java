@@ -74,14 +74,13 @@ public class CQHttpBot {
         if (message_type != null) {
             //群聊事件
             if (message_type.equalsIgnoreCase("group")) {
-                this.self_id = json.getLong("self_id");//机器人qq
-                this.raw_message = json.getString("raw_message");//收到消息
-                this.group_id = json.getLong("group_id");//消息群号
-                this.nickname = json.getJSONObject("sender").getString("nickname");//发送人昵称
-                this.role = json.getJSONObject("sender").getString("role");//发送人角色
-                this.user_id = json.getLong("user_id");//发送人qq
-                this.sub_type = json.getString("sub_type");//事件子类型
-
+                this.self_id = json.optLong("self_id");//机器人qq
+                this.raw_message = json.optString("raw_message");//收到消息
+                this.group_id = json.optLong("group_id");//消息群号
+                this.nickname = json.optJSONObject("sender").optString("nickname");//发送人昵称
+                this.role = json.optJSONObject("sender").optString("role");//发送人角色
+                this.user_id = json.optLong("user_id");//发送人qq
+                this.sub_type = json.optString("sub_type");//事件子类型
 
                 GroupMessageEvent event = new GroupMessageEvent(Json, self_id, raw_message, group_id, nickname, role, user_id, sub_type);
                 BotEvents.GROUP_MSG_EVENT.invoker().onGroupMsg(event);
@@ -90,17 +89,14 @@ public class CQHttpBot {
 
             //私聊事件
             if (message_type.equalsIgnoreCase("private")) {
-                this.self_id = json.getLong("self_id");//机器人qq
-                this.raw_message = json.getString("raw_message");//收到消息
-                this.nickname = json.getJSONObject("sender").getString("nickname");//发送人昵称
-                this.user_id = json.getLong("user_id");//发送人qq
-                this.sub_type = json.getString("sub_type");//事件子类型
+                this.self_id = json.optLong("self_id");//机器人qq
+                this.raw_message = json.optString("raw_message");//收到消息
+                this.nickname = json.optJSONObject("sender").optString("nickname");//发送人昵称
+                this.user_id = json.optLong("user_id");//发送人qq
+                this.sub_type = json.optString("sub_type");//事件子类型
 
-                if (Json.contains("group_id")) {
-                    this.temp_source = json.getJSONObject("sender").getLong("group_id");//临时消息来源
-                } else {
-                    this.temp_source = 0;
-                }
+                this.temp_source = json.optJSONObject("sender").optLong("group_id");//临时消息来源
+
 
                 PrivateMessageEvent event = new PrivateMessageEvent(Json, self_id, raw_message, nickname, user_id, sub_type, temp_source);
                 BotEvents.PRIVATE_MSG_EVENT.invoker().onPrivateMsg(event);
@@ -108,14 +104,14 @@ public class CQHttpBot {
 
             //频道消息支持
             if (message_type.equalsIgnoreCase("guild")) {
-                this.sub_type = json.getString("sub_type");//事件子类型
-                this.guild_id = json.getString("guild_id");
-                this.channel_id = json.getString("channel_id");
+                this.sub_type = json.optString("sub_type");//事件子类型
+                this.guild_id = json.optString("guild_id");
+                this.channel_id = json.optString("channel_id");
                 this.tiny_id = json.optJSONObject("sender").optString("tiny_id");
                 this.nickname = json.optJSONObject("sender").optString("nickname");//发送人昵称
-                this.self_tiny_id = json.getString("self_tiny_id");
+                this.self_tiny_id = json.optString("self_tiny_id");
 
-                this.raw_message = json.getString("message");//收到消息
+                this.raw_message = json.optString("message");//收到消息
 
                 ChannelGroupMessageEvent event = new ChannelGroupMessageEvent(Json, sub_type, guild_id, channel_id, self_tiny_id, tiny_id, nickname, raw_message);
                 BotEvents.CHANNEL_GROUP_MSG_EVENT.invoker().onChannelGroupMsg(event);
@@ -129,53 +125,17 @@ public class CQHttpBot {
             if (post_type.equalsIgnoreCase("notice")) {
                 this.notice_type = json.getString("notice_type");//通知类型
 
-                if (Json.contains("self_id")) {
-                    this.self_id = json.getLong("self_id");//机器人qq
-                } else {
-                    this.self_id = 0;
-                }
-                if (Json.contains("notice_type")) {
-                    this.notice_type = json.getString("notice_type");//通知类型
-                } else {
-                    this.notice_type = null;
-                }
-                if (Json.contains("sub_type")) {
-                    this.sub_type = json.getString("sub_type");//事件子类型
-                } else {
-                    this.sub_type = null;
-                }
-                if (Json.contains("group_id")) {
-                    this.group_id = json.getLong("group_id");//机器人qq
-                } else {
-                    this.group_id = 0;
-                }
-                if (Json.contains("user_id")) {
-                    this.user_id = json.getLong("user_id");//发送人qq、撤回消息qq、事件触发qq
-                } else {
-                    this.user_id = 0;
-                }
-                if (Json.contains("operator_id")) {
-                    this.operator_id = json.getLong("operator_id");//操作者QQ
-                } else {
-                    this.operator_id = 0;
-                }
-                if (Json.contains("duration")) {
-                    this.duration = json.getString("duration");//被禁言时长
-                } else {
-                    this.duration = null;
-                }
-                if (Json.contains("file")) {//上传文件数据
-                    this.file_name = json.getJSONObject("file").getString("name");//上传文件名字
-                    this.file_size = json.getJSONObject("file").getLong("size");//上传文件大小
-                } else {
-                    this.file_name = null;
-                    this.file_size = 0;
-                }
-                if (Json.contains("target_id")) {//被戳、运气王QQ
-                    this.target_id = json.getString("target_id");
-                } else {
-                    this.target_id = null;
-                }
+                this.self_id = json.optLong("self_id");//机器人qq
+                this.notice_type = json.optString("notice_type");//通知类型
+                this.sub_type = json.optString("sub_type");//事件子类型
+                this.group_id = json.optLong("group_id");//机器人qq
+                this.user_id = json.optLong("user_id");//发送人qq、撤回消息qq、事件触发qq
+                this.operator_id = json.optLong("operator_id");//操作者QQ
+                this.duration = json.optString("duration");//被禁言时长
+                this.file_name = json.optJSONObject("file").optString("name");//上传文件名字
+                this.file_size = json.optJSONObject("file").optLong("size");//上传文件大小
+                this.target_id = json.optString("target_id");
+
 
 
                 NoticeEvent event = new NoticeEvent(Json, self_id, sub_type, notice_type, group_id, user_id, operator_id);
@@ -184,22 +144,14 @@ public class CQHttpBot {
 
             //请求事件|加群、邀请机器人加群、加机器人好友
             if (post_type.equalsIgnoreCase("request")) {
-                this.self_id = json.getLong("self_id");//机器人qq
-                this.user_id = json.getLong("user_id");//发送请求的qq
-                this.request_type = json.getString("request_type");//请求类型
-                this.comment = json.getString("comment");//验证消息
-                this.flag = json.getString("flag");//请求flag
+                this.self_id = json.optLong("self_id");//机器人qq
+                this.user_id = json.optLong("user_id");//发送请求的qq
+                this.request_type = json.optString("request_type");//请求类型
+                this.comment = json.optString("comment");//验证消息
+                this.flag = json.optString("flag");//请求flag
+                this.group_id = json.optLong("group_id");//请求群号
+                this.sub_type = json.optString("sub_type");//请求子类型
 
-                if (Json.contains("group_id")) {//请求群号
-                    this.group_id = json.getLong("group_id");
-                } else {
-                    this.group_id = 0;
-                }
-                if (Json.contains("sub_type")) {//请求子类型
-                    this.sub_type = json.getString("sub_type");
-                } else {
-                    this.sub_type = null;
-                }
 
                 RequestEvent event = new RequestEvent(Json, self_id, user_id, request_type, comment, flag, group_id, sub_type);
                 BotEvents.REQUEST_MSG_EVENT.invoker().onRequestMsg(event);
