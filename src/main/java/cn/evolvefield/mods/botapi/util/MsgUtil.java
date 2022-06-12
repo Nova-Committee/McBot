@@ -1,8 +1,8 @@
 package cn.evolvefield.mods.botapi.util;
 
 import cn.evolvefield.mods.botapi.api.message.MiraiMessage;
-import cn.evolvefield.mods.botapi.util.json.JSONArray;
-import cn.evolvefield.mods.botapi.util.json.JSONObject;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 
 import java.util.List;
 
@@ -29,50 +29,54 @@ public class MsgUtil {
     }
 
     public static String toString(List<MiraiMessage> ListMM) {
-        JSONArray array = new JSONArray();
+        JsonArray array = new JsonArray();
 
         for (MiraiMessage mm : ListMM) {
-            JSONObject m = new JSONObject();
+            JsonObject m = new JsonObject();
 
             System.out.println(mm.getType());
 
-            if (mm.getType().equals("Plain")) {
-                m.put("type", "Plain");
-                m.put("text", mm.getMessage());
-            } else if (mm.getType().equals("Image")) {
-                m.put("type", "Image");
-                m.put("url", mm.getUrl());
-                m.put("path", mm.getPath());
-                m.put("base64", mm.getBase64());
-            } else if (mm.getType().equals("At")) {
-                m.put("type", "At");
-                m.put("target", mm.getTarget());
+            switch (mm.getType()) {
+                case "Plain" -> {
+                    m.addProperty("type", "Plain");
+                    m.addProperty("text", mm.getMessage());
+                }
+                case "Image" -> {
+                    m.addProperty("type", "Image");
+                    m.addProperty("url", mm.getUrl());
+                    m.addProperty("path", mm.getPath());
+                    m.addProperty("base64", mm.getBase64());
+                }
+                case "At" -> {
+                    m.addProperty("type", "At");
+                    m.addProperty("target", mm.getTarget());
+                }
             }
 
-            array.put(m);
+            array.add(m);
         }
 
         return array.toString();
     }
 
-    public static JSONArray getMessage(String message) {
-        JSONObject msg = new JSONObject();
-        msg.put("type", "Plain");
-        msg.put("text", message);
+    public static JsonArray getMessage(String message) {
+        JsonObject msg = new JsonObject();
+        msg.addProperty("type", "Plain");
+        msg.addProperty("text", message);
 
-        JSONArray array = new JSONArray();
-        array.put(msg);
+        JsonArray array = new JsonArray();
+        array.add(msg);
 
         return array;
     }
 
-    public static JSONArray getMessage(List<String> message) {
-        JSONObject msg = new JSONObject();
-        msg.put("type", "Plain");
-        msg.put("text", setListMessage(message));
+    public static JsonArray getMessage(List<String> message) {
+        JsonObject msg = new JsonObject();
+        msg.addProperty("type", "Plain");
+        msg.addProperty("text", setListMessage(message));
 
-        JSONArray array = new JSONArray();
-        array.put(msg);
+        JsonArray array = new JsonArray();
+        array.add(msg);
 
         return array;
     }

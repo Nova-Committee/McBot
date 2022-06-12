@@ -19,14 +19,14 @@ public class PrivateMessageEvent {
     private String message;//收到消息
     private String sub_type;//消息子类型
     private long temp_source;//临时消息会话来源
-    private String message_id;//消息id
+    private long message_id;//消息id
     private long group_id;//消息群号
     private String group_name;//群名称
     private List<MiraiMessage> raw_message;//Mirai消息链
 
     //cq-http框架触发事件
     public PrivateMessageEvent(String json, long self_id, String message, String nickname, long user_id, String sub_type,
-                               long temp_source, String message_id) {
+                               long temp_source) {
         this.self_id = self_id;
         this.message = message;
         this.nickname = nickname;
@@ -35,7 +35,6 @@ public class PrivateMessageEvent {
         this.json = json;
 
         this.temp_source = temp_source;
-        this.message_id = message_id;
     }
 
     //Mirai框架触发事件(临时消息)
@@ -70,11 +69,6 @@ public class PrivateMessageEvent {
     public List<MiraiMessage> getMiraiMessage() {
         return raw_message;
     }
-
-    public String getMessageId() {
-        return message_id;
-    }
-
     public long getTempSource() {
         return temp_source;
     }
