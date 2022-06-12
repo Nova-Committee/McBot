@@ -65,9 +65,7 @@ public class PlayerEventHandler {
         if (BotApi.config.getStatus().isS_ADVANCE_ENABLE() && event.getAdvancement().getDisplay() != null && BotApi.config.getStatus().isSEND_ENABLED() && WebSocketService.client.isOpen()) {
             String playerName = event.getEntityPlayer().getDisplayNameString();
             String advanceText = event.getAdvancement().getDisplay().getTitle().getUnformattedComponentText();
-            BotApi.LOGGER.info(advanceText);
             String message = new TextComponentTranslation("chat.botapi.type.advancement." + event.getAdvancement().getDisplay().getFrame().getName(), playerName, advanceText).getUnformattedComponentText();
-            BotApi.LOGGER.info(message);
 
             if (BotApi.config.getCommon().isGuildOn() && !BotApi.config.getCommon().getChannelIdList().isEmpty()) {
                 for (String id : BotApi.config.getCommon().getChannelIdList())

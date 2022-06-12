@@ -138,7 +138,7 @@ public class BindData {
     }
 
     public static boolean delGuildBindData(String tinyId) {
-        groupBindMap.remove(tinyId);
+        guildBindMap.remove(tinyId);
         return true;
     }
 

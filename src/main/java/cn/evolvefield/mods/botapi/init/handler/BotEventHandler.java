@@ -134,8 +134,6 @@ public class BotEventHandler {
             } else {
                 BotApi.LOGGER.error("§b[群服互联] §c错误");
             }
-
-
         }
     }
 

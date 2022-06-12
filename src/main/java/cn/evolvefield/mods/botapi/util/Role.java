@@ -1,7 +1,6 @@
 package cn.evolvefield.mods.botapi.util;
 
 
-import cn.evolvefield.mods.botapi.util.json.JSONObject;
 
 public class Role {
 
@@ -12,24 +11,24 @@ public class Role {
         UNKNOWN
     }
 
-    private static UserRole getUserRole(JSONObject userInfo) {
-        if (userInfo.getInt("retcode") != 0) {
-            return UserRole.UNKNOWN;
-        }
-
-        String role = userInfo.getJSONObject("data").getString("role");
-        switch (role) {
-            case "owner": {
-                return UserRole.OWNER;
-            }
-            case "admin": {
-                return UserRole.ADMIN;
-            }
-            default: {
-                return UserRole.USER;
-            }
-        }
-    }
+//    private static UserRole getUserRole(JSONObject userInfo) {
+//        if (userInfo.getInt("retcode") != 0) {
+//            return UserRole.UNKNOWN;
+//        }
+//
+//        String role = userInfo.getJSONObject("data").getString("role");
+//        switch (role) {
+//            case "owner": {
+//                return UserRole.OWNER;
+//            }
+//            case "admin": {
+//                return UserRole.ADMIN;
+//            }
+//            default: {
+//                return UserRole.USER;
+//            }
+//        }
+//    }
 
 
 //    public static boolean checkRole(long userId) {

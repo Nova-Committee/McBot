@@ -350,6 +350,10 @@ public class BotConfig {
             this.channelIdList = channelIdList;
         }
 
+        public void removeChannelId(String channelId) {
+            this.channelIdList.remove(channelId);
+        }
+
         public void addChannelId(String channelId) {
             this.channelIdList.add(channelId);
         }

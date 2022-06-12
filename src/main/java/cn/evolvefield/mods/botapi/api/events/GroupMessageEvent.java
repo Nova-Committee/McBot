@@ -26,9 +26,8 @@ public class GroupMessageEvent extends Event {
     private String permission;//Mirai角色权限
 
     //cq-http框架触发事件
-    public GroupMessageEvent(String json, long self_id, String message_id, String message, long group_id, String nickname, String role, long user_id, String sub_type) {
+    public GroupMessageEvent(String json, long self_id, String message, long group_id, String nickname, String role, long user_id, String sub_type) {
         this.self_id = self_id;
-        this.message_id = message_id;
         this.message = message;
         this.group_id = group_id;
         this.nickname = nickname;
@@ -66,11 +65,6 @@ public class GroupMessageEvent extends Event {
     public long getSelfId() {
         return this.self_id;
     }
-
-    public String getMessageId() {
-        return this.message_id;
-    }
-
     public long getGroupId() {
         return this.group_id;
     }
