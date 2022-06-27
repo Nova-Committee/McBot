@@ -15,7 +15,7 @@ import java.util.List;
 public class SendMessage {
 
     public static void ChannelGroup(String guild_id, String channel_id, String message) {
-        if (BotApi.config.getCommon().isEnable()) {
+        if (BotApi.config.getCommon().isEnable() && WebSocketService.client.isOpen()) {
             JsonObject data = new JsonObject();
             JsonObject params = new JsonObject();
             if (BotApi.config.getCommon().getFrame().equalsIgnoreCase("cqhttp") && BotApi.config.getCommon().isGuildOn()) {
@@ -34,7 +34,7 @@ public class SendMessage {
     }
 
     public static void ChannelGroup(String guild_id, String channel_id, List<String> message) {
-        if (BotApi.config.getCommon().isEnable()) {
+        if (BotApi.config.getCommon().isEnable() && WebSocketService.client.isOpen()) {
             JsonObject data = new JsonObject();
             JsonObject params = new JsonObject();
             if (BotApi.config.getCommon().getFrame().equalsIgnoreCase("cqhttp") && BotApi.config.getCommon().isGuildOn()) {
@@ -53,7 +53,7 @@ public class SendMessage {
     }
 
     public static void Temp(long user_id, long group_id, String message) {
-        if (BotApi.config.getCommon().isEnable()) {
+        if (BotApi.config.getCommon().isEnable() && WebSocketService.client.isOpen()) {
             JsonObject data = new JsonObject();
             JsonObject params = new JsonObject();
             if (BotApi.config.getCommon().getFrame().equalsIgnoreCase("cqhttp")) {
@@ -91,7 +91,7 @@ public class SendMessage {
     }
 
     public static void Group(long group_id, String message) {
-        if (BotApi.config.getCommon().isEnable()) {
+        if (BotApi.config.getCommon().isEnable() && WebSocketService.client.isOpen()) {
             JsonObject data = new JsonObject();
             JsonObject params = new JsonObject();
             if (BotApi.config.getCommon().getFrame().equalsIgnoreCase("cqhttp")) {
@@ -127,7 +127,7 @@ public class SendMessage {
     }
 
     public static void Group(long group_id, List<String> message) {
-        if (BotApi.config.getCommon().isEnable()) {
+        if (BotApi.config.getCommon().isEnable() && WebSocketService.client.isOpen()) {
             JsonObject data = new JsonObject();
             JsonObject params = new JsonObject();
             JsonArray array = new JsonArray();

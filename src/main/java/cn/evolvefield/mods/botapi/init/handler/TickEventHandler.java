@@ -17,7 +17,6 @@ import java.util.UUID;
  */
 public class TickEventHandler {
     private static final Queue<String> toSendQueue = new LinkedList<>();
-    ;
 
     public static Queue<String> getToSendQueue() {
         return toSendQueue;
@@ -25,11 +24,11 @@ public class TickEventHandler {
 
 
     public static void init() {
-        ServerTickEvents.START_WORLD_TICK.register(world -> {
+        ServerTickEvents.END_WORLD_TICK.register(world -> {
             String toSend = toSendQueue.poll();
             if (!world.isClientSide && toSend != null) {
                 Component textComponents = new TextComponent(toSend);
-                world.getServer().getPlayerList().broadcastMessage(textComponents, ChatType.CHAT, UUID.randomUUID());
+                world.getServer().getPlayerList().broadcastMessage(textComponents, ChatType.SYSTEM, UUID.randomUUID());
             }
         });
     }

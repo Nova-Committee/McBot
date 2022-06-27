@@ -18,7 +18,7 @@ public class ChatEventHandler {
                     for (String id : BotApi.config.getCommon().getChannelIdList())
                         SendMessage.ChannelGroup(BotApi.config.getCommon().getGuildId(), id, String.format("[" + BotApi.config.getCmd().getQqPrefix() + "]<%s> %s", player.getDisplayName().getString(), message));
                 } else {
-                    SendMessage.Group(BotApi.config.getCommon().getGroupId(), String.format("[MC]<%s> %s", player.getDisplayName().getString(), message));
+                    SendMessage.Group(BotApi.config.getCommon().getGroupId(), String.format("[" + BotApi.config.getCmd().getQqPrefix() + "]<%s> %s", player.getDisplayName().getString(), message));
                 }
             }
         });

@@ -37,7 +37,7 @@ public class BotEventHandler {
 
                     } else if (!event.getMessage().contains("[CQ:") && BotApi.config.getStatus().isR_CHAT_ENABLE()
                             && event.getUserId() != BotApi.config.getCommon().getBotId()) {
-                        String toSend = String.format("§b[§lQQ§r§b]§a<%s>§f %s", event.getNickName(), event.getMessage());
+                        String toSend = String.format("§b[§lQQ§b]§a<%s> §f%s", event.getNickName(), event.getMessage());
                         TickEventHandler.getToSendQueue().add(toSend);
                     }
                 } else if (BotData.getBotFrame().equalsIgnoreCase("mirai")) {
@@ -55,7 +55,7 @@ public class BotEventHandler {
                     } else if (!event.getMiraiMessage().get(1).getText().startsWith(BotApi.config.getCmd().getCommandStart())
                             && BotApi.config.getStatus().isR_CHAT_ENABLE()
                             && event.getUserId() != BotApi.config.getCommon().getBotId()) {
-                        String toSend = String.format("§b[§lQQ§r§b]§a<%s>§f %s", event.getNickName(), event.getMiraiMessage().get(1).getText());
+                        String toSend = String.format("§b[§lQQ§b]§a<%s> §f%s", event.getNickName(), event.getMiraiMessage().get(1).getText());
                         TickEventHandler.getToSendQueue().add(toSend);
                     }
                 } else {
@@ -131,7 +131,7 @@ public class BotEventHandler {
 
                     } else if (!event.getMessage().contains("[CQ:") && BotApi.config.getStatus().isR_CHAT_ENABLE()
                     ) {
-                        String toSend = String.format("§b[§lQQ§r§b]§a<%s>§f %s", event.getNickname(), event.getMessage());
+                        String toSend = String.format("§b[§lQQ§b]§a<%s> §f%s", event.getNickname(), event.getMessage());
                         TickEventHandler.getToSendQueue().add(toSend);
                     }
                 }
