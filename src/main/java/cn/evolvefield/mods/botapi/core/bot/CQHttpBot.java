@@ -2,7 +2,7 @@ package cn.evolvefield.mods.botapi.core.bot;
 
 import cn.evolvefield.mods.botapi.api.events.*;
 import cn.evolvefield.mods.botapi.init.callbacks.BotEvents;
-import cn.evolvefield.mods.botapi.util.json.JSONObject;
+import cn.evolvefield.mods.botapi.util.JsonsObject;
 
 /**
  * Description:
@@ -53,20 +53,20 @@ public class CQHttpBot {
     private long temp_source;//临时消息来源
     private String font;//字体
 
-    public CQHttpBot(String jsonStr, JSONObject json) {
+    public CQHttpBot(String jsonStr, JsonsObject json) {
 
         this.Json = jsonStr;//消息原本json文本
 
         if (Json.contains("post_type")) {
-            if (json.getString("post_type").equalsIgnoreCase("meta_event")) {
+            if (json.optString("post_type").equalsIgnoreCase("meta_event")) {
                 return;
             }
-            post_type = json.getString("post_type");
+            post_type = json.optString("post_type");
         } else {
             post_type = null;
         }
         if (Json.contains("message_type")) {
-            message_type = json.getString("message_type");
+            message_type = json.optString("message_type");
         } else {
             message_type = null;
         }
@@ -77,8 +77,8 @@ public class CQHttpBot {
                 this.self_id = json.optLong("self_id");//机器人qq
                 this.raw_message = json.optString("raw_message");//收到消息
                 this.group_id = json.optLong("group_id");//消息群号
-                this.nickname = json.optJSONObject("sender").optString("nickname");//发送人昵称
-                this.role = json.optJSONObject("sender").optString("role");//发送人角色
+                this.nickname = new JsonsObject(json.optJSONObject("sender")).optString("nickname");//发送人昵称
+                this.role = new JsonsObject(json.optJSONObject("sender")).optString("role");//发送人角色
                 this.user_id = json.optLong("user_id");//发送人qq
                 this.sub_type = json.optString("sub_type");//事件子类型
 
@@ -91,11 +91,11 @@ public class CQHttpBot {
             if (message_type.equalsIgnoreCase("private")) {
                 this.self_id = json.optLong("self_id");//机器人qq
                 this.raw_message = json.optString("raw_message");//收到消息
-                this.nickname = json.optJSONObject("sender").optString("nickname");//发送人昵称
+                this.nickname = new JsonsObject(json.optJSONObject("sender")).optString("nickname");//发送人昵称
                 this.user_id = json.optLong("user_id");//发送人qq
                 this.sub_type = json.optString("sub_type");//事件子类型
 
-                this.temp_source = json.optJSONObject("sender").optLong("group_id");//临时消息来源
+                this.temp_source = new JsonsObject(json.optJSONObject("sender")).optLong("group_id");//临时消息来源
 
 
                 PrivateMessageEvent event = new PrivateMessageEvent(Json, self_id, raw_message, nickname, user_id, sub_type, temp_source);
@@ -107,8 +107,8 @@ public class CQHttpBot {
                 this.sub_type = json.optString("sub_type");//事件子类型
                 this.guild_id = json.optString("guild_id");
                 this.channel_id = json.optString("channel_id");
-                this.tiny_id = json.optJSONObject("sender").optString("tiny_id");
-                this.nickname = json.optJSONObject("sender").optString("nickname");//发送人昵称
+                this.tiny_id = new JsonsObject(json.optJSONObject("sender")).optString("tiny_id");
+                this.nickname = new JsonsObject(json.optJSONObject("sender")).optString("nickname");//发送人昵称
                 this.self_tiny_id = json.optString("self_tiny_id");
 
                 this.raw_message = json.optString("message");//收到消息
@@ -123,7 +123,7 @@ public class CQHttpBot {
         if (post_type != null) {
             //通知事件
             if (post_type.equalsIgnoreCase("notice")) {
-                this.notice_type = json.getString("notice_type");//通知类型
+                this.notice_type = json.optString("notice_type");//通知类型
 
                 this.self_id = json.optLong("self_id");//机器人qq
                 this.notice_type = json.optString("notice_type");//通知类型
@@ -132,8 +132,8 @@ public class CQHttpBot {
                 this.user_id = json.optLong("user_id");//发送人qq、撤回消息qq、事件触发qq
                 this.operator_id = json.optLong("operator_id");//操作者QQ
                 this.duration = json.optString("duration");//被禁言时长
-                this.file_name = json.optJSONObject("file").optString("name");//上传文件名字
-                this.file_size = json.optJSONObject("file").optLong("size");//上传文件大小
+                this.file_name = new JsonsObject(json.optJSONObject("file")).optString("name");//上传文件名字
+                this.file_size = new JsonsObject(json.optJSONObject("file")).optLong("size");//上传文件大小
                 this.target_id = json.optString("target_id");
 
 

@@ -4,7 +4,7 @@ import cn.evolvefield.mods.botapi.BotApi;
 import cn.evolvefield.mods.botapi.core.bot.BotData;
 import cn.evolvefield.mods.botapi.core.bot.CQHttpBot;
 import cn.evolvefield.mods.botapi.core.bot.MiraiBot;
-import cn.evolvefield.mods.botapi.util.json.JSONObject;
+import cn.evolvefield.mods.botapi.util.JsonsObject;
 import cn.evolvefield.mods.botapi.util.websocket.client.WebSocketClient;
 import cn.evolvefield.mods.botapi.util.websocket.handshake.ServerHandshake;
 
@@ -33,16 +33,16 @@ public class WebSocketService {
 
                 @Override
                 public void onMessage(String message) {//执行接收到消息体后的相应操作
-                    JSONObject json = new JSONObject(message);
+                    JsonsObject jsons = new JsonsObject(message);
 
                     if (BotApi.config.getCommon().isDebuggable()) {
-                        BotApi.LOGGER.info(json);
+                        BotApi.LOGGER.info(jsons);
                     }
 
                     if (BotData.getBotFrame().equalsIgnoreCase("cqhttp")) {
-                        new CQHttpBot(message, json);
+                        new CQHttpBot(message, jsons);
                     } else if (BotData.getBotFrame().equalsIgnoreCase("mirai")) {
-                        new MiraiBot(message, json);
+                        new MiraiBot(message, jsons);
                     }
                 }
 

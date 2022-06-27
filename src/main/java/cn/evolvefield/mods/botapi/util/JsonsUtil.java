@@ -14,8 +14,8 @@ import java.util.UUID;
  * Date: 2022/1/20 10:32
  * Version: 1.0
  */
-public class JsonUtil {
-    private static final JsonUtil instance = new JsonUtil();
+public class JsonsUtil {
+    private static final JsonsUtil instance = new JsonsUtil();
     private static final JsonParser parser = new JsonParser();
     private static Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
@@ -549,7 +549,7 @@ public class JsonUtil {
         }
     }
 
-    public static JsonUtil getInstance() {
+    public static JsonsUtil getInstance() {
         return instance;
     }
 
@@ -572,7 +572,7 @@ public class JsonUtil {
             StringBuffer response = new StringBuffer();
             while ((input = in.readLine()) != null) response.append(input);
             in.close();
-            return JsonUtil.getFromString(response.toString());
+            return JsonsUtil.getFromString(response.toString());
         } catch (Exception e) {
             e.printStackTrace();
             return null;

@@ -1,7 +1,7 @@
 package cn.evolvefield.mods.botapi.api.data;
 
 import cn.evolvefield.mods.botapi.BotApi;
-import cn.evolvefield.mods.botapi.util.JsonUtil;
+import cn.evolvefield.mods.botapi.util.JsonsUtil;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -30,23 +30,21 @@ public class BindData {
     public static void init() {
         dataPath = BotApi.CONFIG_FOLDER.resolve("data.json");
         if (dataPath.toFile().isFile()) {
-            groupData = JsonUtil.getArray(dataPath.toFile(), "groupData");
+            groupData = JsonsUtil.getArray(dataPath.toFile(), "groupData");
             if (!groupData.isJsonNull()) {
                 for (int i = 0; i < groupData.size(); i++) {
                     JsonElement sub = groupData.get(i);
-                    if (sub instanceof JsonObject) {
-                        JsonObject subObj = (JsonObject) sub;
+                    if (sub instanceof JsonObject subObj) {
                         if (subObj.has("QQ") && subObj.has("name"))
                             groupBindMap.put(subObj.get("QQ").getAsLong(), subObj.get("name").getAsString());
                     }
                 }
             }
-            guildData = JsonUtil.getArray(dataPath.toFile(), "guildData");
+            guildData = JsonsUtil.getArray(dataPath.toFile(), "guildData");
             if (!guildData.isJsonNull()) {
                 for (int i = 0; i < guildData.size(); i++) {
                     JsonElement sub = guildData.get(i);
-                    if (sub instanceof JsonObject) {
-                        JsonObject subObj = (JsonObject) sub;
+                    if (sub instanceof JsonObject subObj) {
                         if (subObj.has("tinyId") && subObj.has("name"))
                             guildBindMap.put(subObj.get("tinyId").getAsString(), subObj.get("name").getAsString());
                     }
@@ -78,7 +76,7 @@ public class BindData {
             sub.addProperty("QQ", entry.getKey());
         }
         groupData.add(sub);
-        JsonUtil.update(dataPath.toFile(), "groupData", groupData);
+        JsonsUtil.update(dataPath.toFile(), "groupData", groupData);
 
     }
 
@@ -92,7 +90,7 @@ public class BindData {
         }
 
         guildData.add(sub1);
-        JsonUtil.update(dataPath.toFile(), "guildData", guildData);
+        JsonsUtil.update(dataPath.toFile(), "guildData", guildData);
 
     }
 
@@ -138,7 +136,7 @@ public class BindData {
     }
 
     public static boolean delGuildBindData(String tinyId) {
-        groupBindMap.remove(tinyId);
+        guildBindMap.remove(tinyId);
         return true;
     }
 
