@@ -151,7 +151,7 @@ public class Invoke {
             switch (subCmd) {
                 case "add" -> {
                     String playerName = formatMsg[2];
-                    int success = BotApi.SERVER.getCommands().performCommand(new CommandSourceStack(CommandSource.NULL, Vec3.ZERO, Vec2.ZERO, BotApi.SERVER.overworld(), 4, "",
+                    int success = BotApi.SERVER.getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, Vec3.ZERO, Vec2.ZERO, BotApi.SERVER.overworld(), 4, "",
                             Component.literal(""), Objects.requireNonNull(BotApi.SERVER), null), "whitelist add " + playerName);
 
                     if (success == 0) {
@@ -166,8 +166,9 @@ public class Invoke {
                 }
                 case "del" -> {
                     String playerName = formatMsg[2];
-                    int success = BotApi.SERVER.getCommands().performCommand(new CommandSourceStack(CommandSource.NULL, Vec3.ZERO, Vec2.ZERO, (ServerLevel) BotApi.SERVER.overworld(), 4, "",
-                            Component.literal(""), Objects.requireNonNull(BotApi.SERVER), null), "whitelist remove " + playerName);
+                    int success = BotApi.SERVER.getCommands().performPrefixedCommand(
+                            new CommandSourceStack(CommandSource.NULL, Vec3.ZERO, Vec2.ZERO, (ServerLevel) BotApi.SERVER.overworld(), 4, "",
+                                    Component.literal(""), Objects.requireNonNull(BotApi.SERVER), null), "whitelist remove " + playerName);
 
                     if (success == 0) {
                         SendMessage.Group(BotApi.config.getCommon().getGroupId(), "从白名单移除" + playerName + "失败或已经从白名单移除！");

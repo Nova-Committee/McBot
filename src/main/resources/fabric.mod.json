@@ -22,8 +22,8 @@
     "botapi.mixins.json"
   ],
   "depends": {
-    "fabricloader": ">=0.14.6",
+    "fabricloader": ">=0.14.9",
     "fabric": "*",
-    "minecraft": "1.19"
+    "minecraft": "1.19.2"
   }
 }
