@@ -1,12 +1,10 @@
 package cn.evolvefield.mods.botapi.init.handler;
 
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
-import net.minecraft.network.chat.ChatType;
 import net.minecraft.network.chat.Component;
 
 import java.util.LinkedList;
 import java.util.Queue;
-import java.util.UUID;
 
 /**
  * Description:
@@ -28,7 +26,7 @@ public class TickEventHandler {
             String toSend = toSendQueue.poll();
             if (!world.isClientSide && toSend != null) {
                 Component textComponents = Component.literal(toSend);
-                world.getServer().getPlayerList().broadcastSystemMessage(textComponents, ChatType.CHAT);
+                world.getServer().getPlayerList().broadcastSystemMessage(textComponents, true);
             }
         });
     }
