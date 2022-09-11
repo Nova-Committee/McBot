@@ -88,7 +88,7 @@ public class MiraiBot {
             memberName = sender.optString("memberName");
 
             //群信息
-            JsonsObject group = new JsonsObject(data.optJSONObject("group"));
+            JsonsObject group = new JsonsObject(sender.optJSONObject("group"));
             group_id = group.optLong("id");
             group_name = group.optString("name");
 
@@ -110,7 +110,7 @@ public class MiraiBot {
             memberName = sender.optString("memberName");
             permission = sender.optString("permission");
             //群信息
-            JsonsObject group = new JsonsObject(data.optJSONObject("group"));
+            JsonsObject group = new JsonsObject(sender.optJSONObject("group"));
             group_id = group.optLong("id");
             group_name = group.optString("name");
 
