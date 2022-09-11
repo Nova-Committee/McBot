@@ -17,7 +17,7 @@ public class HelpCommand {
                         如果你是第一次使用请按照以下步骤设置
                         1.请先开启机器人框架，go-cqhttp或者mirai
                         2.请使用/mcbot setFrame <cqhttp/mirai> 设置框架
-                        3.请使用/mcbot setGroup <GroupId> 设置互通的群
+                        3.请使用/mcbot addGroup <GroupId> 添加互通的群
                         4.请使用/mcbot setBot <BotId> 设置机器人的qq号
                         5.如果使用的是mirai，同时打开了VerifyKey验证，请输入/mcbot setVerifyKey <VerifyKey> 设置
                         6.准备工作完成，请使用/mcbot connect <cqhttp/mirai> <host:port> 与框架对接
@@ -26,7 +26,8 @@ public class HelpCommand {
                         全部命令：
                         /mcbot connect <cqhttp/mirai> <host:port>
                         /mcbot setFrame <cqhttp/mirai>
-                        /mcbot setGroup <GroupId>
+                        /mcbot addGroup <GroupId>
+                        /mcbot removeGroup <GroupId>
                         /mcbot setBot <BotId>
                         /mcbot setVerifyKey <VerifyKey>
                         /mcbot receive <all|chat|cmd> <true|false>

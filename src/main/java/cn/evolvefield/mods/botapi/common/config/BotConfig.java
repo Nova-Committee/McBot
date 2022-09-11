@@ -19,20 +19,10 @@ public class BotConfig {
         this.common = common;
     }
 
-    @SerializedName("mirai")
-    private Mirai mirai = new Mirai();
     @SerializedName("status")
     private Status status = new Status();
     @SerializedName("cmd")
     private Cmd cmd = new Cmd();
-
-    public Mirai getMirai() {
-        return mirai;
-    }
-
-    public void setMirai(Mirai mirai) {
-        this.mirai = mirai;
-    }
 
     public Status getStatus() {
         return status;
@@ -157,38 +147,6 @@ public class BotConfig {
         }
     }
 
-    public static class Mirai {
-        @SerializedName("verify_key")
-        private String VerifyKey = "";
-        @SerializedName("session_key")
-        private String SessionKey = "";
-        @SerializedName("ws_mirai")
-        private String wsMirai = "ws://127.0.0.1:8080";
-
-        public String getSessionKey() {
-            return SessionKey;
-        }
-
-        public void setSessionKey(String sessionKey) {
-            SessionKey = sessionKey;
-        }
-
-        public String getVerifyKey() {
-            return VerifyKey;
-        }
-
-        public void setVerifyKey(String verifyKey) {
-            VerifyKey = verifyKey;
-        }
-
-        public String getWsMirai() {
-            return wsMirai;
-        }
-
-        public void setWsMirai(String wsMirai) {
-            this.wsMirai = wsMirai;
-        }
-    }
 
     public static class Cmd {
         @SerializedName("welcome_notice")
@@ -287,8 +245,9 @@ public class BotConfig {
         private String guildId = "";
         @SerializedName("channel_id_list")
         private List<String> channelIdList = new ArrayList<>();
-        @SerializedName("group_id")
-        private long groupId = 0;
+        @SerializedName("group_id_list")
+        private List<Long> groupIdList = new ArrayList<>();
+
         @SerializedName("bot_id")
         private long botId = 0;
         @SerializedName("master_id")
@@ -297,6 +256,12 @@ public class BotConfig {
         private String wsCommon = "ws://127.0.0.1:6700";
         @SerializedName("ws_Key")
         private String wsKey = "";
+
+        @SerializedName("mirai_verify_key")
+        private String MiraiVerifyKey = "";
+
+        @SerializedName("mirai_session_key")
+        private String MiraiSessionKey = "";
         @SerializedName("enable")
         private boolean Enable = true;
         @SerializedName("debuggable")
@@ -326,13 +291,22 @@ public class BotConfig {
             this.botId = botId;
         }
 
-        public long getGroupId() {
-            return groupId;
+        public List<Long> getGroupIdList() {
+            return groupIdList;
         }
 
-        public void setGroupId(long groupId) {
-            this.groupId = groupId;
+        public void setGroupIdList(List<Long> groupIdList) {
+            this.groupIdList = groupIdList;
         }
+
+        public void removeGroupId(long groupId) {
+            this.groupIdList.remove(groupId);
+        }
+
+        public void addGroupId(long groupId) {
+            this.groupIdList.add(groupId);
+        }
+
 
         public String getGuildId() {
             return guildId;
@@ -396,6 +370,22 @@ public class BotConfig {
 
         public void setWsKey(String wsKey) {
             this.wsKey = wsKey;
+        }
+
+        public String getMiraiSessionKey() {
+            return MiraiSessionKey;
+        }
+
+        public void setMiraiSessionKey(String miraiSessionKey) {
+            MiraiSessionKey = miraiSessionKey;
+        }
+
+        public String getMiraiVerifyKey() {
+            return MiraiVerifyKey;
+        }
+
+        public void setMiraiVerifyKey(String miraiVerifyKey) {
+            MiraiVerifyKey = miraiVerifyKey;
         }
 
         public boolean isEnable() {

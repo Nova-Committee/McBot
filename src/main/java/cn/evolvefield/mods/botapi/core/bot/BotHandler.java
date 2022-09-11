@@ -19,7 +19,7 @@ public class BotHandler {
             }
             BotData.setWs(BotApi.config.getCommon().getWsCommon());
             BotData.setQQId(BotApi.config.getCommon().getBotId());
-            BotData.setGroupId(BotApi.config.getCommon().getGroupId());
+            BotData.setGroupIdList(BotApi.config.getCommon().getGroupIdList());
             BotData.setBotFrame("cqhttp");
 
             if (BotApi.config.getCommon().isAutoOpen()) {
@@ -27,10 +27,10 @@ public class BotHandler {
             }
             BotApi.LOGGER.info("§7[§a§l*§7] §a启用框架: §e" + BotData.getBotFrame());
         } else if (BotApi.config.getCommon().getFrame().equalsIgnoreCase("mirai")) {
-            BotData.setWs(BotApi.config.getMirai().getWsMirai());
+            BotData.setWs(BotApi.config.getCommon().getWsCommon());
             BotData.setQQId(BotApi.config.getCommon().getBotId());
-            BotData.setGroupId(BotApi.config.getCommon().getGroupId());
-            BotData.setVerifyKey(BotApi.config.getMirai().getVerifyKey());
+            BotData.setGroupIdList(BotApi.config.getCommon().getGroupIdList());
+            BotData.setVerifyKey(BotApi.config.getCommon().getMiraiVerifyKey());
             BotData.setBotFrame("mirai");
 
             if (BotApi.config.getCommon().isAutoOpen()) {

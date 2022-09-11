@@ -12,7 +12,7 @@ public class BotData {
     private static String ws;
     private static String BotFrame;
     private static long QQId;
-    private static long GroupId;
+    private static List<Long> groupIdList;
     private static String guildId;
     private static List<String> channelIdList;
     private static String VerifyKey;
@@ -37,12 +37,13 @@ public class BotData {
         SessionKey = sessionKey;
     }
 
-    public static long getGroupId() {
-        return GroupId;
+
+    public static List<Long> getGroupIdList() {
+        return groupIdList;
     }
 
-    public static void setGroupId(long groupId) {
-        GroupId = groupId;
+    public static void setGroupIdList(List<Long> groupIdList) {
+        BotData.groupIdList = groupIdList;
     }
 
     public static String getGuildId() {

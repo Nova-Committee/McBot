@@ -7,15 +7,18 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.network.chat.Component;
 
-public class GroupIDCommand {
+public class RemoveGroupIDCommand {
 
 
     public static int execute(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
-        long id = context.getArgument("GroupId", Long.class);
-        BotApi.config.getCommon().setGroupId(id);
+        var id = context.getArgument("GroupID", Long.class);
+        if (BotApi.config.getCommon().getGroupIdList().contains(id)) {
+            BotApi.config.getCommon().removeGroupId(id);
+
+        } else {
+            context.getSource().sendSuccess(Component.literal("QQ群号:" + id + "并未出现！"), true);
+        }
         ConfigManger.saveBotConfig(BotApi.config);
-        context.getSource().sendSuccess(
-                Component.literal("已设置互通的群号为:" + id), true);
         return 0;
     }
 

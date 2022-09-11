@@ -47,7 +47,7 @@ public class ConnectCommand {
         var matcher = pattern.matcher(parameter);
         if (matcher.find()) {
             BotData.setWs("ws://" + parameter);
-            BotApi.config.getMirai().setWsMirai("ws://" + parameter);
+            BotApi.config.getCommon().setWsCommon("ws://" + parameter);
             BotData.setBotFrame("mirai");
             BotApi.config.getCommon().setFrame("mirai");
             context.getSource().sendSuccess(Component.literal("尝试链接框架" + ChatFormatting.LIGHT_PURPLE + "mirai"), true);
@@ -79,7 +79,7 @@ public class ConnectCommand {
 
 
         context.getSource().sendSuccess(Component.literal("尝试链接框架" + ChatFormatting.LIGHT_PURPLE + "mirai"), true);
-        WebSocketService.main(BotApi.config.getMirai().getWsMirai() + "/all?verifyKey=" + BotData.getVerifyKey() + "&qq=" + BotData.getQQId());
+        WebSocketService.main(BotApi.config.getCommon().getWsCommon() + "/all?verifyKey=" + BotData.getVerifyKey() + "&qq=" + BotData.getQQId());
         BotApi.config.getStatus().setRECEIVE_ENABLED(true);
         BotApi.config.getCommon().setEnable(true);
         ConfigManger.saveBotConfig(BotApi.config);
