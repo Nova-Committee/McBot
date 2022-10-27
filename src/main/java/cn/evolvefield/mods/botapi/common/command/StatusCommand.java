@@ -2,8 +2,6 @@ package cn.evolvefield.mods.botapi.common.command;
 
 
 import cn.evolvefield.mods.botapi.BotApi;
-import cn.evolvefield.mods.botapi.core.bot.BotData;
-import cn.evolvefield.mods.botapi.core.service.WebSocketService;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.commands.CommandSourceStack;
@@ -25,18 +23,16 @@ public class StatusCommand {
         boolean sAchievementsEnabled = BotApi.config.getStatus().isS_ADVANCE_ENABLE();
         boolean sWelcomeEnabled = BotApi.config.getStatus().isS_WELCOME_ENABLE();
 
-        long groupId = BotApi.config.getCommon().getGroupId();
+        var groupId = BotApi.config.getCommon().getGroupIdList().toString();
         boolean debuggable = BotApi.config.getCommon().isDebuggable();
-        boolean connected = WebSocketService.client != null;
+        boolean connected = BotApi.service != null;
         boolean white = BotApi.SERVER.getPlayerList().isUsingWhitelist();
-        String host = BotData.getWs();
+        String host = BotApi.config.getBotConfig().getUrl();
         long QQid = BotApi.config.getCommon().getBotId();
-        String key = BotApi.config.getCommon().getWsKey();
         String toSend =
                 "\n姬妻人服务状态:\n"
                         + "姬妻人QQId:" + QQid + " \n"
                         + "框架服务器:" + host + " \n"
-                        + "WebSocket Key:" + key + "\n"
                         + "WebSocket连接状态:" + connected + "\n"
                         + "互通的群号:" + groupId + "\n"
                         + "全局服务状态:" + clientEnabled + "\n"

@@ -9,19 +9,18 @@ import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.network.chat.Component;
 
 
-public class DisconnectCommand {
+public class ReConnectCommand {
 
     public static int execute(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
-        if (BotApi.service != null) {
-            BotApi.service.close();
-            if (BotApi.service.isClosed()) {
-                context.getSource().sendSuccess(Component.literal("WebSocket已断开连接"), true);
-            } else {
-                context.getSource().sendSuccess(Component.literal("WebSocket目前未连接"), true);
-            }
-            BotApi.config.getCommon().setEnable(false);
-            ConfigHandler.save(BotApi.config);
+        boolean isEnabled = context.getArgument("enabled", Boolean.class);
+        BotApi.config.getBotConfig().setReconnect(isEnabled);
+        ConfigHandler.save(BotApi.config);
+        if (isEnabled) {
+            context.getSource().sendSuccess(Component.literal("已设置自动重连"), true);
+        } else {
+            context.getSource().sendSuccess(Component.literal("已关闭自动重连"), true);
         }
+
         return 0;
     }
 }

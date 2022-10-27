@@ -4,7 +4,6 @@
   "package": "cn.evolvefield.mods.botapi.init.mixins",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
-    "LevelTickMixin",
     "PlayerAdvancementsMixin",
     "PlayerListMixin",
     "ServerGamePacketListenerImplMixin",

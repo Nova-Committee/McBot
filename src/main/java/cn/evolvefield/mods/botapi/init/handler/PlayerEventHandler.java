@@ -1,9 +1,8 @@
 package cn.evolvefield.mods.botapi.init.handler;
 
 import cn.evolvefield.mods.botapi.BotApi;
-import cn.evolvefield.mods.botapi.api.message.SendMessage;
 import cn.evolvefield.mods.botapi.init.callbacks.PlayerEvents;
-import cn.evolvefield.mods.botapi.util.I18a;
+import cn.evolvefield.mods.botapi.util.locale.I18a;
 import net.minecraft.world.entity.LivingEntity;
 
 
@@ -19,9 +18,10 @@ public class PlayerEventHandler {
             if (BotApi.config.getStatus().isS_JOIN_ENABLE() && BotApi.config.getStatus().isSEND_ENABLED()) {
                 if (BotApi.config.getCommon().isGuildOn() && !BotApi.config.getCommon().getChannelIdList().isEmpty()) {
                     for (String id : BotApi.config.getCommon().getChannelIdList())
-                        SendMessage.ChannelGroup(BotApi.config.getCommon().getGuildId(), id, player.getDisplayName().getString() + " 加入了服务器");
+                        BotApi.bot.sendGuildMsg(BotApi.config.getCommon().getGuildId(), id, player.getDisplayName().getString() + " 加入了服务器");
                 } else {
-                    SendMessage.Group(BotApi.config.getCommon().getGroupId(), player.getDisplayName().getString() + " 加入了服务器");
+                    for (long id : BotApi.config.getCommon().getGroupIdList())
+                        BotApi.bot.sendGroupMsg(id, player.getDisplayName().getString() + " 加入了服务器", true);
                 }
             }
         });
@@ -30,9 +30,10 @@ public class PlayerEventHandler {
             if (BotApi.config.getStatus().isS_LEAVE_ENABLE() && BotApi.config.getStatus().isSEND_ENABLED()) {
                 if (BotApi.config.getCommon().isGuildOn() && !BotApi.config.getCommon().getChannelIdList().isEmpty()) {
                     for (String id : BotApi.config.getCommon().getChannelIdList())
-                        SendMessage.ChannelGroup(BotApi.config.getCommon().getGuildId(), id, player.getDisplayName().getString() + " 离开了服务器");
+                        BotApi.bot.sendGuildMsg(BotApi.config.getCommon().getGuildId(), id, player.getDisplayName().getString() + " 离开了服务器");
                 } else {
-                    SendMessage.Group(BotApi.config.getCommon().getGroupId(), player.getDisplayName().getString() + " 离开了服务器");
+                    for (long id : BotApi.config.getCommon().getGroupIdList())
+                        BotApi.bot.sendGroupMsg(id, player.getDisplayName().getString() + " 离开了服务器", true);
 
                 }
             }
@@ -47,9 +48,10 @@ public class PlayerEventHandler {
 
                 if (BotApi.config.getCommon().isGuildOn() && !BotApi.config.getCommon().getChannelIdList().isEmpty()) {
                     for (String id : BotApi.config.getCommon().getChannelIdList())
-                        SendMessage.ChannelGroup(BotApi.config.getCommon().getGuildId(), id, String.format(msg, player.getDisplayName().getString()));
+                        BotApi.bot.sendGuildMsg(BotApi.config.getCommon().getGuildId(), id, String.format(msg, player.getDisplayName().getString()));
                 } else {
-                    SendMessage.Group(BotApi.config.getCommon().getGroupId(), String.format(msg, player.getDisplayName().getString()));
+                    for (long id : BotApi.config.getCommon().getGroupIdList())
+                        BotApi.bot.sendGroupMsg(id, String.format(msg, player.getDisplayName().getString()), true);
                 }
             }
         });
@@ -60,9 +62,10 @@ public class PlayerEventHandler {
 
                 if (BotApi.config.getCommon().isGuildOn() && !BotApi.config.getCommon().getChannelIdList().isEmpty()) {
                     for (String id : BotApi.config.getCommon().getChannelIdList())
-                        SendMessage.ChannelGroup(BotApi.config.getCommon().getGuildId(), id, msg);
+                        BotApi.bot.sendGuildMsg(BotApi.config.getCommon().getGuildId(), id, msg);
                 } else {
-                    SendMessage.Group(BotApi.config.getCommon().getGroupId(), msg);
+                    for (long id : BotApi.config.getCommon().getGroupIdList())
+                        BotApi.bot.sendGroupMsg(id, msg, true);
                 }
             }
         });

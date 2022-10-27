@@ -4,10 +4,13 @@ pluginManagement {
 //            name = 'Fabric'
 //            url = 'https://maven.fabricmc.net/'
 //        }
+        maven { url = "https://jitpack.io" }
         maven {
             name = "Lss233's.Mirror();"
             url = 'https://crystal.app.lss233.com/repositories/minecraft/'
         }
+        mavenCentral()
+
         gradlePluginPortal()
     }
 }

@@ -1,7 +1,7 @@
 package cn.evolvefield.mods.botapi.util.locale;
 
 import cn.evolvefield.mods.botapi.BotApi;
-import cn.evolvefield.mods.botapi.util.I18a;
+import cn.evolvefield.mods.botapi.Static;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.gson.Gson;
@@ -44,7 +44,7 @@ public abstract class Translation {
             InputStream inputStream = Translation.class.getResourceAsStream(resourceLocation);
 
             if (inputStream == null) {
-                BotApi.LOGGER.info(String.format("No BotApi lang file for the language '%s' found. Make it to 'en_us' by default.", langId));
+                Static.LOGGER.info(String.format("No BotApi lang file for the language '%s' found. Make it to 'en_us' by default.", langId));
                 inputStream = I18a.class.getResourceAsStream(String.format(resourceFString, DEFAULT_LANGUAGE));
             }
 
@@ -66,7 +66,7 @@ public abstract class Translation {
                 inputStream.close();
             }
         } catch (JsonParseException | IOException var8) {
-            BotApi.LOGGER.error("Couldn't read strings from {}", resourceLocation, var8);
+            Static.LOGGER.error("Couldn't read strings from {}", resourceLocation, var8);
         }
 
         final Map<String, String> inputStream = builder.build();
