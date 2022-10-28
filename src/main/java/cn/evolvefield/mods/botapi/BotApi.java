@@ -44,7 +44,7 @@ public class BotApi implements ModInitializer {
         ServerLifecycleEvents.SERVER_STARTED.register(this::onServerStarted);
 
         ServerLifecycleEvents.SERVER_STOPPING.register(this::onServerStopping);
-        CommandEventHandler.init();
+        CmdEventHandler.init();
         PlayerEventHandler.init();
         ChatEventHandler.init();
         TickEventHandler.init();

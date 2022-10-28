@@ -14,7 +14,7 @@ import net.minecraft.commands.Commands;
  * Date: 2022/1/12 9:12
  * Version: 1.0
  */
-public class CommandEventHandler {
+public class CmdEventHandler {
     public static void init() {
         CommandRegistrationCallback.EVENT.register((dispatcher, commandBuildContext, commandSelection) -> {
             dispatcher.register(
@@ -35,6 +35,7 @@ public class CommandEventHandler {
                                     )
 
                             )
+                            .then(Commands.literal("reload").executes(ReloadConfigCmd::execute))
                             .then(Commands.literal("disconnect").executes(DisconnectCommand::execute))
                             .then(Commands.literal("setGuild")
                                     .then(Commands.argument("GuildId", StringArgumentType.greedyString())
