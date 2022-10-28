@@ -4,7 +4,9 @@ package cn.evolvefield.mods.botapi.common.command;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.Style;
 
 public class HelpCommand {
 
@@ -33,12 +35,19 @@ public class HelpCommand {
                         /mcbot send <all|join|leave|death|achievements|welcome> <true|false>
                         /mcbot status
                         /mcbot help
+                        /mcbot reload   重载配置
                         *************************************
                         感谢您的支持，如有问题请联系我
                         QQ群：720975019找群主
-                        Github：https://github.com/Nova-Committee/Bot-Connect/issues/new 提交问题
+                        Github： 
                         """;
-        context.getSource().sendSuccess(Component.literal(toSend), true);
+
+        var url = "https://github.com/Nova-Committee/Bot-Connect/issues/new";
+        var end = "提交问题";
+
+        var urlC = Component.literal(url).setStyle(Style.EMPTY.withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://github.com/Nova-Committee/Bot-Connect/issues/new")));
+        var endC = Component.literal(end);
+        context.getSource().sendSuccess(Component.literal(toSend).append(urlC).append(endC), true);
         return 1;
     }
 }
