@@ -22,7 +22,7 @@ public class ChatEventHandler {
                         BotApi.bot.sendGuildMsg(BotApi.config.getCommon().getGuildId(), id, String.format("[" + BotApi.config.getCmd().getQqPrefix() + "]<%s> %s", player.getDisplayName(), message));
                 } else {
                     for (long id : BotApi.config.getCommon().getGroupIdList())
-                        BotApi.bot.sendGroupMsg(id, String.format("[" + BotApi.config.getCmd().getQqPrefix() + "]<%s> %s", player.getDisplayName(), message), true);
+                        BotApi.bot.sendGroupMsg(id, String.format("[" + BotApi.config.getCmd().getMcPrefix() + "]<%s> %s", player.getDisplayName(), message), true);
                 }
             }
         });
