@@ -30,13 +30,21 @@ public class BotEventHandler {
         dispatchers.addListener(new SimpleListener<GroupMessageEvent>() {
             @Override
             public void onMessage(GroupMessageEvent event) {
-                if (BotApi.config.getCommon().getGroupIdList().contains(event.getGroupId())
-                        && !event.getMessage().startsWith(BotApi.config.getCmd().getCommandStart())
-                        && BotApi.config.getStatus().isRECEIVE_ENABLED()
-                        && !event.getMessage().contains("[CQ:")
-                        && BotApi.config.getStatus().isR_CHAT_ENABLE()
-                        && event.getUserId() != BotApi.config.getCommon().getBotId()) {
-                    String toSend = String.format("§b[§lQQ§r§b]§a<%s>§f %s", event.getSender().getNickname(), event.getMessage());
+                if (BotApi.config.getCommon().getGroupIdList().contains(event.getGroupId())//判断是否是配置中的群
+                        && !event.getMessage().startsWith(BotApi.config.getCmd().getCommandStart())//过滤命令前缀
+                        && !event.getMessage().contains("[CQ:")//去除字符之外的其他cq码
+                        && BotApi.config.getStatus().isRECEIVE_ENABLED()//总接受开关
+                        && BotApi.config.getStatus().isR_CHAT_ENABLE()//接受聊天开关
+                        && event.getUserId() != BotApi.config.getCommon().getBotId()
+                ) {
+                    String send = event.getMessage();
+                    if (BotApi.config.getCmd().isQqChatPrefixEnable()) {
+                        var split = event.getMessage().split(" ");
+                        if (BotApi.config.getCmd().getQqChatPrefix().equals(split[0])) //指定前缀发送
+                            send = split[1];
+                        else return;
+                    }
+                    String toSend = String.format("§b[§l%s§r(§5%s§b)]§a<%s>§f %s", BotApi.config.getCmd().getQqPrefix(), event.getGroupId(), event.getSender().getNickname(), send);
                     TickEventHandler.getToSendQueue().add(toSend);
                 }
             }
@@ -48,9 +56,10 @@ public class BotEventHandler {
             @Override
             public void onMessage(GroupMessageEvent event) {
                 if (BotApi.config.getCommon().getGroupIdList().contains(event.getGroupId())
-                        && BotApi.config.getStatus().isRECEIVE_ENABLED()
-                        && event.getMessage().startsWith(BotApi.config.getCmd().getCommandStart())
-                        && BotApi.config.getStatus().isR_COMMAND_ENABLED()) {
+                        && event.getMessage().startsWith(BotApi.config.getCmd().getCommandStart())//命令前缀
+                        && BotApi.config.getStatus().isRECEIVE_ENABLED()//总接受开关
+                        && BotApi.config.getStatus().isR_COMMAND_ENABLED()//接受命令开关
+                ) {
                     CmdApi.invokeCommandGroup(event);
                 }
             }
@@ -88,13 +97,23 @@ public class BotEventHandler {
             public void onMessage(GuildMessageEvent event) {
                 if (event.getGuildId().equals(BotApi.config.getCommon().getGuildId())
                         && BotApi.config.getCommon().getChannelIdList().contains(event.getChannelId())
-                        && !event.getMessage().startsWith(BotApi.config.getCmd().getCommandStart())
+                        && !event.getMessage().startsWith(BotApi.config.getCmd().getCommandStart())//过滤命令前缀
+                        && !event.getMessage().contains("[CQ:")//去除字符之外的其他cq码
+                        && BotApi.config.getStatus().isRECEIVE_ENABLED()//总接受开关
+                        && BotApi.config.getStatus().isR_CHAT_ENABLE()//接受聊天开关
+                        && event.getUserId() != BotApi.config.getCommon().getBotId()
                 ) {
-                    if (!event.getMessage().contains("[CQ:") && BotApi.config.getStatus().isR_CHAT_ENABLE()
-                    ) {
-                        String toSend = String.format("§b[§lQQ§r§b]§a<%s>§f %s", event.getSender().getNickname(), event.getMessage());
-                        TickEventHandler.getToSendQueue().add(toSend);
+
+                    String send = event.getMessage();
+                    if (BotApi.config.getCmd().isQqChatPrefixEnable()) {
+                        var split = event.getMessage().split(" ");
+                        if (BotApi.config.getCmd().getQqChatPrefix().equals(split[0])) //指定前缀发送
+                            send = split[1];
+                        else return;
                     }
+                    String toSend = String.format("§b[§l%s§r(§5%s§b)]§a<%s>§f %s", BotApi.config.getCmd().getGuildPrefix(), event.getChannelId(), event.getSender().getNickname(), send);
+                    TickEventHandler.getToSendQueue().add(toSend);
+
                 }
             }
         });
@@ -105,9 +124,10 @@ public class BotEventHandler {
             @Override
             public void onMessage(GuildMessageEvent event) {
                 if (BotApi.config.getCommon().getChannelIdList().contains(event.getChannelId())
-                        && BotApi.config.getStatus().isRECEIVE_ENABLED()
-                        && event.getMessage().startsWith(BotApi.config.getCmd().getCommandStart())
-                        && BotApi.config.getStatus().isR_COMMAND_ENABLED()) {
+                        && event.getMessage().startsWith(BotApi.config.getCmd().getCommandStart())//命令前缀
+                        && BotApi.config.getStatus().isRECEIVE_ENABLED()//总接受开关
+                        && BotApi.config.getStatus().isR_COMMAND_ENABLED()//接受命令开关
+                ) {
                     CmdApi.invokeCommandGuild(event);
                 }
             }

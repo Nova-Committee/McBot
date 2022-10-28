@@ -81,7 +81,19 @@ public class ModConfig {
                         "还他妈不上线搁这玩QQ呢~";
 
         @SerializedName("qqPrefix")
-        private String qqPrefix = "MC";
+        private String qqPrefix = "群聊";
+        @SerializedName("guildPrefix")
+        private String guildPrefix = "频道";
+        @SerializedName("mcPrefix")
+        private String mcPrefix = "MC";
+        @SerializedName("mcChatPrefixEnable")
+        private boolean mcChatPrefixEnable = false;
+        @SerializedName("qqChatPrefixEnable")
+        private boolean qqChatPrefixEnable = false;
+        @SerializedName("mcChatPrefix")
+        private String mcChatPrefix = "q";
+        @SerializedName("qqChatPrefix")
+        private String qqChatPrefix = "m";
     }
 
     @Data

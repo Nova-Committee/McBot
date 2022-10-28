@@ -72,12 +72,15 @@ public class BotApi implements ModInitializer {
     }
 
     private void onServerStopping(MinecraftServer server) {
-        dispatchers.stop();
         CustomCmdHandler.getInstance().clear();
-        ConfigHandler.save(config);
+        if (dispatchers != null) {
+            dispatchers.stop();
+        }
         if (service != null) {
+            config.getBotConfig().setReconnect(false);
             service.close();
         }
+        ConfigHandler.save(config);
         Static.LOGGER.info("▌ §c正在关闭群服互联 §a┈━═☆");
 
     }

@@ -1,5 +1,6 @@
 package cn.evolvefield.mods.botapi.init.handler;
 
+import cn.evolvefield.mods.botapi.BotApi;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.minecraft.network.chat.Component;
 
@@ -24,7 +25,10 @@ public class TickEventHandler {
     public static void init() {
         ServerTickEvents.START_WORLD_TICK.register(world -> {
             String toSend = toSendQueue.poll();
-            if (!world.isClientSide && toSend != null) {
+            if (BotApi.config != null
+                    && !world.isClientSide
+                    && toSend != null
+            ) {
                 Component textComponents = Component.literal(toSend);
                 world.getServer().getPlayerList().broadcastSystemMessage(textComponents, true);
             }
