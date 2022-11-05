@@ -7,14 +7,16 @@ buildscript {
         classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
     }
 }
-
+plugins {
+    id 'maven-publish'
+}
 apply plugin: 'net.minecraftforge.gradle'
 
-group = 'cn.evolvefield.mods'
-version = '1.12.2-1.8.2'
+version = project.mod_version
+group = project.maven_group
 
 java {
-    archivesBaseName = 'Bot-Connect-forge'
+    archivesBaseName = project.archives_base_name
     toolchain.languageVersion = JavaLanguageVersion.of(8)
 }
 
@@ -69,18 +71,17 @@ minecraft {
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 repositories {
-    // Put repositories for dependencies here
-    // ForgeGradle automatically adds the Forge maven and Maven Central for you
-
-    // If you have mod jar dependencies in ./libs, you can declare them as a repository like so:
-    // flatDir {
-    //     dir 'libs'
-    // }
+    maven {
+        url 'https://maven.nova-committee.cn/releases'
+    }
 }
 
 dependencies {
 
+    implementation "cn.evolvefield.bot:OneBot-SDK:${project.sdk_version}"
     minecraft 'net.minecraftforge:forge:1.12.2-14.23.5.2860'
+    jarJar "cn.evolvefield.bot:OneBot-SDK:[0.1.4,1.0.0)"
+    annotationProcessor "cn.evolvefield.bot:OneBot-SDK:${project.sdk_version}"
 }
 
 // Example for how to get properties into the manifest for reading at runtime.
@@ -99,3 +100,54 @@ jar {
 }
 
 jar.finalizedBy('reobfJar')
+
+jarJar {
+    enable()
+    dependencies {
+        include(dependency(group: 'cn.evolvefield.bot', name: 'OneBot-SDK', version: '0.1.4'))
+    }
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+            jarJar.component(it)
+            version = "${project.mod_version}"
+            artifactId = "${project.archives_base_name}"
+            groupId = "${project.maven_group}"
+            pom {
+                name = 'Bot Connect'
+                description = 'Adds chat linking between QQ and Minecraft and QQ commands to request server data.'
+                url = 'https://www.evolvefield.cn/article/14'
+                licenses {
+                    license {
+                        name = 'AGPLV3'
+                        url = 'https://www.gnu.org/licenses/gpl-3.0.html'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'cnlimiter'
+                        name = 'cnlimiter'
+                        email = 'cnlimiter@163.com'
+                    }
+                }
+            }
+
+        }
+    }
+    repositories {
+        if (System.getenv('MAVEN_USERNAME') != null && System.getenv('MAVEN_PASSWORD') != null) {
+            maven {
+                name 'release'
+                url = 'https://maven.nova-committee.cn/releases'
+
+                credentials {
+                    username System.getenv('MAVEN_USERNAME')
+                    password System.getenv('MAVEN_PASSWORD')
+                }
+            }
+        }
+    }
+}
