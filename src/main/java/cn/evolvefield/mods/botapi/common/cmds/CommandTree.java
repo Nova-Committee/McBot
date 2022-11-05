@@ -20,6 +20,7 @@ public class CommandTree extends CommandTreeBase {
         this.addSubcommand(new GuildIDCommand("setGuild"));
         this.addSubcommand(new AddChannelIDCommand("addChannelId"));
         this.addSubcommand(new RemoveChannelIDCommand("delChannelId"));
+        this.addSubcommand(new ReloadConfigCmd("reload"));
 
     }
 
