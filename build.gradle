@@ -7,7 +7,9 @@ version = project.mod_version
 group = project.maven_group
 
 repositories {
-    maven { url = "https://jitpack.io" }
+    maven {
+        url 'https://maven.nova-committee.cn/releases'
+    }
 }
 
 dependencies {
@@ -15,10 +17,11 @@ dependencies {
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
     mappings loom.officialMojangMappings()
     modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
-    modImplementation "cn.evolvefield:onebot-sdk:${project.sdk_version}"
+    modImplementation "cn.evolvefield.bot:OneBot-SDK:${project.sdk_version}"
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+    include "cn.evolvefield.bot:OneBot-SDK:${project.sdk_version}"
 
-    annotationProcessor "cn.evolvefield:onebot-sdk:${project.sdk_version}"
+    annotationProcessor "cn.evolvefield.bot:OneBot-SDK:${project.sdk_version}"
 
 }
 
@@ -66,14 +69,43 @@ publishing {
     publications {
         mavenJava(MavenPublication) {
             from components.java
+
+            version = "${project.mod_version}"
+            artifactId = "${project.archives_base_name}"
+            groupId = "${project.maven_group}"
+            pom {
+                name = 'Bot Connect'
+                description = 'Adds chat linking between QQ and Minecraft and QQ commands to request server data.'
+                url = 'https://www.evolvefield.cn/article/14'
+                licenses {
+                    license {
+                        name = 'AGPLV3'
+                        url = 'https://www.gnu.org/licenses/gpl-3.0.html'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'cnlimiter'
+                        name = 'cnlimiter'
+                        email = 'cnlimiter@163.com'
+                    }
+                }
+            }
         }
     }
 
     // See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
     repositories {
-        // Add repositories to publish to here.
-        // Notice: This block does NOT have the same function as the block in the top level.
-        // The repositories here will be used for publishing your artifact, not for
-        // retrieving dependencies.
+        if (System.getenv('MAVEN_USERNAME') != null && System.getenv('MAVEN_PASSWORD') != null) {
+            maven {
+                name 'release'
+                url = 'https://maven.nova-committee.cn/releases'
+
+                credentials {
+                    username System.getenv('MAVEN_USERNAME')
+                    password System.getenv('MAVEN_PASSWORD')
+                }
+            }
+        }
     }
 }
