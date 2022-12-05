@@ -2,6 +2,7 @@ package cn.evolvefield.mods.botapi.common.command;
 
 import cn.evolvefield.mods.botapi.BotApi;
 import cn.evolvefield.mods.botapi.init.handler.ConfigHandler;
+import com.mojang.brigadier.Command;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.commands.CommandSourceStack;
@@ -20,7 +21,7 @@ public class ReceiveCommand {
             context.getSource().sendSuccess(
                     Component.literal("全局接收群消息开关已被设置为关闭"), true);
         }
-        return 0;
+        return Command.SINGLE_SUCCESS;
     }
 
     public static int chatExecute(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
@@ -36,7 +37,7 @@ public class ReceiveCommand {
             context.getSource().sendSuccess(
                     Component.literal("接收群内聊天消息开关已被设置为关闭"), true);
         }
-        return 0;
+        return Command.SINGLE_SUCCESS;
 
     }
 
@@ -53,6 +54,6 @@ public class ReceiveCommand {
             context.getSource().sendSuccess(
                     Component.literal("接收群内命令消息开关已被设置为关闭"), true);
         }
-        return 0;
+        return Command.SINGLE_SUCCESS;
     }
 }

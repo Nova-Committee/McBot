@@ -4,8 +4,8 @@ import cn.evolvefield.onebot.sdk.config.BotConfig;
 import com.google.gson.annotations.SerializedName;
 import lombok.Data;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Description:
@@ -101,13 +101,13 @@ public class ModConfig {
         @SerializedName("group_on")
         private boolean groupOn = true;
         @SerializedName("group_id_list")
-        private List<Long> groupIdList = new ArrayList<>();
+        private Set<Long> groupIdList = new HashSet<>();
         @SerializedName("guild_on")
         private boolean guildOn = false;
         @SerializedName("guild_id")
         private String guildId = "";
         @SerializedName("channel_id_list")
-        private List<String> channelIdList = new ArrayList<>();
+        private Set<String> channelIdList = new HashSet<>();
         @SerializedName("bot_id")
         private long botId = 0;
         @SerializedName("master_id")

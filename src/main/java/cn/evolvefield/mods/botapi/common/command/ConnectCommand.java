@@ -5,6 +5,7 @@ import cn.evolvefield.mods.botapi.BotApi;
 import cn.evolvefield.mods.botapi.Static;
 import cn.evolvefield.mods.botapi.init.handler.ConfigHandler;
 import cn.evolvefield.onebot.sdk.connection.ConnectFactory;
+import com.mojang.brigadier.Command;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.ChatFormatting;
@@ -36,7 +37,7 @@ public class ConnectCommand {
             BotApi.config.getCommon().setEnable(true);
             ConfigHandler.save(BotApi.config);
 
-            return 1;
+            return Command.SINGLE_SUCCESS;
 
         } else {
             context.getSource().sendSuccess(Component.literal(ChatFormatting.RED + "参数错误❌"), true);
@@ -64,7 +65,7 @@ public class ConnectCommand {
             BotApi.config.getCommon().setEnable(true);
             ConfigHandler.save(BotApi.config);
 
-            return 1;
+            return Command.SINGLE_SUCCESS;
 
         } else {
             context.getSource().sendSuccess(Component.literal(ChatFormatting.RED + "参数错误"), true);
@@ -86,7 +87,7 @@ public class ConnectCommand {
         BotApi.config.getStatus().setRECEIVE_ENABLED(true);
         BotApi.config.getCommon().setEnable(true);
         ConfigHandler.save(BotApi.config);
-        return 1;
+        return Command.SINGLE_SUCCESS;
 
     }
 
@@ -106,7 +107,7 @@ public class ConnectCommand {
         BotApi.config.getCommon().setEnable(true);
         ConfigHandler.save(BotApi.config);
 
-        return 1;
+        return Command.SINGLE_SUCCESS;
 
     }
 

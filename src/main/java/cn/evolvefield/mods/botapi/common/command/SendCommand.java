@@ -2,6 +2,7 @@ package cn.evolvefield.mods.botapi.common.command;
 
 import cn.evolvefield.mods.botapi.BotApi;
 import cn.evolvefield.mods.botapi.init.handler.ConfigHandler;
+import com.mojang.brigadier.Command;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.commands.CommandSourceStack;
@@ -22,7 +23,7 @@ public class SendCommand {
             context.getSource().sendSuccess(
                     Component.literal("发送新人加入QQ群的消息开关已被设置为关闭"), true);
         }
-        return 0;
+        return Command.SINGLE_SUCCESS;
     }
 
     public static int allExecute(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
@@ -36,7 +37,7 @@ public class SendCommand {
             context.getSource().sendSuccess(
                     Component.literal("全局发送消息开关已被设置为关闭"), true);
         }
-        return 0;
+        return Command.SINGLE_SUCCESS;
     }
 
     public static int joinExecute(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
@@ -52,7 +53,7 @@ public class SendCommand {
             context.getSource().sendSuccess(
                     Component.literal("发送玩家加入游戏消息开关已被设置为关闭"), true);
         }
-        return 0;
+        return Command.SINGLE_SUCCESS;
     }
 
     public static int leaveExecute(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
@@ -68,7 +69,7 @@ public class SendCommand {
             context.getSource().sendSuccess(
                     Component.literal("发送玩家离开游戏消息开关已被设置为关闭"), true);
         }
-        return 0;
+        return Command.SINGLE_SUCCESS;
     }
 
     public static int deathExecute(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
@@ -84,7 +85,7 @@ public class SendCommand {
             context.getSource().sendSuccess(
                     Component.literal("发送玩家死亡游戏消息开关已被设置为关闭"), true);
         }
-        return 0;
+        return Command.SINGLE_SUCCESS;
     }
 
     public static int chatExecute(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
@@ -100,7 +101,7 @@ public class SendCommand {
             context.getSource().sendSuccess(
                     Component.literal("发送玩家聊天游戏消息开关已被设置为关闭"), true);
         }
-        return 0;
+        return Command.SINGLE_SUCCESS;
     }
 
     public static int achievementsExecute(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
@@ -116,7 +117,7 @@ public class SendCommand {
             context.getSource().sendSuccess(
                     Component.literal("发送玩家成就游戏消息开关已被设置为关闭"), true);
         }
-        return 0;
+        return Command.SINGLE_SUCCESS;
     }
 
 }
