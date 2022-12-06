@@ -10,17 +10,18 @@ repositories {
     maven {
         url 'https://maven.nova-committee.cn/releases'
     }
+    maven { url "https://maven.nucleoid.xyz/" }
 }
 
 dependencies {
+
     // To change the versions see the gradle.properties file
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
     mappings loom.officialMojangMappings()
     modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
-    modImplementation "cn.evolvefield.bot:OneBot-SDK:${project.sdk_version}"
+    modImplementation include("cn.evolvefield.bot:OneBot-SDK:${project.sdk_version}")
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
-    include "cn.evolvefield.bot:OneBot-SDK:${project.sdk_version}"
-
+    //modImplementation include("eu.pb4:placeholder-api:${project.placeholder_version}")
     annotationProcessor "cn.evolvefield.bot:OneBot-SDK:${project.sdk_version}"
 
 }
@@ -36,10 +37,6 @@ processResources {
 
 def targetJavaVersion = 17
 tasks.withType(JavaCompile).configureEach {
-    // ensure that the encoding is set to UTF-8, no matter what the system default is
-    // this fixes some edge cases with special characters not displaying correctly
-    // see http://yodaconditions.net/blog/fix-for-java-file-encoding-problems-with-gradle.html
-    // If Javadoc is generated, this must be specified in that task too.
     it.options.encoding = "UTF-8"
     if (targetJavaVersion >= 10 || JavaVersion.current().isJava10Compatible()) {
         it.options.release = targetJavaVersion
@@ -52,9 +49,6 @@ java {
         toolchain.languageVersion = JavaLanguageVersion.of(targetJavaVersion)
     }
     archivesBaseName = project.archives_base_name
-    // Loom will automatically attach sourcesJar to a RemapSourcesJar task and to the "build" task
-    // if it is present.
-    // If you remove this line, sources will not be generated.
     withSourcesJar()
 }
 
@@ -64,7 +58,6 @@ jar {
     }
 }
 
-// configure the maven publication
 publishing {
     publications {
         mavenJava(MavenPublication) {

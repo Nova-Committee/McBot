@@ -24,7 +24,7 @@ public class ServerGamePacketListenerImplMixin {
     public ServerPlayer player;
 
     @Inject(method = "broadcastChatMessage", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/players/PlayerList;broadcastChatMessage(Lnet/minecraft/network/chat/PlayerChatMessage;Lnet/minecraft/server/level/ServerPlayer;Lnet/minecraft/network/chat/ChatType$Bound;)V"))
-    public void SGPLI_handleChat(PlayerChatMessage filteredText, CallbackInfo ci) {
+    public void handleChat(PlayerChatMessage filteredText, CallbackInfo ci) {
         String s1 = filteredText.serverContent().getString();
         Component component2 = Component.translatable("chat.type.text", this.player.getDisplayName(), s1);
         ServerLevelEvents.Server_Chat.invoker().onChat(this.player, s1, component2);

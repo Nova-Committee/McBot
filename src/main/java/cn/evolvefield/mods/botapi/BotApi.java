@@ -40,14 +40,19 @@ public class BotApi implements ModInitializer {
     public void onInitialize() {
         CONFIG_FOLDER = FabricLoader.getInstance().getConfigDir().resolve("botapi");
         FileUtils.checkFolder(CONFIG_FOLDER);
+        ServerLifecycleEvents.SERVER_STARTING.register(this::onServerStarting);
 
         ServerLifecycleEvents.SERVER_STARTED.register(this::onServerStarted);
 
-        ServerLifecycleEvents.SERVER_STOPPING.register(this::onServerStopping);
+        ServerLifecycleEvents.SERVER_STOPPED.register(this::onServerStopped);
         CmdEventHandler.init();
         PlayerEventHandler.init();
         ChatEventHandler.init();
         TickEventHandler.init();
+    }
+
+    private void onServerStarting(MinecraftServer server) {
+        SERVER = server;//获取服务器实例
     }
 
     public MinecraftServer getServer() {
@@ -71,7 +76,7 @@ public class BotApi implements ModInitializer {
         BotEventHandler.init(dispatchers);//事件监听
     }
 
-    private void onServerStopping(MinecraftServer server) {
+    private void onServerStopped(MinecraftServer server) {
         CustomCmdHandler.getInstance().clear();
         if (dispatchers != null) {
             dispatchers.stop();
