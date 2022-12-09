@@ -46,18 +46,20 @@ public class ConfigHandler {
     }
 
     public static void save(ModConfig config) {
-        if (!BotApi.CONFIG_FOLDER.toFile().isDirectory()) {
+        if (config != null) {
+            if (!BotApi.CONFIG_FOLDER.toFile().isDirectory()) {
+                try {
+                    Files.createDirectories(BotApi.CONFIG_FOLDER);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            Path configPath = BotApi.CONFIG_FOLDER.resolve(config.getConfigName() + ".json");
             try {
-                Files.createDirectories(BotApi.CONFIG_FOLDER);
+                FileUtils.write(configPath.toFile(), JSONFormat.formatJson(GSON.toJson(config)), StandardCharsets.UTF_8);
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }
-        Path configPath = BotApi.CONFIG_FOLDER.resolve(config.getConfigName() + ".json");
-        try {
-            FileUtils.write(configPath.toFile(), JSONFormat.formatJson(GSON.toJson(config)), StandardCharsets.UTF_8);
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 }

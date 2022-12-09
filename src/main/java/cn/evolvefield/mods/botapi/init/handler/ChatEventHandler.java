@@ -20,7 +20,7 @@ public class ChatEventHandler {
                     for (String id : BotApi.config.getCommon().getChannelIdList())
                         BotApi.bot.sendGuildMsg(BotApi.config.getCommon().getGuildId(),
                                 id,
-                                String.format("[" + BotApi.config.getCmd().getQqPrefix() + "]<%s> %s",
+                                String.format("[" + BotApi.config.getCmd().getMcPrefix() + "]<%s> %s",
                                         player.getDisplayName().getString(),
                                         BotApi.config.getCmd().isMcChatPrefixEnable()
                                                 && BotApi.config.getCmd().getMcChatPrefix().equals(split[0]) ? split[1] : message));

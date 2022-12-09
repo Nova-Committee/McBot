@@ -44,7 +44,7 @@ public class BotApi implements ModInitializer {
 
         ServerLifecycleEvents.SERVER_STARTED.register(this::onServerStarted);
 
-        ServerLifecycleEvents.SERVER_STOPPED.register(this::onServerStopped);
+        ServerLifecycleEvents.SERVER_STOPPING.register(this::onServerStopping);
         CmdEventHandler.init();
         PlayerEventHandler.init();
         ChatEventHandler.init();
@@ -76,7 +76,7 @@ public class BotApi implements ModInitializer {
         BotEventHandler.init(dispatchers);//事件监听
     }
 
-    private void onServerStopped(MinecraftServer server) {
+    private void onServerStopping(MinecraftServer server) {
         CustomCmdHandler.getInstance().clear();
         if (dispatchers != null) {
             dispatchers.stop();
