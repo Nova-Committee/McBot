@@ -28,28 +28,23 @@ import java.util.concurrent.TimeUnit;
  */
 public class CustomCmdHandler {
 
-    private static final CustomCmdHandler INSTANCE = new CustomCmdHandler();
+    public static final CustomCmdHandler INSTANCE = new CustomCmdHandler();
     private static final Gson GSON = (new GsonBuilder()).setPrettyPrinting().create();
 
     private static final File dir = FabricLoader.getInstance().getConfigDir().resolve("botapi/custom_cmd/").toFile();
 
-
     private final Map<String, CustomCmd> customCmdMap = new LinkedHashMap<>();
-
-    public static CustomCmdHandler getInstance() {
-        return INSTANCE;
-    }
 
     public List<CustomCmd> getCustomCmds() {
         return Lists.newArrayList(this.customCmdMap.values());
     }
 
-    public Map<String, CustomCmd> getCustomCmdMap() {
-        return customCmdMap;
+    public CustomCmd getCmdByAlies(String alies) {
+        return this.customCmdMap.get(alies);
     }
 
-    public CustomCmd getCustomCmdByAlies(String alies) {
-        return this.customCmdMap.get(alies);
+    public Map<String, CustomCmd> getCustomCmdMap() {
+        return customCmdMap;
     }
 
     public void load() {
@@ -60,7 +55,7 @@ public class CustomCmdHandler {
         clear();
 
         if (!dir.mkdirs() && dir.isDirectory()) {
-            this.loadFiles(dir);
+            this.loadFiles();
         }
 
         stopwatch.stop();
@@ -93,8 +88,8 @@ public class CustomCmdHandler {
         }
     }
 
-    private void loadFiles(File dir) {
-        var files = dir.listFiles((FileFilter) FileFilterUtils.suffixFileFilter(".json"));
+    private void loadFiles() {
+        var files = CustomCmdHandler.dir.listFiles((FileFilter) FileFilterUtils.suffixFileFilter(".json"));
         if (files == null)
             return;
 
@@ -119,9 +114,13 @@ public class CustomCmdHandler {
             }
 
             if (customCmd != null && customCmd.isEnabled()) {
-                var alies = customCmd.getCmdAlies();
-
+                String alies = customCmd.getCmdAlies();
+                if (customCmd.getCmdContent().contains("%"))
+                    alies = customCmd.getCmdContent().split("%")[0].stripTrailing();
+                Static.LOGGER.debug(alies);
                 this.customCmdMap.put(alies, customCmd);
+
+
             }
         }
     }

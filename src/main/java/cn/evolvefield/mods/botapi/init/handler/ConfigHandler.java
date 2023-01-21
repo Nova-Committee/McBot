@@ -62,4 +62,9 @@ public class ConfigHandler {
             }
         }
     }
+
+    public static void onChange() {
+        ConfigHandler.save(BotApi.config);
+        BotApi.config = ConfigHandler.load();
+    }
 }

@@ -72,12 +72,12 @@ public class BotApi implements ModInitializer {
             }
         }
         dispatchers = new EventDispatchers(blockingQueue);//创建事件分发器
-        CustomCmdHandler.getInstance().load();//自定义命令加载
+        CustomCmdHandler.INSTANCE.load();//自定义命令加载
         BotEventHandler.init(dispatchers);//事件监听
     }
 
     private void onServerStopping(MinecraftServer server) {
-        CustomCmdHandler.getInstance().clear();
+        CustomCmdHandler.INSTANCE.clear();
         if (dispatchers != null) {
             dispatchers.stop();
         }

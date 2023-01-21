@@ -2,12 +2,10 @@ package cn.evolvefield.mods.botapi.api.cmd;
 
 import cn.evolvefield.mods.botapi.BotApi;
 import cn.evolvefield.mods.botapi.init.handler.CustomCmdHandler;
+import cn.evolvefield.mods.botapi.util.onebot.BotUtils;
 import cn.evolvefield.onebot.sdk.core.Bot;
 import cn.evolvefield.onebot.sdk.model.event.message.GroupMessageEvent;
 import cn.evolvefield.onebot.sdk.model.event.message.GuildMessageEvent;
-
-import java.util.Arrays;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Description:
@@ -36,43 +34,32 @@ public class CmdApi {
     }
 
     public static void invokeCommandGroup(GroupMessageEvent event) {
-        String[] formatMsg = event.getMessage().split(" ");
-        String commandBody = formatMsg[0].substring(1);
+        if (!BotUtils.varParse(event)) return;
+        String commandHead = event.getMessage().split(" ")[0].substring(1);
 
-        if (!event.getSender().getRole().equals("MEMBER") || !event.getSender().getRole().equals("member")) {
-            CustomCmdHandler.getInstance().getCustomCmds().stream()
-                    .filter(customCmd -> customCmd.getRequirePermission() == 1 && customCmd.getCmdAlies().equals(commandBody))
-                    .forEach(customCmd -> GroupCmd(BotApi.bot, customCmd, event));
+        if (BotUtils.groupAdminParse(event)) {
+            CustomCmdHandler.INSTANCE.getCustomCmds().stream()
+                    .filter(customCmd -> customCmd.getRequirePermission() == 1 && customCmd.getCmdAlies().equals(commandHead))
+                    .forEach(customCmd -> GroupCmd(BotApi.bot, customCmd, event));//admin
         }
-        CustomCmdHandler.getInstance().getCustomCmds().stream()
-                .filter(customCmd -> customCmd.getRequirePermission() == 0 && customCmd.getCmdAlies().equals(commandBody))
+        CustomCmdHandler.INSTANCE.getCustomCmds().stream()
+                .filter(customCmd -> customCmd.getRequirePermission() == 0 && customCmd.getCmdAlies().equals(commandHead))
                 .forEach(customCmd -> GroupCmd(BotApi.bot, customCmd, event));
 
     }
 
     public static void invokeCommandGuild(GuildMessageEvent event) {
-        String[] adminList = {"频道主", "管理员", "机器人管理员"};
-        String[] formatMsg = event.getMessage().split(" ");
-        String commandBody = formatMsg[0].substring(1);
-        AtomicBoolean isAdmin = new AtomicBoolean(false);
-        BotApi.bot.getGuildMemberProfile(event.getGuildId(), event.getSender().getTinyId())
-                .getData()
-                .getRoles()
-                .stream()
-                .filter(roleInfo -> {
-                    if (Integer.parseInt(roleInfo.getRoleId()) >= 2 || Arrays.stream(adminList).anyMatch(s -> s.equals(roleInfo.getRoleName())))
-                        isAdmin.set(true);
-                    return false;
-                });
+        if (!BotUtils.varParse(event)) return;
+        String commandHead = event.getMessage().split(" ")[0].substring(1);
 
 
-        if (isAdmin.get()) {
-            CustomCmdHandler.getInstance().getCustomCmds().stream()
-                    .filter(customCmd -> customCmd.getRequirePermission() == 1 && customCmd.getCmdAlies().equals(commandBody))
-                    .forEach(customCmd -> GuildCmd(BotApi.bot, customCmd, event));
+        if (BotUtils.guildAdminParse(event)) {
+            CustomCmdHandler.INSTANCE.getCustomCmds().stream()
+                    .filter(customCmd -> customCmd.getRequirePermission() == 1 && customCmd.getCmdAlies().equals(commandHead))
+                    .forEach(customCmd -> GuildCmd(BotApi.bot, customCmd, event));//admin
         } else {
-            CustomCmdHandler.getInstance().getCustomCmds().stream()
-                    .filter(customCmd -> customCmd.getRequirePermission() == 0 && customCmd.getCmdAlies().equals(commandBody))
+            CustomCmdHandler.INSTANCE.getCustomCmds().stream()
+                    .filter(customCmd -> customCmd.getRequirePermission() == 0 && customCmd.getCmdAlies().equals(commandHead))
                     .forEach(customCmd -> GuildCmd(BotApi.bot, customCmd, event));
         }
 
