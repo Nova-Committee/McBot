@@ -11,13 +11,21 @@ repositories {
         url 'https://maven.nova-committee.cn/releases'
     }
     maven { url "https://maven.nucleoid.xyz/" }
+    maven {
+        name = 'ParchmentMC'
+        url = 'https://maven.parchmentmc.org'
+    }
 }
 
 dependencies {
 
     // To change the versions see the gradle.properties file
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
-    mappings loom.officialMojangMappings()
+    compileOnly 'org.projectlombok:lombok:1.18.24'
+    mappings loom.layered() {
+        officialMojangMappings()
+        parchment("org.parchmentmc.data:parchment-${project.minecraft_version}:${project.parchement_version}@zip")
+    }
     modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
     modImplementation include("cn.evolvefield.bot:OneBot-SDK:${project.sdk_version}")
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"

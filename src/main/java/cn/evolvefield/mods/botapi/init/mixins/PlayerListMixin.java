@@ -26,4 +26,5 @@ public class PlayerListMixin {
     public void PlayerList_remove(ServerPlayer player, CallbackInfo ci) {
         PlayerEvents.PLAYER_LOGGED_OUT.invoker().onPlayerLoggedOut(player.level, player);
     }
+
 }
