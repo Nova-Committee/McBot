@@ -26,7 +26,7 @@ public class BotCmdRun extends CommandSourceStack {
             "Bot", Component.literal("Bot"), BotApi.SERVER, null);
 
     public static BotCmdRun OP = new BotCmdRun(CommandSource.NULL, Vec3.ZERO, Vec2.ZERO, BotApi.SERVER.overworld(), 4,
-            "Bot", Component.literal("Bot"), BotApi.SERVER, null);
+            "OP", Component.literal("OP"), BotApi.SERVER, null);
     public List<String> outPut = new ArrayList<>();
 
     public BotCmdRun(CommandSource p_81302_, Vec3 p_81303_, Vec2 p_81304_, ServerLevel p_81305_, int p_81306_, String p_81307_, Component p_81308_, MinecraftServer p_81309_, @Nullable Entity p_81310_) {
