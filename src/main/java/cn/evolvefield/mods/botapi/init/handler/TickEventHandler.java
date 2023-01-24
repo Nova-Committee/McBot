@@ -30,7 +30,7 @@ public class TickEventHandler {
                     && toSend != null
             ) {
                 Component textComponents = Component.literal(toSend);
-                world.getServer().getPlayerList().broadcastSystemMessage(textComponents, true);
+                world.getServer().getPlayerList().broadcastSystemMessage(textComponents, false);
             }
         });
     }

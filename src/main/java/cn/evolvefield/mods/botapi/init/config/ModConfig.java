@@ -92,7 +92,7 @@ public class ModConfig {
         @SerializedName("mcPrefix")
         private String mcPrefix = "MC";//来自游戏的消息前缀
         @SerializedName("mcChatPrefixEnable")
-        private boolean mcChatPrefixEnable = false;//游戏中系统命令发送的消息
+        private boolean mcChatPrefixEnable = false;//游戏中系统命令发送的消息头
         @SerializedName("mcSystemPrefixEnable")
         private boolean mcSystemPrefixEnable = true;//游戏中自定义消息头
         @SerializedName("qqChatPrefixEnable")
@@ -101,7 +101,8 @@ public class ModConfig {
         private String mcChatPrefix = "q";//游戏中自定义的消息头文本
         @SerializedName("qqChatPrefix")
         private String qqChatPrefix = "m";//qq中自定义的消息头文本
-
+        @SerializedName("mcSystemPrefix")
+        private String mcSystemPrefix = "SERVER";//游戏中系统命令发送的消息头文本
 
     }
 

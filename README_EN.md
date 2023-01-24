@@ -27,8 +27,8 @@ _✨ Based on [OneBot](https://github.com/howmanybots/onebot/blob/master/README.
 
 # LTS
 
-> Forge-1.19.2  
-> Fabric-1.19.2
+> Forge-1.19.3  
+> Fabric-1.19.3
 
 # QuickStart
 

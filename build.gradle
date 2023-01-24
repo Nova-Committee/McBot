@@ -31,6 +31,7 @@ dependencies {
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
     //modImplementation include("eu.pb4:placeholder-api:${project.placeholder_version}")
     annotationProcessor "cn.evolvefield.bot:OneBot-SDK:${project.sdk_version}"
+    annotationProcessor "org.projectlombok:lombok:1.18.24"
 
 }
 

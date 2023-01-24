@@ -22,17 +22,13 @@ public class BotUtils {
         CustomCmdHandler.INSTANCE.getCustomCmdMap().keySet().forEach(
                 s -> {
                     if (CustomCmdHandler.INSTANCE.getCmdByAlies(s).getCmdContent().contains("%")) {
-                        String commandHead = event.getMessage().split("%")[0].stripTrailing();
-                        if (s.equals(commandHead))
+                        if (event.getMessage().substring(1).contains(s))
                             match.set(true);
-                    } else {
-                        match.set(true);
                     }
 
                 }
         );
         return match.get();
-
     }
 
     public static boolean guildAdminParse(GuildMessageEvent event) {

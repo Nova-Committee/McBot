@@ -8,7 +8,7 @@
     "PlayerListMixin",
     "ServerGamePacketListenerImplMixin",
     "ServerPlayerMixin",
-    "cmd.SayCmdMixin"
+    "cmd.SystemCmdMixin"
   ],
   "client": [
   ],

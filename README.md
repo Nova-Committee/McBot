@@ -27,8 +27,8 @@ _✨ 基于 [OneBot](https://github.com/howmanybots/onebot/blob/master/README.md
 
 # 长期支持版本
 
-> Forge-1.19.2  
-> Fabric-1.19.2
+> Forge-1.19.3    
+> Fabric-1.19.3
 
 # 快速开始
 
