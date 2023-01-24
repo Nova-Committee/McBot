@@ -71,18 +71,31 @@ public class CustomCmdHandler {
             json.addProperty("role", 0);
             json.addProperty("enable", true);
 
+            var json2 = new JsonObject();
+            json.addProperty("alies", "say");
+            json.addProperty("content", "say %");
+            json.addProperty("role", 1);
+            json.addProperty("enable", true);
+
             FileWriter writer = null;
+            FileWriter writer2 = null;
 
             try {
                 var file = new File(dir, "list.json");
+                var file2 = new File(dir, "say.json");
                 writer = new FileWriter(file);
+                writer2 = new FileWriter(file2);
 
                 GSON.toJson(json, writer);
+                GSON.toJson(json2, writer2);
+
                 writer.close();
+                writer2.close();
             } catch (Exception e) {
                 Static.LOGGER.error("An error occurred while generating default custom cmd", e);
             } finally {
                 IOUtils.closeQuietly(writer);
+                IOUtils.closeQuietly(writer2);
             }
 
         }

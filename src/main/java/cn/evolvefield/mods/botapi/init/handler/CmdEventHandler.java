@@ -35,6 +35,7 @@ public class CmdEventHandler {
                                     )
 
                             )
+                            .then(Commands.literal("customs").executes(ListCustomCommand::execute))
                             .then(Commands.literal("reload").executes(ReloadConfigCmd::execute))
                             .then(Commands.literal("disconnect").executes(DisconnectCommand::execute))
                             .then(Commands.literal("setGuild")
