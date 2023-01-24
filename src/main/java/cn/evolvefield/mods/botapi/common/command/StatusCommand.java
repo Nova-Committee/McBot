@@ -2,6 +2,7 @@ package cn.evolvefield.mods.botapi.common.command;
 
 
 import cn.evolvefield.mods.botapi.BotApi;
+import com.mojang.brigadier.Command;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.commands.CommandSourceStack;
@@ -50,6 +51,6 @@ public class StatusCommand {
                         + "发送玩家成就消息状态:" + sAchievementsEnabled + "\n"
                         + "发送群成员进/退群消息状态:" + sWelcomeEnabled + "\n";
         context.getSource().sendSuccess(Component.literal(toSend), true);
-        return 1;
+        return Command.SINGLE_SUCCESS;
     }
 }

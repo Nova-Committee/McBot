@@ -2,6 +2,7 @@ package cn.evolvefield.mods.botapi.common.command;
 
 
 import cn.evolvefield.mods.botapi.init.handler.CustomCmdHandler;
+import com.mojang.brigadier.Command;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.commands.CommandSourceStack;
@@ -15,6 +16,6 @@ public class ListCustomCommand {
             out.append(s).append("\n");
         }
         context.getSource().sendSuccess(Component.literal(out.toString()), true);
-        return 1;
+        return Command.SINGLE_SUCCESS;
     }
 }

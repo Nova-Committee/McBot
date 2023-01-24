@@ -1,6 +1,7 @@
 package cn.evolvefield.mods.botapi.common.command;
 
 
+import com.mojang.brigadier.Command;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.commands.CommandSourceStack;
@@ -51,6 +52,6 @@ public class HelpCommand {
         var urlC = Component.literal(url).setStyle(Style.EMPTY.withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://github.com/Nova-Committee/Bot-Connect/issues/new")));
         var endC = Component.literal(end);
         context.getSource().sendSuccess(Component.literal(toSend).append(urlC).append(endC), true);
-        return 1;
+        return Command.SINGLE_SUCCESS;
     }
 }

@@ -2,6 +2,7 @@ package cn.evolvefield.mods.botapi.common.command;
 
 import cn.evolvefield.mods.botapi.BotApi;
 import cn.evolvefield.mods.botapi.init.handler.ConfigHandler;
+import com.mojang.brigadier.Command;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.commands.CommandSourceStack;
@@ -25,6 +26,6 @@ public class ReloadConfigCmd {
             context.getSource().sendSuccess(Component.literal("重载配置失败"), true);
 
         }
-        return 1;
+        return Command.SINGLE_SUCCESS;
     }
 }
