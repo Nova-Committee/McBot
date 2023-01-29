@@ -1,7 +1,7 @@
 {
-  "botapi.chat.type.advancement.task": "%s 完成了成就 %s",
-  "botapi.chat.type.advancement.challenge": "%s 完成了挑战 %s",
-  "botapi.chat.type.advancement.goal": "%s 实现了目标 %s",
+  "botapi.chat.type.advancement.task": "%s has made the advancement %s",
+  "botapi.chat.type.advancement.challenge": "%s has made the challenge %s",
+  "botapi.chat.type.advancement.goal": "%s has made the goal %s",
   "botapi.death.fell.accident.ladder": "%1$s fell off a ladder",
   "botapi.death.fell.accident.vines": "%1$s fell off some vines",
   "botapi.death.fell.accident.weeping_vines": "%1$s fell off some weeping vines",
