@@ -261,7 +261,7 @@
   "Protect a villager from an undesired shock without starting a fire": "在不引发火灾的前提下保护村民免受雷击",
   "Cover Me with Diamonds": "钻石护体",
   "Enchanter": "附魔师",
-  "Make the text of a sign glow": "让告示牌的文本发光",
+  "Make the text of any sign glow‌": "让任意种类告示牌上的文本发光",
   "Obtain Crying Obsidian": "获得哭泣的黑曜石",
   "Challenge Complete!": "挑战已完成！",
   "Shoot something with an arrow": "用弓箭射点什么",
@@ -292,6 +292,20 @@
   "Have every effect applied at the same time": "同时拥有所有状态效果",
   "Respawn the Ender Dragon": "复活末影龙",
   "Hired Help": "招募援兵",
-  "Hold the Dragon Egg": "获得龙蛋"
+  "Hold the Dragon Egg": "获得龙蛋",
+  "Bukkit bukkit": "蚪到桶里来",
+  "Catch a tadpole in a Bucket": "用桶捕获一只蝌蚪",
+  "It spreads": "它蔓延了",
+  "Kill a mob near a Sculk Catalyst": "在幽匿催发体附近杀死生物",
+  "With our powers combined!": "相映生辉！",
+  "Have all Froglights in your inventory": "在你的物品栏中集齐所有种类的蛙明灯",
+  "You Got a Friend in Me": "找到一个好朋友",
+  "Have an Allay deliver items to you": "让悦灵向你投掷物品",
+  "Birthday Song": "生日快乐歌",
+  "Have an Allay drop a Cake at a Note Block": "让悦灵向音符盒投掷一块蛋糕",
+  "Sneak 100": "潜行100级",
+  "Sneak near a Sculk Sensor or Warden to prevent it from detecting you": "在幽匿感测体或监守者周围潜行以防被它们探测到",
+  "When the Squad Hops into Town": "呱呱队出动",
+  "Get each Frog variant on a Lead": "用拴绳拴住所有种类的青蛙"
 }
 
