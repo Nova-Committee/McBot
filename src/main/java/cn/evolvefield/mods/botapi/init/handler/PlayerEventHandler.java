@@ -2,7 +2,7 @@ package cn.evolvefield.mods.botapi.init.handler;
 
 import cn.evolvefield.mods.botapi.BotApi;
 import cn.evolvefield.mods.botapi.init.callbacks.PlayerEvents;
-import cn.evolvefield.mods.botapi.util.locale.I18a;
+import cn.evolvefield.mods.botapi.util.locale.I18n;
 import net.minecraft.world.entity.LivingEntity;
 
 
@@ -43,8 +43,7 @@ public class PlayerEventHandler {
             if (player != null && BotApi.config.getStatus().isS_DEATH_ENABLE() && BotApi.config.getStatus().isSEND_ENABLED()) {
                 LivingEntity livingEntity2 = player.getKillCredit();
                 String string = "botapi.death.attack." + source.msgId;
-                String string2 = string + ".player";
-                String msg = livingEntity2 != null ? I18a.get(string2, player.getDisplayName().getString(), livingEntity2.getDisplayName().getString()) : I18a.get(string, player.getDisplayName().getString());
+                String msg = livingEntity2 != null ? I18n.get(string2, player.getDisplayName().getString(), livingEntity2.getDisplayName().getString()) : I18n.get(string, player.getDisplayName().getString());
 
                 if (BotApi.config.getCommon().isGuildOn() && !BotApi.config.getCommon().getChannelIdList().isEmpty()) {
                     for (String id : BotApi.config.getCommon().getChannelIdList())
@@ -58,7 +57,7 @@ public class PlayerEventHandler {
 
         PlayerEvents.PLAYER_ADVANCEMENT.register((player, advancement) -> {
             if (BotApi.config.getStatus().isS_ADVANCE_ENABLE() && advancement.getDisplay() != null && BotApi.config.getStatus().isSEND_ENABLED()) {
-                String msg = I18a.get("botapi.chat.type.advancement." + advancement.getDisplay().getFrame().getName(), player.getDisplayName().getString(), I18a.get(advancement.getDisplay().getTitle().getString()));
+                String msg = I18n.get("botapi.chat.type.advancement." + advancement.getDisplay().getFrame().getName(), player.getDisplayName().getString(), I18n.get(advancement.getDisplay().getTitle().getString()));
 
                 if (BotApi.config.getCommon().isGuildOn() && !BotApi.config.getCommon().getChannelIdList().isEmpty()) {
                     for (String id : BotApi.config.getCommon().getChannelIdList())

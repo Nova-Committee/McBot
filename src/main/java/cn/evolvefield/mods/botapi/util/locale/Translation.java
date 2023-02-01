@@ -45,7 +45,7 @@ public abstract class Translation {
 
             if (inputStream == null) {
                 Static.LOGGER.info(String.format("No BotApi lang file for the language '%s' found. Make it to 'en_us' by default.", langId));
-                inputStream = I18a.class.getResourceAsStream(String.format(resourceFString, DEFAULT_LANGUAGE));
+                inputStream = I18n.class.getResourceAsStream(String.format(resourceFString, DEFAULT_LANGUAGE));
             }
 
             try {

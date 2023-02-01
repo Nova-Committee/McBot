@@ -2,14 +2,14 @@ package cn.evolvefield.mods.botapi.util.locale;
 
 import java.util.IllegalFormatException;
 
-public class I18a {
+public class I18n {
     private static volatile Translation language = Translation.getInstance();
 
-    private I18a() {
+    private I18n() {
     }
 
     static void setLanguage(Translation language) {
-        I18a.language = language;
+        I18n.language = language;
     }
 
     public static String get(String string, Object... objects) {
