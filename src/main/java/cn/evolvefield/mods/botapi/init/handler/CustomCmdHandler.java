@@ -112,7 +112,6 @@ public class CustomCmdHandler {
             CustomCmd customCmd = null;
 
             try {
-                var parser = new JsonParser();
                 reader = new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8);
                 var name = file.getName().replace(".json", "");
                 json = JsonParser.parseReader(reader).getAsJsonObject();
@@ -121,7 +120,7 @@ public class CustomCmdHandler {
 
                 reader.close();
             } catch (Exception e) {
-                Static.LOGGER.error("An error occurred while loading custom cmd", e);
+                Static.LOGGER.error("加载自定义命令出错，请检查文件", e);
             } finally {
                 IOUtils.closeQuietly(reader);
             }

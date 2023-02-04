@@ -23,14 +23,14 @@ public class TickEventHandler {
 
 
     public static void init() {
-        ServerTickEvents.END_WORLD_TICK.register(world -> {
+        ServerTickEvents.END_SERVER_TICK.register(server -> {
             String toSend = toSendQueue.poll();
             if (BotApi.config != null
-                    && !world.isClientSide
+                    && server.isDedicatedServer()
                     && toSend != null
             ) {
                 Component textComponents = Component.literal(toSend);
-                world.getServer().getPlayerList().broadcastSystemMessage(textComponents, false);
+                server.getPlayerList().broadcastSystemMessage(textComponents, false);
             }
         });
     }
