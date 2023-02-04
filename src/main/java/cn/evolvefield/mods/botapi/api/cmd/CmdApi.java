@@ -44,10 +44,12 @@ public class CmdApi {
             CustomCmdHandler.INSTANCE.getCustomCmds().stream()
                     .filter(customCmd -> customCmd.getRequirePermission() == 1 && customCmd.getCmdAlies().equals(commandHead))
                     .forEach(customCmd -> GroupCmd(BotApi.bot, customCmd, event.getGroupId(), command, BotUtils.varParse(event)));//admin
+        } else {
+            CustomCmdHandler.INSTANCE.getCustomCmds().stream()
+                    .filter(customCmd -> customCmd.getRequirePermission() == 0 && customCmd.getCmdAlies().equals(commandHead))
+                    .forEach(customCmd -> GroupCmd(BotApi.bot, customCmd, event.getGroupId(), command, BotUtils.varParse(event)));
         }
-        CustomCmdHandler.INSTANCE.getCustomCmds().stream()
-                .filter(customCmd -> customCmd.getRequirePermission() == 0 && customCmd.getCmdAlies().equals(commandHead))
-                .forEach(customCmd -> GroupCmd(BotApi.bot, customCmd, event.getGroupId(), command, BotUtils.varParse(event)));
+
 
     }
 
