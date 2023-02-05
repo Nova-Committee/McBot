@@ -72,7 +72,7 @@ publishing {
         mavenJava(MavenPublication) {
             from components.java
 
-            version = "${project.mod_version}"
+            version = "${project.version_prefix}" + "-" + "${project.mod_version}"
             artifactId = "${project.archives_base_name}"
             groupId = "${project.maven_group}"
             pom {
