@@ -1,6 +1,6 @@
 package cn.evolvefield.mods.botapi.init.handler;
 
-import cn.evolvefield.mods.botapi.Static;
+import cn.evolvefield.mods.botapi.Const;
 import cn.evolvefield.mods.botapi.api.cmd.CustomCmd;
 import com.google.common.base.Stopwatch;
 import com.google.common.collect.Lists;
@@ -60,7 +60,7 @@ public class CustomCmdHandler {
 
         stopwatch.stop();
 
-        Static.LOGGER.info("Loaded {} custom cmd(s) in {} ms", this.customCmdMap.size(), stopwatch.elapsed(TimeUnit.MILLISECONDS));
+        Const.LOGGER.info("Loaded {} custom cmd(s) in {} ms", this.customCmdMap.size(), stopwatch.elapsed(TimeUnit.MILLISECONDS));
     }
 
     public void writeDefault() {
@@ -92,7 +92,7 @@ public class CustomCmdHandler {
                 writer.close();
                 writer2.close();
             } catch (Exception e) {
-                Static.LOGGER.error("An error occurred while generating default custom cmd", e);
+                Const.LOGGER.error("An error occurred while generating default custom cmd", e);
             } finally {
                 IOUtils.closeQuietly(writer);
                 IOUtils.closeQuietly(writer2);
@@ -116,11 +116,11 @@ public class CustomCmdHandler {
                 var name = file.getName().replace(".json", "");
                 json = JsonParser.parseReader(reader).getAsJsonObject();
 
-                customCmd = CustomCmd.loadFromJson(new ResourceLocation(Static.MODID, name), json);
+                customCmd = CustomCmd.loadFromJson(new ResourceLocation(Const.MODID, name), json);
 
                 reader.close();
             } catch (Exception e) {
-                Static.LOGGER.error("加载自定义命令出错，请检查文件", e);
+                Const.LOGGER.error("加载自定义命令出错，请检查文件", e);
             } finally {
                 IOUtils.closeQuietly(reader);
             }
@@ -129,7 +129,7 @@ public class CustomCmdHandler {
                 String alies = customCmd.getCmdAlies();
                 if (customCmd.getCmdContent().contains("%"))
                     alies = customCmd.getCmdContent().split("%")[0].stripTrailing();
-                Static.LOGGER.debug(alies);
+                Const.LOGGER.debug(alies);
                 this.customCmdMap.put(alies, customCmd);
 
 

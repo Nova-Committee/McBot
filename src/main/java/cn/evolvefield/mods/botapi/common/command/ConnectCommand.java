@@ -2,7 +2,7 @@ package cn.evolvefield.mods.botapi.common.command;
 
 
 import cn.evolvefield.mods.botapi.BotApi;
-import cn.evolvefield.mods.botapi.Static;
+import cn.evolvefield.mods.botapi.Const;
 import cn.evolvefield.mods.botapi.init.handler.ConfigHandler;
 import cn.evolvefield.onebot.sdk.connection.ConnectFactory;
 import com.mojang.brigadier.Command;
@@ -31,7 +31,7 @@ public class ConnectCommand {
                 BotApi.service.create();//创建websocket连接
                 BotApi.bot = BotApi.service.createBot();//创建机器人实例
             } catch (Exception e) {
-                Static.LOGGER.error(e.getMessage());
+                Const.LOGGER.error(e.getMessage());
             }
             BotApi.config.getStatus().setRECEIVE_ENABLED(true);
             BotApi.config.getCommon().setEnable(true);
@@ -59,7 +59,7 @@ public class ConnectCommand {
                 BotApi.service.create();//创建websocket连接
                 BotApi.bot = BotApi.service.createBot();//创建机器人实例
             } catch (Exception e) {
-                Static.LOGGER.error(e.getMessage());
+                Const.LOGGER.error(e.getMessage());
             }
             BotApi.config.getStatus().setRECEIVE_ENABLED(true);
             BotApi.config.getCommon().setEnable(true);
@@ -82,7 +82,7 @@ public class ConnectCommand {
             BotApi.service.create();//创建websocket连接
             BotApi.bot = BotApi.service.createBot();//创建机器人实例
         } catch (Exception e) {
-            Static.LOGGER.error(e.getMessage());
+            Const.LOGGER.error(e.getMessage());
         }
         BotApi.config.getStatus().setRECEIVE_ENABLED(true);
         BotApi.config.getCommon().setEnable(true);
@@ -101,7 +101,7 @@ public class ConnectCommand {
             BotApi.service.create();//创建websocket连接
             BotApi.bot = BotApi.service.createBot();//创建机器人实例
         } catch (Exception e) {
-            Static.LOGGER.error(e.getMessage());
+            Const.LOGGER.error(e.getMessage());
         }
         BotApi.config.getStatus().setRECEIVE_ENABLED(true);
         BotApi.config.getCommon().setEnable(true);

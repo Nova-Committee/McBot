@@ -2,6 +2,7 @@ package cn.evolvefield.mods.botapi.init.handler;
 
 import cn.evolvefield.mods.botapi.BotApi;
 import cn.evolvefield.mods.botapi.api.cmd.CmdApi;
+import cn.evolvefield.mods.botapi.util.onebot.CQUtils;
 import cn.evolvefield.onebot.sdk.listener.SimpleListener;
 import cn.evolvefield.onebot.sdk.model.event.EventDispatchers;
 import cn.evolvefield.onebot.sdk.model.event.message.GroupMessageEvent;
@@ -32,12 +33,13 @@ public class BotEventHandler {
             public void onMessage(GroupMessageEvent event) {
                 if (BotApi.config.getCommon().getGroupIdList().contains(event.getGroupId())//判断是否是配置中的群
                         && !event.getMessage().startsWith(BotApi.config.getCmd().getCommandStart())//过滤命令前缀
-                        && !event.getMessage().contains("[CQ:")//去除字符之外的其他cq码
                         && BotApi.config.getStatus().isRECEIVE_ENABLED()//总接受开关
                         && BotApi.config.getStatus().isR_CHAT_ENABLE()//接受聊天开关
                         && event.getUserId() != BotApi.config.getCommon().getBotId()
                 ) {
-                    String send = event.getMessage();
+
+                    String send = CQUtils.replace(event.getMessage());//暂时匹配仅符合字符串聊天内容与图片
+
                     if (BotApi.config.getCmd().isQqChatPrefixEnable()) {
                         var split = event.getMessage().split(" ");
                         if (BotApi.config.getCmd().getQqChatPrefix().equals(split[0])) //指定前缀发送
@@ -46,6 +48,8 @@ public class BotEventHandler {
                     }
                     String toSend = String.format("§b[§l%s§r(§5%s§b)]§a<%s>§f %s", BotApi.config.getCmd().getQqPrefix(), event.getGroupId(), event.getSender().getNickname(), send);
                     TickEventHandler.getToSendQueue().add(toSend);
+
+
                 }
             }
         });

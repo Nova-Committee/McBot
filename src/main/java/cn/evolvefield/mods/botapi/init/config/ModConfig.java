@@ -132,6 +132,8 @@ public class ModConfig {
         private String languageSelect = "zh_cn";//选择语言系统
         @SerializedName("auto_open")
         private boolean autoOpen = true;//自动重连
+        @SerializedName("image_on")
+        private boolean imageOn = true;//是否开启聊天栏图片功能
 
         public void addChannelId(String id) {
             this.channelIdList.add(id);

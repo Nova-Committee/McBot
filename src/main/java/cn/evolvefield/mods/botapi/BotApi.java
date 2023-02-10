@@ -33,7 +33,7 @@ public class BotApi implements ModInitializer {
     public static ModConfig config;
 
     public BotApi() {
-
+       Const.ChatImageOn = FabricLoader.getInstance().isModLoaded("chatimage");
     }
 
     @Override
@@ -68,7 +68,7 @@ public class BotApi implements ModInitializer {
                 service.create();//创建websocket连接
                 bot = service.createBot();//创建机器人实例
             } catch (Exception e) {
-                Static.LOGGER.error("§c机器人服务端未配置或未打开");
+                Const.LOGGER.error("§c机器人服务端未配置或未打开");
             }
         }
         dispatchers = new EventDispatchers(blockingQueue);//创建事件分发器
@@ -86,7 +86,7 @@ public class BotApi implements ModInitializer {
             service.close();
         }
         ConfigHandler.save(config);
-        Static.LOGGER.info("▌ §c正在关闭群服互联 §a┈━═☆");
+        Const.LOGGER.info("▌ §c正在关闭群服互联 §a┈━═☆");
 
     }
 }

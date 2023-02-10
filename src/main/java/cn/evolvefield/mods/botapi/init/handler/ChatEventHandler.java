@@ -15,7 +15,9 @@ public class ChatEventHandler {
             var split = message.split(" ");
             if (BotApi.config != null
                     && BotApi.config.getStatus().isS_CHAT_ENABLE()
-                    && BotApi.config.getStatus().isSEND_ENABLED()) {
+                    && BotApi.config.getStatus().isSEND_ENABLED()
+                    && !message.contains("CICode")
+            ) {
                 if (BotApi.config.getCommon().isGuildOn() && !BotApi.config.getCommon().getChannelIdList().isEmpty()) {
                     for (String id : BotApi.config.getCommon().getChannelIdList())
                         BotApi.bot.sendGuildMsg(BotApi.config.getCommon().getGuildId(),
