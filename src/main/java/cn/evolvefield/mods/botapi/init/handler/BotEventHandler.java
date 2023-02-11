@@ -102,13 +102,12 @@ public class BotEventHandler {
                 if (event.getGuildId().equals(BotApi.config.getCommon().getGuildId())
                         && BotApi.config.getCommon().getChannelIdList().contains(event.getChannelId())
                         && !event.getMessage().startsWith(BotApi.config.getCmd().getCommandStart())//过滤命令前缀
-                        && !event.getMessage().contains("[CQ:")//去除字符之外的其他cq码
                         && BotApi.config.getStatus().isRECEIVE_ENABLED()//总接受开关
                         && BotApi.config.getStatus().isR_CHAT_ENABLE()//接受聊天开关
                         && event.getUserId() != BotApi.config.getCommon().getBotId()
                 ) {
 
-                    String send = event.getMessage();
+                    String send = CQUtils.replace(event.getMessage());//暂时匹配仅符合字符串聊天内容与图片
                     if (BotApi.config.getCmd().isQqChatPrefixEnable()) {
                         var split = event.getMessage().split(" ");
                         if (BotApi.config.getCmd().getQqChatPrefix().equals(split[0])) //指定前缀发送

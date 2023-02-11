@@ -14,54 +14,51 @@ import cn.evolvefield.onebot.sdk.model.event.message.GuildMessageEvent;
  * Version: 1.0
  */
 public class CmdApi {
-    private static StringBuilder CmdMain(CustomCmd customCmd, String cmd, boolean isVar) {
+    private static StringBuilder CmdMain(String cmd, boolean isOp) {
         StringBuilder result = new StringBuilder();
-        if (isVar)
-            BotApi.SERVER.getCommands().performPrefixedCommand(BotCmdRun.OP, cmd);
-        else
-            BotApi.SERVER.getCommands().performPrefixedCommand(BotCmdRun.CUSTOM, customCmd.getCmdContent());
-
-        for (String s : BotCmdRun.CUSTOM.outPut) {
+        BotApi.SERVER.getCommands().performPrefixedCommand(isOp ? BotCmdRun.OP : BotCmdRun.CUSTOM, cmd);//优雅
+        for (String s : (isOp ? BotCmdRun.OP.outPut : BotCmdRun.CUSTOM.outPut)) {
             result.append(s.replaceAll("§\\S", "")).append("\n");
         }
-        BotCmdRun.CUSTOM.outPut.clear();
+        if (isOp) BotCmdRun.OP.outPut.clear();
+        else BotCmdRun.CUSTOM.outPut.clear();
         return result;
     }
 
-    public static void GroupCmd(Bot bot, CustomCmd customCmd, long groupId, String cmd, boolean isVar) {
-        bot.sendGroupMsg(groupId, CmdMain(customCmd, cmd, isVar).toString(), true);
+    private static void GroupCmd(Bot bot, long groupId, String cmd, boolean isOp) {
+        bot.sendGroupMsg(groupId, CmdMain(cmd, isOp).toString(), true);
     }
 
-    public static void GuildCmd(Bot bot, CustomCmd customCmd, String guildId, String channelId, String cmd, boolean isVar) {
-        bot.sendGuildMsg(guildId, channelId, CmdMain(customCmd, cmd, isVar).toString());
+    private static void GuildCmd(Bot bot, String guildId, String channelId, String cmd, boolean isOp) {
+        bot.sendGuildMsg(guildId, channelId, CmdMain(cmd, isOp).toString());
     }
 
     public static void invokeCommandGroup(GroupMessageEvent event) {
         String commandHead = event.getMessage().split(" ")[0].substring(1);
-        String command = event.getMessage().substring(1);
+        String command = event.getMessage().substring(1);//去除前缀
 
         if (BotUtils.groupAdminParse(event)) {
             CustomCmdHandler.INSTANCE.getCustomCmds().stream()
                     .filter(customCmd -> customCmd.getRequirePermission() >= 1 && customCmd.getCmdAlies().equals(commandHead))
-                    .forEach(customCmd -> GroupCmd(BotApi.bot, customCmd, event.getGroupId(), command, BotUtils.varParse(event)));//admin
+                    .forEach(customCmd -> GroupCmd(BotApi.bot, event.getGroupId(), BotUtils.varParse(event, customCmd, command), true));//admin
         }
         CustomCmdHandler.INSTANCE.getCustomCmds().stream()
                 .filter(customCmd -> customCmd.getRequirePermission() < 1 && customCmd.getCmdAlies().equals(commandHead))
-                .forEach(customCmd -> GroupCmd(BotApi.bot, customCmd, event.getGroupId(), command, BotUtils.varParse(event)));
+                .forEach(customCmd -> GroupCmd(BotApi.bot, event.getGroupId(), BotUtils.varParse(event, customCmd, command), false));
 
     }
 
     public static void invokeCommandGuild(GuildMessageEvent event) {
         String commandHead = event.getMessage().split(" ")[0].substring(1);
-        String command = event.getMessage().substring(1);
+        String command = event.getMessage().substring(1);//去除前缀
 
         if (BotUtils.guildAdminParse(event)) {
             CustomCmdHandler.INSTANCE.getCustomCmds().stream()
                     .filter(customCmd -> customCmd.getRequirePermission() >= 1 && customCmd.getCmdAlies().equals(commandHead))
-                    .forEach(customCmd -> GuildCmd(BotApi.bot, customCmd, event.getGuildId(), event.getChannelId(), command, BotUtils.varParse(event)));//admin
+                    .forEach(customCmd -> GuildCmd(BotApi.bot, event.getGuildId(), event.getChannelId(), BotUtils.varParse(event, customCmd, command), true));//admin
         }
         CustomCmdHandler.INSTANCE.getCustomCmds().stream()
                 .filter(customCmd -> customCmd.getRequirePermission() < 1 && customCmd.getCmdAlies().equals(commandHead))
-                .forEach(customCmd -> GuildCmd(BotApi.bot, customCmd, event.getGuildId(), event.getChannelId(), command, BotUtils.varParse(event)));
+                .forEach(customCmd -> GuildCmd(BotApi.bot, event.getGuildId(), event.getChannelId(), BotUtils.varParse(event, customCmd, command), false));
     }
 }
