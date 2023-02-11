@@ -42,14 +42,12 @@ public class CmdApi {
 
         if (BotUtils.groupAdminParse(event)) {
             CustomCmdHandler.INSTANCE.getCustomCmds().stream()
-                    .filter(customCmd -> customCmd.getRequirePermission() == 1 && customCmd.getCmdAlies().equals(commandHead))
+                    .filter(customCmd -> customCmd.getRequirePermission() >= 1 && customCmd.getCmdAlies().equals(commandHead))
                     .forEach(customCmd -> GroupCmd(BotApi.bot, customCmd, event.getGroupId(), command, BotUtils.varParse(event)));//admin
-        } else {
-            CustomCmdHandler.INSTANCE.getCustomCmds().stream()
-                    .filter(customCmd -> customCmd.getRequirePermission() == 0 && customCmd.getCmdAlies().equals(commandHead))
-                    .forEach(customCmd -> GroupCmd(BotApi.bot, customCmd, event.getGroupId(), command, BotUtils.varParse(event)));
         }
-
+        CustomCmdHandler.INSTANCE.getCustomCmds().stream()
+                .filter(customCmd -> customCmd.getRequirePermission() < 1 && customCmd.getCmdAlies().equals(commandHead))
+                .forEach(customCmd -> GroupCmd(BotApi.bot, customCmd, event.getGroupId(), command, BotUtils.varParse(event)));
 
     }
 
@@ -59,14 +57,11 @@ public class CmdApi {
 
         if (BotUtils.guildAdminParse(event)) {
             CustomCmdHandler.INSTANCE.getCustomCmds().stream()
-                    .filter(customCmd -> customCmd.getRequirePermission() == 1 && customCmd.getCmdAlies().equals(commandHead))
+                    .filter(customCmd -> customCmd.getRequirePermission() >= 1 && customCmd.getCmdAlies().equals(commandHead))
                     .forEach(customCmd -> GuildCmd(BotApi.bot, customCmd, event.getGuildId(), event.getChannelId(), command, BotUtils.varParse(event)));//admin
-        } else {
-            CustomCmdHandler.INSTANCE.getCustomCmds().stream()
-                    .filter(customCmd -> customCmd.getRequirePermission() == 0 && customCmd.getCmdAlies().equals(commandHead))
-                    .forEach(customCmd -> GuildCmd(BotApi.bot, customCmd, event.getGuildId(), event.getChannelId(), command, BotUtils.varParse(event)));
         }
-
-
+        CustomCmdHandler.INSTANCE.getCustomCmds().stream()
+                .filter(customCmd -> customCmd.getRequirePermission() < 1 && customCmd.getCmdAlies().equals(commandHead))
+                .forEach(customCmd -> GuildCmd(BotApi.bot, customCmd, event.getGuildId(), event.getChannelId(), command, BotUtils.varParse(event)));
     }
 }

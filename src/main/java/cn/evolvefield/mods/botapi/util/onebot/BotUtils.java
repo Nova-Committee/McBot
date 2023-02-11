@@ -33,13 +33,14 @@ public class BotUtils {
 
     public static boolean guildAdminParse(GuildMessageEvent event) {
         AtomicBoolean isAdmin = new AtomicBoolean(false);
-        BotApi.bot.getGuildMemberProfile(event.getGuildId(), event.getSender().getTinyId())
+        for (var roleInfo : BotApi.bot.getGuildMemberProfile(event.getGuildId(), event.getSender().getTinyId())
                 .getData()
-                .getRoles()
-                .forEach(roleInfo -> {
-                    if (Integer.parseInt(roleInfo.getRoleId()) >= 2 || Arrays.stream(GuildRole.values()).anyMatch(s -> s.role.equals(roleInfo.getRoleName())))
-                        isAdmin.set(true);
-                });
+                .getRoles()) {
+            if (Integer.parseInt(roleInfo.getRoleId()) >= 2 || Arrays.stream(GuildRole.values()).anyMatch(s -> s.role.equals(roleInfo.getRoleName()))) {
+                isAdmin.set(true);
+                break;
+            }
+        }
         return isAdmin.get();
     }
 
