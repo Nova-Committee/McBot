@@ -1,6 +1,5 @@
 package cn.evolvefield.mods.botapi.common.command;
 
-import cn.evolvefield.mods.botapi.BotApi;
 import cn.evolvefield.mods.botapi.init.handler.ConfigHandler;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.context.CommandContext;
@@ -13,13 +12,13 @@ public class AddChannelIDCommand {
 
     public static int execute(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
         var id = context.getArgument("ChannelID", String.class);
-        BotApi.config.getCommon().setGuildOn(true);
-        if (BotApi.config.getCommon().getChannelIdList().contains(id)) {
+        ConfigHandler.cached().getCommon().setGuildOn(true);
+        if (ConfigHandler.cached().getCommon().getChannelIdList().contains(id)) {
             context.getSource().sendSuccess(Component.literal("子频道号:" + id + "已经出现了！"), true);
         } else {
-            BotApi.config.getCommon().addChannelId(id);
+            ConfigHandler.cached().getCommon().addChannelId(id);
         }
-        ConfigHandler.save(BotApi.config);
+        ConfigHandler.save();
         return Command.SINGLE_SUCCESS;
     }
 

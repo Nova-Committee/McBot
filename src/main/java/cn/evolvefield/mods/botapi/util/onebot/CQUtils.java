@@ -1,6 +1,7 @@
 package cn.evolvefield.mods.botapi.util.onebot;
 
 import cn.evolvefield.mods.botapi.Const;
+import cn.evolvefield.mods.botapi.init.handler.ConfigHandler;
 import cn.evolvefield.onebot.sdk.util.BotUtils;
 import cn.evolvefield.onebot.sdk.util.RegexUtils;
 
@@ -29,7 +30,7 @@ public class CQUtils {
     }
 
     public static String replace(String msg) {
-        if (Const.ChatImageOn) {
+        if (Const.ChatImageOn && ConfigHandler.cached().getCommon().isImageOn()) {
             var matcher = RegexUtils.regexMatcher(CQ_CODE_REGEX, msg);//匹配cq码格式
             AtomicReference<String> returnMsg = new AtomicReference<>("");//返回字符串
             if (matcher == null) {

@@ -20,9 +20,9 @@ public class DisconnectCommand {
             } else {
                 context.getSource().sendSuccess(Component.literal("WebSocket目前未连接"), true);
             }
-            BotApi.config.getCommon().setEnable(false);
-            ConfigHandler.save(BotApi.config);
+            ConfigHandler.cached().getCommon().setEnable(false);
         }
+        ConfigHandler.save();
         return Command.SINGLE_SUCCESS;
     }
 }

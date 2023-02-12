@@ -1,6 +1,5 @@
 package cn.evolvefield.mods.botapi.common.command;
 
-import cn.evolvefield.mods.botapi.BotApi;
 import cn.evolvefield.mods.botapi.init.handler.ConfigHandler;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.context.CommandContext;
@@ -13,10 +12,10 @@ public class VerifyKeyCommand {
 
     public static int execute(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
         var id = context.getArgument("VerifyKey", String.class);
-        BotApi.config.getBotConfig().setToken(id);
-        ConfigHandler.save(BotApi.config);
+        ConfigHandler.cached().getBotConfig().setToken(id);
         context.getSource().sendSuccess(
                 Component.literal("已设置Mirai框架的VerifyKey为:" + id), true);
+        ConfigHandler.save();
         return Command.SINGLE_SUCCESS;
     }
 

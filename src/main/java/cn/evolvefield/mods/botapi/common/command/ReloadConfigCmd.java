@@ -17,15 +17,15 @@ import net.minecraft.network.chat.Component;
 public class ReloadConfigCmd {
     public static int execute(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
         try {
-            BotApi.config = ConfigHandler.load();
-            if (BotApi.config == null) {
+            ConfigHandler.load(BotApi.CONFIG_FILE);
+            if (ConfigHandler.cached() == null) {
                 context.getSource().sendSuccess(Component.literal("重载配置失败"), true);
             }
             context.getSource().sendSuccess(Component.literal("重载配置成功"), true);
         } catch (Exception e) {
             context.getSource().sendSuccess(Component.literal("重载配置失败"), true);
-
         }
+        ConfigHandler.save();
         return Command.SINGLE_SUCCESS;
     }
 }

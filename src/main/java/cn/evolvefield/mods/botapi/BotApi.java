@@ -1,19 +1,22 @@
 package cn.evolvefield.mods.botapi;
 
-import cn.evolvefield.mods.botapi.init.config.ModConfig;
 import cn.evolvefield.mods.botapi.init.handler.*;
 import cn.evolvefield.onebot.sdk.connection.ConnectFactory;
 import cn.evolvefield.onebot.sdk.connection.ModWebSocketClient;
 import cn.evolvefield.onebot.sdk.core.Bot;
 import cn.evolvefield.onebot.sdk.model.event.EventDispatchers;
 import cn.evolvefield.onebot.sdk.util.FileUtils;
+import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.server.MinecraftServer;
 
+import java.io.File;
 import java.nio.file.Path;
+import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ScheduledExecutorService;
 
 
 /**
@@ -23,32 +26,26 @@ import java.util.concurrent.LinkedBlockingQueue;
  * Version: 1.0
  */
 public class BotApi implements ModInitializer {
-
+    public static ScheduledExecutorService configWatcherExecutorService = Executors.newSingleThreadScheduledExecutor(new ThreadFactoryBuilder().setNameFormat("BotApi Config Watcher %d").setDaemon(true).build());
     public static MinecraftServer SERVER = null;
     public static Path CONFIG_FOLDER;
+    public static File CONFIG_FILE;
     public static LinkedBlockingQueue<String> blockingQueue;
     public static ModWebSocketClient service;
     public static EventDispatchers dispatchers;
     public static Bot bot;
-    public static ModConfig config;
-
     public BotApi() {
-       Const.ChatImageOn = FabricLoader.getInstance().isModLoaded("chatimage");
+
     }
 
-    @Override
-    public void onInitialize() {
-        CONFIG_FOLDER = FabricLoader.getInstance().getConfigDir().resolve("botapi");
-        FileUtils.checkFolder(CONFIG_FOLDER);
-        ServerLifecycleEvents.SERVER_STARTING.register(this::onServerStarting);
-
-        ServerLifecycleEvents.SERVER_STARTED.register(this::onServerStarted);
-
-        ServerLifecycleEvents.SERVER_STOPPING.register(this::onServerStopping);
-        CmdEventHandler.init();
-        PlayerEventHandler.init();
-        ChatEventHandler.init();
-        TickEventHandler.init();
+    private static void killOutThreads() {
+        try {
+            Const.isShutdown = true;
+            ConfigHandler.watcher.get().close();
+            BotApi.configWatcherExecutorService.shutdownNow();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void onServerStarting(MinecraftServer server) {
@@ -59,12 +56,29 @@ public class BotApi implements ModInitializer {
         return SERVER;
     }
 
+    @Override
+    public void onInitialize() {
+        Const.ChatImageOn = FabricLoader.getInstance().isModLoaded("chatimage");
+        CONFIG_FOLDER = FabricLoader.getInstance().getConfigDir().resolve("botapi");
+        FileUtils.checkFolder(CONFIG_FOLDER);
+        CONFIG_FILE = CONFIG_FOLDER.resolve(Const.MODID + ".json").toFile();
+        ConfigHandler.init(CONFIG_FILE);
+        ServerLifecycleEvents.SERVER_STARTING.register(this::onServerStarting);
+        ServerLifecycleEvents.SERVER_STARTED.register(this::onServerStarted);
+        ServerLifecycleEvents.SERVER_STOPPING.register(this::onServerStopping);
+        ServerLifecycleEvents.SERVER_STOPPED.register(this::onServerStopped);
+        CmdEventHandler.init();
+        PlayerEventHandler.init();
+        ChatEventHandler.init();
+        TickEventHandler.init();
+        Runtime.getRuntime().addShutdownHook(new Thread(BotApi::killOutThreads));
+    }
+
     private void onServerStarted(MinecraftServer server) {
-        config = ConfigHandler.load();//读取配置
         blockingQueue = new LinkedBlockingQueue<>();//使用队列传输数据
-        if (config.getCommon().isAutoOpen()) {
+        if (ConfigHandler.cached().getCommon().isAutoOpen()) {
             try {
-                service = ConnectFactory.createWebsocketClient(config.getBotConfig(), blockingQueue);
+                service = ConnectFactory.createWebsocketClient(ConfigHandler.cached().getBotConfig(), blockingQueue);
                 service.create();//创建websocket连接
                 bot = service.createBot();//创建机器人实例
             } catch (Exception e) {
@@ -82,11 +96,15 @@ public class BotApi implements ModInitializer {
             dispatchers.stop();
         }
         if (service != null) {
-            config.getBotConfig().setReconnect(false);
+            ConfigHandler.cached().getBotConfig().setReconnect(false);
             service.close();
         }
-        ConfigHandler.save(config);
+        ConfigHandler.save();
         Const.LOGGER.info("▌ §c正在关闭群服互联 §a┈━═☆");
 
+    }
+
+    private void onServerStopped(MinecraftServer server) {
+        killOutThreads();
     }
 }

@@ -23,19 +23,18 @@ public class ConnectCommand {
         var pattern = Pattern.compile("(\\d+\\.\\d+\\.\\d+\\.\\d+):(\\d+)");
         var matcher = pattern.matcher(parameter);
         if (matcher.find()) {
-            BotApi.config.getBotConfig().setUrl("ws://" + parameter);
+            ConfigHandler.cached().getBotConfig().setUrl("ws://" + parameter);
             context.getSource().sendSuccess(Component.literal("尝试链接框架" + ChatFormatting.LIGHT_PURPLE + "cqhttp"), true);
-            BotApi.config.getBotConfig().setMiraiHttp(false);
+            ConfigHandler.cached().getBotConfig().setMiraiHttp(false);
             try {
-                BotApi.service = ConnectFactory.createWebsocketClient(BotApi.config.getBotConfig(), BotApi.blockingQueue);
+                BotApi.service = ConnectFactory.createWebsocketClient(ConfigHandler.cached().getBotConfig(), BotApi.blockingQueue);
                 BotApi.service.create();//创建websocket连接
                 BotApi.bot = BotApi.service.createBot();//创建机器人实例
             } catch (Exception e) {
                 Const.LOGGER.error(e.getMessage());
             }
-            BotApi.config.getStatus().setRECEIVE_ENABLED(true);
-            BotApi.config.getCommon().setEnable(true);
-            ConfigHandler.save(BotApi.config);
+            ConfigHandler.cached().getStatus().setRECEIVE_ENABLED(true);
+            ConfigHandler.cached().getCommon().setEnable(true);
 
             return Command.SINGLE_SUCCESS;
 
@@ -51,19 +50,18 @@ public class ConnectCommand {
         var pattern = Pattern.compile("(\\d+\\.\\d+\\.\\d+\\.\\d+):(\\d+)");
         var matcher = pattern.matcher(parameter);
         if (matcher.find()) {
-            BotApi.config.getBotConfig().setUrl("ws://" + parameter);
+            ConfigHandler.cached().getBotConfig().setUrl("ws://" + parameter);
             context.getSource().sendSuccess(Component.literal("尝试链接框架" + ChatFormatting.LIGHT_PURPLE + "mirai"), true);
-            BotApi.config.getBotConfig().setMiraiHttp(true);
+            ConfigHandler.cached().getBotConfig().setMiraiHttp(true);
             try {
-                BotApi.service = ConnectFactory.createWebsocketClient(BotApi.config.getBotConfig(), BotApi.blockingQueue);
+                BotApi.service = ConnectFactory.createWebsocketClient(ConfigHandler.cached().getBotConfig(), BotApi.blockingQueue);
                 BotApi.service.create();//创建websocket连接
                 BotApi.bot = BotApi.service.createBot();//创建机器人实例
             } catch (Exception e) {
                 Const.LOGGER.error(e.getMessage());
             }
-            BotApi.config.getStatus().setRECEIVE_ENABLED(true);
-            BotApi.config.getCommon().setEnable(true);
-            ConfigHandler.save(BotApi.config);
+            ConfigHandler.cached().getStatus().setRECEIVE_ENABLED(true);
+            ConfigHandler.cached().getCommon().setEnable(true);
 
             return Command.SINGLE_SUCCESS;
 
@@ -76,17 +74,17 @@ public class ConnectCommand {
     public static int cqhttpCommonExecute(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
 
         context.getSource().sendSuccess(Component.literal("尝试链接框架" + ChatFormatting.LIGHT_PURPLE + "cqhttp"), true);
-        BotApi.config.getBotConfig().setMiraiHttp(false);
+        ConfigHandler.cached().getBotConfig().setMiraiHttp(false);
         try {
-            BotApi.service = ConnectFactory.createWebsocketClient(BotApi.config.getBotConfig(), BotApi.blockingQueue);
+            BotApi.service = ConnectFactory.createWebsocketClient(ConfigHandler.cached().getBotConfig(), BotApi.blockingQueue);
             BotApi.service.create();//创建websocket连接
             BotApi.bot = BotApi.service.createBot();//创建机器人实例
         } catch (Exception e) {
             Const.LOGGER.error(e.getMessage());
         }
-        BotApi.config.getStatus().setRECEIVE_ENABLED(true);
-        BotApi.config.getCommon().setEnable(true);
-        ConfigHandler.save(BotApi.config);
+        ConfigHandler.cached().getStatus().setRECEIVE_ENABLED(true);
+        ConfigHandler.cached().getCommon().setEnable(true);
+        ConfigHandler.save();
         return Command.SINGLE_SUCCESS;
 
     }
@@ -95,18 +93,18 @@ public class ConnectCommand {
 
 
         context.getSource().sendSuccess(Component.literal("尝试链接框架" + ChatFormatting.LIGHT_PURPLE + "mirai"), true);
-        BotApi.config.getBotConfig().setMiraiHttp(true);
+        ConfigHandler.cached().getBotConfig().setMiraiHttp(true);
         try {
-            BotApi.service = ConnectFactory.createWebsocketClient(BotApi.config.getBotConfig(), BotApi.blockingQueue);
+            BotApi.service = ConnectFactory.createWebsocketClient(ConfigHandler.cached().getBotConfig(), BotApi.blockingQueue);
             BotApi.service.create();//创建websocket连接
             BotApi.bot = BotApi.service.createBot();//创建机器人实例
         } catch (Exception e) {
             Const.LOGGER.error(e.getMessage());
         }
-        BotApi.config.getStatus().setRECEIVE_ENABLED(true);
-        BotApi.config.getCommon().setEnable(true);
-        ConfigHandler.save(BotApi.config);
+        ConfigHandler.cached().getStatus().setRECEIVE_ENABLED(true);
+        ConfigHandler.cached().getCommon().setEnable(true);
 
+        ConfigHandler.save();
         return Command.SINGLE_SUCCESS;
 
     }

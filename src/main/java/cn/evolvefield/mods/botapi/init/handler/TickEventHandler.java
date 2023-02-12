@@ -1,6 +1,5 @@
 package cn.evolvefield.mods.botapi.init.handler;
 
-import cn.evolvefield.mods.botapi.BotApi;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.minecraft.network.chat.Component;
 
@@ -25,7 +24,7 @@ public class TickEventHandler {
     public static void init() {
         ServerTickEvents.END_SERVER_TICK.register(server -> {
             String toSend = toSendQueue.poll();
-            if (BotApi.config != null
+            if (ConfigHandler.cached() != null
                     && server.isDedicatedServer()
                     && toSend != null
             ) {

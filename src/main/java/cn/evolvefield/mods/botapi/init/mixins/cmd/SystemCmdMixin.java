@@ -1,6 +1,7 @@
 package cn.evolvefield.mods.botapi.init.mixins.cmd;
 
 import cn.evolvefield.mods.botapi.BotApi;
+import cn.evolvefield.mods.botapi.init.handler.ConfigHandler;
 import com.mojang.brigadier.CommandDispatcher;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.commands.CommandSourceStack;
@@ -27,19 +28,19 @@ public class SystemCmdMixin {
                 PlayerList playerList = commandSourceStack.getServer().getPlayerList();
                 /////////////////////////
                 if (FabricLoader.getInstance().isModLoaded("botapi")
-                        && BotApi.config != null
-                        && BotApi.config.getStatus().isS_CHAT_ENABLE()
-                        && BotApi.config.getStatus().isSEND_ENABLED()
-                        && BotApi.config.getCmd().isMcSystemPrefixEnable()) {
-                    if (BotApi.config.getCommon().isGuildOn() && !BotApi.config.getCommon().getChannelIdList().isEmpty()) {
-                        for (String id : BotApi.config.getCommon().getChannelIdList())
-                            BotApi.bot.sendGuildMsg(BotApi.config.getCommon().getGuildId(),
+                        && ConfigHandler.cached() != null
+                        && ConfigHandler.cached().getStatus().isS_CHAT_ENABLE()
+                        && ConfigHandler.cached().getStatus().isSEND_ENABLED()
+                        && ConfigHandler.cached().getCmd().isMcSystemPrefixEnable()) {
+                    if (ConfigHandler.cached().getCommon().isGuildOn() && !ConfigHandler.cached().getCommon().getChannelIdList().isEmpty()) {
+                        for (String id : ConfigHandler.cached().getCommon().getChannelIdList())
+                            BotApi.bot.sendGuildMsg(ConfigHandler.cached().getCommon().getGuildId(),
                                     id,
-                                    String.format("[" + BotApi.config.getCmd().getMcSystemPrefix() + "] %s", playerChatMessage.decoratedContent().getString()));
+                                    String.format("[" + ConfigHandler.cached().getCmd().getMcSystemPrefix() + "] %s", playerChatMessage.decoratedContent().getString()));
                     } else {
-                        for (long id : BotApi.config.getCommon().getGroupIdList())
+                        for (long id : ConfigHandler.cached().getCommon().getGroupIdList())
                             BotApi.bot.sendGroupMsg(id,
-                                    String.format("[" + BotApi.config.getCmd().getMcSystemPrefix() + "] %s", playerChatMessage.decoratedContent().getString()),
+                                    String.format("[" + ConfigHandler.cached().getCmd().getMcSystemPrefix() + "] %s", playerChatMessage.decoratedContent().getString()),
                                     true);
                     }
                 }

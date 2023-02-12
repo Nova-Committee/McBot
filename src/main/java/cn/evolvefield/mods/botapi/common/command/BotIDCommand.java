@@ -1,6 +1,5 @@
 package cn.evolvefield.mods.botapi.common.command;
 
-import cn.evolvefield.mods.botapi.BotApi;
 import cn.evolvefield.mods.botapi.init.handler.ConfigHandler;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.context.CommandContext;
@@ -13,10 +12,10 @@ public class BotIDCommand {
 
     public static int execute(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
         long id = context.getArgument("BotId", Long.class);
-        BotApi.config.getCommon().setBotId(id);
-        ConfigHandler.save(BotApi.config);
+        ConfigHandler.cached().getCommon().setBotId(id);
         context.getSource().sendSuccess(
                 Component.literal("已设置机器人QQ号为:" + id), true);
+        ConfigHandler.save();
         return Command.SINGLE_SUCCESS;
     }
 

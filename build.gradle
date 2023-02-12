@@ -7,6 +7,7 @@ version = project.version_prefix + "-" + project.mod_version
 group = project.maven_group
 
 repositories {
+    mavenCentral()
     maven {
         url 'https://maven.nova-committee.cn/releases'
     }
@@ -26,9 +27,11 @@ dependencies {
         parchment("org.parchmentmc.data:parchment-${project.minecraft_version}:${project.parchement_version}@zip")
     }
     modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
-    modImplementation include("cn.evolvefield.bot:OneBot-SDK:${project.sdk_version}")
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
     modImplementation fileTree(dir: 'libs', include: ['*.jar'])
+    modImplementation include("cn.evolvefield.bot:OneBot-SDK:${project.sdk_version}")
+    modImplementation include("blue.endless:jankson:${project.jankson_version}")
+
 
     //modImplementation include("eu.pb4:placeholder-api:${project.placeholder_version}")
     annotationProcessor "cn.evolvefield.bot:OneBot-SDK:${project.sdk_version}"

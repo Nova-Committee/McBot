@@ -1,6 +1,5 @@
 package cn.evolvefield.mods.botapi.common.command;
 
-import cn.evolvefield.mods.botapi.BotApi;
 import cn.evolvefield.mods.botapi.init.handler.ConfigHandler;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.context.CommandContext;
@@ -16,14 +15,13 @@ public class DebugCommand {
 
     public static int execute(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
         boolean isEnabled = context.getArgument("enabled", Boolean.class);
-        BotApi.config.getCommon().setDebuggable(isEnabled);
-        ConfigHandler.save(BotApi.config);
+        ConfigHandler.cached().getCommon().setDebuggable(isEnabled);
         if (isEnabled) {
             context.getSource().sendSuccess(Component.literal("已开启开发者模式"), true);
         } else {
             context.getSource().sendSuccess(Component.literal("已关闭开发者模式"), true);
         }
-
+        ConfigHandler.save();
         return Command.SINGLE_SUCCESS;
     }
 }

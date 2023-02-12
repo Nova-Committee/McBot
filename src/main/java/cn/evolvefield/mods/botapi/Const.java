@@ -13,5 +13,7 @@ public class Const {
     public static final String MODID = "botapi";
     public static final Logger LOGGER = LogManager.getLogger(MODID);
     public static boolean ChatImageOn;
+    public static boolean isShutdown = false;
+
 
 }

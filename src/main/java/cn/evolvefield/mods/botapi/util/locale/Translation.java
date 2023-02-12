@@ -1,7 +1,7 @@
 package cn.evolvefield.mods.botapi.util.locale;
 
-import cn.evolvefield.mods.botapi.BotApi;
 import cn.evolvefield.mods.botapi.Const;
+import cn.evolvefield.mods.botapi.init.handler.ConfigHandler;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.gson.Gson;
@@ -29,7 +29,7 @@ public abstract class Translation {
     private static final Gson GSON = new Gson();
     private static final Pattern UNSUPPORTED_FORMAT_PATTERN = Pattern.compile("%(\\d+\\$)?[\\d.]*[df]");
     public static final String DEFAULT_LANGUAGE = "en_us";
-    private static volatile Translation instance = loadDefault(BotApi.config.getCommon().getLanguageSelect());
+    private static volatile Translation instance = loadDefault(ConfigHandler.cached().getCommon().getLanguageSelect());
 
     public Translation() {
     }

@@ -1,6 +1,5 @@
 package cn.evolvefield.mods.botapi.common.command;
 
-import cn.evolvefield.mods.botapi.BotApi;
 import cn.evolvefield.mods.botapi.init.handler.ConfigHandler;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.context.CommandContext;
@@ -13,14 +12,12 @@ public class RemoveChannelIDCommand {
 
     public static int execute(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
         var id = context.getArgument("ChannelID", String.class);
-        if (BotApi.config.getCommon().getChannelIdList().contains(id)) {
-            BotApi.config.getCommon().removeChannelId(id);
-
+        if (ConfigHandler.cached().getCommon().getChannelIdList().contains(id)) {
+            ConfigHandler.cached().getCommon().removeChannelId(id);
         } else {
             context.getSource().sendSuccess(Component.literal("子频道号:" + id + "并未出现！"), true);
-
         }
-        ConfigHandler.save(BotApi.config);
+        ConfigHandler.save();
         return Command.SINGLE_SUCCESS;
     }
 
