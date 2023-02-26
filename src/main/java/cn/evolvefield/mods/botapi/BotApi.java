@@ -38,15 +38,7 @@ public class BotApi implements ModInitializer {
 
     }
 
-    private static void killOutThreads() {
-        try {
-            Const.isShutdown = true;
-            ConfigHandler.watcher.get().close();
-            BotApi.configWatcherExecutorService.shutdownNow();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+
 
     private void onServerStarting(MinecraftServer server) {
         SERVER = server;//获取服务器实例
@@ -91,20 +83,25 @@ public class BotApi implements ModInitializer {
     }
 
     private void onServerStopping(MinecraftServer server) {
-        CustomCmdHandler.INSTANCE.clear();
-        if (dispatchers != null) {
-            dispatchers.stop();
-        }
-        if (service != null) {
-            ConfigHandler.cached().getBotConfig().setReconnect(false);
-            service.close();
-        }
-        ConfigHandler.save();
-        Const.LOGGER.info("▌ §c正在关闭群服互联 §a┈━═☆");
-
     }
 
     private void onServerStopped(MinecraftServer server) {
         killOutThreads();
+    }
+
+    private static void killOutThreads() {
+        try {
+            ConfigHandler.save();//保存配置
+            Const.LOGGER.info("▌ §c正在关闭群服互联 §a┈━═☆");
+            CustomCmdHandler.INSTANCE.clear();//自定义命令持久层清空
+            dispatchers.stop();//分发器关闭
+            Const.isShutdown = true;
+            ConfigHandler.watcher.get().close();//配置监控关闭
+            BotApi.configWatcherExecutorService.shutdownNow();//监控进程关闭
+            service.setReconnect(false);//关闭重连
+            service.close();//ws客户端关闭
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
