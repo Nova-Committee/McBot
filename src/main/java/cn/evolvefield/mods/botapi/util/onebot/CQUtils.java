@@ -47,7 +47,7 @@ public class CQUtils {
                                     returnMsg.set(matcher.replaceAll(String.format("[[CICode,url=%s,name=来自QQ的图片]]", v)));//转换ci码
                                 }
                             });
-                }
+                } else returnMsg.set("暂不支持");
                 //}
             }
 
