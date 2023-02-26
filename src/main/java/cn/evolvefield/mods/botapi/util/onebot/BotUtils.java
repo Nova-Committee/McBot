@@ -28,8 +28,8 @@ public class BotUtils {
         AtomicBoolean match = new AtomicBoolean(false);
         CustomCmdHandler.INSTANCE.getCustomCmdMap().keySet().forEach(
                 s -> {
-                    if (CustomCmdHandler.INSTANCE.getCmdByAlies(s).getCmdContent().contains("%")) {
-                        if (event.getMessage().substring(1).contains(s))
+                    if (CustomCmdHandler.INSTANCE.getCmdByAlies(s).getCmdContent().contains("%")) {//是否变量模板
+                        if (event.getMessage().substring(1).contains(s))//去除命令符号
                             match.set(true);
                     }
 
@@ -53,9 +53,9 @@ public class BotUtils {
             if (customCmd.getCmdContent().split(" ").length == cmd.split(" ").length
                     && cmd.split(" ")[headIndex].equals(customCmd.getCmdContent().split(" ")[headIndex])//核验
             ) {
-                returnCmd = event.getMessage();//返回q群指令
+                returnCmd = event.getMessage().substring(1);//返回q群指令
             }
-        } else returnCmd = customCmd.getCmdContent();//返回自定义命令指令
+        } else returnCmd = customCmd.getCmdContent();//返回普通自定义命令指令
         return returnCmd;
     }
 
@@ -73,7 +73,7 @@ public class BotUtils {
     }
 
     public static boolean groupAdminParse(GroupMessageEvent event) {
-        return !event.getSender().getRole().equals("MEMBER") || !event.getSender().getRole().equals("member");
+        return !event.getSender().getRole().equals("MEMBER") && !event.getSender().getRole().equals("member");
     }
 
 
