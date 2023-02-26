@@ -1,6 +1,7 @@
 package cn.evolvefield.mods.botapi.api.cmd;
 
 import cn.evolvefield.mods.botapi.BotApi;
+import cn.evolvefield.mods.botapi.Const;
 import cn.evolvefield.mods.botapi.init.handler.CustomCmdHandler;
 import cn.evolvefield.mods.botapi.util.onebot.BotUtils;
 import cn.evolvefield.onebot.sdk.core.Bot;
@@ -36,15 +37,16 @@ public class CmdApi {
     public static void invokeCommandGroup(GroupMessageEvent event) {
         String commandHead = event.getMessage().split(" ")[0].substring(1);
         String command = event.getMessage().substring(1);//去除前缀
-
+        Const.LOGGER.info(event);
+        Const.LOGGER.info(BotUtils.groupAdminParse(event));
         if (BotUtils.groupAdminParse(event)) {
             CustomCmdHandler.INSTANCE.getCustomCmds().stream()
-                    .filter(customCmd -> customCmd.getRequirePermission() >= 1 && customCmd.getCmdAlies().equals(commandHead))
+                    .filter(customCmd -> customCmd.getCmdAlies().equals(commandHead))
                     .forEach(customCmd -> GroupCmd(BotApi.bot, event.getGroupId(), BotUtils.varParse(event, customCmd, command), true));//admin
-        }
-        CustomCmdHandler.INSTANCE.getCustomCmds().stream()
-                .filter(customCmd -> customCmd.getRequirePermission() < 1 && customCmd.getCmdAlies().equals(commandHead))
-                .forEach(customCmd -> GroupCmd(BotApi.bot, event.getGroupId(), BotUtils.varParse(event, customCmd, command), false));
+        } else
+            CustomCmdHandler.INSTANCE.getCustomCmds().stream()
+                    .filter(customCmd -> customCmd.getRequirePermission() < 1 && customCmd.getCmdAlies().equals(commandHead))
+                    .forEach(customCmd -> GroupCmd(BotApi.bot, event.getGroupId(), BotUtils.varParse(event, customCmd, command), false));
 
     }
 
@@ -54,10 +56,9 @@ public class CmdApi {
 
         if (BotUtils.guildAdminParse(event)) {
             CustomCmdHandler.INSTANCE.getCustomCmds().stream()
-                    .filter(customCmd -> customCmd.getRequirePermission() >= 1 && customCmd.getCmdAlies().equals(commandHead))
+                    .filter(customCmd -> customCmd.getCmdAlies().equals(commandHead))
                     .forEach(customCmd -> GuildCmd(BotApi.bot, event.getGuildId(), event.getChannelId(), BotUtils.varParse(event, customCmd, command), true));//admin
-        }
-        CustomCmdHandler.INSTANCE.getCustomCmds().stream()
+        } else CustomCmdHandler.INSTANCE.getCustomCmds().stream()
                 .filter(customCmd -> customCmd.getRequirePermission() < 1 && customCmd.getCmdAlies().equals(commandHead))
                 .forEach(customCmd -> GuildCmd(BotApi.bot, event.getGuildId(), event.getChannelId(), BotUtils.varParse(event, customCmd, command), false));
     }
