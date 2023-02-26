@@ -72,10 +72,10 @@ public class CustomCmdHandler {
             json.addProperty("enable", true);
 
             var json2 = new JsonObject();
-            json.addProperty("alies", "say");
-            json.addProperty("content", "say %");
-            json.addProperty("role", 1);
-            json.addProperty("enable", true);
+            json2.addProperty("alies", "say");
+            json2.addProperty("content", "say %");
+            json2.addProperty("role", 1);
+            json2.addProperty("enable", true);
 
             FileWriter writer = null;
             FileWriter writer2 = null;
