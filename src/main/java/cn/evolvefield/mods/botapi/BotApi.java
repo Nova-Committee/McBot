@@ -99,7 +99,9 @@ public class BotApi implements ModInitializer {
             ConfigHandler.watcher.get().close();//配置监控关闭
             BotApi.configWatcherExecutorService.shutdownNow();//监控进程关闭
             service.setReconnect(false);//关闭重连
-            service.close();//ws客户端关闭
+            service.close(1006);//ws客户端关闭
+
+
         } catch (Exception e) {
             e.printStackTrace();
         }
