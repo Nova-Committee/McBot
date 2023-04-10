@@ -6,7 +6,6 @@ import cn.evolvefield.onebot.sdk.util.BotUtils;
 import cn.evolvefield.onebot.sdk.util.RegexUtils;
 
 import java.util.Arrays;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Pattern;
 
 /**
@@ -30,29 +29,42 @@ public class CQUtils {
     }
 
     public static String replace(String msg) {
-        if (Const.ChatImageOn && ConfigHandler.cached().getCommon().isImageOn()) {
-            var matcher = RegexUtils.regexMatcher(CQ_CODE_REGEX, msg);//匹配cq码格式
-            AtomicReference<String> returnMsg = new AtomicReference<>("");//返回字符串
-            if (matcher == null) {
-                returnMsg.set(msg);//不包含任何cq码则返回原msg
-            } else {
-                //while (matcher.find()){//找到所有符合的matcher
-                if (matcher.group(1).equals("image")) {//如果是图片格式
-                    Arrays.stream(matcher.group(2).split(","))//具体数据分割
-                            .filter(args -> !args.isEmpty())//非空判断
-                            .forEach(args -> {
-                                if (args.substring(0, args.indexOf("=")).equals("url")) {//url
-                                    var v = BotUtils.unescape(args.substring(args.indexOf("=") + 1));//去除空格
-
-                                    returnMsg.set(matcher.replaceAll(String.format("[[CICode,url=%s,name=来自QQ的图片]]", v)));//转换ci码
-                                }
-                            });
-                } else returnMsg.set("暂不支持");
-                //}
-            }
-
-            return returnMsg.get();
-
-        } else return msg;
+        if (msg.indexOf('[') == -1)
+            return BotUtils.unescape(msg);
+        var message = new StringBuilder();
+        var matcher = RegexUtils.regexMatcher(CQ_CODE_REGEX, msg);
+        while (matcher.find()) {
+            var type = matcher.group(1);
+            var replacement = switch (type) {
+                case "image" -> {
+                    if (Const.ChatImageOn && ConfigHandler.cached().getCommon().isImageOn())
+                    {
+                        var url = Arrays.stream(matcher.group(2).split(","))//具体数据分割
+                                .filter(it -> it.startsWith("url"))//非空判断
+                                .map(it -> it.substring(it.indexOf('=')) + 1)
+                                .findFirst();
+                        if (url.isPresent())
+                            yield String.format("[[CICode,url=%s,name=来自QQ的图片]]", url.get());
+                        else
+                            yield "[图片]";
+                    }
+                    else
+                        yield "[图片]";
+                }
+                case "reply" -> "[回复]";
+                case "at" -> "[@]";
+                case "record" -> "[语音]";
+                case "forward" -> "[合并转发]";
+                case "video" -> "[视频]";
+                case "music" -> "[音乐]";
+                case "redbag" -> "[红包]";
+                case "poke" -> "[戳一戳]";
+                case "face" -> "[表情]";
+                default -> "[?]";
+            };
+            matcher.appendReplacement(message, replacement);
+        }
+        matcher.appendTail(message);
+        return BotUtils.unescape(message.toString());
     }
 }
