@@ -2,7 +2,7 @@ package cn.evolvefield.mods.botapi.init.config;
 
 import blue.endless.jankson.Comment;
 import blue.endless.jankson.annotation.SerializedName;
-import cn.evolvefield.onebot.sdk.config.BotConfig;
+import cn.evolvefield.onebot.client.config.BotConfig;
 import lombok.Data;
 
 import java.util.HashSet;

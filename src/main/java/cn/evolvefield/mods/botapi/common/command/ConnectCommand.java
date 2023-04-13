@@ -4,7 +4,7 @@ package cn.evolvefield.mods.botapi.common.command;
 import cn.evolvefield.mods.botapi.BotApi;
 import cn.evolvefield.mods.botapi.Const;
 import cn.evolvefield.mods.botapi.init.handler.ConfigHandler;
-import cn.evolvefield.onebot.sdk.connection.ConnectFactory;
+import cn.evolvefield.onebot.client.connection.ConnectFactory;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
@@ -26,12 +26,12 @@ public class ConnectCommand {
             ConfigHandler.cached().getBotConfig().setUrl("ws://" + parameter);
             context.getSource().sendSuccess(Component.literal("尝试链接框架" + ChatFormatting.LIGHT_PURPLE + "cqhttp"), true);
             ConfigHandler.cached().getBotConfig().setMiraiHttp(false);
+
             try {
-                BotApi.service = ConnectFactory.createWebsocketClient(ConfigHandler.cached().getBotConfig(), BotApi.blockingQueue);
-                BotApi.service.create();//创建websocket连接
-                BotApi.bot = BotApi.service.createBot();//创建机器人实例
+                BotApi.service = new ConnectFactory(ConfigHandler.cached().getBotConfig(), BotApi.blockingQueue);//创建websocket连接
+                BotApi.bot = BotApi.service.bot;//创建机器人实例
             } catch (Exception e) {
-                Const.LOGGER.error(e.getMessage());
+                Const.LOGGER.error("§c机器人服务端配置不正确");
             }
             ConfigHandler.cached().getStatus().setRECEIVE_ENABLED(true);
             ConfigHandler.cached().getCommon().setEnable(true);
@@ -54,11 +54,10 @@ public class ConnectCommand {
             context.getSource().sendSuccess(Component.literal("尝试链接框架" + ChatFormatting.LIGHT_PURPLE + "mirai"), true);
             ConfigHandler.cached().getBotConfig().setMiraiHttp(true);
             try {
-                BotApi.service = ConnectFactory.createWebsocketClient(ConfigHandler.cached().getBotConfig(), BotApi.blockingQueue);
-                BotApi.service.create();//创建websocket连接
-                BotApi.bot = BotApi.service.createBot();//创建机器人实例
+                BotApi.service = new ConnectFactory(ConfigHandler.cached().getBotConfig(), BotApi.blockingQueue);//创建websocket连接
+                BotApi.bot = BotApi.service.bot;//创建机器人实例
             } catch (Exception e) {
-                Const.LOGGER.error(e.getMessage());
+                Const.LOGGER.error("§c机器人服务端配置不正确");
             }
             ConfigHandler.cached().getStatus().setRECEIVE_ENABLED(true);
             ConfigHandler.cached().getCommon().setEnable(true);
@@ -76,11 +75,10 @@ public class ConnectCommand {
         context.getSource().sendSuccess(Component.literal("尝试链接框架" + ChatFormatting.LIGHT_PURPLE + "cqhttp"), true);
         ConfigHandler.cached().getBotConfig().setMiraiHttp(false);
         try {
-            BotApi.service = ConnectFactory.createWebsocketClient(ConfigHandler.cached().getBotConfig(), BotApi.blockingQueue);
-            BotApi.service.create();//创建websocket连接
-            BotApi.bot = BotApi.service.createBot();//创建机器人实例
+            BotApi.service = new ConnectFactory(ConfigHandler.cached().getBotConfig(), BotApi.blockingQueue);//创建websocket连接
+            BotApi.bot = BotApi.service.bot;//创建机器人实例
         } catch (Exception e) {
-            Const.LOGGER.error(e.getMessage());
+            Const.LOGGER.error("§c机器人服务端配置不正确");
         }
         ConfigHandler.cached().getStatus().setRECEIVE_ENABLED(true);
         ConfigHandler.cached().getCommon().setEnable(true);
@@ -95,11 +93,10 @@ public class ConnectCommand {
         context.getSource().sendSuccess(Component.literal("尝试链接框架" + ChatFormatting.LIGHT_PURPLE + "mirai"), true);
         ConfigHandler.cached().getBotConfig().setMiraiHttp(true);
         try {
-            BotApi.service = ConnectFactory.createWebsocketClient(ConfigHandler.cached().getBotConfig(), BotApi.blockingQueue);
-            BotApi.service.create();//创建websocket连接
-            BotApi.bot = BotApi.service.createBot();//创建机器人实例
+            BotApi.service = new ConnectFactory(ConfigHandler.cached().getBotConfig(), BotApi.blockingQueue);//创建websocket连接
+            BotApi.bot = BotApi.service.bot;//创建机器人实例
         } catch (Exception e) {
-            Const.LOGGER.error(e.getMessage());
+            Const.LOGGER.error("§c机器人服务端配置不正确");
         }
         ConfigHandler.cached().getStatus().setRECEIVE_ENABLED(true);
         ConfigHandler.cached().getCommon().setEnable(true);

@@ -3,12 +3,12 @@ package cn.evolvefield.mods.botapi.init.handler;
 import cn.evolvefield.mods.botapi.BotApi;
 import cn.evolvefield.mods.botapi.api.cmd.CmdApi;
 import cn.evolvefield.mods.botapi.util.onebot.CQUtils;
-import cn.evolvefield.onebot.sdk.listener.SimpleListener;
-import cn.evolvefield.onebot.sdk.model.event.EventDispatchers;
-import cn.evolvefield.onebot.sdk.model.event.message.GroupMessageEvent;
-import cn.evolvefield.onebot.sdk.model.event.message.GuildMessageEvent;
-import cn.evolvefield.onebot.sdk.model.event.notice.GroupDecreaseNoticeEvent;
-import cn.evolvefield.onebot.sdk.model.event.notice.GroupIncreaseNoticeEvent;
+import cn.evolvefield.onebot.client.handler.EventBus;
+import cn.evolvefield.onebot.client.listener.SimpleListener;
+import cn.evolvefield.onebot.sdk.event.message.GroupMessageEvent;
+import cn.evolvefield.onebot.sdk.event.message.GuildMessageEvent;
+import cn.evolvefield.onebot.sdk.event.notice.group.GroupDecreaseNoticeEvent;
+import cn.evolvefield.onebot.sdk.event.notice.group.GroupIncreaseNoticeEvent;
 
 /**
  * Description:
@@ -17,17 +17,17 @@ import cn.evolvefield.onebot.sdk.model.event.notice.GroupIncreaseNoticeEvent;
  * Version: 1.0
  */
 public class BotEventHandler {
-    public static void init(EventDispatchers dispatchers) {
+    public static void init(EventBus dispatchers) {
 
         GroupChatHandler(dispatchers);
         GroupCmdsHandler(dispatchers);
         GroupMemberNotice(dispatchers);
         GuildChatHandler(dispatchers);
         GuildCmdsHandler(dispatchers);
-        dispatchers.start(10);//线程组处理任务
+        dispatchers.start(4);//线程组处理任务
     }
 
-    private static void GroupChatHandler(EventDispatchers dispatchers) {
+    private static void GroupChatHandler(EventBus dispatchers) {
         dispatchers.addListener(new SimpleListener<GroupMessageEvent>() {
             @Override
             public void onMessage(GroupMessageEvent event) {
@@ -55,7 +55,7 @@ public class BotEventHandler {
         });
     }
 
-    private static void GroupCmdsHandler(EventDispatchers dispatchers) {
+    private static void GroupCmdsHandler(EventBus dispatchers) {
         dispatchers.addListener(new SimpleListener<GroupMessageEvent>() {
             @Override
             public void onMessage(GroupMessageEvent event) {
@@ -70,7 +70,7 @@ public class BotEventHandler {
         });
     }
 
-    private static void GroupMemberNotice(EventDispatchers dispatchers) {
+    private static void GroupMemberNotice(EventBus dispatchers) {
         dispatchers.addListener(new SimpleListener<GroupDecreaseNoticeEvent>() {
             @Override
             public void onMessage(GroupDecreaseNoticeEvent event) {
@@ -95,7 +95,7 @@ public class BotEventHandler {
 
     }
 
-    private static void GuildChatHandler(EventDispatchers dispatchers) {
+    private static void GuildChatHandler(EventBus dispatchers) {
         dispatchers.addListener(new SimpleListener<GuildMessageEvent>() {
             @Override
             public void onMessage(GuildMessageEvent event) {
@@ -122,7 +122,7 @@ public class BotEventHandler {
         });
     }
 
-    private static void GuildCmdsHandler(EventDispatchers dispatchers) {
+    private static void GuildCmdsHandler(EventBus dispatchers) {
         dispatchers.addListener(new SimpleListener<GuildMessageEvent>() {
             @Override
             public void onMessage(GuildMessageEvent event) {

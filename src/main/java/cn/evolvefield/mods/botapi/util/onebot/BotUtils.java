@@ -3,9 +3,9 @@ package cn.evolvefield.mods.botapi.util.onebot;
 import cn.evolvefield.mods.botapi.BotApi;
 import cn.evolvefield.mods.botapi.api.cmd.CustomCmd;
 import cn.evolvefield.mods.botapi.init.handler.CustomCmdHandler;
-import cn.evolvefield.onebot.sdk.model.event.message.GroupMessageEvent;
-import cn.evolvefield.onebot.sdk.model.event.message.GuildMessageEvent;
-import cn.evolvefield.onebot.sdk.model.event.message.MessageEvent;
+import cn.evolvefield.onebot.sdk.event.message.GroupMessageEvent;
+import cn.evolvefield.onebot.sdk.event.message.GuildMessageEvent;
+import cn.evolvefield.onebot.sdk.event.message.MessageEvent;
 
 import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicBoolean;

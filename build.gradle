@@ -29,14 +29,13 @@ dependencies {
     modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
     modImplementation fileTree(dir: 'libs', include: ['*.jar'])
-    modImplementation include("cn.evolvefield.bot:OneBot-SDK:${project.sdk_version}")
+    modImplementation include("cn.evolvefield.bot:OneBot-Client:${project.client_version}")
     modImplementation include("blue.endless:jankson:${project.jankson_version}")
 
 
     //modImplementation include("eu.pb4:placeholder-api:${project.placeholder_version}")
-    annotationProcessor "cn.evolvefield.bot:OneBot-SDK:${project.sdk_version}"
+    annotationProcessor "cn.evolvefield.bot:OneBot-Client:${project.client_version}"
     annotationProcessor "org.projectlombok:lombok:1.18.24"
-
 }
 
 processResources {
