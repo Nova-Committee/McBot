@@ -1,6 +1,5 @@
 package cn.evolvefield.mods.botapi.util.onebot;
 
-import cn.evolvefield.mods.botapi.Const;
 import cn.evolvefield.mods.botapi.init.handler.ConfigHandler;
 import cn.evolvefield.onebot.sdk.util.BotUtils;
 import cn.evolvefield.onebot.sdk.util.RegexUtils;
@@ -37,8 +36,7 @@ public class CQUtils {
             var type = matcher.group(1);
             var replacement = switch (type) {
                 case "image" -> {
-                    if (Const.ChatImageOn && ConfigHandler.cached().getCommon().isImageOn())
-                    {
+                    if (ConfigHandler.cached().getCommon().isImageOn()) {
                         var url = Arrays.stream(matcher.group(2).split(","))//具体数据分割
                                 .filter(it -> it.startsWith("url"))//非空判断
                                 .map(it -> it.substring(it.indexOf('=')) + 1)

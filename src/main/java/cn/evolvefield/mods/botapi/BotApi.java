@@ -13,6 +13,7 @@ import net.minecraft.server.MinecraftServer;
 
 import java.io.File;
 import java.nio.file.Path;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ScheduledExecutorService;
@@ -33,6 +34,8 @@ public class BotApi implements ModInitializer {
     public static ConnectFactory service;
     public static EventBus dispatchers;
     public static Bot bot;
+    public static ExecutorService app = Executors.newFixedThreadPool(1);
+    ;
 
     public BotApi() {
 
@@ -49,7 +52,6 @@ public class BotApi implements ModInitializer {
 
     @Override
     public void onInitialize() {
-        Const.ChatImageOn = FabricLoader.getInstance().isModLoaded("chatimage");
         CONFIG_FOLDER = FabricLoader.getInstance().getConfigDir().resolve("botapi");
         FileUtils.checkFolder(CONFIG_FOLDER);
         CONFIG_FILE = CONFIG_FOLDER.resolve(Const.MODID + ".json").toFile();
@@ -69,10 +71,10 @@ public class BotApi implements ModInitializer {
         blockingQueue = new LinkedBlockingQueue<>();//使用队列传输数据
         if (ConfigHandler.cached().getCommon().isAutoOpen()) {
             try {
-
-                service = new ConnectFactory(ConfigHandler.cached().getBotConfig(), blockingQueue);//创建websocket连接
-                bot = service.bot;//创建机器人实例
-
+                app.submit(() -> {
+                    service = new ConnectFactory(ConfigHandler.cached().getBotConfig(), blockingQueue);//创建websocket连接
+                    bot = service.ws.createBot();//创建机器人实例
+                });
             } catch (Exception e) {
                 Const.LOGGER.error("§c机器人服务端未配置或未打开");
             }
@@ -87,6 +89,7 @@ public class BotApi implements ModInitializer {
         Const.LOGGER.info("▌ §c正在关闭群服互联 §a┈━═☆");
         dispatchers.stop();//分发器关闭
         service.stop();
+        app.shutdownNow();
 
     }
 
