@@ -1,11 +1,5 @@
-botapi.chat.type.advancement.task=%s 完成了成就 %s
-botapi.chat.type.advancement.challenge=%s 完成了挑战 %s
-botapi.chat.type.advancement.goal=%s 实现了目标 %s
+botapi.chat.type.advancement=%s 完成了成就 %s
 
-
-commands.tree_base.invalid_cmd=Invalid subcommand '%s'!
-commands.tree_base.invalid_cmd.list_subcommands=Invalid subcommand '%s'! Available subcommands: %s
-commands.tree_base.available_subcommands=Available SubCommands: %s
 
 botapi.commands.no_permision=没有权限
 botapi.commands.notFound=命令没找到
