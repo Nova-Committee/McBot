@@ -1,0 +1,39 @@
+name: Java CI with Gradle
+
+on:
+  push:
+    tags:
+      - '*'
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'adopt'
+      - uses: gradle/gradle-build-action@v2
+        with:
+          gradle-version: 7.3
+          arguments: build
+      - run: gradle.bat buildNeeded
+        shell: cmd
+      - name: Run a cmd script
+        run: tree /F /A ${{ github.workspace }}
+        shell: cmd
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          generate_release_notes: true
+          files: ${{ github.workspace }}\build\libs\Bot-Connect-fabric*.jar
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
