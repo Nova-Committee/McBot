@@ -6,6 +6,11 @@ import cn.evolvefield.mods.botapi.init.handler.CustomCmdHandler;
 import cn.evolvefield.onebot.sdk.event.message.GroupMessageEvent;
 import cn.evolvefield.onebot.sdk.event.message.GuildMessageEvent;
 import cn.evolvefield.onebot.sdk.event.message.MessageEvent;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 
 import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -90,5 +95,38 @@ public class BotUtils {
         return (str.length() - destStr.length()) / "%".length();
     }
 
+
+    public static MutableComponent msgBuild(UserMessage msg){
+        // 拼接要发送对消息
+        return Component.literal(ChatFormatting.DARK_GREEN + "[")
+                .append(ChatFormatting.AQUA + msg.getPlatform())
+                .append(ChatFormatting.WHITE + "(")
+                .append(ChatFormatting.DARK_PURPLE + msg.getId())
+                .append(ChatFormatting.WHITE + ")")
+                .append(ChatFormatting.DARK_GREEN + "]")
+                .append(ChatFormatting.GOLD + " <" + msg.getName() + "> ")
+                .append(ChatFormatting.WHITE + msg.getMessage() + " ")
+                ;
+    }
+
+    @Data
+    @AllArgsConstructor
+    public static class UserMessage {
+        private String platform;
+        private String id;
+        private String name;
+        private String message;
+
+        @Override
+        public String toString() {
+            return "UserMessage{" +
+                    "platform='" + platform + '\'' +
+                    "id='" + id + '\'' +
+                    "name='" + name + '\'' +
+                    ", message='" + message + '\'' +
+                    '}';
+        }
+
+    }
 
 }

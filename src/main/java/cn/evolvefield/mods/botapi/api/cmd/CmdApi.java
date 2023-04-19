@@ -1,7 +1,6 @@
 package cn.evolvefield.mods.botapi.api.cmd;
 
 import cn.evolvefield.mods.botapi.BotApi;
-import cn.evolvefield.mods.botapi.Const;
 import cn.evolvefield.mods.botapi.init.handler.CustomCmdHandler;
 import cn.evolvefield.mods.botapi.util.onebot.BotUtils;
 import cn.evolvefield.onebot.client.core.Bot;
@@ -37,8 +36,7 @@ public class CmdApi {
     public static void invokeCommandGroup(GroupMessageEvent event) {
         String commandHead = event.getMessage().split(" ")[0].substring(1);
         String command = event.getMessage().substring(1);//去除前缀
-        Const.LOGGER.info(event);
-        Const.LOGGER.info(BotUtils.groupAdminParse(event));
+
         if (BotUtils.groupAdminParse(event)) {
             CustomCmdHandler.INSTANCE.getCustomCmds().stream()
                     .filter(customCmd -> customCmd.getCmdAlies().equals(commandHead))

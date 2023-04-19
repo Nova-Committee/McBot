@@ -11,7 +11,7 @@ import org.apache.logging.log4j.Logger;
  */
 public class Const {
     public static final String MODID = "botapi";
-    public static final Logger LOGGER = LogManager.getLogger(MODID);
+    public static final Logger LOGGER = LogManager.getLogger("BotConnect");
     public static boolean isShutdown = false;
 
 

@@ -28,7 +28,7 @@ import java.util.regex.Pattern;
 public abstract class Translation {
     private static final Gson GSON = new Gson();
     private static final Pattern UNSUPPORTED_FORMAT_PATTERN = Pattern.compile("%(\\d+\\$)?[\\d.]*[df]");
-    public static final String DEFAULT_LANGUAGE = "en_us";
+    public static final String DEFAULT_LANGUAGE = "zh_cn";
     private static volatile Translation instance = loadDefault(ConfigHandler.cached().getCommon().getLanguageSelect());
 
     public Translation() {
@@ -44,7 +44,7 @@ public abstract class Translation {
             InputStream inputStream = Translation.class.getResourceAsStream(resourceLocation);
 
             if (inputStream == null) {
-                Const.LOGGER.info(String.format("No BotApi lang file for the language '%s' found. Make it to 'en_us' by default.", langId));
+                Const.LOGGER.info(String.format("'%s'的语言文件未找到，将使用默认zh_cn", langId));
                 inputStream = I18n.class.getResourceAsStream(String.format(resourceFString, DEFAULT_LANGUAGE));
             }
 
