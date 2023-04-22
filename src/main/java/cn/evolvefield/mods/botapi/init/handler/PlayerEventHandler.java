@@ -4,6 +4,7 @@ import cn.evolvefield.mods.botapi.BotApi;
 import cn.evolvefield.mods.botapi.init.callbacks.PlayerEvents;
 import cn.evolvefield.mods.botapi.util.locale.I18n;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 
 
 /**
