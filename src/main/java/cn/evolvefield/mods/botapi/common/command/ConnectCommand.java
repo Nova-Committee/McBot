@@ -32,6 +32,7 @@ public class ConnectCommand {
                     BotApi.service = new ConnectFactory(ConfigHandler.cached().getBotConfig(), BotApi.blockingQueue);//创建websocket连接
                     BotApi.bot = BotApi.service.ws.createBot();//创建机器人实例
                 }, "BotServer");
+                BotApi.app.start();
             } catch (Exception e) {
                 Const.LOGGER.error("§c机器人服务端配置不正确");
             }
@@ -60,6 +61,7 @@ public class ConnectCommand {
                     BotApi.service = new ConnectFactory(ConfigHandler.cached().getBotConfig(), BotApi.blockingQueue);//创建websocket连接
                     BotApi.bot = BotApi.service.ws.createBot();//创建机器人实例
                 }, "BotServer");
+                BotApi.app.start();
             } catch (Exception e) {
                 Const.LOGGER.error("§c机器人服务端配置不正确");
             }
@@ -83,6 +85,7 @@ public class ConnectCommand {
                     BotApi.service = new ConnectFactory(ConfigHandler.cached().getBotConfig(), BotApi.blockingQueue);//创建websocket连接
                     BotApi.bot = BotApi.service.ws.createBot();//创建机器人实例
                 }, "BotServer");
+            BotApi.app.start();
         } catch (Exception e) {
             Const.LOGGER.error("§c机器人服务端配置不正确");
         }
@@ -103,6 +106,7 @@ public class ConnectCommand {
                     BotApi.service = new ConnectFactory(ConfigHandler.cached().getBotConfig(), BotApi.blockingQueue);//创建websocket连接
                     BotApi.bot = BotApi.service.ws.createBot();//创建机器人实例
                 }, "BotServer");
+            BotApi.app.start();
         } catch (Exception e) {
             Const.LOGGER.error("§c机器人服务端配置不正确");
         }
