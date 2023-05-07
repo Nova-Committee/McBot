@@ -8,6 +8,7 @@ group = project.maven_group
 
 repositories {
     mavenCentral()
+    mavenLocal()
     maven {
         url 'https://maven.nova-committee.cn/releases'
     }
@@ -15,6 +16,9 @@ repositories {
     maven {
         name = 'ParchmentMC'
         url = 'https://maven.parchmentmc.org'
+    }
+    maven {
+        url "https://jitpack.io"
     }
 }
 
@@ -32,6 +36,9 @@ dependencies {
     modImplementation include("cn.evolvefield.bot:OneBot-Client:${project.client_version}")
     modImplementation include("blue.endless:jankson:${project.jankson_version}")
 
+    modApi include("com.github.Klotzi111:FabricMultiVersionHelper:${project.multi_version}")
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
 
     //modImplementation include("eu.pb4:placeholder-api:${project.placeholder_version}")
     annotationProcessor "cn.evolvefield.bot:OneBot-Client:${project.client_version}"

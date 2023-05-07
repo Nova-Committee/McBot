@@ -5,7 +5,6 @@ import cn.evolvefield.mods.botapi.api.cmd.CustomCmd;
 import cn.evolvefield.mods.botapi.init.handler.CustomCmdHandler;
 import cn.evolvefield.onebot.sdk.event.message.GroupMessageEvent;
 import cn.evolvefield.onebot.sdk.event.message.GuildMessageEvent;
-import cn.evolvefield.onebot.sdk.event.message.MessageEvent;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import net.minecraft.ChatFormatting;
@@ -25,16 +24,16 @@ public class BotUtils {
     /**
      * q群消息是否存在变量
      *
-     * @param event q群消息
+     * @param msg q群消息
      * @return 是否存在变量
      */
 
-    private static boolean isVar(MessageEvent event) {
+    private static boolean isVar(String msg) {
         AtomicBoolean match = new AtomicBoolean(false);
-        CustomCmdHandler.INSTANCE.getCustomCmdMap().keySet().forEach(
-                s -> {
-                    if (CustomCmdHandler.INSTANCE.getCmdByAlies(s).getCmdContent().contains("%")) {//是否变量模板
-                        if (event.getMessage().substring(1).contains(s))//去除命令符号
+        CustomCmdHandler.INSTANCE.getCustomCmds().forEach(
+                cmd -> {
+                    if (cmd.getCmdContent().contains("%")) {//是否变量模板
+                        if (msg.contains(cmd.getCmdAlies()))//去除命令符号
                             match.set(true);
                     }
 
@@ -46,20 +45,15 @@ public class BotUtils {
     /**
      * 变量解析
      *
-     * @param event     消息事件
      * @param customCmd 自定义实例
      * @param cmd       q群指令
      * @return 处理完的指令
      */
-    public static String varParse(MessageEvent event, CustomCmd customCmd, String cmd) {
+    public static String varParse(CustomCmd customCmd, String cmd) {
         String returnCmd = "";
-        if (isVar(event)) {//存在变量
-            int headIndex = customCmd.getCmdContent().split(" ").length - getSubStr(customCmd.getCmdContent()) - 1;//除了变量以外的指令
-            if (customCmd.getCmdContent().split(" ").length == cmd.split(" ").length
-                    && cmd.split(" ")[headIndex].equals(customCmd.getCmdContent().split(" ")[headIndex])//核验
-            ) {
-                returnCmd = event.getMessage().substring(1);//返回q群指令
-            }
+        if (isVar(cmd)) {//存在变量
+            var replaceContent = customCmd.getCmdContent().split("%")[0].stripTrailing();
+            returnCmd = cmd.replace(customCmd.getCmdAlies(), replaceContent);//返回q群指令
         } else returnCmd = customCmd.getCmdContent();//返回普通自定义命令指令
         return returnCmd;
     }

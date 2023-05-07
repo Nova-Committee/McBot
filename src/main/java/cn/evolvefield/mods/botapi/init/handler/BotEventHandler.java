@@ -42,13 +42,22 @@ public class BotEventHandler {
 
                     String send = CQUtils.replace(event.getMessage());//暂时匹配仅符合字符串聊天内容与图片
 
-                    if (ConfigHandler.cached().getCmd().isQqChatPrefixEnable()) {
+                    if (ConfigHandler.cached().getCmd().isQqChatPrefixOn()) {
                         var split = event.getMessage().split(" ");
                         if (ConfigHandler.cached().getCmd().getQqChatPrefix().equals(split[0])) //指定前缀发送
                             send = split[1];
                         else return;
                     }
-                    String toSend = String.format("§b[§l%s§r(§5%s§b)]§a<%s>§f %s", ConfigHandler.cached().getCmd().getQqPrefix(), event.getGroupId(), event.getSender().getNickname(), send);
+                    String nick = BotApi.bot.getGroupMemberInfo(event.getGroupId(), event.getUserId(), true).getData().getNickname();
+                    String groupNick = ConfigHandler.cached().getCmd().isGroupNickOn() // 是否使用群昵称
+                            ? nick == null ? event.getSender().getNickname() : nick // 防止api返回为空
+                            : event.getSender().getNickname();
+
+                    String toSend = ConfigHandler.cached().getCmd().isGamePrefixOn()
+                            ? ConfigHandler.cached().getCmd().isIdGamePrefixOn()
+                            ? String.format("§b[§l%s§r(§5%s§b)]§a<%s>§f %s", ConfigHandler.cached().getCmd().getQqGamePrefix(), event.getGroupId(), groupNick, send)
+                            : String.format("§b[§l%s§b]§a<%s>§f %s", ConfigHandler.cached().getCmd().getQqGamePrefix(), groupNick, send)
+                            : String.format("§a<%s>§f %s", groupNick, send);
                     TickEventHandler.getToSendQueue().add(toSend);
                 }
             }
@@ -108,13 +117,23 @@ public class BotEventHandler {
                 ) {
 
                     String send = CQUtils.replace(event.getMessage());//暂时匹配仅符合字符串聊天内容与图片
-                    if (ConfigHandler.cached().getCmd().isQqChatPrefixEnable()) {
+                    if (ConfigHandler.cached().getCmd().isQqChatPrefixOn()) {
                         var split = event.getMessage().split(" ");
                         if (ConfigHandler.cached().getCmd().getQqChatPrefix().equals(split[0])) //指定前缀发送
                             send = split[1];
                         else return;
                     }
-                    String toSend = String.format("§b[§l%s§r(§5%s§b)]§a<%s>§f %s", ConfigHandler.cached().getCmd().getGuildPrefix(), event.getChannelId(), event.getSender().getNickname(), send);
+                    String nick = BotApi.bot.getGuildMemberProfile(event.getGuildId(), String.valueOf(event.getUserId())).getData().getNickname();
+                    String guildNick = ConfigHandler.cached().getCmd().isGroupNickOn()
+                            ? nick == null ? event.getSender().getNickname() : nick
+                            : event.getSender().getNickname();
+
+
+                    String toSend = ConfigHandler.cached().getCmd().isGamePrefixOn()
+                            ? ConfigHandler.cached().getCmd().isIdGamePrefixOn()
+                            ? String.format("§b[§l%s§r(§5%s§b)]§a<%s>§f %s", ConfigHandler.cached().getCmd().getGuildGamePrefix(), event.getChannelId(), guildNick, send)
+                            : String.format("§b[§l%s§b]§a<%s>§f %s", ConfigHandler.cached().getCmd().getGuildGamePrefix(), guildNick, send)
+                            : String.format("§a<%s>§f %s", guildNick, send);
                     TickEventHandler.getToSendQueue().add(toSend);
 
                 }

@@ -72,7 +72,7 @@ public class CQUtils {
                                 .map(it -> it.substring(it.indexOf('=') + 1))
                                 .findFirst();
                         if (id.isPresent()) {
-                            matcher.appendReplacement(message, String.format("[@%s]", id.get()));
+                            matcher.appendReplacement(message, String.format("[@%s]", BotUtils.getNickname(Long.parseLong(id.get()))));
                         } else {
                             matcher.appendReplacement(message, "[@]");
                         }

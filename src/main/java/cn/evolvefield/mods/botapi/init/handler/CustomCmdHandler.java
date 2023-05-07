@@ -113,10 +113,9 @@ public class CustomCmdHandler {
 
             try {
                 reader = new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8);
-                var name = file.getName().replace(".json", "");
                 json = JsonParser.parseReader(reader).getAsJsonObject();
 
-                customCmd = CustomCmd.loadFromJson(new ResourceLocation(Const.MODID, name), json);
+                customCmd = CustomCmd.loadFromJson(json);
 
                 reader.close();
             } catch (Exception e) {
@@ -127,8 +126,6 @@ public class CustomCmdHandler {
 
             if (customCmd != null && customCmd.isEnabled()) {
                 String alies = customCmd.getCmdAlies();
-                if (customCmd.getCmdContent().contains("%"))
-                    alies = customCmd.getCmdContent().split("%")[0].stripTrailing();
                 Const.LOGGER.debug(alies);
                 this.customCmdMap.put(alies, customCmd);
 

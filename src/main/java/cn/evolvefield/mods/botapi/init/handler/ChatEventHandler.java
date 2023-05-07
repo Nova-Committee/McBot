@@ -22,17 +22,21 @@ public class ChatEventHandler {
                     for (String id : ConfigHandler.cached().getCommon().getChannelIdList())
                         BotApi.bot.sendGuildMsg(ConfigHandler.cached().getCommon().getGuildId(),
                                 id,
-                                String.format("[" + ConfigHandler.cached().getCmd().getMcPrefix() + "]<%s> %s",
+                                String.format(ConfigHandler.cached().getCmd().isMcPrefixOn()
+                                                ? "[" + ConfigHandler.cached().getCmd().getMcPrefix() + "]<%s> %s"
+                                                : "<%s> %s",
                                         player.getDisplayName().getString(),
-                                        ConfigHandler.cached().getCmd().isMcChatPrefixEnable()
+                                        ConfigHandler.cached().getCmd().isMcChatPrefixOn()
                                                 && ConfigHandler.cached().getCmd().getMcChatPrefix().equals(split[0]) ? split[1] : message));
                 } else {
                     for (long id : ConfigHandler.cached().getCommon().getGroupIdList())
                         BotApi.bot.sendGroupMsg(
                                 id,
-                                String.format("[" + ConfigHandler.cached().getCmd().getMcPrefix() + "]<%s> %s",
+                                String.format(ConfigHandler.cached().getCmd().isMcPrefixOn()
+                                                ? "[" + ConfigHandler.cached().getCmd().getMcPrefix() + "]<%s> %s"
+                                                : "<%s> %s",
                                         player.getDisplayName().getString(),
-                                        ConfigHandler.cached().getCmd().isMcChatPrefixEnable()
+                                        ConfigHandler.cached().getCmd().isMcChatPrefixOn()
                                                 && ConfigHandler.cached().getCmd().getMcChatPrefix().equals(split[0]) ? split[1] : message),
                                 true);
                 }

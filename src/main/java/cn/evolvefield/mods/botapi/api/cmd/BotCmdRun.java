@@ -1,6 +1,7 @@
 package cn.evolvefield.mods.botapi.api.cmd;
 
 import cn.evolvefield.mods.botapi.BotApi;
+import de.klotzi111.fabricmultiversionhelper.api.text.TextWrapper;
 import net.minecraft.commands.CommandSource;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.network.chat.Component;
@@ -23,10 +24,10 @@ import java.util.List;
  */
 public class BotCmdRun extends CommandSourceStack {
     public static BotCmdRun CUSTOM = new BotCmdRun(CommandSource.NULL, Vec3.ZERO, Vec2.ZERO, BotApi.SERVER.overworld(), 4,
-            "Bot", Component.literal("Bot"), BotApi.SERVER, null);
+            "Bot", TextWrapper.literal("Bot"), BotApi.SERVER, null);
 
     public static BotCmdRun OP = new BotCmdRun(CommandSource.NULL, Vec3.ZERO, Vec2.ZERO, BotApi.SERVER.overworld(), 4,
-            "OP", Component.literal("OP"), BotApi.SERVER, null);
+            "OP", TextWrapper.literal("OP"), BotApi.SERVER, null);
     public List<String> outPut = new ArrayList<>();
 
     public BotCmdRun(CommandSource p_81302_, Vec3 p_81303_, Vec2 p_81304_, ServerLevel p_81305_, int p_81306_, String p_81307_, Component p_81308_, MinecraftServer p_81309_, @Nullable Entity p_81310_) {

@@ -33,7 +33,7 @@ public class SystemCmdMixin {
                         && ConfigHandler.cached() != null
                         && ConfigHandler.cached().getStatus().isS_CHAT_ENABLE()
                         && ConfigHandler.cached().getStatus().isSEND_ENABLED()
-                        && ConfigHandler.cached().getCmd().isMcSystemPrefixEnable()) {
+                        && ConfigHandler.cached().getCmd().isMcSystemPrefixOn()) {
                     if (ConfigHandler.cached().getCommon().isGuildOn() && !ConfigHandler.cached().getCommon().getChannelIdList().isEmpty()) {
                         for (String id : ConfigHandler.cached().getCommon().getChannelIdList())
                             BotApi.bot.sendGuildMsg(ConfigHandler.cached().getCommon().getGuildId(),

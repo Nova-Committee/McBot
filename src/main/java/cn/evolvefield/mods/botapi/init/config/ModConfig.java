@@ -107,33 +107,54 @@ public class ModConfig {
                         "%Player% 不在线或者不存在哦\n" +
                         "还他妈不上线搁这玩QQ呢~";//暂时没用
 
-        @SerializedName("qqPrefix")
+        @SerializedName("gamePrefixOn")
+        @Comment("####################" +
+                "是否开启显示到游戏中的前缀")
+        private boolean gamePrefixOn = true;//是否开启显示到游戏中的前缀
+        @SerializedName("idGamePrefixOn")
+        @Comment("是否开启显示到游戏中的id前缀")
+        private boolean idGamePrefixOn = true;//是否开启显示到游戏中的id前缀
+        @SerializedName("qqGamePrefix")
         @Comment("来自q群显示到游戏中的前缀")
-        private String qqPrefix = "群聊";//来自q群显示到游戏中的前缀
-        @SerializedName("guildPrefix")
+        private String qqGamePrefix = "群聊";//来自q群显示到游戏中的前缀
+        @SerializedName("guildGamePrefix")
         @Comment("来自频道显示到游戏中的前缀")
-        private String guildPrefix = "频道";//来自频道显示到游戏中的前缀
+        private String guildGamePrefix = "频道";//来自频道显示到游戏中的前缀
+        @SerializedName("groupNickOn")
+        @Comment("是否开启显示到游戏中的昵称为群昵称")
+        private boolean groupNickOn = false;//是否开启显示到游戏中的昵称为群昵称
+
+
+        @SerializedName("####################" +
+                "mcPrefixOn")
+        @Comment("是否开启来自游戏的消息显示到群中的前缀")
+        private boolean mcPrefixOn = true;//是否开启来自游戏的消息显示到群中的前缀
         @SerializedName("mcPrefix")
-        @Comment("来自游戏的消息前缀")
-        private String mcPrefix = "MC";//来自游戏的消息前缀
-        @SerializedName("mcChatPrefixEnable")
-        @Comment("游戏中系统命令发送的消息头")
-        private boolean mcChatPrefixEnable = false;//游戏中系统命令发送的消息头
-        @SerializedName("mcSystemPrefixEnable")
-        @Comment("游戏中自定义消息头")
-        private boolean mcSystemPrefixEnable = true;//游戏中自定义消息头
-        @SerializedName("qqChatPrefixEnable")
-        @Comment("qq中自定义消息头")
-        private boolean qqChatPrefixEnable = false;//qq中自定义消息头
+        @Comment("来自游戏的消息显示到群中的前缀")
+        private String mcPrefix = "MC";//来自游戏的消息显示到群中的前缀
+
+
+        @SerializedName("####################" +
+                "mcChatPrefixOn")
+        @Comment("是否开启游戏中自定义关键词")
+        private boolean mcChatPrefixOn = false;//是否开启游戏中自定义关键词
+        @SerializedName("qqChatPrefixOn")
+        @Comment("是否开启qq中自定义关键词")
+        private boolean qqChatPrefixOn = false;//是否开启qq中自定义关键词
         @SerializedName("mcChatPrefix")
         @Comment("游戏中自定义的消息头文本")
         private String mcChatPrefix = "q";//游戏中自定义的消息头文本
         @SerializedName("qqChatPrefix")
         @Comment("qq中自定义的消息头文本")
         private String qqChatPrefix = "m";//qq中自定义的消息头文本
+
+        @SerializedName("####################" +
+                "mcSystemPrefixOn")
+        @Comment("是否开启游戏中机器人执行命令发送的消息前缀")
+        private boolean mcSystemPrefixOn = true;//是否开启游戏中机器人执行命令发送的消息前缀
         @SerializedName("mcSystemPrefix")
-        @Comment("游戏中系统命令发送的消息头文本")
-        private String mcSystemPrefix = "SERVER";//游戏中系统命令发送的消息头文本
+        @Comment("游戏中机器人执行命令发送的消息前缀")
+        private String mcSystemPrefix = "SERVER";//游戏中机器人执行命令发送的消息前缀
 
     }
 
@@ -173,8 +194,8 @@ public class ModConfig {
         @Comment("选择语言系统")
         private String languageSelect = "zh_cn";//选择语言系统
         @SerializedName("auto_open")
-        @Comment("自动重连")
-        private boolean autoOpen = true;//自动重连
+        @Comment("自动连接")
+        private boolean autoOpen = true;//自动连接
         @SerializedName("image_on")
         @Comment("是否开启聊天栏图片功能")
         private boolean imageOn = true;//是否开启聊天栏图片功能
