@@ -5,17 +5,14 @@ import cn.evolvefield.mods.multi.api.core.version.MinecraftVersionHelper;
 import cn.evolvefield.mods.multi.api.impl.error.ErrorHandler;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
-import net.minecraft.network.chat.contents.*;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Optional;
+
+import static cn.evolvefield.mods.multi.MultiVersion.IS_1_19;
 
 public class ComponentWrapper {
-
-    private static final boolean IS_1_19 = MinecraftVersionHelper.isMCVersionAtLeast("1.19");
-
     private static final Constructor<?> LiteralComponentContent_constructor;
     private static final Constructor<?> TranslatableComponentContent_constructor;
 
@@ -95,7 +92,14 @@ public class ComponentWrapper {
         if (IS_1_19) {
             return Component.translatable(key, args);
         } else {
-            return (Component) (Object) new TranslatableContents(key, args);
+            Component component = null;
+            try {
+                Object[] instanceArgs = new Object[] {key};
+                component = (Component) TranslatableComponentContent_constructor.newInstance(instanceArgs, args);
+            } catch (IllegalAccessException | InstantiationException | InvocationTargetException e) {
+                ErrorHandler.handleReflectionException(e, "Failed to create new instance of \"%s\"", "TranslatableContents");
+            }
+            return component;
         }
     }
 
@@ -109,39 +113,6 @@ public class ComponentWrapper {
         }
     }
 
-    public static Component keybind(String string) {
-        if (IS_1_19) {
-            return Component.keybind(string);
-        } else {
-            return (Component) (Object) new KeybindContents(string);
-        }
-    }
-
-    public static Component nbt(String rawPath, boolean interpret, Optional<Component> separator, DataSource dataSource) {
-        if (IS_1_19) {
-            return Component.nbt(rawPath, interpret, separator, dataSource);
-        } else {
-            return (Component) (Object) new NbtContents(rawPath, interpret, separator, dataSource);
-        }
-    }
-
-    public static Component score(String name, String objective) {
-        if (IS_1_19) {
-            return Component.score(name, objective);
-        } else {
-            return (Component) (Object) new ScoreContents(name, objective);
-        }
-    }
-
-    public static Component selector(String pattern, Optional<Component> separator) {
-        if (IS_1_19) {
-            return Component.selector(pattern, separator);
-        } else {
-            return (Component) (Object) new SelectorContents(pattern, separator);
-        }
-    }
-
-    // this should return the same as IMutableComponent#fmvh$asString
     public static String getAsString(Component text) {
         if (IS_1_19) {
             return text.getString();
