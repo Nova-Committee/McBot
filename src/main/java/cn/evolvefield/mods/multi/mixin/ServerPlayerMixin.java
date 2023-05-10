@@ -1,4 +1,4 @@
-package cn.evolvefield.mods.botapi.init.mixins;
+package cn.evolvefield.mods.multi.mixin;
 
 import cn.evolvefield.mods.botapi.init.callbacks.PlayerEvents;
 import net.minecraft.server.level.ServerLevel;

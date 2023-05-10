@@ -32,10 +32,10 @@ dependencies {
     }
     modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
-    //modImplementation fileTree(dir: 'libs', include: ['*.jar'])
+    //compileOnly fileTree(dir: 'oldLib', include: ['*.jar'])
     modImplementation include("cn.evolvefield.bot:OneBot-Client:${project.client_version}")
     modImplementation include("blue.endless:jankson:${project.jankson_version}")
-    implementation include("com.github.Klotzi111:GsonUtil:main-SNAPSHOT")
+    modImplementation include("com.github.Klotzi111:GsonUtil:main-SNAPSHOT")
 
     //modApi include("com.github.Klotzi111:FabricMultiVersionHelper:${project.multi_version}")
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
@@ -44,6 +44,7 @@ dependencies {
     //modImplementation include("eu.pb4:placeholder-api:${project.placeholder_version}")
     annotationProcessor "cn.evolvefield.bot:OneBot-Client:${project.client_version}"
     annotationProcessor "org.projectlombok:lombok:1.18.24"
+
 }
 
 processResources {

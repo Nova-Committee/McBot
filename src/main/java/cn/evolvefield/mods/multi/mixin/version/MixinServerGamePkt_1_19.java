@@ -1,4 +1,4 @@
-package cn.evolvefield.mods.botapi.init.mixins;
+package cn.evolvefield.mods.multi.mixin.version;
 
 import cn.evolvefield.mods.botapi.init.callbacks.ServerLevelEvents;
 import net.minecraft.network.chat.Component;
@@ -11,14 +11,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-/**
- * Description:
- * Author: cnlimiter
- * Date: 2022/1/18 10:30
- * Version: 1.0
- */
 @Mixin(value = ServerGamePacketListenerImpl.class, priority = 1001)
-public class ServerGamePacketListenerImplMixin {
+public class MixinServerGamePkt_1_19 {
 
     @Shadow
     public ServerPlayer player;

@@ -1,4 +1,4 @@
-package cn.evolvefield.mods.botapi.init.mixins;
+package cn.evolvefield.mods.multi.mixin.version;
 
 import cn.evolvefield.mods.botapi.init.callbacks.PlayerEvents;
 import net.minecraft.advancements.Advancement;
@@ -10,26 +10,24 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-/**
- * Description:
- * Author: cnlimiter
- * Date: 2022/1/18 10:13
- * Version: 1.0
- */
 @Mixin(value = PlayerAdvancements.class, priority = 1001)
-public class PlayerAdvancementsMixin {
-
-
+public class MixinAdvancements_1_16 {
     @Shadow
     private ServerPlayer player;
 
-    @Inject(method = "award", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/players/PlayerList;broadcastSystemMessage(Lnet/minecraft/network/chat/Component;Z)V", shift = At.Shift.AFTER))
+    @Inject(
+            method = "award",
+            at =
+            @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/server/players/class_3324;method_14616(Lnet/minecraft/network/chat/class_2561;Lnet/minecraft/network/chat/class_2556;Ljava/util/UUID;)V",
+                    shift = At.Shift.AFTER
+            )
+    )
     public void PlayerAdvancements_award(Advancement advancement, String string, CallbackInfoReturnable<Boolean> cir) {
 
         ServerPlayer player = this.player;
 
         PlayerEvents.PLAYER_ADVANCEMENT.invoker().onAdvancement(player, advancement);
     }
-
-
 }

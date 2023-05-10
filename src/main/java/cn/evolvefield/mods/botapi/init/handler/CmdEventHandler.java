@@ -2,7 +2,6 @@ package cn.evolvefield.mods.botapi.init.handler;
 
 import cn.evolvefield.mods.botapi.common.command.*;
 import cn.evolvefield.mods.multi.MultiVersion;
-import cn.evolvefield.mods.multi.api.core.mapping.MappingHelper;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.BoolArgumentType;
 import com.mojang.brigadier.arguments.LongArgumentType;
@@ -24,9 +23,8 @@ public class CmdEventHandler {
             CommandRegistrationCallback.EVENT.register((dispatcher, commandBuildContext, commandSelection) -> register(dispatcher));
         }
         else {
-            //net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback.EVENT.register((dispatcher, commandBuildContext) -> register(dispatcher));
+            net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback.EVENT.register((dispatcher, commandBuildContext) -> register(dispatcher));
         }
-
     }
 
     private static void register(CommandDispatcher<CommandSourceStack> dispatcher){

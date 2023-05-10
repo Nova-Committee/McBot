@@ -1,10 +1,19 @@
 package cn.evolvefield.mods.botapi.init.handler;
 
+import cn.evolvefield.mods.multi.MultiVersion;
+import cn.evolvefield.mods.multi.api.core.mapping.MappingHelper;
+import cn.evolvefield.mods.multi.common.ComponentWrapper;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
+import net.minecraft.Util;
+import net.minecraft.network.chat.ChatType;
 import net.minecraft.network.chat.Component;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.UUID;
 
 /**
  * Description:
@@ -28,8 +37,22 @@ public class TickEventHandler {
                     && server.isDedicatedServer()
                     && toSend != null
             ) {
-                Component textComponents = Component.literal(toSend);
-                server.getPlayerList().broadcastSystemMessage(textComponents, false);
+                Component textComponents = ComponentWrapper.literal(toSend);
+
+
+                if (MultiVersion.IS_1_19) {
+                    server.getPlayerList().broadcastSystemMessage(textComponents, false);
+                } else {
+                    Class<?> PlayerList_class = MappingHelper.mapAndLoadClass("net.minecraft.class_3324", MappingHelper.CLASS_MAPPER_FUNCTION);
+                    Method broadcastMsg = MappingHelper.mapAndGetMethod(PlayerList_class, "broadcastMessage", Component.class, ChatType.class, UUID.class);
+                    Field ChatType_SYS = MappingHelper.mapAndGetField(ChatType.class, "field_11735", ChatType.class);
+
+                    try {
+                        broadcastMsg.invoke(server.getPlayerList(), textComponents, ChatType_SYS, Util.NIL_UUID);
+                    } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+                        throw new UnsupportedOperationException("Failed to invoke method \"PlayerList::broadcastMessage\" with reflection", e);
+                    }
+                }
             }
         });
     }

@@ -1,13 +1,17 @@
 package cn.evolvefield.mods.botapi.common.command;
 
 
-import com.mojang.brigadier.Command;
+import cn.evolvefield.mods.multi.api.core.mapping.MappingHelper;
+import cn.evolvefield.mods.multi.common.ComponentWrapper;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 public class HelpCommand {
 
@@ -48,10 +52,20 @@ public class HelpCommand {
 
         var url = "https://github.com/Nova-Committee/Bot-Connect/issues/new";
         var end = "提交问题";
-
-        var urlC = Component.literal(url).setStyle(Style.EMPTY.withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://github.com/Nova-Committee/Bot-Connect/issues/new")));
-        var endC = Component.literal(end);
-        context.getSource().sendSuccess(Component.literal(toSend).append(urlC).append(endC), true);
-        return Command.SINGLE_SUCCESS;
+        Class<?> BaseText_class = MappingHelper.mapAndLoadClass("net.minecraft.class_2554", MappingHelper.CLASS_MAPPER_FUNCTION);
+        Method BaseText_setStyle = MappingHelper.mapAndGetMethod(BaseText_class, "setStyle", Component.class, Style.class);
+        Method BaseText_append = MappingHelper.mapAndGetMethod(BaseText_class, "append", Component.class, Component.class);
+        var send = ComponentWrapper.literal(toSend);
+        var urlC = ComponentWrapper.literal(url);
+        var endC = ComponentWrapper.literal(end);
+        try {
+            BaseText_setStyle.invoke(urlC, Style.EMPTY.withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://github.com/Nova-Committee/Bot-Connect/issues/new")));
+            BaseText_append.invoke(send, urlC);
+            BaseText_append.invoke(urlC, endC);
+        } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+            throw new UnsupportedOperationException("Failed to invoke method \"BaseComponent/MutableComponent::setStyle/append\" with reflection", e);
+        }
+        context.getSource().sendSuccess(send, true);
+        return 1;
     }
 }

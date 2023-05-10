@@ -3,11 +3,10 @@ package cn.evolvefield.mods.botapi.common.command;
 
 import cn.evolvefield.mods.botapi.BotApi;
 import cn.evolvefield.mods.botapi.init.handler.ConfigHandler;
-import com.mojang.brigadier.Command;
+import cn.evolvefield.mods.multi.common.ComponentWrapper;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.commands.CommandSourceStack;
-import net.minecraft.network.chat.Component;
 
 public class StatusCommand {
 
@@ -51,8 +50,8 @@ public class StatusCommand {
                         + "发送玩家死亡消息状态:" + sDeathEnabled + "\n"
                         + "发送玩家成就消息状态:" + sAchievementsEnabled + "\n"
                         + "发送群成员进/退群消息状态:" + sWelcomeEnabled + "\n";
-        context.getSource().sendSuccess(Component.literal(toSend), true);
+        context.getSource().sendSuccess(ComponentWrapper.literal(toSend), true);
         ConfigHandler.save();
-        return Command.SINGLE_SUCCESS;
+        return 1;
     }
 }

@@ -18,6 +18,10 @@ public class MinecraftVersionHelper {
 		getMinecraftVersion();
 	}
 
+	public static boolean isMCVersion(String version){
+		return MINECRAFT_VERSION.getFriendlyString().equals(version);
+	}
+
 	public static boolean isMCVersionAtLeast(String versionToBeAtLeast) {
 		if (IS_AT_LEAST_SEMANTIC_VERSION_CACHE.containsKey(versionToBeAtLeast)) {
 			return IS_AT_LEAST_SEMANTIC_VERSION_CACHE.getBoolean(versionToBeAtLeast);
