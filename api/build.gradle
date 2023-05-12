@@ -1,0 +1,39 @@
+plugins {
+    id 'fabric-loom' version '1.0-SNAPSHOT'
+    id 'maven-publish'
+    id 'idea'
+}
+
+archivesBaseName = "${mod_name}-core-${api_version}"
+
+
+repositories {
+
+}
+
+dependencies {
+    minecraft "com.mojang:minecraft:1.19.4"
+    mappings loom.officialMojangMappings()
+    modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+    modImplementation "net.fabricmc.fabric-api:fabric-api:0.80.0+1.19.4"
+    modImplementation include("cn.evolvefield.bot:OneBot-Client:${project.client_version}")
+    modImplementation include("blue.endless:jankson:${project.jankson_version}")
+
+    implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.1'
+    compileOnly 'org.projectlombok:lombok:1.18.24'
+    annotationProcessor "org.projectlombok:lombok:1.18.24"
+}
+
+processResources {
+    inputs.property "version", project.version
+
+    filesMatching("fabric.mod.json") {
+        expand "version": project.version
+    }
+}
+
+jar.enabled(true)
+
+tasks.register('prepareWorkspace') {
+
+}

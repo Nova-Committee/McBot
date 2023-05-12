@@ -1,125 +1,98 @@
-plugins {
-    id 'fabric-loom' version '0.12-SNAPSHOT'
-    id 'maven-publish'
+plugins{
+    id "java"
 }
 
-version = project.version_prefix + "-" + project.mod_version
-group = project.maven_group
 
-repositories {
-    mavenCentral()
-    mavenLocal()
-    maven {
-        url 'https://maven.nova-committee.cn/releases'
+
+
+subprojects {
+    {
+        apply plugin: 'java'
     }
-    maven { url "https://maven.nucleoid.xyz/" }
-    maven {
-        name = 'ParchmentMC'
-        url = 'https://maven.parchmentmc.org'
-    }
-    maven {
-        url "https://jitpack.io"
-    }
-}
 
-dependencies {
 
-    minecraft "com.mojang:minecraft:${project.minecraft_version}"
-    compileOnly 'org.projectlombok:lombok:1.18.24'
-    mappings loom.layered() {
-        officialMojangMappings()
-        parchment("org.parchmentmc.data:parchment-${project.minecraft_version}:${project.parchement_version}@zip")
-    }
-    modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
-    modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
-    //compileOnly fileTree(dir: 'oldLib', include: ['*.jar'])
-    modImplementation include("cn.evolvefield.bot:OneBot-Client:${project.client_version}")
-    modImplementation include("blue.endless:jankson:${project.jankson_version}")
-    modImplementation include("com.github.Klotzi111:GsonUtil:main-SNAPSHOT")
+    java.sourceCompatibility = JavaVersion.VERSION_1_8
+    java.targetCompatibility = JavaVersion.VERSION_1_8
 
-    //modApi include("com.github.Klotzi111:FabricMultiVersionHelper:${project.multi_version}")
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
+    project.buildDir = "${rootProject.buildDir}/${project.name}"
 
-    //modImplementation include("eu.pb4:placeholder-api:${project.placeholder_version}")
-    annotationProcessor "cn.evolvefield.bot:OneBot-Client:${project.client_version}"
-    annotationProcessor "org.projectlombok:lombok:1.18.24"
+    repositories {
 
-}
+        mavenCentral()
 
-processResources {
-    inputs.property "version", project.version
-    filteringCharset "UTF-8"
-
-    filesMatching("fabric.mod.json") {
-        expand "version": project.version
-    }
-}
-
-def targetJavaVersion = 17
-tasks.withType(JavaCompile).configureEach {
-    it.options.encoding = "UTF-8"
-    if (targetJavaVersion >= 10 || JavaVersion.current().isJava10Compatible()) {
-        it.options.release = targetJavaVersion
-    }
-}
-
-java {
-    def javaVersion = JavaVersion.toVersion(targetJavaVersion)
-    if (JavaVersion.current() < javaVersion) {
-        toolchain.languageVersion = JavaLanguageVersion.of(targetJavaVersion)
-    }
-    archivesBaseName = project.archives_base_name
-    withSourcesJar()
-}
-
-jar {
-    from("LICENSE") {
-        rename { "${it}_${project.archivesBaseName}" }
-    }
-}
-
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            from components.java
-
-            version = "${project.version_prefix}" + "-" + "${project.mod_version}"
-            artifactId = "${project.archives_base_name}"
-            groupId = "${project.maven_group}"
-            pom {
-                name = 'Bot Connect'
-                description = 'Adds chat linking between QQ and Minecraft and QQ commands to request server data.'
-                url = 'https://www.evolvefield.cn/article/14'
-                licenses {
-                    license {
-                        name = 'AGPLV3'
-                        url = 'https://www.gnu.org/licenses/gpl-3.0.html'
-                    }
-                }
-                developers {
-                    developer {
-                        id = 'cnlimiter'
-                        name = 'cnlimiter'
-                        email = 'cnlimiter@163.com'
-                    }
-                }
+        maven {
+            name = 'Sponge / Mixin'
+            url = 'https://repo.spongepowered.org/repository/maven-public/'
+        }
+        maven {
+            name = 'BlameJared Maven (CrT / Bookshelf)'
+            url = 'https://maven.blamejared.com'
+        }
+        maven {
+            name = "CottonMC"
+            url = "https://server.bbkr.space/artifactory/libs-release"
+        }
+        maven {
+            name = 'ParchmentMC'
+            url = 'https://maven.parchmentmc.org'
+        }
+        maven {
+            name = "Ladysnake"
+            url = "https://ladysnake.jfrog.io/artifactory/mods"
+        }
+        maven {
+            name = "Shedaniel"
+            url = "https://maven.shedaniel.me/"
+        }
+        maven {
+            name = "TerraformersMC"
+            url = "https://maven.terraformersmc.com"
+        }
+        maven {
+            name = "Nucleoid"
+            url = "https://maven.nucleoid.xyz/"
+        }
+        maven {
+            name = "Modrinth"
+            url = "https://api.modrinth.com/maven"
+            content {
+                includeGroup "maven.modrinth"
+            }
+        }
+        maven {
+            name = "Nova"
+            url = "https://maven.nova-committee.cn/releases"
+        }
+        maven {
+            name = "curse"
+            url = "https://www.cursemaven.com"
+            content {
+                includeGroup "curse.maven"
+            }
+        }
+        maven {
+            url = "https://maven.saps.dev/minecraft"
+            content {
+                includeGroup "dev.latvian.mods"
+                includeGroup "dev.ftb.mods"
             }
         }
     }
 
-    // See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
-    repositories {
-        if (System.getenv('MAVEN_USERNAME') != null && System.getenv('MAVEN_PASSWORD') != null) {
-            maven {
-                name 'release'
-                url = 'https://maven.nova-committee.cn/releases'
 
-                credentials {
-                    username System.getenv('MAVEN_USERNAME')
-                    password System.getenv('MAVEN_PASSWORD')
-                }
-            }
+    tasks.withType(JavaCompile).configureEach {
+        it.options.encoding = 'UTF-8'
+    }
+
+    tasks.withType(Javadoc).configureEach {
+        options.addStringOption('Xdoclint:none', '-quiet')
+        it.options.encoding = 'UTF-8'
+
+    }
+
+    tasks.withType(GenerateModuleMetadata).tap {
+        configureEach {
+            enabled = true
         }
     }
 }

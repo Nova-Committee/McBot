@@ -1,0 +1,13 @@
+{
+  "required": true,
+  "package": "cn.evole.mods.mcbot.init.mixins",
+  "plugin": "cn.evole.mods.mcbot.mixin.ModMixinConfig",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+  ],
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
