@@ -1,3 +1,9 @@
+# Gradle
+
+.gradle/
+build/
+out/
+classes/
 
 # IDEA
 
@@ -10,3 +16,6 @@
 
 *.DS_Store
 
+# Fabric
+
+run/

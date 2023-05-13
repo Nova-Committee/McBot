@@ -1,0 +1,70 @@
+apply plugin: "fabric-loom"
+
+sourceCompatibility = JavaVersion.VERSION_17
+targetCompatibility = JavaVersion.VERSION_17
+
+archivesBaseName = project.archives_base_name
+version = project.mod_version
+group = project.maven_group
+
+repositories {
+    mavenCentral()
+    maven {
+        url = 'https://maven.nova-committee.cn/releases'
+    }
+}
+
+dependencies {
+    minecraft "com.mojang:minecraft:${project.parent.minecraft_version}"
+    mappings loom.officialMojangMappings()
+
+    modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+    modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+    modImplementation("cn.evole.bot:OneBot-Client:${project.onebot_client_version}")
+    modImplementation("blue.endless:jankson:${project.jankson_version}")
+
+    compileOnly 'org.projectlombok:lombok:1.18.24'
+    annotationProcessor "org.projectlombok:lombok:1.18.24"
+}
+
+def fabric_subprojects = project.parent.subprojects.findAll({
+    it.name != "wrapper"
+})
+
+remapJar {
+    outputs.upToDateWhen { false }
+
+    dependsOn(fabric_subprojects.collect {
+        it.tasks.remapJar
+    })
+
+    doFirst {
+        delete fileTree("build/tmp/versions/META-INF/jars")
+        copy {
+            from {
+                fabric_subprojects.collect {
+                    it.remapJar.outputs.files
+                }
+            }
+            into("build/tmp/versions/META-INF/jars")
+        }
+    }
+
+    from("../../LICENSE")
+    from("build/tmp/versions")
+}
+
+processResources {
+    filesMatching("fabric.mod.json") {
+        def valueMap = [
+                "version": project.mod_version
+        ]
+        expand valueMap
+    }
+}
+
+loom {
+    runConfigs.all {
+        runDir "../run"
+    }
+}

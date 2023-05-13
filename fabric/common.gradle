@@ -1,0 +1,70 @@
+apply plugin: "fabric-loom"
+apply plugin: "com.replaymod.preprocess"
+
+int mcVersion = 1
+
+preprocess {
+    mcVersion = vars.get()["MC"]
+    tabIndentation = true
+}
+
+
+repositories {
+    mavenCentral()
+    maven {
+        url = 'https://maven.nova-committee.cn/releases'
+    }
+}
+
+dependencies {
+    minecraft "com.mojang:minecraft:${project.minecraft_version}"
+    mappings loom.officialMojangMappings()
+
+    modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+    modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+    modImplementation include("cn.evole.bot:OneBot-Client:${project.onebot_client_version}")
+    modImplementation include("blue.endless:jankson:${project.jankson_version}")
+
+    compileOnly 'org.projectlombok:lombok:1.18.24'
+    annotationProcessor "org.projectlombok:lombok:1.18.24"
+
+}
+
+loom {
+    runConfigs.all {
+        ideConfigGenerated = true
+        runDir "../../run"
+    }
+}
+
+remapJar {
+    remapperIsolation = true
+}
+
+sourceCompatibility = JavaVersion.VERSION_17
+targetCompatibility = JavaVersion.VERSION_17
+
+version = project.mod_version
+group = project.maven_group
+archivesBaseName = project.archives_base_name + "-" + project.minecraft_dependency
+
+processResources {
+    filesMatching("fabric.mod.json") {
+        def valueMap = [
+                "mc_version"          : project.minecraft_dependency.replace(".", "_"),
+                "version"             : project.version,
+                "minecraft_dependency": project.minecraft_dependency
+        ]
+        expand valueMap
+    }
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = "UTF-8"
+}
+
+jar {
+    from("../../../LICENSE") {
+        rename { "${it}_${project.archives_base_name}" }
+    }
+}
