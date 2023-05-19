@@ -2,7 +2,6 @@
 package cn.evole.mods.mcbot.init.mixins;
 
 import cn.evole.mods.mcbot.Const;
-import com.google.common.collect.ImmutableMap;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -42,8 +41,10 @@ public abstract class MixinLanguage {
 
 
 	@ModifyVariable(method = "loadDefault", at = @At("STORE"), ordinal = 0)
-	private static ImmutableMap.Builder<String, String> mapInjected(ImmutableMap.Builder<String, String> originalMap) {
-		LinkedHashMap<String, String> map = new LinkedHashMap<>(originalMap.build());
+	private static Map<String, String> mapInjected(Map<String, String> originalMap) {
+
+		LinkedHashMap<String, String> map = new LinkedHashMap<>(originalMap);
+
 
 		FabricLoader.getInstance().getAllMods().forEach(modContainer -> {
 			Optional<Path> optional = modContainer.findPath("/assets/" + modContainer.getMetadata().getId() + "/lang/en_us.json");
@@ -53,16 +54,17 @@ public abstract class MixinLanguage {
 					JsonObject json = GSON.fromJson(new InputStreamReader(inputStream, StandardCharsets.UTF_8), JsonObject.class);
 					for (Map.Entry<String, JsonElement> entry : json.entrySet()) {
 						String string = UNSUPPORTED_FORMAT_PATTERN.matcher(GsonHelper.convertToString(entry.getValue(), entry.getKey())).replaceAll("%$1s");
-						map.put(entry.getKey(), string);
+						if (!map.containsKey(entry.getKey())){
+							map.put(entry.getKey(), string);
+						}
 					}
 				} catch (Exception e) {
 					Const.LOGGER.error("Couldn't read strings from /assets/{}", modContainer.getMetadata().getId() + "/lang/en_us.json", e);
 				}
 			}
 		});
-		ImmutableMap.Builder<String, String> builder = ImmutableMap.builder();
-		builder.putAll(map);
-		return builder;
+
+		return map;
 	}
 }
 //#endif

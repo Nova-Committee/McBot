@@ -1,3 +1,4 @@
+//#if MC >= 11400
 package cn.evole.mods.mcbot.init.mixins;
 
 import com.google.gson.Gson;
@@ -53,7 +54,9 @@ public abstract class MixinLanguage {
 					JsonObject json = new Gson().fromJson(new InputStreamReader(inputStream, StandardCharsets.UTF_8), JsonObject.class);
 					for (Map.Entry<String, JsonElement> entry : json.entrySet()) {
 						String string = UNSUPPORTED_FORMAT_PATTERN.matcher(GsonHelper.convertToString(entry.getValue(), entry.getKey())).replaceAll("%$1s");
-						storage.put(entry.getKey(), string);
+						if (!storage.containsKey(entry.getKey())){
+							storage.put(entry.getKey(), string);
+						}
 					}
 				} catch (Exception e) {
 					LOGGER.error("Couldn't read strings from /assets/{}", modContainer.getMetadata().getId() + "/lang/en_us.json", e);
@@ -62,3 +65,4 @@ public abstract class MixinLanguage {
 		});
 	}
 }
+//#endif
