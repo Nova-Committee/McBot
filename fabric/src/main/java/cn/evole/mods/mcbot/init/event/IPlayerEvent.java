@@ -46,12 +46,12 @@ public class IPlayerEvent {
             if (player != null && ConfigHandler.cached().getStatus().isS_DEATH_ENABLE() && ConfigHandler.cached().getStatus().isSEND_ENABLED()) {
                 LivingEntity livingEntity2 = player.getKillCredit();
 
-                String string =
-                        //# if MC >= 11904
-                        "mcbot.death.attack." + source.type().msgId();
-                        //# else
-                        //$$ "mcbot.death.attack." + source.getMsgId();
-                        //#endif
+
+                //#if MC >= 11904
+                String string = "mcbot.death.attack." + source.type().msgId();
+                //#else
+                //$$ String string = "mcbot.death.attack." + source.getMsgId();
+                //#endif
 
                 String msg = livingEntity2 != null ? I18n.get(string, player.getDisplayName().getString(), livingEntity2.getDisplayName().getString()) : I18n.get(string, player.getDisplayName().getString());
 

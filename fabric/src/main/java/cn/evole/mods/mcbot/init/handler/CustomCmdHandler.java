@@ -113,7 +113,7 @@ public class CustomCmdHandler {
 
             try {
                 reader = new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8);
-                json = JsonParser.parseReader(reader).getAsJsonObject();
+                json = new JsonParser().parse(reader).getAsJsonObject();
 
                 customCmd = CustomCmd.loadFromJson(json);
 

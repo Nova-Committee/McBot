@@ -3,14 +3,14 @@
 </p>
 <div align="center">
 
-# Bot-Connect
+# McBot
 
 _✨ Based on [OneBot](https://github.com/howmanybots/onebot/blob/master/README.md) protocol's MineCraft QQ Robot✨_
 
 </div>
 <hr>
 <p align="center">
-    <a href="https://github.com/Nova-Committee/Bot-Connect/issues"><img src="https://img.shields.io/github/issues/Nova-Committee/Bot-Connect?style=flat" alt="issues" /></a>
+    <a href="https://github.com/Nova-Committee/McBot/issues"><img src="https://img.shields.io/github/issues/Nova-Committee/Bot-Connect?style=flat" alt="issues" /></a>
     <a href="https://www.curseforge.com/minecraft/mc-mods/botconnect">
         <img src="http://cf.way2muchnoise.eu/botconnect.svg" alt="CurseForge Download">
     </a>
@@ -27,8 +27,8 @@ _✨ Based on [OneBot](https://github.com/howmanybots/onebot/blob/master/README.
 
 # LTS
 
-> Forge-1.19.3  
-> Fabric-1.19.3
+> Forge-all
+> Fabric-all
 
 # QuickStart
 
@@ -42,8 +42,8 @@ public class TestCmd {
     }
 
     public static int execute(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
-        System.out.println(BotApi.bot.sendGroupMsg(337631140, MsgUtils.builder().text("1").build(), true));
-        //send messages to the group
+        System.out.println(McBot.bot.sendGroupMsg(337631140, MsgUtils.builder().text("1").build(), true));
+        //send msg to group
         return 0;
     }
 }
@@ -54,26 +54,28 @@ public class TestCmd {
 ```java
 public class WebSocketServerTest {
     public static void main(String[] args) throws Exception {
-        LinkedBlockingQueue<String> blockingQueue = new LinkedBlockingQueue<>();//use queues to transfer data
-        Connection service = ConnectFactory.createWebsocketClient(new BotConfig("ws://127.0.0.1:8080", null, false), blockingQueue);
-        EventDispatchers dispatchers = new EventDispatchers(blockingQueue);//create an event distributor
+        public static LinkedBlockingQueue<String> blockingQueue = new LinkedBlockingQueue<>();//use queue
+        public static Thread app = new Thread(() -> {
+            service = new ConnectFactory(new BotConfig(), blockingQueue);//create websocket session
+            bot = service.ws.createBot();//create bot instance
+        }, "BotServer");
+        app.start();
+        EventBus bus = new EventBus(blockingQueue);//create bus
         GroupMessageListener groupMessageListener = new GroupMessageListener();
-        groupMessageListener.addHandler("weather", new Handler<GroupMessageEvent>() {
+        groupMessageListener.addHandler("天气", new Handler<GroupMessageEvent>() {
             @Override
             public void handle(GroupMessageEvent groupMessage) {
                 System.out.println(groupMessage);
 
             }
         });
-        dispatchers.addListener(groupMessageListener);//add listener
-        dispatchers.addListener(new SimpleListener<PrivateMessageEvent>() {//private listener
+        bus.addListener(groupMessageListener);//add listener
+        bus.addListener(new SimpleListener<PrivateMessageEvent>() {//private chat listener
             @Override
             public void onMessage(PrivateMessageEvent privateMessage) {
                 System.out.println(privateMessage);
             }
         });
-
-        dispatchers.start(10);//thread groups process tasks
 
     }
 }
@@ -81,7 +83,7 @@ public class WebSocketServerTest {
 
 # Client
 
-Bot-Connect  [OneBot-v11](https://github.com/howmanybots/onebot/tree/master/v11/specs)
+McBot  [OneBot-v11](https://github.com/howmanybots/onebot/tree/master/v11/specs)
 developed with standard protocols, compatible with all One Bot protocol clients that support forward Web sockets
 
 | Project Address                                                                | Platform                                      | Authors        | Note                                                                      |
@@ -111,12 +113,12 @@ source product.
 
 # Thanks
 
-Thanks [JetBrains](https://www.jetbrains.com/?from=Shiro) Provide Free License Support OpenSource Project
+Thanks [JetBrains](https://www.jetbrains.com/?from=McBot) Provide Free License Support OpenSource Project
 
-[<img src="https://mikuac.com/images/jetbrains-variant-3.png" width="200"/>](https://www.jetbrains.com/?from=mirai)
+[<img src="https://mikuac.com/images/jetbrains-variant-3.png" width="200"/>](https://www.jetbrains.com/?from=McBot)
 
 ## Stargazers over time
 
-[![Stargazers over time](https://starchart.cc/Nova-Committee/Bot-Connect.svg)](https://starchart.cc/Nova-Committee/Bot-Connect)
+[![Stargazers over time](https://starchart.cc/Nova-Committee/McBot.svg)](https://starchart.cc/Nova-Committee/McBot)
 
 

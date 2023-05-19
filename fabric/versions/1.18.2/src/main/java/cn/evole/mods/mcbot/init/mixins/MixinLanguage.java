@@ -1,6 +1,7 @@
 //#if MC >= 11600
 package cn.evole.mods.mcbot.init.mixins;
 
+import cn.evole.mods.mcbot.Const;
 import com.google.common.collect.ImmutableMap;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
@@ -8,7 +9,6 @@ import com.google.gson.JsonObject;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.locale.Language;
 import net.minecraft.util.GsonHelper;
-import org.slf4j.Logger;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -40,8 +40,6 @@ public abstract class MixinLanguage {
 	@Shadow
 	private static Pattern UNSUPPORTED_FORMAT_PATTERN;
 
-	@Shadow @Final private static Logger LOGGER;
-
 
 	@ModifyVariable(method = "loadDefault", at = @At("STORE"), ordinal = 0)
 	private static ImmutableMap.Builder<String, String> mapInjected(ImmutableMap.Builder<String, String> originalMap) {
@@ -58,7 +56,7 @@ public abstract class MixinLanguage {
 						map.put(entry.getKey(), string);
 					}
 				} catch (Exception e) {
-					LOGGER.error("Couldn't read strings from /assets/{}", modContainer.getMetadata().getId() + "/lang/en_us.json", e);
+					Const.LOGGER.error("Couldn't read strings from /assets/{}", modContainer.getMetadata().getId() + "/lang/en_us.json", e);
 				}
 			}
 		});

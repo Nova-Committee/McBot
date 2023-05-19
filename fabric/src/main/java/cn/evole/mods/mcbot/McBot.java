@@ -37,7 +37,7 @@ public class McBot implements ModInitializer {
     public static File CONFIG_FILE;
     public static LinkedBlockingQueue<String> blockingQueue;
     public static ConnectFactory service;
-    public static EventBus dispatchers;
+    public static EventBus bus;
     public static Bot bot;
     public static Thread app;
 
@@ -54,7 +54,7 @@ public class McBot implements ModInitializer {
         //#if MC >= 11900
         CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> ICmdEvent.register(dispatcher));
         //#else
-        //$$ CommandRegistrationCallback.EVENT.register((dispatcher, dedicated) -> MinecraftCommands.register(dispatcher));
+        //$$ CommandRegistrationCallback.EVENT.register((dispatcher, dedicated) -> ICmdEvent.register(dispatcher));
         //#endif
 
         ServerLifecycleEvents.SERVER_STARTING.register(this::onServerStarting);
@@ -97,15 +97,15 @@ public class McBot implements ModInitializer {
                 Const.LOGGER.error("§c机器人服务端未配置或未打开");
             }
         }
-        dispatchers = new EventBus(blockingQueue);//创建事件分发器
+        bus = new EventBus(blockingQueue);//创建事件分发器
         CustomCmdHandler.INSTANCE.load();//自定义命令加载
-        IBotEvent.init(dispatchers);//事件监听s
+        IBotEvent.init(bus);//事件监听s
     }
 
     public void onServerStopping(MinecraftServer server) {
         Const.isShutdown = true;
         Const.LOGGER.info("▌ §c正在关闭群服互联 §a┈━═☆");
-        dispatchers.stop();//分发器关闭
+        bus.stop();//分发器关闭
         service.stop();
         app.interrupt();
     }

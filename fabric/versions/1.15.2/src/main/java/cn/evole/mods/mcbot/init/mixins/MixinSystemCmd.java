@@ -1,4 +1,4 @@
-//#if MC >= 11600
+//#if MC >= 11400
 package cn.evole.mods.mcbot.init.mixins;
 
 import cn.evole.mods.mcbot.McBot;
@@ -52,9 +52,9 @@ public abstract class MixinSystemCmd {
                     }
             }
             if (entity != null) {
-                commandContext.getSource().getServer().getPlayerList().broadcastMessage(component2, ChatType.CHAT, entity.getUUID());
+                commandContext.getSource().getServer().getPlayerList().broadcastMessage(component2, false);
             } else {
-                commandContext.getSource().getServer().getPlayerList().broadcastMessage(component2, ChatType.SYSTEM, Util.NIL_UUID);
+                commandContext.getSource().getServer().getPlayerList().broadcastMessage(component2, false);
             }
 
             return 1;

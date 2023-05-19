@@ -3,12 +3,15 @@ package cn.evole.mods.mcbot.command;
 
 import cn.evole.mods.mcbot.McBot;
 import cn.evole.mods.mcbot.init.handler.ConfigHandler;
-import cn.evole.mods.multi.common.ComponentWrapper;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import lombok.val;
 import net.minecraft.commands.CommandSourceStack;
-
+//#if MC >= 11900
+import net.minecraft.network.chat.Component;
+//#else
+//$$ import net.minecraft.network.chat.TextComponent;
+//#endif
 public class StatusCommand {
 
     public static int execute(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
@@ -28,7 +31,7 @@ public class StatusCommand {
         val groupId = ConfigHandler.cached().getCommon().getGroupIdList().toString();
         boolean debuggable = ConfigHandler.cached().getCommon().isDebuggable();
         boolean connected = McBot.service != null;
-        boolean white = McBot.SERVER.getPlayerManager().isWhitelistEnabled();
+        boolean white = McBot.SERVER.getPlayerList().isUsingWhitelist();
         String host = ConfigHandler.cached().getBotConfig().getUrl();
         long QQid = ConfigHandler.cached().getCommon().getBotId();
         String toSend =
@@ -51,7 +54,11 @@ public class StatusCommand {
                         + "发送玩家死亡消息状态:" + sDeathEnabled + "\n"
                         + "发送玩家成就消息状态:" + sAchievementsEnabled + "\n"
                         + "发送群成员进/退群消息状态:" + sWelcomeEnabled + "\n";
-        context.getSource().sendSuccess(ComponentWrapper.literal(toSend), true);
+        //#if MC >= 11900
+        context.getSource().sendSuccess(Component.literal(toSend), true);
+        //#else
+        //$$ context.getSource().sendSuccess(new TextComponent(toSend), true);
+        //#endif
         ConfigHandler.save();
         return 1;
     }

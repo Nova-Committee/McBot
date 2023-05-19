@@ -54,8 +54,11 @@ public class I18n {
         if (translation1 != null) {
             return String.format(translation1, args);
         } else {
+            //#if MC >= 11600
             String translation2 = Language.getInstance().getOrDefault(key);
-
+            //#else
+            //$$ String translation2 = Language.getInstance().getElement(key);
+            //#endif
             if (!translation2.equals(key)) {
                 return String.format(translation2, args);
             } else {

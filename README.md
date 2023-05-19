@@ -3,14 +3,14 @@
 </p>
 <div align="center">
 
-# Bot-Connect
+# McBot
 
 _✨ 基于 [OneBot](https://github.com/howmanybots/onebot/blob/master/README.md) 协议的 我的世界 QQ机器人✨_
 
 </div>
 <hr>
 <p align="center">
-    <a href="https://github.com/Nova-Committee/Bot-Connect/issues"><img src="https://img.shields.io/github/issues/Nova-Committee/Bot-Connect?style=flat" alt="issues" /></a>
+    <a href="https://github.com/Nova-Committee/McBot/issues"><img src="https://img.shields.io/github/issues/Nova-Committee/McBot?style=flat" alt="issues" /></a>
     <a href="https://www.curseforge.com/minecraft/mc-mods/botconnect">
         <img src="http://cf.way2muchnoise.eu/botconnect.svg" alt="CurseForge Download">
     </a>
@@ -27,8 +27,8 @@ _✨ 基于 [OneBot](https://github.com/howmanybots/onebot/blob/master/README.md
 
 # 长期支持版本
 
-> Forge-1.19.3    
-> Fabric-1.19.3
+> Forge-all   
+> Fabric-all
 
 # 快速开始
 
@@ -42,7 +42,7 @@ public class TestCmd {
     }
 
     public static int execute(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
-        System.out.println(BotApi.bot.sendGroupMsg(337631140, MsgUtils.builder().text("1").build(), true));
+        System.out.println(McBot.bot.sendGroupMsg(337631140, MsgUtils.builder().text("1").build(), true));
         //群里发送消息
         return 0;
     }
@@ -54,9 +54,13 @@ public class TestCmd {
 ```java
 public class WebSocketServerTest {
     public static void main(String[] args) throws Exception {
-        LinkedBlockingQueue<String> blockingQueue = new LinkedBlockingQueue<>();//使用队列传输数据
-        Connection service = ConnectFactory.createWebsocketClient(new BotConfig("ws://127.0.0.1:8080", null, false), blockingQueue);
-        EventDispatchers dispatchers = new EventDispatchers(blockingQueue);//创建事件分发器
+        public static LinkedBlockingQueue<String> blockingQueue = new LinkedBlockingQueue<>();//使用队列传输数据
+        public static Thread app = new Thread(() -> {
+            service = new ConnectFactory(new BotConfig(), blockingQueue);//创建websocket连接
+            bot = service.ws.createBot();//创建机器人实例
+        }, "BotServer");
+        app.start();
+        EventBus bus = new EventBus(blockingQueue);//创建事件分发器
         GroupMessageListener groupMessageListener = new GroupMessageListener();
         groupMessageListener.addHandler("天气", new Handler<GroupMessageEvent>() {
             @Override
@@ -65,15 +69,13 @@ public class WebSocketServerTest {
 
             }
         });
-        dispatchers.addListener(groupMessageListener);//加入监听
-        dispatchers.addListener(new SimpleListener<PrivateMessageEvent>() {//私聊监听
+        bus.addListener(groupMessageListener);//加入监听
+        bus.addListener(new SimpleListener<PrivateMessageEvent>() {//私聊监听
             @Override
             public void onMessage(PrivateMessageEvent privateMessage) {
                 System.out.println(privateMessage);
             }
         });
-
-        dispatchers.start(10);//线程组处理任务
 
     }
 }
@@ -81,7 +83,7 @@ public class WebSocketServerTest {
 
 # 支持
 
-Bot-Connect 以 [OneBot-v11](https://github.com/howmanybots/onebot/tree/master/v11/specs)
+McBot 以 [OneBot-v11](https://github.com/howmanybots/onebot/tree/master/v11/specs)
 标准协议进行开发，兼容所有支持正向WebSocket的OneBot协议客户端
 
 | 项目地址 | 平台                                            | 核心作者 | 备注 |
@@ -111,12 +113,12 @@ source product.
 
 # 致谢
 
-感谢 [JetBrains](https://www.jetbrains.com/?from=Shiro) 提供了这么好用的软件~
+感谢 [JetBrains](https://www.jetbrains.com/?from=McBot) 提供了这么好用的软件~
 
-[<img src="https://mikuac.com/images/jetbrains-variant-3.png" width="200"/>](https://www.jetbrains.com/?from=mirai)
+[<img src="https://mikuac.com/images/jetbrains-variant-3.png" width="200"/>](https://www.jetbrains.com/?from=McBot)
 
 ## 星星（要要）~⭐
 
-[![Stargazers over time](https://starchart.cc/Nova-Committee/Bot-Connect.svg)](https://starchart.cc/Nova-Committee/Bot-Connect)
+[![Stargazers over time](https://starchart.cc/Nova-Committee/McBot.svg)](https://starchart.cc/Nova-Committee/McBot)
 
 

@@ -2,11 +2,14 @@ package cn.evole.mods.mcbot.command;
 
 import cn.evole.mods.mcbot.McBot;
 import cn.evole.mods.mcbot.init.handler.ConfigHandler;
-import cn.evole.mods.multi.common.ComponentWrapper;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.commands.CommandSourceStack;
-
+//#if MC >= 11900
+import net.minecraft.network.chat.Component;
+//#else
+//$$ import net.minecraft.network.chat.TextComponent;
+//#endif
 /**
  * Description:
  * Author: cnlimiter
@@ -18,11 +21,23 @@ public class ReloadConfigCmd {
         try {
             ConfigHandler.load(McBot.CONFIG_FILE);
             if (ConfigHandler.cached() == null) {
-                context.getSource().sendSuccess(ComponentWrapper.literal("重载配置失败"), true);
+                //#if MC >= 11900
+                context.getSource().sendSuccess(Component.literal("重载配置失败"), true);
+                //#else
+                //$$ context.getSource().sendSuccess(new TextComponent("重载配置失败"), true);
+                //#endif
             }
-            context.getSource().sendSuccess(ComponentWrapper.literal("重载配置成功"), true);
+            //#if MC >= 11900
+            context.getSource().sendSuccess(Component.literal("重载配置成功"), true);
+            //#else
+            //$$ context.getSource().sendSuccess(new TextComponent("重载配置成功"), true);
+            //#endif
         } catch (Exception e) {
-            context.getSource().sendSuccess(ComponentWrapper.literal("重载配置失败"), true);
+            //#if MC >= 11900
+            context.getSource().sendSuccess(Component.literal("重载配置失败"), true);
+            //#else
+            //$$ context.getSource().sendSuccess(new TextComponent("重载配置失败"), true);
+            //#endif
         }
         ConfigHandler.save();
         return 1;

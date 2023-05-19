@@ -1,18 +1,18 @@
 package cn.evole.mods.mcbot.command;
 
 
-import cn.evole.mods.multi.api.mapping.MappingHelper;
-import cn.evole.mods.multi.common.ComponentWrapper;
+
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import lombok.val;
 import net.minecraft.commands.CommandSourceStack;
-import net.minecraft.text.ClickEvent;
-import net.minecraft.text.Style;
-import net.minecraft.text.Text;
-
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
+import net.minecraft.network.chat.Style;
+import net.minecraft.network.chat.ClickEvent;
+//#if MC >= 11900
+import net.minecraft.network.chat.Component;
+//#else
+//$$ import net.minecraft.network.chat.TextComponent;
+//#endif
 
 public class HelpCommand {
 
@@ -50,20 +50,20 @@ public class HelpCommand {
 
         val url = "https://github.com/Nova-Committee/Bot-Connect/issues/new";
         val end = "提交问题";
-        Class<?> BaseText_class = MappingHelper.mapAndLoadClass("net.minecraft.class_2554", MappingHelper.CLASS_MAPPER_FUNCTION);
-        Method BaseText_setStyle = MappingHelper.mapAndGetMethod(BaseText_class, "setStyle", Text.class, Style.class);
-        Method BaseText_append = MappingHelper.mapAndGetMethod(BaseText_class, "append", Text.class, Text.class);
-        val send = ComponentWrapper.literal(toSend);
-        val urlC = ComponentWrapper.literal(url);
-        val endC = ComponentWrapper.literal(end);
-        try {
-            BaseText_setStyle.invoke(urlC, Style.EMPTY.withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://github.com/Nova-Committee/Bot-Connect/issues/new")));
-            BaseText_append.invoke(send, urlC);
-            BaseText_append.invoke(urlC, endC);
-        } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-            throw new UnsupportedOperationException("Failed to invoke method \"BaseComponent/MutableComponent::setStyle/append\" with reflection", e);
-        }
-        context.getSource().sendSuccess(send, true);
+        //#if MC >= 11900
+        var urlC = Component.literal(url).setStyle(Style.EMPTY.withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://github.com/Nova-Committee/Bot-Connect/issues/new")));
+        var endC = Component.literal(end);
+        context.getSource().sendSuccess(Component.literal(toSend).append(urlC).append(endC), true);
+        //#elseif MC < 11600
+        //$$ Style style = new Style();
+        //$$ var urlC = new TextComponent(url).setStyle(style.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://github.com/Nova-Committee/Bot-Connect/issues/new")));
+        //$$ var endC = new TextComponent(end);
+        //$$ context.getSource().sendSuccess(new TextComponent(toSend).append(urlC).append(endC), true);
+        //#else
+        //$$ var urlC = new TextComponent(url).setStyle(Style.EMPTY.withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://github.com/Nova-Committee/Bot-Connect/issues/new")));
+        //$$ var endC = new TextComponent(end);
+        //$$ context.getSource().sendSuccess(new TextComponent(toSend).append(urlC).append(endC), true);
+        //#endif
         return 1;
     }
 }
