@@ -28,9 +28,8 @@ jobs:
       run: chmod +x ./fabric/gradlew
     - name: Build
       uses: gradle/gradle-build-action@v2
-      with:
-        arguments: build
-        cache-read-only: false
+    - name: Execute Gradle build
+      run: ./fabric/gradlew build
     - name: Find Correct JAR
       id: findjar
       run: |
