@@ -1,0 +1,43 @@
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+# This workflow will build a Java project with Gradle and cache/restore any dependencies to improve the workflow execution time
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-gradle
+
+name: Java CI with Gradle
+
+on:
+  push:
+    branches: [ "all" ]
+
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up JDK 17
+      uses: actions/setup-java@v3
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+    - name: Validate Gradle Wrapper
+      uses: gradle/wrapper-validation-action@v1
+    - name: Make Gradle Wrapper Executable
+      run: chmod +x ./fabric/gradlew
+    - name: Build
+      uses: gradle/gradle-build-action@v2
+      with:
+        arguments: build
+        cache-read-only: false
+    - name: Find Correct JAR
+      id: findjar
+      run: |
+        output="$(find fabric/wrapper/build/libs/ ! -name "*-sources.jar" -type f -printf "%f\n")"
+        echo "::set-output name=jarname::$output"
+    - name: Upload Build Artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: ${{ steps.findjar.outputs.jarname }}
+        path: fabric/wrapper/build/libs/${{ steps.findjar.outputs.jarname }}
