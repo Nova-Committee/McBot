@@ -81,9 +81,9 @@ public class IBotEvent {
     }
 
     private static void GroupNoticeHandler(EventBus dispatchers) {
-        dispatchers.addListener(new SimpleEventListener<GroupDecreaseNoticeEvent>() {
+        dispatchers.addListener(new SimpleEventListener<GroupIncreaseNoticeEvent>() {
             @Override
-            public void onMessage(GroupDecreaseNoticeEvent event) {
+            public void onMessage(GroupIncreaseNoticeEvent event) {
                 if (ConfigHandler.cached().getCommon().getGroupIdList().contains(event.getGroupId())
                         && ConfigHandler.cached().getStatus().isRECEIVE_ENABLED()
                         && ConfigHandler.cached().getStatus().isS_QQ_WELCOME_ENABLE()) {
@@ -92,9 +92,9 @@ public class IBotEvent {
             }
         });
 
-        dispatchers.addListener(new SimpleEventListener<GroupIncreaseNoticeEvent>() {
+        dispatchers.addListener(new SimpleEventListener<GroupDecreaseNoticeEvent>() {
             @Override
-            public void onMessage(GroupIncreaseNoticeEvent event) {
+            public void onMessage(GroupDecreaseNoticeEvent event) {
                 if (ConfigHandler.cached().getCommon().getGroupIdList().contains(event.getGroupId())
                         && ConfigHandler.cached().getStatus().isRECEIVE_ENABLED()
                         && ConfigHandler.cached().getStatus().isS_QQ_LEAVE_ENABLE()) {
