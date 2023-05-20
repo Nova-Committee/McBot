@@ -1,0 +1,24 @@
+name: Feature Request
+description: Suggest an idea for this project.
+title: "[Enhancement] "
+labels: [ "enhancement" ]
+body:
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Checks
+      description: |
+        Please check that you have done the following things before submitting an issue.
+      options:
+        - label: I confirm that I have [searched for existing issues / pull requests](https://github.com/cnlimiter/McBot/issues?q=) before reporting to avoid duplicate reporting.
+          required: true
+        - label: I confirm that I noted that if I don't follow the instructions, the issue may be closed directly.
+          required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: |
+        What new feature or change do you want? What does it improve? Please tell us what the new feature or change is with a clear and detailed description, add screenshots to help explain if possible.
+    validations:
+      required: true

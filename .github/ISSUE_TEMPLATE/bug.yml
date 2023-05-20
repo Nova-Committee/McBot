@@ -1,0 +1,77 @@
+name: Bug Report
+description: Create a report to help us improve.
+title: "[Bug] "
+labels: [ "bug" ]
+body:
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Checks
+      description: |
+        Please check that you have done the following things before submitting an issue.
+      options:
+        - label: I confirm that I have [searched for existing issues / pull requests](https://github.com/cnlimiter/McBot/issues?q=) before reporting to avoid duplicate reporting.
+          required: true
+        - label: I confirm that I followed the Docs and read the [Changelog](https://github.com/cnlimiter/McBot/releases/latest), but this problem still exists.
+          required: true
+        - label: I confirm that I noted that if I don't follow the instructions, the issue may be closed directly.
+          required: true
+  - type: input
+    id: java_version
+    attributes:
+      label: Java Version
+      description: |
+        The version of Java you are using?
+      placeholder: "Example: 17.0.6"
+    validations:
+      required: true
+  - type: input
+    id: minecraft_version
+    attributes:
+      label: Minecraft Version
+      description: |
+        The version of Minecraft you are using?
+      placeholder: "Example: 1.19.4"
+    validations:
+      required: true
+  - type: input
+    id: mcbot_version
+    attributes:
+      label: McBot Version
+      description: |
+        The version of McBot you are using?
+      placeholder: "Example: 2.1.6"
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: |
+        Please tell us what the bug is with a clear and detailed description, add screenshots to help explain.
+    validations:
+      required: true
+  - type: textarea
+    id: to_reproduce
+    attributes:
+      label: To Reproduce
+      description: |
+        How do you trigger this bug? Please walk us through it step by step.
+    validations:
+      required: true
+  - type: textarea
+    id: log
+    attributes:
+      label: Log
+      description: |
+        Please provide your full log here.
+    validations:
+      required: true
+  - type: textarea
+    id: config
+    attributes:
+      label: Config
+      description: |
+        Please provide your MCDiscordChat config file (mcbot.json) here, remember to remove the botToken.
+    validations:
+      required: true
