@@ -1,24 +1,24 @@
 name: Feature Request / 功能请求
 description: Suggest an idea for this project.
-title: "[Enhancement] "
+title: "[Enhancement/功能请求] "
 labels: [ "enhancement" ]
 body:
   - type: checkboxes
     id: checks
     attributes:
-      label: Checks
+      label: Checks/检查
       description: |
-        Please check that you have done the following things before submitting an issue.
+        Please check that you have done the following things before submitting an issue./在提交问题之前，请检查您是否已完成以下操作。
       options:
-        - label: I confirm that I have [searched for existing issues / pull requests](https://github.com/cnlimiter/McBot/issues?q=) before reporting to avoid duplicate reporting.
+        - label: I confirm that I have [searched for existing issues / pull requests](https://github.com/cnlimiter/McBot/issues?q=) before reporting to avoid duplicate reporting./我确认在报告之前我已经搜索了[现有的问题或者拉取请求](https://github.com/cnlimiter/McBot/issues?q=)，以避免重复报告。
           required: true
-        - label: I confirm that I noted that if I don't follow the instructions, the issue may be closed directly.
+        - label: I confirm that I noted that if I don't follow the instructions, the issue may be closed directly./我确认我已经检查，如果我不按照说明进行操作，该问题可能会被直接关闭。
           required: true
   - type: textarea
     id: description
     attributes:
-      label: Description
+      label: Description/描述
       description: |
-        What new feature or change do you want? What does it improve? Please tell us what the new feature or change is with a clear and detailed description, add screenshots to help explain if possible.
+        What new feature or change do you want? What does it improve? Please tell us what the new feature or change is with a clear and detailed description, add screenshots to help explain if possible./您想要什么新功能或改进？它有什么作用？请告诉我们新功能或改进是什么，并提供清晰详细的描述，如果可能，请添加截图以帮助解释。
     validations:
       required: true

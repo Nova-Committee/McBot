@@ -1,77 +1,77 @@
 name: Bug Report / 报告bug
-description: Create a report to help us improve.
-title: "[Bug] "
+description: Create a report to help us improve./创建报告以帮助我们改进。
+title: "[Bug/漏洞] "
 labels: [ "bug" ]
 body:
   - type: checkboxes
     id: checks
     attributes:
-      label: Checks
+      label: Checks / 检查
       description: |
-        Please check that you have done the following things before submitting an issue.
+        Please check that you have done the following things before submitting an issue./在提交问题之前，请检查您是否已完成以下操作。
       options:
-        - label: I confirm that I have [searched for existing issues / pull requests](https://github.com/cnlimiter/McBot/issues?q=) before reporting to avoid duplicate reporting.
+        - label: I confirm that I have [searched for existing issues / pull requests](https://github.com/cnlimiter/McBot/issues?q=) before reporting to avoid duplicate reporting./我确认在报告之前我已经搜索了[现有的问题或者拉取请求](https://github.com/cnlimiter/McBot/issues?q=)，以避免重复报告。
           required: true
-        - label: I confirm that I followed the Docs and read the [Changelog](https://github.com/cnlimiter/McBot/releases/latest), but this problem still exists.
+        - label: I confirm that I followed the Docs and read the [Changelog](https://github.com/cnlimiter/McBot/releases/latest), but this problem still exists./我确认我按照文档配置并阅读了[Changelog](https://github.com/cnlimiter/McBot/releases/latest)，但这个问题仍然存在。
           required: true
-        - label: I confirm that I noted that if I don't follow the instructions, the issue may be closed directly.
+        - label: I confirm that I noted that if I don't follow the instructions, the issue may be closed directly./我确认我已经检查，如果我不按照说明进行操作，该问题可能会被直接关闭。
           required: true
   - type: input
     id: java_version
     attributes:
-      label: Java Version
+      label: Java Version / Java版本
       description: |
-        The version of Java you are using?
+        The version of Java you are using?/您正在使用的 Java 版本？
       placeholder: "Example: 17.0.6"
     validations:
       required: true
   - type: input
     id: minecraft_version
     attributes:
-      label: Minecraft Version
+      label: Minecraft Version / Minecraft版本
       description: |
-        The version of Minecraft you are using?
+        The version of Minecraft you are using?/您正在使用的 Minecraft 版本？
       placeholder: "Example: 1.19.4"
     validations:
       required: true
   - type: input
     id: mcbot_version
     attributes:
-      label: McBot Version
+      label: McBot Version / McBot版本
       description: |
-        The version of McBot you are using?
+        The version of McBot you are using?/您正在使用的 McBot 版本？
       placeholder: "Example: 2.1.6"
     validations:
       required: true
   - type: textarea
     id: description
     attributes:
-      label: Description
+      label: Description / 描述
       description: |
-        Please tell us what the bug is with a clear and detailed description, add screenshots to help explain.
+        Please tell us what the bug is with a clear and detailed description, add screenshots to help explain./请通过清晰详细的描述告诉我们错误是什么，添加屏幕截图以帮助解释。
     validations:
       required: true
   - type: textarea
     id: to_reproduce
     attributes:
-      label: To Reproduce
+      label: To Reproduce / 重现
       description: |
-        How do you trigger this bug? Please walk us through it step by step.
+        How do you trigger this bug? Please walk us through it step by step./你如何触发这个错误？请逐步引导我们完成它。
     validations:
       required: true
   - type: textarea
     id: log
     attributes:
-      label: Log
+      label: Log / 日志
       description: |
-        Please provide your full log here.
+        Please provide your full log here./请在此处提供您的完整日志。
     validations:
       required: true
   - type: textarea
     id: config
     attributes:
-      label: Config
+      label: Config / 配置
       description: |
-        Please provide your MCDiscordChat config file (mcbot.json) here, remember to remove the botToken.
+        Please provide your McBot config file (mcbot.json) here, remember to remove the botToken,qqId,groupId./请在此处提供您的McBot配置文件（mcbot.json），请记住删除botToken，qqId，groupId。
     validations:
       required: true

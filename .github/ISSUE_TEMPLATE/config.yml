@@ -2,10 +2,10 @@ blank_issues_enabled: false
 contact_links:
   - name: Example Issue / 议题实例
     url: https://github.com/cnlimiter/McBot/issues/99
-    about: You can refer to this example issue to fill in your issue.
+    about: You can refer to this example issue to fill in your issue. / 您可以参考此示例问题来填写您的议题。
   - name: McBot Docs / McBot 文档
     url: https://wiki.nova-committee.cn/project-1/doc-1/
-    about: Make sure you follow the docs to configure McBot!
+    about: Make sure you follow the docs to configure McBot! / 请确保按照文档配置 McBot。
   - name: Latest Builds / 最新构建
     url: https://github.com/cnlimiter/McBot/actions
-    about: You can find the latest build JAR files at GitHub Actions.
+    about: You can find the latest build JAR files at GitHub Actions. / 您可以在 GitHub Actions 上找到最新的构建 JAR 文件。
