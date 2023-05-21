@@ -21,8 +21,8 @@ _✨ Based on [OneBot](https://github.com/howmanybots/onebot/blob/master/README.
 
 <p align="center">
     <a href="README.md">简体中文</a> |
-    <a href="LTS">LTS</a> |
-    <a href="QuickStart">QuickStart</a>
+    <a href="https://github.com/Nova-Committee/McBot/blob/all/README_EN.md#lts">LTS</a> |
+    <a href="https://github.com/Nova-Committee/McBot/blob/all/README_EN.md#quickstart">QuickStart</a>
 </p>
 
 # LTS
