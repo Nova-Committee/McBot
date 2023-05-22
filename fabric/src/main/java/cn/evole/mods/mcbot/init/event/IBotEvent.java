@@ -59,7 +59,7 @@ public class IBotEvent {
                             ? String.format("§b[§l%s§r(§5%s§b)]§a<%s>§f %s", ConfigHandler.cached().getCmd().getQqGamePrefix(), event.getGroupId(), groupNick, send)
                             : String.format("§b[§l%s§b]§a<%s>§f %s", ConfigHandler.cached().getCmd().getQqGamePrefix(), groupNick, send)
                             : String.format("§a<%s>§f %s", groupNick, send);
-                    ITickEvent.getToSendQueue().add(toSend);
+                    ITickEvent.getSendQueue().add(toSend);
                 }
             }
         });
@@ -135,7 +135,7 @@ public class IBotEvent {
                             ? String.format("§b[§l%s§r(§5%s§b)]§a<%s>§f %s", ConfigHandler.cached().getCmd().getGuildGamePrefix(), event.getChannelId(), guildNick, send)
                             : String.format("§b[§l%s§b]§a<%s>§f %s", ConfigHandler.cached().getCmd().getGuildGamePrefix(), guildNick, send)
                             : String.format("§a<%s>§f %s", guildNick, send);
-                    ITickEvent.getToSendQueue().add(toSend);
+                    ITickEvent.getSendQueue().add(toSend);
 
                 }
             }

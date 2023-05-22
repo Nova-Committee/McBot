@@ -1,12 +1,9 @@
 package cn.evole.mods.mcbot;
 
 import cn.evole.mods.mcbot.init.callbacks.IEvents;
-import cn.evole.mods.mcbot.init.event.IChatEvent;
-import cn.evole.mods.mcbot.init.event.ICmdEvent;
-import cn.evole.mods.mcbot.init.event.IPlayerEvent;
+import cn.evole.mods.mcbot.init.event.*;
 import cn.evole.mods.mcbot.init.handler.ConfigHandler;
 import cn.evole.mods.mcbot.init.handler.CustomCmdHandler;
-import cn.evole.mods.mcbot.init.event.IBotEvent;
 import cn.evole.mods.mcbot.util.locale.I18n;
 import cn.evole.onebot.client.connection.ConnectFactory;
 import cn.evole.onebot.client.core.Bot;
@@ -20,6 +17,7 @@ import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 //$$ import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
 //#endif
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.server.MinecraftServer;
 
@@ -61,6 +59,8 @@ public class McBot implements ModInitializer {
         ServerLifecycleEvents.SERVER_STARTED.register(this::onServerStarted);
         ServerLifecycleEvents.SERVER_STOPPING.register(this::onServerStopping);
         ServerLifecycleEvents.SERVER_STOPPED.register(this::onServerStopped);
+
+        ServerTickEvents.END_SERVER_TICK.register(ITickEvent::register);
 
         IEvents.PLAYER_LOGGED_IN.register(IPlayerEvent::loggedIn);
         IEvents.PLAYER_LOGGED_OUT.register(IPlayerEvent::loggedOut);

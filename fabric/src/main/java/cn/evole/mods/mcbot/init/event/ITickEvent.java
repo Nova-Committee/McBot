@@ -25,16 +25,15 @@ import java.util.Queue;
  * Version: 1.0
  */
 public class ITickEvent {
-    private static final Queue<String> toSendQueue = new LinkedList<>();
-    ;
+    private static final Queue<String> SEND_QUEUE = new LinkedList<>();
 
-    public static Queue<String> getToSendQueue() {
-        return toSendQueue;
+    public static Queue<String> getSendQueue() {
+        return SEND_QUEUE;
     }
 
 
-    public static void init(MinecraftServer server) {
-            String toSend = toSendQueue.poll();
+    public static void register(MinecraftServer server) {
+            String toSend = SEND_QUEUE.poll();
             if (ConfigHandler.cached() != null
                     && server.isDedicatedServer()
                     && toSend != null
