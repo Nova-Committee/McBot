@@ -69,7 +69,7 @@ public class IPlayerEvent {
                     } else {
                         itemStack = ItemStack.EMPTY;
                     }
-                    msg = !itemStack.isEmpty() && itemStack.hasCustomHoverName() ? I18n.get(msg + ".item", player.getDisplayName().getString(), component, itemStack.getDisplayName().getString()) : I18n.get(msg,player.getDisplayName().getString(), component.getString());
+                    msg = !itemStack.isEmpty() && itemStack.hasCustomHoverName() ? I18n.get(string + ".item", player.getDisplayName().getString(), component.getString(), itemStack.getDisplayName().getString()) : I18n.get(string,player.getDisplayName().getString(), component.getString());
                 }
 
                 if (ConfigHandler.cached().getCommon().isGuildOn() && !ConfigHandler.cached().getCommon().getChannelIdList().isEmpty()) {
