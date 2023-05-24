@@ -49,9 +49,9 @@ public class IBotEvent {
                             send = split[1];
                         else return;
                     }
-                    String nick = McBot.bot.getGroupMemberInfo(event.getGroupId(), event.getUserId(), true).getData().getNickname();
+                    String nick = McBot.bot.getGroupMemberInfo(event.getGroupId(), event.getUserId(), true).getData().getCard();
                     String groupNick = ConfigHandler.cached().getCmd().isGroupNickOn() // 是否使用群昵称
-                            ? nick == null ? event.getSender().getNickname() : nick // 防止api返回为空
+                            ? nick == null ? event.getSender().getCard() : nick // 防止api返回为空
                             : event.getSender().getNickname();
 
                     String toSend = ConfigHandler.cached().getCmd().isGamePrefixOn()

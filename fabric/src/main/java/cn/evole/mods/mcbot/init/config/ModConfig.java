@@ -108,7 +108,7 @@ public class ModConfig {
                         "还他妈不上线搁这玩QQ呢~";//暂时没用
 
         @SerializedName("gamePrefixOn")
-        @Comment("####################" +
+        @Comment("####################\n" +
                 "是否开启显示到游戏中的前缀")
         private boolean gamePrefixOn = true;//是否开启显示到游戏中的前缀
         @SerializedName("idGamePrefixOn")
@@ -125,18 +125,20 @@ public class ModConfig {
         private boolean groupNickOn = false;//是否开启显示到游戏中的昵称为群昵称
 
 
-        @SerializedName("####################" +
+        @SerializedName(
                 "mcPrefixOn")
-        @Comment("是否开启来自游戏的消息显示到群中的前缀")
+        @Comment("####################\n" +
+                "是否开启来自游戏的消息显示到群中的前缀")
         private boolean mcPrefixOn = true;//是否开启来自游戏的消息显示到群中的前缀
         @SerializedName("mcPrefix")
         @Comment("来自游戏的消息显示到群中的前缀")
         private String mcPrefix = "MC";//来自游戏的消息显示到群中的前缀
 
 
-        @SerializedName("####################" +
+        @SerializedName(
                 "mcChatPrefixOn")
-        @Comment("是否开启游戏中自定义关键词")
+        @Comment("####################\n" +
+                "是否开启游戏中自定义关键词")
         private boolean mcChatPrefixOn = false;//是否开启游戏中自定义关键词
         @SerializedName("qqChatPrefixOn")
         @Comment("是否开启qq中自定义关键词")
@@ -148,9 +150,10 @@ public class ModConfig {
         @Comment("qq中自定义的消息头文本")
         private String qqChatPrefix = "m";//qq中自定义的消息头文本
 
-        @SerializedName("####################" +
+        @SerializedName(
                 "mcSystemPrefixOn")
-        @Comment("是否开启游戏中机器人执行命令发送的消息前缀")
+        @Comment("####################\n" +
+                "是否开启游戏中机器人执行命令发送的消息前缀")
         private boolean mcSystemPrefixOn = true;//是否开启游戏中机器人执行命令发送的消息前缀
         @SerializedName("mcSystemPrefix")
         @Comment("游戏中机器人执行命令发送的消息前缀")

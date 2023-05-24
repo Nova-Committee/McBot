@@ -31,7 +31,7 @@ public class CustomCmdHandler {
     public static final CustomCmdHandler INSTANCE = new CustomCmdHandler();
     private static final Gson GSON = (new GsonBuilder()).setPrettyPrinting().create();
 
-    private static final File dir = FabricLoader.getInstance().getConfigDir().resolve("botapi/custom_cmd/").toFile();
+    private static final File dir = FabricLoader.getInstance().getConfigDir().resolve("mcbot/cmds/").toFile();
 
     private final Map<String, CustomCmd> customCmdMap = new LinkedHashMap<>();
 
@@ -94,8 +94,7 @@ public class CustomCmdHandler {
             } catch (Exception e) {
                 Const.LOGGER.error("An error occurred while generating default custom cmd", e);
             } finally {
-                IOUtils.closeQuietly(writer);
-                IOUtils.closeQuietly(writer2);
+                IOUtils.closeQuietly(writer, writer2);
             }
 
         }
