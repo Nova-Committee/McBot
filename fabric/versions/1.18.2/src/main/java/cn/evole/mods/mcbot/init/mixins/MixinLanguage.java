@@ -54,7 +54,7 @@ public abstract class MixinLanguage {
 					JsonObject json = GSON.fromJson(new InputStreamReader(inputStream, StandardCharsets.UTF_8), JsonObject.class);
 					for (Map.Entry<String, JsonElement> entry : json.entrySet()) {
 						String string = UNSUPPORTED_FORMAT_PATTERN.matcher(GsonHelper.convertToString(entry.getValue(), entry.getKey())).replaceAll("%$1s");
-						if (!map.containsKey(entry.getKey())){
+						if (!map.containsKey(entry.getKey())){//去重
 							map.put(entry.getKey(), string);
 						}
 					}

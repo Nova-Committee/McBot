@@ -4,10 +4,13 @@ import cn.evole.mods.mcbot.McBot;
 import cn.evole.mods.mcbot.init.handler.ConfigHandler;
 import cn.evole.mods.mcbot.util.locale.I18n;
 import net.minecraft.advancements.Advancement;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
 
@@ -45,7 +48,7 @@ public class IPlayerEvent {
     public static void death(DamageSource source, ServerPlayer player) {
             if (player != null && ConfigHandler.cached().getStatus().isS_DEATH_ENABLE() && ConfigHandler.cached().getStatus().isSEND_ENABLED()) {
                 LivingEntity livingEntity2 = player.getKillCredit();
-
+                String msg = "";
 
                 //#if MC >= 11904
                 String string = "mcbot.death.attack." + source.type().msgId();
@@ -53,7 +56,21 @@ public class IPlayerEvent {
                 //$$ String string = "mcbot.death.attack." + source.getMsgId();
                 //#endif
 
-                String msg = livingEntity2 != null ? I18n.get(string, player.getDisplayName().getString(), livingEntity2.getDisplayName().getString()) : I18n.get(string, player.getDisplayName().getString());
+                if (source.getEntity() == null && source.getDirectEntity() == null) {
+                    String string2 = string + ".player";
+                    msg = livingEntity2 != null ? I18n.get(string2, player.getDisplayName().getString(), livingEntity2.getDisplayName().getString()) : I18n.get(string2, player.getDisplayName().getString());
+                } else {//支持物品造成的死亡信息
+                    assert source.getDirectEntity() != null;
+                    Component component = source.getEntity() == null ? source.getDirectEntity().getDisplayName() : source.getEntity().getDisplayName();
+                    Entity sourceEntity = source.getEntity();
+                    ItemStack itemStack;
+                    if (sourceEntity instanceof LivingEntity livingEntity3) {
+                        itemStack = livingEntity3.getMainHandItem();
+                    } else {
+                        itemStack = ItemStack.EMPTY;
+                    }
+                    msg = !itemStack.isEmpty() && itemStack.hasCustomHoverName() ? I18n.get(msg + ".item", player.getDisplayName().getString(), component, itemStack.getDisplayName().getString()) : I18n.get(msg,player.getDisplayName().getString(), component.getString());
+                }
 
                 if (ConfigHandler.cached().getCommon().isGuildOn() && !ConfigHandler.cached().getCommon().getChannelIdList().isEmpty()) {
                     for (String id : ConfigHandler.cached().getCommon().getChannelIdList())

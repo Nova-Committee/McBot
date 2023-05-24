@@ -31,7 +31,7 @@ public class I18n {
             Const.LOGGER.warn("McBot cannot find translations for \"" + ConfigHandler.cached().getCommon().getLanguageSelect() + "\" and uses \"en_us\" by default!");
             Const.LOGGER.warn("");
             Const.LOGGER.warn("You are welcome to contribute translations!");
-            Const.LOGGER.warn("Contributing: https://github.com/cnlimiter/Bot-Connect#Contributing");
+            Const.LOGGER.warn("Contributing: https://github.com/cnlimiter/McBot#Contributing");
             Const.LOGGER.warn("-----------------------------------------");
 
             optional = FabricLoader.getInstance().getModContainer("mcbot").orElseThrow()
