@@ -1,4 +1,4 @@
-//#if MC >= 11900
+//#if MC >= 11400
 package cn.evole.mods.mcbot.init.mixins;
 import cn.evole.mods.mcbot.init.callbacks.IEvents;
 import net.minecraft.advancements.Advancement;
@@ -23,7 +23,7 @@ public abstract class MixinPlayerAdvancements {
     @Shadow
     private ServerPlayer player;
 
-    @Inject(method = "award", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/players/PlayerList;broadcastSystemMessage(Lnet/minecraft/network/chat/Component;Z)V", shift = At.Shift.AFTER))
+    @Inject(method = "award", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/players/PlayerList;broadcastMessage(Lnet/minecraft/network/chat/Component;)V", shift = At.Shift.AFTER))
     public void PlayerAdvancements_award(Advancement advancement, String string, CallbackInfoReturnable<Boolean> cir) {
 
         ServerPlayer player = this.player;
