@@ -11,6 +11,7 @@ import cn.evole.onebot.sdk.event.message.GuildMessageEvent;
 import cn.evole.onebot.sdk.event.meta.LifecycleMetaEvent;
 import cn.evole.onebot.sdk.event.notice.group.GroupDecreaseNoticeEvent;
 import cn.evole.onebot.sdk.event.notice.group.GroupIncreaseNoticeEvent;
+import cn.evole.onebot.sdk.util.MsgUtils;
 import lombok.val;
 
 /**
@@ -87,7 +88,8 @@ public class IBotEvent {
                 if (ConfigHandler.cached().getCommon().getGroupIdList().contains(event.getGroupId())
                         && ConfigHandler.cached().getStatus().isRECEIVE_ENABLED()
                         && ConfigHandler.cached().getStatus().isS_QQ_WELCOME_ENABLE()) {
-                    McBot.bot.sendGroupMsg(event.getGroupId(), ConfigHandler.cached().getCmd().getWelcomeNotice(), true);
+
+                    McBot.bot.sendGroupMsg(event.getGroupId(), MsgUtils.builder().at(event.getUserId()).build() + "\n" + ConfigHandler.cached().getCmd().getWelcomeNotice(), true);
                 }
             }
         });
@@ -98,7 +100,7 @@ public class IBotEvent {
                 if (ConfigHandler.cached().getCommon().getGroupIdList().contains(event.getGroupId())
                         && ConfigHandler.cached().getStatus().isRECEIVE_ENABLED()
                         && ConfigHandler.cached().getStatus().isS_QQ_LEAVE_ENABLE()) {
-                    McBot.bot.sendGroupMsg(event.getGroupId(), ConfigHandler.cached().getCmd().getLeaveNotice(), true);
+                    McBot.bot.sendGroupMsg(event.getGroupId(), MsgUtils.builder().text(String.valueOf(event.getUserId())).build() + "\n" +ConfigHandler.cached().getCmd().getLeaveNotice(), true);
                 }
             }
         });

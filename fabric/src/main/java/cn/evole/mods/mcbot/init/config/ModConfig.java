@@ -78,7 +78,7 @@ public class ModConfig {
         private String welcomeNotice = "欢迎加群~";//自定义q群加入事件消息
         @SerializedName("leave_notice")
         @Comment("自定义q群离开消息")
-        private String leaveNotice = "有人离开了我们qwq";//自定义q群离开消息
+        private String leaveNotice = "离开了我们qwq";//自定义q群离开消息
         @SerializedName("command_start")
         @Comment("q群中使用命令的关键符号")
         private String commandStart = "!";//q群中使用命令的关键符号
