@@ -58,7 +58,7 @@ public class IPlayerEvent {
 
                 if (source.getEntity() == null && source.getDirectEntity() == null) {
                     String string2 = string + ".player";
-                    msg = livingEntity2 != null ? I18n.get(string2, player.getDisplayName().getString(), livingEntity2.getDisplayName().getString()) : I18n.get(string2, player.getDisplayName().getString());
+                    msg = livingEntity2 != null ? I18n.get(string2, player.getDisplayName().getString(), livingEntity2.getDisplayName().getString()) : I18n.get(string, player.getDisplayName().getString());
                 } else {//支持物品造成的死亡信息
                     assert source.getDirectEntity() != null;
                     Component component = source.getEntity() == null ? source.getDirectEntity().getDisplayName() : source.getEntity().getDisplayName();
