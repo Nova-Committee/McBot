@@ -50,20 +50,25 @@ public class I18n {
     }
 
     public static String get(String key, Object... args) {
-        String translation1 = translations.get(key);
-        if (translation1 != null) {
-            return String.format(translation1, args);
-        } else {
-            //#if MC >= 11600
-            String translation2 = Language.getInstance().getOrDefault(key);
-            //#else
-            //$$ String translation2 = Language.getInstance().getElement(key);
-            //#endif
-            if (!translation2.equals(key)) {
-                return String.format(translation2, args);
+        try {
+            String translation1 = translations.get(key);
+            if (translation1 != null) {
+                return String.format(translation1, args);
             } else {
-                return "TranslateError{\"key\":\"" + key + "\",\"args\":" + Arrays.toString(args) + "}";
+                //#if MC >= 11600
+                String translation2 = Language.getInstance().getOrDefault(key);
+                //#else
+                //$$ String translation2 = Language.getInstance().getElement(key);
+                //#endif
+                if (!translation2.equals(key)) {
+                    return String.format(translation2, args);
+                } else {
+                    return "TranslateError{\"key\":\"" + key + "\",\"args\":" + Arrays.toString(args) + "}";
+                }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "TranslateError{\"key\":\"" + key + "\",\"args\":" + Arrays.toString(args) + "}";
         }
     }
 
