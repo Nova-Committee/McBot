@@ -18,11 +18,14 @@ public class ListCustomCommand {
         for (String s : CustomCmdHandler.INSTANCE.getCustomCmdMap().keySet()) {
             out.append(s).append("\n");
         }
-        //#if MC >= 11900
-        context.getSource().sendSuccess(Component.literal(out.toString()), true);
-        //#else
+        //#if MC >= 12000
+        context.getSource().sendSuccess(()->Component.literal(out.toString()), true);
+        //#elseif MC < 11900
         //$$ context.getSource().sendSuccess(new TextComponent(out.toString()), true);
+        //#else
+        //$$ context.getSource().sendSuccess(Component.literal(out.toString()), true);
         //#endif
+
         return 1;
     }
 }

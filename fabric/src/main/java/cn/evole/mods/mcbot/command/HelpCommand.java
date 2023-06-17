@@ -53,17 +53,23 @@ public class HelpCommand {
         //#if MC >= 11900
         var urlC = Component.literal(url).setStyle(Style.EMPTY.withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://github.com/Nova-Committee/Bot-Connect/issues/new")));
         var endC = Component.literal(end);
-        context.getSource().sendSuccess(Component.literal(toSend).append(urlC).append(endC), true);
         //#elseif MC < 11600
         //$$ Style style = new Style();
         //$$ var urlC = new TextComponent(url).setStyle(style.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://github.com/Nova-Committee/Bot-Connect/issues/new")));
         //$$ var endC = new TextComponent(end);
-        //$$ context.getSource().sendSuccess(new TextComponent(toSend).append(urlC).append(endC), true);
         //#else
         //$$ var urlC = new TextComponent(url).setStyle(Style.EMPTY.withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://github.com/Nova-Committee/Bot-Connect/issues/new")));
         //$$ var endC = new TextComponent(end);
-        //$$ context.getSource().sendSuccess(new TextComponent(toSend).append(urlC).append(endC), true);
         //#endif
+
+        //#if MC >= 12000
+        context.getSource().sendSuccess(()->Component.literal(toSend).append(urlC).append(endC), true);
+        //#elseif MC < 11900
+        //$$ context.getSource().sendSuccess(new TextComponent(toSend).append(urlC).append(endC), true);
+        //#else
+        //$$ context.getSource().sendSuccess(Component.literal(toSend).append(urlC).append(endC), true);
+        //#endif
+
         return 1;
     }
 }

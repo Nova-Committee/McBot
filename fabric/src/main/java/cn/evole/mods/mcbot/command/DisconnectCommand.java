@@ -18,16 +18,20 @@ public class DisconnectCommand {
         if (McBot.service != null) {
             McBot.service.stop();
             if (!McBot.service.ws.isOpen()) {
-                //#if MC >= 11900
-                context.getSource().sendSuccess(Component.literal("WebSocket已断开连接"), true);
-                //#else
+                //#if MC >= 12000
+                context.getSource().sendSuccess(()->Component.literal("WebSocket已断开连接"), true);
+                //#elseif MC < 11900
                 //$$ context.getSource().sendSuccess(new TextComponent("WebSocket已断开连接"), true);
+                //#else
+                //$$ context.getSource().sendSuccess(Component.literal("WebSocket已断开连接"), true);
                 //#endif
             } else {
-                //#if MC >= 11900
-                context.getSource().sendSuccess(Component.literal("WebSocket目前未连接"), true);
-                //#else
+                //#if MC >= 12000
+                context.getSource().sendSuccess(()->Component.literal("WebSocket目前未连接"), true);
+                //#elseif MC < 11900
                 //$$ context.getSource().sendSuccess(new TextComponent("WebSocket目前未连接"), true);
+                //#else
+                //$$ context.getSource().sendSuccess(Component.literal("WebSocket目前未连接"), true);
                 //#endif
             }
             ConfigHandler.cached().getCommon().setEnable(false);

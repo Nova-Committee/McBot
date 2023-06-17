@@ -17,16 +17,20 @@ public class ReConnectCommand {
         boolean isEnabled = context.getArgument("enabled", Boolean.class);
         ConfigHandler.cached().getBotConfig().setReconnect(isEnabled);
         if (isEnabled) {
-            //#if MC >= 11900
-            context.getSource().sendSuccess(Component.literal("已设置自动重连"), true);
-            //#else
+            //#if MC >= 12000
+            context.getSource().sendSuccess(()->Component.literal("已设置自动重连"), true);
+            //#elseif MC < 11900
             //$$ context.getSource().sendSuccess(new TextComponent("已设置自动重连"), true);
+            //#else
+            //$$ context.getSource().sendSuccess(Component.literal("已设置自动重连"), true);
             //#endif
         } else {
-            //#if MC >= 11900
-            context.getSource().sendSuccess(Component.literal("已关闭自动重连"), true);
-            //#else
+            //#if MC >= 12000
+            context.getSource().sendSuccess(()->Component.literal("已关闭自动重连"), true);
+            //#elseif MC < 11900
             //$$ context.getSource().sendSuccess(new TextComponent("已关闭自动重连"), true);
+            //#else
+            //$$ context.getSource().sendSuccess(Component.literal("已关闭自动重连"), true);
             //#endif
         }
 

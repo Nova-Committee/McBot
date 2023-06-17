@@ -18,16 +18,20 @@ public class SendCommand {
         boolean isEnabled = context.getArgument("enabled", Boolean.class);
         ConfigHandler.cached().getStatus().setS_QQ_WELCOME_ENABLE(isEnabled);
         if (isEnabled) {
-            //#if MC >= 11900
-            context.getSource().sendSuccess(Component.literal("发送新人加入QQ群的消息开关已被设置为打开"), true);
-            //#else
+            //#if MC >= 12000
+            context.getSource().sendSuccess(()->Component.literal("发送新人加入QQ群的消息开关已被设置为打开"), true);
+            //#elseif MC < 11900
             //$$ context.getSource().sendSuccess(new TextComponent("发送新人加入QQ群的消息开关已被设置为打开"), true);
+            //#else
+            //$$ context.getSource().sendSuccess(Component.literal("发送新人加入QQ群的消息开关已被设置为打开"), true);
             //#endif
         } else {
-            //#if MC >= 11900
-            context.getSource().sendSuccess(Component.literal("发送新人加入QQ群的消息开关已被设置为关闭"), true);
-            //#else
+            //#if MC >= 12000
+            context.getSource().sendSuccess(()->Component.literal("发送新人加入QQ群的消息开关已被设置为关闭"), true);
+            //#elseif MC < 11900
             //$$ context.getSource().sendSuccess(new TextComponent("发送新人加入QQ群的消息开关已被设置为关闭"), true);
+            //#else
+            //$$ context.getSource().sendSuccess(Component.literal("发送新人加入QQ群的消息开关已被设置为关闭"), true);
             //#endif
         }
         ConfigHandler.save();
@@ -38,16 +42,20 @@ public class SendCommand {
         boolean isEnabled = context.getArgument("enabled", Boolean.class);
         ConfigHandler.cached().getStatus().setSEND_ENABLED(isEnabled);
         if (isEnabled) {
-            //#if MC >= 11900
-            context.getSource().sendSuccess(Component.literal("全局发送消息开关已被设置为打开"), true);
-            //#else
+            //#if MC >= 12000
+            context.getSource().sendSuccess(()->Component.literal("全局发送消息开关已被设置为打开"), true);
+            //#elseif MC < 11900
             //$$ context.getSource().sendSuccess(new TextComponent("全局发送消息开关已被设置为打开"), true);
+            //#else
+            //$$ context.getSource().sendSuccess(Component.literal("全局发送消息开关已被设置为打开"), true);
             //#endif
         } else {
-            //#if MC >= 11900
-            context.getSource().sendSuccess(Component.literal("全局发送消息开关已被设置为关闭"), true);
-            //#else
+            //#if MC >= 12000
+            context.getSource().sendSuccess(()->Component.literal("全局发送消息开关已被设置为关闭"), true);
+            //#elseif MC < 11900
             //$$ context.getSource().sendSuccess(new TextComponent("全局发送消息开关已被设置为关闭"), true);
+            //#else
+            //$$ context.getSource().sendSuccess(Component.literal("全局发送消息开关已被设置为关闭"), true);
             //#endif
         }
         ConfigHandler.save();
@@ -59,16 +67,20 @@ public class SendCommand {
         ConfigHandler.cached().getStatus().setS_JOIN_ENABLE(isEnabled);
         if (isEnabled) {
             ConfigHandler.cached().getStatus().setSEND_ENABLED(true);
-            //#if MC >= 11900
-            context.getSource().sendSuccess(Component.literal("发送玩家加入游戏消息开关已被设置为打开"), true);
-            //#else
+            //#if MC >= 12000
+            context.getSource().sendSuccess(()->Component.literal("发送玩家加入游戏消息开关已被设置为打开"), true);
+            //#elseif MC < 11900
             //$$ context.getSource().sendSuccess(new TextComponent("发送玩家加入游戏消息开关已被设置为打开"), true);
+            //#else
+            //$$ context.getSource().sendSuccess(Component.literal("发送玩家加入游戏消息开关已被设置为打开"), true);
             //#endif
         } else {
-            //#if MC >= 11900
-            context.getSource().sendSuccess(Component.literal("发送玩家加入游戏消息开关已被设置为关闭"), true);
-            //#else
+            //#if MC >= 12000
+            context.getSource().sendSuccess(()->Component.literal("发送玩家加入游戏消息开关已被设置为关闭"), true);
+            //#elseif MC < 11900
             //$$ context.getSource().sendSuccess(new TextComponent("发送玩家加入游戏消息开关已被设置为关闭"), true);
+            //#else
+            //$$ context.getSource().sendSuccess(Component.literal("发送玩家加入游戏消息开关已被设置为关闭"), true);
             //#endif
         }
         ConfigHandler.save();
@@ -80,16 +92,20 @@ public class SendCommand {
         ConfigHandler.cached().getStatus().setS_LEAVE_ENABLE(isEnabled);
         if (isEnabled) {
             ConfigHandler.cached().getStatus().setSEND_ENABLED(true);
-            //#if MC >= 11900
-            context.getSource().sendSuccess(Component.literal("发送玩家离开游戏消息开关已被设置为打开"), true);
-            //#else
+            //#if MC >= 12000
+            context.getSource().sendSuccess(()->Component.literal("发送玩家离开游戏消息开关已被设置为打开"), true);
+            //#elseif MC < 11900
             //$$ context.getSource().sendSuccess(new TextComponent("发送玩家离开游戏消息开关已被设置为打开"), true);
+            //#else
+            //$$ context.getSource().sendSuccess(Component.literal("发送玩家离开游戏消息开关已被设置为打开"), true);
             //#endif
         } else {
-            //#if MC >= 11900
-            context.getSource().sendSuccess(Component.literal("发送玩家离开游戏消息开关已被设置为关闭"), true);
-            //#else
+            //#if MC >= 12000
+            context.getSource().sendSuccess(()->Component.literal("发送玩家离开游戏消息开关已被设置为关闭"), true);
+            //#elseif MC < 11900
             //$$ context.getSource().sendSuccess(new TextComponent("发送玩家离开游戏消息开关已被设置为关闭"), true);
+            //#else
+            //$$ context.getSource().sendSuccess(Component.literal("发送玩家离开游戏消息开关已被设置为关闭"), true);
             //#endif
         }
         ConfigHandler.save();
@@ -101,16 +117,20 @@ public class SendCommand {
         ConfigHandler.cached().getStatus().setS_DEATH_ENABLE(isEnabled);
         if (isEnabled) {
             ConfigHandler.cached().getStatus().setSEND_ENABLED(true);
-            //#if MC >= 11900
-            context.getSource().sendSuccess(Component.literal("发送玩家死亡游戏消息开关已被设置为打开"), true);
-            //#else
+            //#if MC >= 12000
+            context.getSource().sendSuccess(()->Component.literal("发送玩家死亡游戏消息开关已被设置为打开"), true);
+            //#elseif MC < 11900
             //$$ context.getSource().sendSuccess(new TextComponent("发送玩家死亡游戏消息开关已被设置为打开"), true);
+            //#else
+            //$$ context.getSource().sendSuccess(Component.literal("发送玩家死亡游戏消息开关已被设置为打开"), true);
             //#endif
         } else {
-            //#if MC >= 11900
-            context.getSource().sendSuccess(Component.literal("发送玩家死亡游戏消息开关已被设置为关闭"), true);
-            //#else
+            //#if MC >= 12000
+            context.getSource().sendSuccess(()->Component.literal("发送玩家死亡游戏消息开关已被设置为关闭"), true);
+            //#elseif MC < 11900
             //$$ context.getSource().sendSuccess(new TextComponent("发送玩家死亡游戏消息开关已被设置为关闭"), true);
+            //#else
+            //$$ context.getSource().sendSuccess(Component.literal("发送玩家死亡游戏消息开关已被设置为关闭"), true);
             //#endif
         }
         ConfigHandler.save();
@@ -122,16 +142,20 @@ public class SendCommand {
         ConfigHandler.cached().getStatus().setS_CHAT_ENABLE(isEnabled);
         if (isEnabled) {
             ConfigHandler.cached().getStatus().setSEND_ENABLED(true);
-            //#if MC >= 11900
-            context.getSource().sendSuccess(Component.literal("发送玩家聊天游戏消息开关已被设置为打开"), true);
-            //#else
+            //#if MC >= 12000
+            context.getSource().sendSuccess(()->Component.literal("发送玩家聊天游戏消息开关已被设置为打开"), true);
+            //#elseif MC < 11900
             //$$ context.getSource().sendSuccess(new TextComponent("发送玩家聊天游戏消息开关已被设置为打开"), true);
+            //#else
+            //$$ context.getSource().sendSuccess(Component.literal("发送玩家聊天游戏消息开关已被设置为打开"), true);
             //#endif
         } else {
-            //#if MC >= 11900
-            context.getSource().sendSuccess(Component.literal("发送玩家聊天游戏消息开关已被设置为关闭"), true);
-            //#else
+            //#if MC >= 12000
+            context.getSource().sendSuccess(()->Component.literal("发送玩家聊天游戏消息开关已被设置为关闭"), true);
+            //#elseif MC < 11900
             //$$ context.getSource().sendSuccess(new TextComponent("发送玩家聊天游戏消息开关已被设置为关闭"), true);
+            //#else
+            //$$ context.getSource().sendSuccess(Component.literal("发送玩家聊天游戏消息开关已被设置为关闭"), true);
             //#endif
         }
         ConfigHandler.save();
@@ -143,16 +167,20 @@ public class SendCommand {
         ConfigHandler.cached().getStatus().setS_ADVANCE_ENABLE(isEnabled);
         if (isEnabled) {
             ConfigHandler.cached().getStatus().setSEND_ENABLED(true);
-            //#if MC >= 11900
-            context.getSource().sendSuccess(Component.literal("发送玩家成就游戏消息开关已被设置为打开"), true);
-            //#else
+            //#if MC >= 12000
+            context.getSource().sendSuccess(()->Component.literal("发送玩家成就游戏消息开关已被设置为打开"), true);
+            //#elseif MC < 11900
             //$$ context.getSource().sendSuccess(new TextComponent("发送玩家成就游戏消息开关已被设置为打开"), true);
+            //#else
+            //$$ context.getSource().sendSuccess(Component.literal("发送玩家成就游戏消息开关已被设置为打开"), true);
             //#endif
         } else {
-            //#if MC >= 11900
-            context.getSource().sendSuccess(Component.literal("发送玩家成就游戏消息开关已被设置为关闭"), true);
-            //#else
+            //#if MC >= 12000
+            context.getSource().sendSuccess(()->Component.literal("发送玩家成就游戏消息开关已被设置为关闭"), true);
+            //#elseif MC < 11900
             //$$ context.getSource().sendSuccess(new TextComponent("发送玩家成就游戏消息开关已被设置为关闭"), true);
+            //#else
+            //$$ context.getSource().sendSuccess(Component.literal("发送玩家成就游戏消息开关已被设置为关闭"), true);
             //#endif
         }
         ConfigHandler.save();

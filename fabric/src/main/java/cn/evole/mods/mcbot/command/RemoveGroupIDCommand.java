@@ -18,10 +18,12 @@ public class RemoveGroupIDCommand {
         if (ConfigHandler.cached().getCommon().getGroupIdList().contains(id)) {
             ConfigHandler.cached().getCommon().removeGroupId(id);
         } else {
-            //#if MC >= 11900
-            context.getSource().sendSuccess(Component.literal("QQ群号:" + id + "并未出现！"), true);
-            //#else
+            //#if MC >= 12000
+            context.getSource().sendSuccess(()->Component.literal("QQ群号:" + id + "并未出现！"), true);
+            //#elseif MC < 11900
             //$$ context.getSource().sendSuccess(new TextComponent("QQ群号:" + id + "并未出现！"), true);
+            //#else
+            //$$ context.getSource().sendSuccess(Component.literal("QQ群号:" + id + "并未出现！"), true);
             //#endif
         }
         ConfigHandler.save();

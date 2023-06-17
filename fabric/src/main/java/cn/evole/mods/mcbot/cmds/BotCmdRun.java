@@ -13,6 +13,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Supplier;
 //#if MC >= 11900
 import net.minecraft.network.chat.Component;
 //#else
@@ -51,13 +52,18 @@ public class BotCmdRun extends CommandSourceStack {
         super(commandSource, vec3, vec2, serverLevel, i, string, component, minecraftServer, entity);
     }
 
-
+    //#if MC >= 12000
     @Override
-    public void sendSuccess(@NotNull Component component, boolean p_81356_) {
-        super.sendSuccess(component, p_81356_);
-        this.outPut.add(component.getString());
-
+    public void sendSuccess(Supplier<Component> supplier, boolean bl) {
+        super.sendSuccess(supplier, bl);
+        this.outPut.add(supplier.get().getString());
     }
-
+    //#else
+    //$$ @Override
+    //$$ public void sendSuccess(@NotNull Component component, boolean p_81356_) {
+    //$$     super.sendSuccess(component, p_81356_);
+    //$$     this.outPut.add(component.getString());
+    //$$ }
+    //#endif
 
 }

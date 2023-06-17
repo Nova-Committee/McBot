@@ -21,22 +21,28 @@ public class ReloadConfigCmd {
         try {
             ConfigHandler.load(McBot.CONFIG_FILE);
             if (ConfigHandler.cached() == null) {
-                //#if MC >= 11900
-                context.getSource().sendSuccess(Component.literal("重载配置失败"), true);
-                //#else
+                //#if MC >= 12000
+                context.getSource().sendSuccess(()->Component.literal("重载配置失败"), true);
+                //#elseif MC < 11900
                 //$$ context.getSource().sendSuccess(new TextComponent("重载配置失败"), true);
+                //#else
+                //$$ context.getSource().sendSuccess(Component.literal("重载配置失败"), true);
                 //#endif
             }
-            //#if MC >= 11900
-            context.getSource().sendSuccess(Component.literal("重载配置成功"), true);
-            //#else
+            //#if MC >= 12000
+            context.getSource().sendSuccess(()->Component.literal("重载配置成功"), true);
+            //#elseif MC < 11900
             //$$ context.getSource().sendSuccess(new TextComponent("重载配置成功"), true);
+            //#else
+            //$$ context.getSource().sendSuccess(Component.literal("重载配置成功"), true);
             //#endif
         } catch (Exception e) {
-            //#if MC >= 11900
-            context.getSource().sendSuccess(Component.literal("重载配置失败"), true);
-            //#else
+            //#if MC >= 12000
+            context.getSource().sendSuccess(()->Component.literal("重载配置失败"), true);
+            //#elseif MC < 11900
             //$$ context.getSource().sendSuccess(new TextComponent("重载配置失败"), true);
+            //#else
+            //$$ context.getSource().sendSuccess(Component.literal("重载配置失败"), true);
             //#endif
         }
         ConfigHandler.save();

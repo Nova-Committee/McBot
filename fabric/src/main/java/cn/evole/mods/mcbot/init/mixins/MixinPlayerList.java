@@ -21,12 +21,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class MixinPlayerList {
     @Inject(method = "placeNewPlayer", at = @At(value = "TAIL"))
     public void PlayerList_placeNewPlayer(Connection connection, ServerPlayer player, CallbackInfo ci) {
-        IEvents.PLAYER_LOGGED_IN.invoker().onPlayerLoggedIn(player.level, player);
+        IEvents.PLAYER_LOGGED_IN.invoker().onPlayerLoggedIn(player.getCommandSenderWorld(), player);
     }
 
     @Inject(method = "remove", at = @At(value = "HEAD"))
     public void PlayerList_remove(ServerPlayer player, CallbackInfo ci) {
-        IEvents.PLAYER_LOGGED_OUT.invoker().onPlayerLoggedOut(player.level, player);
+        IEvents.PLAYER_LOGGED_OUT.invoker().onPlayerLoggedOut(player.getCommandSenderWorld(), player);
     }
-
 }

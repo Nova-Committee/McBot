@@ -17,10 +17,12 @@ public class GuildIDCommand {
         val id = context.getArgument("GuildID", String.class);
         ConfigHandler.cached().getCommon().setGuildOn(true);
         ConfigHandler.cached().getCommon().setGuildId(id);
-        //#if MC >= 11900
-        context.getSource().sendSuccess(Component.literal("已设置互通的频道号为:" + id), true);
-        //#else
+        //#if MC >= 12000
+        context.getSource().sendSuccess(()->Component.literal("已设置互通的频道号为:" + id), true);
+        //#elseif MC < 11900
         //$$ context.getSource().sendSuccess(new TextComponent("已设置互通的频道号为:" + id), true);
+        //#else
+        //$$ context.getSource().sendSuccess(Component.literal("已设置互通的频道号为:" + id), true);
         //#endif
         ConfigHandler.save();
         return 1;

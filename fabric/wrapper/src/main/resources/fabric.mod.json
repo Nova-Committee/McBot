@@ -38,6 +38,9 @@
     },
     {
       "file": "META-INF/jars/McBot-fabric-1.19.4-${version}.jar"
+    },
+    {
+      "file": "META-INF/jars/McBot-fabric-1.20.x-${version}.jar"
     }
   ]
 }

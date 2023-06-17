@@ -16,10 +16,12 @@ public class VerifyKeyCommand {
     public static int execute(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
         val id = context.getArgument("VerifyKey", String.class);
         ConfigHandler.cached().getBotConfig().setToken(id);
-        //#if MC >= 11900
-        context.getSource().sendSuccess(Component.literal("已设置Mirai框架的VerifyKey为:" + id), true);
-        //#else
+        //#if MC >= 12000
+        context.getSource().sendSuccess(()->Component.literal("已设置Mirai框架的VerifyKey为:" + id), true);
+        //#elseif MC < 11900
         //$$ context.getSource().sendSuccess(new TextComponent("已设置Mirai框架的VerifyKey为:" + id), true);
+        //#else
+        //$$ context.getSource().sendSuccess(Component.literal("已设置Mirai框架的VerifyKey为:" + id), true);
         //#endif
         ConfigHandler.save();
         return 1;

@@ -17,16 +17,20 @@ public class ReceiveCommand {
         boolean isEnabled = context.getArgument("enabled", Boolean.class);
         ConfigHandler.cached().getStatus().setRECEIVE_ENABLED(isEnabled);
         if (isEnabled) {
-            //#if MC >= 11900
-            context.getSource().sendSuccess(Component.literal("全局接收群消息开关已被设置为打开"), true);
-            //#else
+            //#if MC >= 12000
+            context.getSource().sendSuccess(()->Component.literal("全局接收群消息开关已被设置为打开"), true);
+            //#elseif MC < 11900
             //$$ context.getSource().sendSuccess(new TextComponent("全局接收群消息开关已被设置为打开"), true);
+            //#else
+            //$$ context.getSource().sendSuccess(Component.literal("全局接收群消息开关已被设置为打开"), true);
             //#endif
         } else {
-            //#if MC >= 11900
-            context.getSource().sendSuccess(Component.literal("全局接收群消息开关已被设置为关闭"), true);
-            //#else
+            //#if MC >= 12000
+            context.getSource().sendSuccess(()->Component.literal("全局接收群消息开关已被设置为关闭"), true);
+            //#elseif MC < 11900
             //$$ context.getSource().sendSuccess(new TextComponent("全局接收群消息开关已被设置为关闭"), true);
+            //#else
+            //$$ context.getSource().sendSuccess(Component.literal("全局接收群消息开关已被设置为关闭"), true);
             //#endif
         }
         ConfigHandler.save();
@@ -38,16 +42,20 @@ public class ReceiveCommand {
         ConfigHandler.cached().getStatus().setR_CHAT_ENABLE(isEnabled);
         if (isEnabled) {
             ConfigHandler.cached().getStatus().setRECEIVE_ENABLED(true);
-            //#if MC >= 11900
-            context.getSource().sendSuccess(Component.literal("接收群内聊天消息开关已被设置为打开"), true);
-            //#else
+            //#if MC >= 12000
+            context.getSource().sendSuccess(()->Component.literal("接收群内聊天消息开关已被设置为打开"), true);
+            //#elseif MC < 11900
             //$$ context.getSource().sendSuccess(new TextComponent("接收群内聊天消息开关已被设置为打开"), true);
+            //#else
+            //$$ context.getSource().sendSuccess(Component.literal("接收群内聊天消息开关已被设置为打开"), true);
             //#endif
         } else {
-            //#if MC >= 11900
-            context.getSource().sendSuccess(Component.literal("接收群内聊天消息开关已被设置为关闭"), true);
-            //#else
+            //#if MC >= 12000
+            context.getSource().sendSuccess(()->Component.literal("接收群内聊天消息开关已被设置为关闭"), true);
+            //#elseif MC < 11900
             //$$ context.getSource().sendSuccess(new TextComponent("接收群内聊天消息开关已被设置为关闭"), true);
+            //#else
+            //$$ context.getSource().sendSuccess(Component.literal("接收群内聊天消息开关已被设置为关闭"), true);
             //#endif
         }
         ConfigHandler.save();
@@ -60,16 +68,20 @@ public class ReceiveCommand {
         ConfigHandler.cached().getStatus().setR_COMMAND_ENABLED(isEnabled);
         if (isEnabled) {
             ConfigHandler.cached().getStatus().setRECEIVE_ENABLED(true);
-            //#if MC >= 11900
-            context.getSource().sendSuccess(Component.literal("接收群内命令消息开关已被设置为打开"), true);
-            //#else
+            //#if MC >= 12000
+            context.getSource().sendSuccess(()->Component.literal("接收群内命令消息开关已被设置为打开"), true);
+            //#elseif MC < 11900
             //$$ context.getSource().sendSuccess(new TextComponent("接收群内命令消息开关已被设置为打开"), true);
+            //#else
+            //$$ context.getSource().sendSuccess(Component.literal("接收群内命令消息开关已被设置为打开"), true);
             //#endif
         } else {
-            //#if MC >= 11900
-            context.getSource().sendSuccess(Component.literal("接收群内命令消息开关已被设置为关闭"), true);
-            //#else
+            //#if MC >= 12000
+            context.getSource().sendSuccess(()->Component.literal("接收群内命令消息开关已被设置为关闭"), true);
+            //#elseif MC < 11900
             //$$ context.getSource().sendSuccess(new TextComponent("接收群内命令消息开关已被设置为关闭"), true);
+            //#else
+            //$$ context.getSource().sendSuccess(Component.literal("接收群内命令消息开关已被设置为关闭"), true);
             //#endif
         }
         ConfigHandler.save();

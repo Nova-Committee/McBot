@@ -54,10 +54,12 @@ public class StatusCommand {
                         + "发送玩家死亡消息状态:" + sDeathEnabled + "\n"
                         + "发送玩家成就消息状态:" + sAchievementsEnabled + "\n"
                         + "发送群成员进/退群消息状态:" + sWelcomeEnabled + "\n";
-        //#if MC >= 11900
-        context.getSource().sendSuccess(Component.literal(toSend), true);
-        //#else
+        //#if MC >= 12000
+        context.getSource().sendSuccess(()->Component.literal(toSend), true);
+        //#elseif MC < 11900
         //$$ context.getSource().sendSuccess(new TextComponent(toSend), true);
+        //#else
+        //$$ context.getSource().sendSuccess(Component.literal(toSend), true);
         //#endif
         ConfigHandler.save();
         return 1;

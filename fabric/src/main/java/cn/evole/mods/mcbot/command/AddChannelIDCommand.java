@@ -18,10 +18,13 @@ public class AddChannelIDCommand {
         val id = context.getArgument("ChannelID", String.class);
         ConfigHandler.cached().getCommon().setGuildOn(true);
         if (ConfigHandler.cached().getCommon().getChannelIdList().contains(id)) {
-            //#if MC >= 11900
-            context.getSource().sendSuccess(Component.literal("子频道号:" + id + "已经出现了！"), true);
-            //#else
+
+            //#if MC >= 12000
+            context.getSource().sendSuccess(()->Component.literal("子频道号:" + id + "已经出现了！"), true);
+            //#elseif MC < 11900
             //$$ context.getSource().sendSuccess(new TextComponent("子频道号:" + id + "已经出现了！"), true);
+            //#else
+            //$$ context.getSource().sendSuccess(Component.literal("子频道号:" + id + "已经出现了！"), true);
             //#endif
 
         } else {

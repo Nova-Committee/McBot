@@ -28,10 +28,12 @@ public class ConnectCommand {
         val matcher = pattern.matcher(parameter);
         if (matcher.find()) {
             ConfigHandler.cached().getBotConfig().setUrl("ws://" + parameter);
-            //#if MC >= 11900
-            context.getSource().sendSuccess(Component.literal("尝试链接框架" + ChatFormatting.LIGHT_PURPLE + "cqhttp"), true);
-            //#else
+            //#if MC >= 12000
+            context.getSource().sendSuccess(()->Component.literal("尝试链接框架" + ChatFormatting.LIGHT_PURPLE + "cqhttp"), true);
+            //#elseif MC < 11900
             //$$ context.getSource().sendSuccess(new TextComponent("尝试链接框架" + ChatFormatting.LIGHT_PURPLE + "cqhttp"), true);
+            //#else
+            //$$ context.getSource().sendSuccess(Component.literal("尝试链接框架" + ChatFormatting.LIGHT_PURPLE + "cqhttp"), true);
             //#endif
             ConfigHandler.cached().getBotConfig().setMiraiHttp(false);
 
@@ -50,10 +52,12 @@ public class ConnectCommand {
             return 1;
 
         } else {
-            //#if MC >= 11900
-            context.getSource().sendSuccess(Component.literal(ChatFormatting.RED + "参数错误❌"), true);
-            //#else
+            //#if MC >= 12000
+            context.getSource().sendSuccess(()->Component.literal(ChatFormatting.RED + "参数错误❌"), true);
+            //#elseif MC < 11900
             //$$ context.getSource().sendSuccess(new TextComponent(ChatFormatting.RED + "参数错误❌"), true);
+            //#else
+            //$$ context.getSource().sendSuccess(Component.literal(ChatFormatting.RED + "参数错误❌"), true);
             //#endif
             return 0;
         }
@@ -66,10 +70,12 @@ public class ConnectCommand {
         val matcher = pattern.matcher(parameter);
         if (matcher.find()) {
             ConfigHandler.cached().getBotConfig().setUrl("ws://" + parameter);
-            //#if MC >= 11900
-            context.getSource().sendSuccess(Component.literal("尝试链接框架" + ChatFormatting.LIGHT_PURPLE + "mirai"), true);
-            //#else
+            //#if MC >= 12000
+            context.getSource().sendSuccess(()->Component.literal("尝试链接框架" + ChatFormatting.LIGHT_PURPLE + "mirai"), true);
+            //#elseif MC < 11900
             //$$ context.getSource().sendSuccess(new TextComponent("尝试链接框架" + ChatFormatting.LIGHT_PURPLE + "mirai"), true);
+            //#else
+            //$$ context.getSource().sendSuccess(Component.literal("尝试链接框架" + ChatFormatting.LIGHT_PURPLE + "mirai"), true);
             //#endif
             ConfigHandler.cached().getBotConfig().setMiraiHttp(true);
             try {
@@ -87,20 +93,24 @@ public class ConnectCommand {
             return 1;
 
         } else {
-            //#if MC >= 11900
-            context.getSource().sendSuccess(Component.literal(ChatFormatting.RED + "参数错误❌"), true);
-            //#else
+            //#if MC >= 12000
+            context.getSource().sendSuccess(()->Component.literal(ChatFormatting.RED + "参数错误❌"), true);
+            //#elseif MC < 11900
             //$$ context.getSource().sendSuccess(new TextComponent(ChatFormatting.RED + "参数错误❌"), true);
+            //#else
+            //$$ context.getSource().sendSuccess(Component.literal(ChatFormatting.RED + "参数错误❌"), true);
             //#endif
             return 0;
         }
     }
 
     public static int cqhttpCommonExecute(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
-        //#if MC >= 11900
-        context.getSource().sendSuccess(Component.literal("尝试链接框架" + ChatFormatting.LIGHT_PURPLE + "cqhttp"), true);
-        //#else
+        //#if MC >= 12000
+        context.getSource().sendSuccess(()->Component.literal("尝试链接框架" + ChatFormatting.LIGHT_PURPLE + "cqhttp"), true);
+        //#elseif MC < 11900
         //$$ context.getSource().sendSuccess(new TextComponent("尝试链接框架" + ChatFormatting.LIGHT_PURPLE + "cqhttp"), true);
+        //#else
+        //$$ context.getSource().sendSuccess(Component.literal("尝试链接框架" + ChatFormatting.LIGHT_PURPLE + "cqhttp"), true);
         //#endif
         ConfigHandler.cached().getBotConfig().setMiraiHttp(false);
         try {
@@ -120,11 +130,12 @@ public class ConnectCommand {
     }
 
     public static int miraiCommonExecute(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
-
-        //#if MC >= 11900
-        context.getSource().sendSuccess(Component.literal("尝试链接框架" + ChatFormatting.LIGHT_PURPLE + "mirai"), true);
-        //#else
+        //#if MC >= 12000
+        context.getSource().sendSuccess(()->Component.literal("尝试链接框架" + ChatFormatting.LIGHT_PURPLE + "mirai"), true);
+        //#elseif MC < 11900
         //$$ context.getSource().sendSuccess(new TextComponent("尝试链接框架" + ChatFormatting.LIGHT_PURPLE + "mirai"), true);
+        //#else
+        //$$ context.getSource().sendSuccess(Component.literal("尝试链接框架" + ChatFormatting.LIGHT_PURPLE + "mirai"), true);
         //#endif
         ConfigHandler.cached().getBotConfig().setMiraiHttp(true);
         try {
