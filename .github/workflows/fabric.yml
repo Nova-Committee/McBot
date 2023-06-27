@@ -9,7 +9,7 @@ name: Java CI with Gradle
 
 on:
   push:
-    branches: [ "all" ]
+    branches: [ "fabric" ]
 
 
 jobs:
