@@ -34,6 +34,7 @@ loom {
 }
 
 remapJar {
+    destinationDirectory.set(file("$rootDir/build/libs"))
     remapperIsolation = true
 }
 
@@ -57,7 +58,6 @@ tasks.withType(JavaCompile).configureEach {
 }
 
 jar {
-    destinationDirectory = file("$rootDir/build/libs")
     from("../../../LICENSE") {
         rename { "${it}_${project.archives_base_name}" }
     }

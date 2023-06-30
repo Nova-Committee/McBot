@@ -34,7 +34,7 @@ jobs:
     - name: Find Correct JAR
       id: findjar
       run: |
-        output="$(find build/libs/ ! -name "*-sources.jar" -type f -printf "%f\n")"
+        output="$(find build/libs/ ! -name "*-dev.jar" -type f -printf "%f\n")"
         echo "::set-output name=jarname::$output"
     - name: Upload Build Artifacts
       uses: actions/upload-artifact@v3
