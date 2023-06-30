@@ -25,12 +25,12 @@ jobs:
     - name: Validate Gradle Wrapper
       uses: gradle/wrapper-validation-action@v1
     - name: Make Gradle Wrapper Executable
-      run: chmod +x ./fabric/gradlew
+      run: chmod +x ./forge/gradlew
     - name: Build
       uses: gradle/gradle-build-action@v2
       with:
         arguments: build
-        build-root-directory: fabric
+        build-root-directory: forge
     - name: Find Correct JAR
       id: findjar
       run: |
