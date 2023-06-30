@@ -1,0 +1,25 @@
+plugins {
+    id "com.replaymod.preprocess" version "SNAPSHOT"
+    id 'dev.architectury.loom' version '1.2-SNAPSHOT' apply false
+}
+
+preprocess {
+    def mc1144 = createNode("1.14.4", 1_14_04, "srg")
+    def mc1152 = createNode("1.15.2", 1_15_02, "srg")
+    def mc1165 = createNode("1.16.5", 1_16_05, "srg")
+    def mc1171 = createNode("1.17.1", 1_17_01, "srg")
+    def mc1182 = createNode("1.18.2", 1_18_02, "srg")
+    def mc1192 = createNode("1.19.2", 1_19_02, "srg")
+    def mc1193 = createNode("1.19.3", 1_19_03, "srg")
+    def mc1194 = createNode("1.19.4", 1_19_04, "srg")
+    def mc1201 = createNode("1.20.1", 1_20_01, "srg")
+
+    mc1144.link(mc1152, null)
+    mc1152.link(mc1165, null)
+    mc1165.link(mc1171, null)
+    mc1171.link(mc1182, null)
+    mc1182.link(mc1192, null)
+    mc1192.link(mc1193, null)
+    mc1193.link(mc1194, null)
+    mc1194.link(mc1201, null)
+}

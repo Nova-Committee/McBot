@@ -1,0 +1,63 @@
+apply plugin: "dev.architectury.loom"
+apply plugin: "com.replaymod.preprocess"
+
+int mcVersion = 1
+
+preprocess {
+    mcVersion = vars.get()["MC"]
+    tabIndentation = true
+}
+
+
+repositories {
+    mavenCentral()
+    maven {
+        url = 'https://maven.nova-committee.cn/releases'
+    }
+}
+
+dependencies {
+    minecraft "com.mojang:minecraft:${project.minecraft_version}"
+    mappings loom.officialMojangMappings()
+    forge "net.minecraftforge:forge:${project.minecraft_version}-${project.forge_version}"
+
+    implementation include("cn.evole.bot:OneBot-Client:${project.onebot_client_version}")
+    implementation include("blue.endless:jankson:${project.jankson_version}")
+
+    compileOnly 'org.projectlombok:lombok:1.18.24'
+    annotationProcessor "org.projectlombok:lombok:1.18.24"
+
+}
+
+loom {
+    silentMojangMappingsLicense()
+}
+
+remapJar {
+    remapperIsolation = true
+}
+
+sourceCompatibility = JavaVersion.VERSION_17
+targetCompatibility = JavaVersion.VERSION_17
+
+version = project.mod_version
+group = project.maven_group
+archivesBaseName = project.archives_base_name + "-" + project.minecraft_dependency
+
+processResources {
+    inputs.property "version", project.version
+
+    filesMatching("META-INF/mods.toml") {
+        expand "version": project.version.toString()
+    }
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = "UTF-8"
+}
+
+jar {
+    from("../../../LICENSE") {
+        rename { "${it}_${project.archives_base_name}" }
+    }
+}
