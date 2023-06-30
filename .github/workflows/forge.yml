@@ -9,7 +9,7 @@ name: Java CI with Gradle
 
 on:
   push:
-    branches: [ "fabric" ]
+    branches: [ "forge" ]
 
 
 jobs:
@@ -34,10 +34,10 @@ jobs:
     - name: Find Correct JAR
       id: findjar
       run: |
-        output="$(find fabric/wrapper/build/libs/ ! -name "*-sources.jar" -type f -printf "%f\n")"
+        output="$(find build/libs/ ! -name "*-sources.jar" -type f -printf "%f\n")"
         echo "::set-output name=jarname::$output"
     - name: Upload Build Artifacts
       uses: actions/upload-artifact@v3
       with:
         name: ${{ steps.findjar.outputs.jarname }}
-        path: fabric/wrapper/build/libs/${{ steps.findjar.outputs.jarname }}
+        path: build/libs/${{ steps.findjar.outputs.jarname }}
