@@ -9,7 +9,6 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import lombok.val;
-import net.fabricmc.loader.api.FabricLoader;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.filefilter.FileFilterUtils;
 
@@ -28,8 +27,6 @@ import java.util.concurrent.TimeUnit;
  * Version: 1.0
  */
 public class CustomCmdHandler {
-
-    public static final CustomCmdHandler INSTANCE = new CustomCmdHandler();
     private final Gson GSON ;
 
     private final File dir;

@@ -1,6 +1,6 @@
 package cn.evole.mods.mcbot.util.onebot;
 
-import cn.evole.mods.mcbot.McBot;
+import cn.evole.mods.mcbot.IMcBot;
 import cn.evole.mods.mcbot.cmds.CustomCmd;
 import cn.evole.mods.mcbot.init.handler.CustomCmdHandler;
 import cn.evole.onebot.sdk.event.message.GroupMessageEvent;
@@ -26,7 +26,7 @@ public class BotUtils {
 
     private static boolean isVar(String msg) {
         AtomicBoolean match = new AtomicBoolean(false);
-        CustomCmdHandler.INSTANCE.getCustomCmds().forEach(
+        IMcBot.CMD.getCustomCmds().forEach(
                 cmd -> {
                     if (cmd.getCmdContent().contains("%")) {//是否变量模板
                         if (msg.contains(cmd.getCmdAlies()))//去除命令符号
@@ -56,7 +56,7 @@ public class BotUtils {
 
     public static boolean guildAdminParse(GuildMessageEvent event) {
         AtomicBoolean isAdmin = new AtomicBoolean(false);
-        for (val roleInfo : McBot.bot.getGuildMemberProfile(event.getGuildId(), event.getSender().getTinyId())
+        for (val roleInfo : IMcBot.bot.getGuildMemberProfile(event.getGuildId(), event.getSender().getTinyId())
                 .getData()
                 .getRoles()) {
             if (Integer.parseInt(roleInfo.getRoleId()) >= 2 || Arrays.stream(GuildRole.values()).anyMatch(s -> s.role.equals(roleInfo.getRoleName()))) {

@@ -1,6 +1,6 @@
 package cn.evole.mods.mcbot.command;
 
-import cn.evole.mods.mcbot.McBot;
+import cn.evole.mods.mcbot.IMcBot;
 import cn.evole.mods.mcbot.init.handler.ConfigHandler;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
@@ -19,7 +19,7 @@ import net.minecraft.network.chat.Component;
 public class ReloadConfigCmd {
     public static int execute(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
         try {
-            ConfigHandler.load(McBot.CONFIG_FILE);
+            ConfigHandler.load(IMcBot.CONFIG_FILE);
             if (ConfigHandler.cached() == null) {
                 //#if MC >= 12000
                 context.getSource().sendSuccess(()->Component.literal("重载配置失败"), true);

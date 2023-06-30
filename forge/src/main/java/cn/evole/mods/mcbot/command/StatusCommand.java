@@ -1,7 +1,7 @@
 package cn.evole.mods.mcbot.command;
 
 
-import cn.evole.mods.mcbot.McBot;
+import cn.evole.mods.mcbot.IMcBot;
 import cn.evole.mods.mcbot.init.handler.ConfigHandler;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
@@ -30,8 +30,8 @@ public class StatusCommand {
 
         val groupId = ConfigHandler.cached().getCommon().getGroupIdList().toString();
         boolean debuggable = ConfigHandler.cached().getCommon().isDebuggable();
-        boolean connected = McBot.service != null;
-        boolean white = McBot.SERVER.getPlayerList().isUsingWhitelist();
+        boolean connected = IMcBot.service != null;
+        boolean white = IMcBot.SERVER.getPlayerList().isUsingWhitelist();
         String host = ConfigHandler.cached().getBotConfig().getUrl();
         long QQid = ConfigHandler.cached().getCommon().getBotId();
         String toSend =

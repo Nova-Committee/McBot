@@ -1,6 +1,6 @@
 package cn.evole.mods.mcbot.init.event;
 
-import cn.evole.mods.mcbot.McBot;
+import cn.evole.mods.mcbot.IMcBot;
 import cn.evole.mods.mcbot.init.handler.ConfigHandler;
 import lombok.val;
 import net.minecraft.world.entity.player.Player;
@@ -22,7 +22,7 @@ public class IChatEvent {
             ) {
                 if (ConfigHandler.cached().getCommon().isGuildOn() && !ConfigHandler.cached().getCommon().getChannelIdList().isEmpty()) {
                     for (String id : ConfigHandler.cached().getCommon().getChannelIdList())
-                        McBot.bot.sendGuildMsg(ConfigHandler.cached().getCommon().getGuildId(),
+                        IMcBot.bot.sendGuildMsg(ConfigHandler.cached().getCommon().getGuildId(),
                                 id,
                                 String.format(ConfigHandler.cached().getCmd().isMcPrefixOn()
                                                 ? "[" + ConfigHandler.cached().getCmd().getMcPrefix() + "]<%s> %s"
@@ -32,7 +32,7 @@ public class IChatEvent {
                                                 && ConfigHandler.cached().getCmd().getMcChatPrefix().equals(split[0]) ? split[1] : message));
                 } else {
                     for (long id : ConfigHandler.cached().getCommon().getGroupIdList())
-                        McBot.bot.sendGroupMsg(
+                        IMcBot.bot.sendGroupMsg(
                                 id,
                                 String.format(ConfigHandler.cached().getCmd().isMcPrefixOn()
                                                 ? "[" + ConfigHandler.cached().getCmd().getMcPrefix() + "]<%s> %s"

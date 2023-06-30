@@ -4,7 +4,7 @@ import blue.endless.jankson.Jankson;
 import blue.endless.jankson.JsonElement;
 import blue.endless.jankson.JsonObject;
 import cn.evole.mods.mcbot.Const;
-import cn.evole.mods.mcbot.McBot;
+import cn.evole.mods.mcbot.IMcBot;
 import cn.evole.mods.mcbot.init.config.ModConfig;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import org.apache.commons.io.IOUtils;
@@ -58,7 +58,7 @@ public class ConfigHandler {
     }
 
     public static void save() {
-        saveConfigToFile(McBot.CONFIG_FILE);
+        saveConfigToFile(IMcBot.CONFIG_FILE);
     }
 
     public static ModConfig cached() {
@@ -108,10 +108,10 @@ public class ConfigHandler {
                     } catch (Exception ignored) {
                     }
                 };
-                if (McBot.configWatcherExecutorService.isShutdown()) {
-                    McBot.configWatcherExecutorService = Executors.newSingleThreadScheduledExecutor(new ThreadFactoryBuilder().setNameFormat("BotApi Config Watcher %d").setDaemon(true).build());
+                if (IMcBot.configWatcherExecutorService.isShutdown()) {
+                    IMcBot.configWatcherExecutorService = Executors.newSingleThreadScheduledExecutor(new ThreadFactoryBuilder().setNameFormat("BotApi Config Watcher %d").setDaemon(true).build());
                 }
-                McBot.configWatcherExecutorService.scheduleAtFixedRate(configWatcher, 0, 10, TimeUnit.SECONDS);
+                IMcBot.configWatcherExecutorService.scheduleAtFixedRate(configWatcher, 0, 10, TimeUnit.SECONDS);
 
             } catch (Exception ignored) {
             }

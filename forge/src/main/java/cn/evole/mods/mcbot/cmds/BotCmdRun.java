@@ -1,6 +1,6 @@
 package cn.evole.mods.mcbot.cmds;
 
-import cn.evole.mods.mcbot.McBot;
+import cn.evole.mods.mcbot.IMcBot;
 import net.minecraft.commands.CommandSource;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.server.MinecraftServer;
@@ -8,7 +8,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -35,14 +34,14 @@ import net.minecraft.network.chat.Component;
 public class BotCmdRun extends CommandSourceStack {
 
     //#if MC >= 11900
-    public static BotCmdRun CUSTOM = new BotCmdRun(CommandSource.NULL, Vec3.ZERO, Vec2.ZERO, McBot.SERVER.overworld(), 4, "Bot", Component.literal("Bot"), McBot.SERVER, null);
-    public static BotCmdRun OP = new BotCmdRun(CommandSource.NULL, Vec3.ZERO, Vec2.ZERO, McBot.SERVER.overworld(), 4, "OP", Component.literal("OP"), McBot.SERVER, null);
+    public static BotCmdRun CUSTOM = new BotCmdRun(CommandSource.NULL, Vec3.ZERO, Vec2.ZERO, IMcBot.SERVER.overworld(), 4, "Bot", Component.literal("Bot"), IMcBot.SERVER, null);
+    public static BotCmdRun OP = new BotCmdRun(CommandSource.NULL, Vec3.ZERO, Vec2.ZERO, IMcBot.SERVER.overworld(), 4, "OP", Component.literal("OP"), IMcBot.SERVER, null);
     //#elseif MC < 11600
-    //$$ public static BotCmdRun CUSTOM = new BotCmdRun(CommandSource.NULL, Vec3.ZERO, Vec2.ZERO, McBot.SERVER.getLevel(DimensionType.OVERWORLD), 4, "Bot", new TextComponent("Bot"), McBot.SERVER, null);
-    //$$ public static BotCmdRun OP = new BotCmdRun(CommandSource.NULL, Vec3.ZERO, Vec2.ZERO, McBot.SERVER.getLevel(DimensionType.OVERWORLD), 4, "OP", new TextComponent("OP"), McBot.SERVER, null);
+    //$$ public static BotCmdRun CUSTOM = new BotCmdRun(CommandSource.NULL, Vec3.ZERO, Vec2.ZERO, IMcBot.SERVER.getLevel(DimensionType.OVERWORLD), 4, "Bot", new TextComponent("Bot"), IMcBot.SERVER, null);
+    //$$ public static BotCmdRun OP = new BotCmdRun(CommandSource.NULL, Vec3.ZERO, Vec2.ZERO, IMcBot.SERVER.getLevel(DimensionType.OVERWORLD), 4, "OP", new TextComponent("OP"), IMcBot.SERVER, null);
     //#else
-    //$$ public static BotCmdRun CUSTOM = new BotCmdRun(CommandSource.NULL, Vec3.ZERO, Vec2.ZERO, McBot.SERVER.overworld(), 4, "Bot", new TextComponent("Bot"), McBot.SERVER, null);
-    //$$ public static BotCmdRun OP = new BotCmdRun(CommandSource.NULL, Vec3.ZERO, Vec2.ZERO, McBot.SERVER.overworld(), 4, "OP", new TextComponent("OP"), McBot.SERVER, null);
+    //$$ public static BotCmdRun CUSTOM = new BotCmdRun(CommandSource.NULL, Vec3.ZERO, Vec2.ZERO, IMcBot.SERVER.overworld(), 4, "Bot", new TextComponent("Bot"), IMcBot.SERVER, null);
+    //$$ public static BotCmdRun OP = new BotCmdRun(CommandSource.NULL, Vec3.ZERO, Vec2.ZERO, IMcBot.SERVER.overworld(), 4, "OP", new TextComponent("OP"), IMcBot.SERVER, null);
     //#endif
 
 
@@ -60,7 +59,7 @@ public class BotCmdRun extends CommandSourceStack {
     }
     //#else
     //$$ @Override
-    //$$ public void sendSuccess(@NotNull Component component, boolean p_81356_) {
+    //$$ public void sendSuccess(Component component, boolean p_81356_) {
     //$$     super.sendSuccess(component, p_81356_);
     //$$     this.outPut.add(component.getString());
     //$$ }

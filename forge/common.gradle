@@ -52,11 +52,12 @@ processResources {
     }
 }
 
-tasks.withType(JavaCompile) {
+tasks.withType(JavaCompile).configureEach {
     options.encoding = "UTF-8"
 }
 
 jar {
+    destinationDirectory = file("$rootDir/build/libs")
     from("../../../LICENSE") {
         rename { "${it}_${project.archives_base_name}" }
     }

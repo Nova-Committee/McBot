@@ -1,6 +1,7 @@
 package cn.evole.mods.mcbot.command;
 
 
+import cn.evole.mods.mcbot.IMcBot;
 import cn.evole.mods.mcbot.init.handler.CustomCmdHandler;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
@@ -15,7 +16,7 @@ public class ListCustomCommand {
 
     public static int execute(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
         StringBuilder out = new StringBuilder();
-        for (String s : CustomCmdHandler.INSTANCE.getCustomCmdMap().keySet()) {
+        for (String s : IMcBot.CMD.getCustomCmdMap().keySet()) {
             out.append(s).append("\n");
         }
         //#if MC >= 12000

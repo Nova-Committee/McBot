@@ -1,6 +1,6 @@
 package cn.evole.mods.mcbot.init.event;
 
-import cn.evole.mods.mcbot.McBot;
+import cn.evole.mods.mcbot.IMcBot;
 import cn.evole.mods.mcbot.cmds.CmdApi;
 import cn.evole.mods.mcbot.init.handler.ConfigHandler;
 import cn.evole.mods.mcbot.util.onebot.CQUtils;
@@ -50,7 +50,7 @@ public class IBotEvent {
                             send = split[1];
                         else return;
                     }
-                    String nick = McBot.bot.getGroupMemberInfo(event.getGroupId(), event.getUserId(), true).getData().getCard();
+                    String nick = IMcBot.bot.getGroupMemberInfo(event.getGroupId(), event.getUserId(), true).getData().getCard();
                     String groupNick = ConfigHandler.cached().getCmd().isGroupNickOn() // 是否使用群昵称
                             ? nick == null ? event.getSender().getCard() : nick // 防止api返回为空
                             : event.getSender().getNickname();
@@ -89,7 +89,7 @@ public class IBotEvent {
                         && ConfigHandler.cached().getStatus().isRECEIVE_ENABLED()
                         && ConfigHandler.cached().getStatus().isS_QQ_WELCOME_ENABLE()) {
 
-                    McBot.bot.sendGroupMsg(event.getGroupId(), MsgUtils.builder().at(event.getUserId()).build() + "\n" + ConfigHandler.cached().getCmd().getWelcomeNotice(), true);
+                    IMcBot.bot.sendGroupMsg(event.getGroupId(), MsgUtils.builder().at(event.getUserId()).build() + "\n" + ConfigHandler.cached().getCmd().getWelcomeNotice(), true);
                 }
             }
         });
@@ -100,7 +100,7 @@ public class IBotEvent {
                 if (ConfigHandler.cached().getCommon().getGroupIdList().contains(event.getGroupId())
                         && ConfigHandler.cached().getStatus().isRECEIVE_ENABLED()
                         && ConfigHandler.cached().getStatus().isS_QQ_LEAVE_ENABLE()) {
-                    McBot.bot.sendGroupMsg(event.getGroupId(), MsgUtils.builder().text(String.valueOf(event.getUserId())).build() + "\n" +ConfigHandler.cached().getCmd().getLeaveNotice(), true);
+                    IMcBot.bot.sendGroupMsg(event.getGroupId(), MsgUtils.builder().text(String.valueOf(event.getUserId())).build() + "\n" +ConfigHandler.cached().getCmd().getLeaveNotice(), true);
                 }
             }
         });
@@ -126,7 +126,7 @@ public class IBotEvent {
                             send = split[1];
                         else return;
                     }
-                    String nick = McBot.bot.getGuildMemberProfile(event.getGuildId(), String.valueOf(event.getUserId())).getData().getNickname();
+                    String nick = IMcBot.bot.getGuildMemberProfile(event.getGuildId(), String.valueOf(event.getUserId())).getData().getNickname();
                     String guildNick = ConfigHandler.cached().getCmd().isGroupNickOn()
                             ? nick == null ? event.getSender().getNickname() : nick
                             : event.getSender().getNickname();
@@ -168,13 +168,13 @@ public class IBotEvent {
                 if (!ConfigHandler.cached().getCommon().getGroupIdList().isEmpty()
                 ) {
                     for (val id : ConfigHandler.cached().getCommon().getGroupIdList()){
-                        McBot.bot.sendGroupMsg(id, "▌ 群服互联已连接 ┈━═☆", true);
+                        IMcBot.bot.sendGroupMsg(id, "▌ 群服互联已连接 ┈━═☆", true);
                     }
                 }
                 if (!ConfigHandler.cached().getCommon().getChannelIdList().isEmpty()
                 ) {
                     for (val id : ConfigHandler.cached().getCommon().getChannelIdList()){
-                        McBot.bot.sendGuildMsg(ConfigHandler.cached().getCommon().getGuildId() , id, "▌ 群服互联已连接 ┈━═☆");
+                        IMcBot.bot.sendGuildMsg(ConfigHandler.cached().getCommon().getGuildId() , id, "▌ 群服互联已连接 ┈━═☆");
                     }
                 }
             }

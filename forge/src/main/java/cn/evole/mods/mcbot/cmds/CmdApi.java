@@ -1,6 +1,6 @@
 package cn.evole.mods.mcbot.cmds;
 
-import cn.evole.mods.mcbot.McBot;
+import cn.evole.mods.mcbot.IMcBot;
 import cn.evole.mods.mcbot.init.handler.CustomCmdHandler;
 import cn.evole.mods.mcbot.util.onebot.BotUtils;
 import cn.evole.onebot.client.core.Bot;
@@ -17,9 +17,9 @@ public class CmdApi {
     private static StringBuilder CmdMain(String cmd, boolean isOp) {
         StringBuilder result = new StringBuilder();
         //#if MC >= 11900
-        McBot.SERVER.getCommands().performPrefixedCommand(isOp ? BotCmdRun.OP : BotCmdRun.CUSTOM, cmd);//优雅
+        IMcBot.SERVER.getCommands().performPrefixedCommand(isOp ? BotCmdRun.OP : BotCmdRun.CUSTOM, cmd);//优雅
         //#else
-        //$$ McBot.SERVER.getCommands().performCommand(isOp ? BotCmdRun.OP : BotCmdRun.CUSTOM, cmd);
+        //$$ IMcBot.SERVER.getCommands().performCommand(isOp ? BotCmdRun.OP : BotCmdRun.CUSTOM, cmd);
         //#endif
         for (String s : (isOp ? BotCmdRun.OP.outPut : BotCmdRun.CUSTOM.outPut)) {
             result.append(s.replaceAll("§\\S", "")).append("\n");
@@ -41,13 +41,13 @@ public class CmdApi {
         String command = event.getMessage().substring(1);//去除前缀
 
         if (BotUtils.groupAdminParse(event)) {
-            CustomCmdHandler.INSTANCE.getCustomCmds().stream()
+            IMcBot.CMD.getCustomCmds().stream()
                     .filter(customCmd -> command.contains(customCmd.getCmdAlies()))
-                    .forEach(customCmd -> GroupCmd(McBot.bot, event.getGroupId(), BotUtils.varParse(customCmd, command), true));//admin
+                    .forEach(customCmd -> GroupCmd(IMcBot.bot, event.getGroupId(), BotUtils.varParse(customCmd, command), true));//admin
         } else
-            CustomCmdHandler.INSTANCE.getCustomCmds().stream()
+            IMcBot.CMD.getCustomCmds().stream()
                     .filter(customCmd -> customCmd.getRequirePermission() < 1 && command.contains(customCmd.getCmdAlies()))
-                    .forEach(customCmd -> GroupCmd(McBot.bot, event.getGroupId(), BotUtils.varParse(customCmd, command), false));
+                    .forEach(customCmd -> GroupCmd(IMcBot.bot, event.getGroupId(), BotUtils.varParse(customCmd, command), false));
 
     }
 
@@ -55,11 +55,11 @@ public class CmdApi {
         String command = event.getMessage().substring(1);//去除前缀
 
         if (BotUtils.guildAdminParse(event)) {
-            CustomCmdHandler.INSTANCE.getCustomCmds().stream()
+            IMcBot.CMD.getCustomCmds().stream()
                     .filter(customCmd -> command.contains(customCmd.getCmdAlies()))
-                    .forEach(customCmd -> GuildCmd(McBot.bot, event.getGuildId(), event.getChannelId(), BotUtils.varParse(customCmd, command), true));//admin
-        } else CustomCmdHandler.INSTANCE.getCustomCmds().stream()
+                    .forEach(customCmd -> GuildCmd(IMcBot.bot, event.getGuildId(), event.getChannelId(), BotUtils.varParse(customCmd, command), true));//admin
+        } else IMcBot.CMD.getCustomCmds().stream()
                 .filter(customCmd -> customCmd.getRequirePermission() < 1 && command.contains(customCmd.getCmdAlies()))
-                .forEach(customCmd -> GuildCmd(McBot.bot, event.getGuildId(), event.getChannelId(), BotUtils.varParse(customCmd, command), false));
+                .forEach(customCmd -> GuildCmd(IMcBot.bot, event.getGuildId(), event.getChannelId(), BotUtils.varParse(customCmd, command), false));
     }
 }
