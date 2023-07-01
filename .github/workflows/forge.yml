@@ -29,7 +29,7 @@ jobs:
     - name: Build
       uses: gradle/gradle-build-action@v2
       with:
-        arguments: build
+        arguments: buildNeeded
         build-root-directory: forge
     - name: Find Correct JAR
       id: findjar
