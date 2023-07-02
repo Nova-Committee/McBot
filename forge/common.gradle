@@ -1,5 +1,6 @@
 apply plugin: "dev.architectury.loom"
 apply plugin: "com.replaymod.preprocess"
+apply plugin: 'com.github.johnrengelman.shadow'
 
 int mcVersion = 1
 
@@ -8,6 +9,10 @@ preprocess {
     tabIndentation = true
 }
 
+configurations {
+    shade
+    implementation.extendsFrom(shade)
+}
 
 repositories {
     mavenCentral()
@@ -21,8 +26,10 @@ dependencies {
     mappings loom.officialMojangMappings()
     forge "net.minecraftforge:forge:${project.minecraft_version}-${project.forge_version}"
 
-    implementation include("cn.evole.bot:OneBot-Client:${project.onebot_client_version}")
-    implementation include("blue.endless:jankson:${project.jankson_version}")
+    shade ("cn.evole.bot:OneBot-Client:${project.onebot_client_version}")
+    shade ("blue.endless:jankson:${project.jankson_version}")
+    forgeRuntimeLibrary ("cn.evole.bot:OneBot-Client:${project.onebot_client_version}")
+    forgeRuntimeLibrary ("blue.endless:jankson:${project.jankson_version}")
 
     compileOnly 'org.projectlombok:lombok:1.18.24'
     annotationProcessor "org.projectlombok:lombok:1.18.24"
@@ -34,8 +41,19 @@ loom {
 }
 
 remapJar {
-    destinationDirectory.set(file("$rootDir/build/libs"))
     remapperIsolation = true
+}
+
+shadowJar {
+    configurations = [project.configurations.shade]
+    archiveClassifier.set('')
+    destinationDirectory.set(file("$rootDir/build/libs"))
+    relocate 'org.java_websocket','cn.evole.websocket'
+    relocate 'blue.endless','cn.evole'
+    dependencies {
+        exclude(dependency('org.slf4j:slf4j-api:1.7.25'))
+    }
+    dependsOn('remapJar')
 }
 
 sourceCompatibility = JavaVersion.VERSION_17

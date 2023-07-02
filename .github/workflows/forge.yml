@@ -34,10 +34,10 @@ jobs:
     - name: Find Correct JAR
       id: findjar
       run: |
-        output="$(find build/libs/ ! -name "*-dev.jar" -type f -printf "%f\n")"
+        output="$(find forge/build/libs/ ! -name "*-dev.jar" -type f -printf "%f\n")"
         echo "::set-output name=jarname::$output"
     - name: Upload Build Artifacts
       uses: actions/upload-artifact@v3
       with:
         name: ${{ steps.findjar.outputs.jarname }}
-        path: build/libs/${{ steps.findjar.outputs.jarname }}
+        path: forge/build/libs/${{ steps.findjar.outputs.jarname }}
