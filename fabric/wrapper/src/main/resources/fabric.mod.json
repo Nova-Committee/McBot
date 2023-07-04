@@ -28,7 +28,7 @@
       "file": "META-INF/jars/McBot-fabric-1.17.x-${version}.jar"
     },
     {
-      "file": "META-INF/jars/McBot-fabric-1.18.x-${version}.jar"
+      "file": "META-INF/jars/McBot-fabric-1.18.2-${version}.jar"
     },
     {
       "file": "META-INF/jars/McBot-fabric-1.19.2-${version}.jar"

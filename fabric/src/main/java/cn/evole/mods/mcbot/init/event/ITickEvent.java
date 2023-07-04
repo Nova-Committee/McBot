@@ -33,7 +33,7 @@ public class ITickEvent {
 
 
     public static void register(MinecraftServer server) {
-            String toSend = SEND_QUEUE.poll() == null ? "" : SEND_QUEUE.poll();
+            String toSend = SEND_QUEUE.poll();
             if (ConfigHandler.cached() != null
                     && server.isDedicatedServer()
                     && toSend != null

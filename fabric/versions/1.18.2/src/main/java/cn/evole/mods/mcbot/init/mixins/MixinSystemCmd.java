@@ -35,7 +35,7 @@ public abstract class MixinSystemCmd {
             Entity entity = commandContext.getSource().getEntity();
 
 
-            if (FabricLoader.getInstance().isModLoaded("botapi")
+            if (FabricLoader.getInstance().isModLoaded("mcbot")
                         && ConfigHandler.cached() != null
                         && ConfigHandler.cached().getStatus().isS_CHAT_ENABLE()
                         && ConfigHandler.cached().getStatus().isSEND_ENABLED()

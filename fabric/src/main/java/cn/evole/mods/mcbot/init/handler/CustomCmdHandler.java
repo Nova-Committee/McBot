@@ -127,8 +127,6 @@ public class CustomCmdHandler {
                 String alies = customCmd.getCmdAlies();
                 Const.LOGGER.debug(alies);
                 this.customCmdMap.put(alies, customCmd);
-
-
             }
         }
     }
