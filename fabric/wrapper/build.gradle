@@ -64,7 +64,7 @@ processResources {
 }
 
 loom {
-    runConfigs.all {
+    runConfigs.configureEach {
         runDir "../run"
     }
 }
