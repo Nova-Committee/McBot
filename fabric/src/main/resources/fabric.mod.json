@@ -23,7 +23,7 @@
     "mcbot.mixins.json"
   ],
   "depends": {
-    "fabricloader": ">=0.14.7",
+    "fabricloader": ">=0.14.21",
     "fabric": "*",
     "minecraft": "${minecraft_dependency}",
     "java": ">=17"
