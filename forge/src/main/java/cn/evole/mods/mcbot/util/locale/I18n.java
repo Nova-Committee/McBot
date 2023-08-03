@@ -83,6 +83,11 @@ public class I18n {
     }
 
     public static String get(String key) {
-        return translations.get(key);
+        String translation = translations.get(key);
+        if (translation != null) {
+            return translation;
+        } else {
+            return key;
+        }
     }
 }
