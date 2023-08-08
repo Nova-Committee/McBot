@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "id": "mcbot-koishi",
+  "version": "${version}",
+  "name": "McBot-koishi",
+  "description": "",
+  "authors": [],
+  "contact": {
+    "repo": "https://github.com/cnlimiter/McBot-koishi"
+  },
+  "license": "AGPL-3.0",
+  "icon": "assets/mcbot-koishi/icon.png",
+  "environment": "server",
+  "entrypoints": {
+    "main": [
+      "cn.evole.mods.mcbot.McBotKoishi"
+    ]
+  },
+  "mixins": [
+    "mcbot-koishi.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric": "*",
+    "minecraft": "${minecraft_version}"
+  }
+}
