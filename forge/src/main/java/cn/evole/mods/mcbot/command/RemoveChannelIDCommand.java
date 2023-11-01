@@ -1,6 +1,6 @@
 package cn.evole.mods.mcbot.command;
 
-import cn.evole.mods.mcbot.init.handler.ConfigHandler;
+import cn.evole.mods.mcbot.IMcBot;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import lombok.val;
@@ -15,8 +15,8 @@ public class RemoveChannelIDCommand {
 
     public static int execute(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
         val id = context.getArgument("ChannelID", String.class);
-        if (ConfigHandler.cached().getCommon().getChannelIdList().contains(id)) {
-            ConfigHandler.cached().getCommon().removeChannelId(id);
+        if (IMcBot.config.getCommon().getChannelIdList().contains(id)) {
+            IMcBot.config.getCommon().removeChannelId(id);
         } else {
             //#if MC >= 12000
             context.getSource().sendSuccess(()->Component.literal("子频道号:" + id + "并未出现！"), true);
@@ -26,7 +26,7 @@ public class RemoveChannelIDCommand {
             //$$ context.getSource().sendSuccess(Component.literal("子频道号:" + id + "并未出现！"), true);
             //#endif
         }
-        ConfigHandler.save();
+        IMcBot.config.save();
         return 1;
     }
 

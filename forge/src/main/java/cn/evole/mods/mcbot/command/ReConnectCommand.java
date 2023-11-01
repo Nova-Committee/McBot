@@ -1,7 +1,7 @@
 package cn.evole.mods.mcbot.command;
 
 
-import cn.evole.mods.mcbot.init.handler.ConfigHandler;
+import cn.evole.mods.mcbot.IMcBot;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.commands.CommandSourceStack;
@@ -15,7 +15,7 @@ public class ReConnectCommand {
 
     public static int execute(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
         boolean isEnabled = context.getArgument("enabled", Boolean.class);
-        ConfigHandler.cached().getBotConfig().setReconnect(isEnabled);
+        IMcBot.config.getBotConfig().setReconnect(isEnabled);
         if (isEnabled) {
             //#if MC >= 12000
             context.getSource().sendSuccess(()->Component.literal("已设置自动重连"), true);
@@ -34,7 +34,7 @@ public class ReConnectCommand {
             //#endif
         }
 
-        ConfigHandler.save();
+        IMcBot.config.save();
         return 1;
     }
 }

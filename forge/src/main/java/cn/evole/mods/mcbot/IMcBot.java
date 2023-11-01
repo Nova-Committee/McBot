@@ -1,40 +1,41 @@
 package cn.evole.mods.mcbot;
 
+import cn.evole.config.yaml.serialization.ConfigurationSerialization;
+import cn.evole.mods.mcbot.init.config.ModConfig;
 import cn.evole.mods.mcbot.init.event.IBotEvent;
 import cn.evole.mods.mcbot.init.event.IChatEvent;
 import cn.evole.mods.mcbot.init.event.IPlayerEvent;
 import cn.evole.mods.mcbot.init.event.ITickEvent;
-import cn.evole.mods.mcbot.init.handler.ConfigHandler;
 import cn.evole.mods.mcbot.init.handler.CustomCmdHandler;
 import cn.evole.onebot.client.connection.ConnectFactory;
 import cn.evole.onebot.client.core.Bot;
 import cn.evole.onebot.client.handler.EventBus;
 import cn.evole.onebot.sdk.util.FileUtils;
-import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.player.Player;
 
-import java.io.File;
 import java.nio.file.Path;
-import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.ScheduledExecutorService;
 
 public class IMcBot {
 
-    public static ScheduledExecutorService configWatcherExecutorService = Executors.newSingleThreadScheduledExecutor(new ThreadFactoryBuilder().setNameFormat("BotApi Config Watcher %d").setDaemon(true).build());
     public static MinecraftServer SERVER = null;
+    
     public static CustomCmdHandler CMD ;
     public static Path CONFIG_FOLDER;
-    public static File CONFIG_FILE;
+    
+    
     public static LinkedBlockingQueue<String> blockingQueue;
     public static ConnectFactory service;
     public static EventBus bus;
     public static Bot bot;
     public static Thread app;
+
+    public static ModConfig config;
+
 
     public MinecraftServer getServer() {
         return SERVER;
@@ -44,10 +45,16 @@ public class IMcBot {
         init(configDir);
     }
     public void init(Path config_dir) {
+        ConfigurationSerialization.registerClass(ModConfig.Status.class);//注册序列对象
+        ConfigurationSerialization.registerClass(ModConfig.Bot.class);//注册序列对象
+        ConfigurationSerialization.registerClass(ModConfig.Cmd.class);//注册序列对象
+        ConfigurationSerialization.registerClass(ModConfig.Common.class);//注册序列对象
+
         CONFIG_FOLDER = config_dir.resolve("mcbot");
         FileUtils.checkFolder(CONFIG_FOLDER);
-        CONFIG_FILE = CONFIG_FOLDER.resolve(Const.MODID + ".json").toFile();
-        ConfigHandler.init(CONFIG_FILE);
+        config = new ModConfig(CONFIG_FOLDER.toFile());
+        config.load();
+
         CMD = new CustomCmdHandler(CONFIG_FOLDER);
         Runtime.getRuntime().addShutdownHook(new Thread(IMcBot::killOutThreads));
     }
@@ -58,10 +65,10 @@ public class IMcBot {
 
     public void onServerStarted(MinecraftServer server) {
         blockingQueue = new LinkedBlockingQueue<>();//使用队列传输数据
-        if (ConfigHandler.cached().getCommon().isAutoOpen()) {
+        if (config.getCommon().isAutoOpen()) {
             try {
                 app = new Thread(() -> {
-                    service = new ConnectFactory(ConfigHandler.cached().getBotConfig(), blockingQueue);//创建websocket连接
+                    service = new ConnectFactory(IMcBot.config.getBotConfig(), blockingQueue);//创建websocket连接
                     bot = service.ws.createBot();//创建机器人实例
                 }, "BotServer");
                 app.start();
@@ -88,10 +95,8 @@ public class IMcBot {
 
     private static void killOutThreads() {
         try {
-            ConfigHandler.save();//保存配置
+            config.save();//保存配置
             CMD.clear();//自定义命令持久层清空
-            ConfigHandler.watcher.get().close();//配置监控关闭
-            IMcBot.configWatcherExecutorService.shutdownNow();//监控进程关闭
         } catch (Exception e) {
             e.printStackTrace();
         }

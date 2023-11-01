@@ -1,7 +1,7 @@
 package cn.evole.mods.mcbot.util.onebot;
 
 import cn.evole.mods.mcbot.Const;
-import cn.evole.mods.mcbot.init.handler.ConfigHandler;
+import cn.evole.mods.mcbot.IMcBot;
 import cn.evole.onebot.sdk.util.BotUtils;
 import lombok.val;
 
@@ -31,7 +31,7 @@ public class CQUtils {
     }
 
     public static String replace(String msg) {
-        if (ConfigHandler.cached().getBotConfig().isMiraiHttp()){
+        if (IMcBot.config.getBotConfig().isMiraiHttp()){
             return msg;
         }
 
@@ -51,7 +51,7 @@ public class CQUtils {
                 val data = matcher.group(2);
                 switch (type) {
                     case "image": {
-                        if (ConfigHandler.cached().getCommon().isImageOn()) {
+                        if (IMcBot.config.getCommon().isImageOn()) {
                             val url = Arrays.stream(data.split(","))//具体数据分割
                                     .filter(it -> it.startsWith("url"))//非空判断
                                     .map(it -> it.substring(it.indexOf('=') + 1))

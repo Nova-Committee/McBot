@@ -1,6 +1,7 @@
 package cn.evole.mods.mcbot;
 
 import cn.evole.mods.mcbot.init.event.ICmdEvent;
+import net.minecraft.commands.Commands;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegisterCommandsEvent;
@@ -78,9 +79,10 @@ public class McBot {
     }
     @SubscribeEvent
     public void onPlayerDeath(@NotNull LivingDeathEvent event){
-        this.mcBot.onPlayerDeath(
+        if (event.getEntity() instanceof ServerPlayer serverPlayer)
+            this.mcBot.onPlayerDeath(
                 event.getSource(),
-                (ServerPlayer) event.getEntity());
+                serverPlayer);
     }
     @SubscribeEvent
     public void onPlayerAdvancement(@NotNull AdvancementEvent event){

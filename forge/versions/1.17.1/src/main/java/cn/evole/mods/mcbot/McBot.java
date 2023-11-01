@@ -78,9 +78,10 @@ public class McBot {
     }
     @SubscribeEvent
     public void onPlayerDeath(@NotNull LivingDeathEvent event){
-        this.mcBot.onPlayerDeath(
-                event.getSource(),
-                (ServerPlayer) event.getEntity());
+        if (event.getEntity() instanceof ServerPlayer serverPlayer)
+            this.mcBot.onPlayerDeath(
+                    event.getSource(),
+                    serverPlayer);
     }
     @SubscribeEvent
     public void onPlayerAdvancement(@NotNull AdvancementEvent event){

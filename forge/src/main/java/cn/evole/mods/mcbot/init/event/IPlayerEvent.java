@@ -1,7 +1,6 @@
 package cn.evole.mods.mcbot.init.event;
 
 import cn.evole.mods.mcbot.IMcBot;
-import cn.evole.mods.mcbot.init.handler.ConfigHandler;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -25,12 +24,12 @@ import net.minecraftforge.common.ForgeI18n;
  */
 public class IPlayerEvent {
     public static void loggedIn(Player player) {
-        if (ConfigHandler.cached().getStatus().isS_JOIN_ENABLE() && ConfigHandler.cached().getStatus().isSEND_ENABLED()) {
-            if (ConfigHandler.cached().getCommon().isGuildOn() && !ConfigHandler.cached().getCommon().getChannelIdList().isEmpty()) {
-                for (String id : ConfigHandler.cached().getCommon().getChannelIdList())
-                    IMcBot.bot.sendGuildMsg(ConfigHandler.cached().getCommon().getGuildId(), id, player.getDisplayName().getString() + " 加入了服务器");
+        if (IMcBot.config.getStatus().isSJoinEnable() && IMcBot.config.getStatus().isSEnable()) {
+            if (IMcBot.config.getCommon().isGuildOn() && !IMcBot.config.getCommon().getChannelIdList().isEmpty()) {
+                for (String id : IMcBot.config.getCommon().getChannelIdList())
+                    IMcBot.bot.sendGuildMsg(IMcBot.config.getCommon().getGuildId(), id, player.getDisplayName().getString() + " 加入了服务器");
             } else {
-                for (long id : ConfigHandler.cached().getCommon().getGroupIdList())
+                for (long id : IMcBot.config.getCommon().getGroupIdList())
                     IMcBot.bot.sendGroupMsg(id, player.getDisplayName().getString() + " 加入了服务器", true);
             }
         }
@@ -38,18 +37,18 @@ public class IPlayerEvent {
     public static void loggedOut(Player player) {
 
 
-            if (ConfigHandler.cached().getStatus().isS_LEAVE_ENABLE() && ConfigHandler.cached().getStatus().isSEND_ENABLED()) {
-                if (ConfigHandler.cached().getCommon().isGuildOn() && !ConfigHandler.cached().getCommon().getChannelIdList().isEmpty()) {
-                    for (String id : ConfigHandler.cached().getCommon().getChannelIdList())
-                        IMcBot.bot.sendGuildMsg(ConfigHandler.cached().getCommon().getGuildId(), id, player.getDisplayName().getString() + " 离开了服务器");
+            if (IMcBot.config.getStatus().isSLeaveEnable() && IMcBot.config.getStatus().isSEnable()) {
+                if (IMcBot.config.getCommon().isGuildOn() && !IMcBot.config.getCommon().getChannelIdList().isEmpty()) {
+                    for (String id : IMcBot.config.getCommon().getChannelIdList())
+                        IMcBot.bot.sendGuildMsg(IMcBot.config.getCommon().getGuildId(), id, player.getDisplayName().getString() + " 离开了服务器");
                 } else {
-                    for (long id : ConfigHandler.cached().getCommon().getGroupIdList())
+                    for (long id : IMcBot.config.getCommon().getGroupIdList())
                         IMcBot.bot.sendGroupMsg(id, player.getDisplayName().getString() + " 离开了服务器", true);
                 }
             }
     }
     public static void death(DamageSource source, ServerPlayer player) {
-            if (player != null && ConfigHandler.cached().getStatus().isS_DEATH_ENABLE() && ConfigHandler.cached().getStatus().isSEND_ENABLED()) {
+            if (player != null && IMcBot.config.getStatus().isSDeathEnable() && IMcBot.config.getStatus().isSEnable()) {
                 LivingEntity livingEntity2 = player.getKillCredit();
                 String msg = "";
 
@@ -75,11 +74,11 @@ public class IPlayerEvent {
                     msg = !itemStack.isEmpty() && itemStack.hasCustomHoverName() ? ForgeI18n.parseMessage(string + ".item", player.getDisplayName().getString(), component.getString(), itemStack.getDisplayName().getString()) : ForgeI18n.parseMessage(string,player.getDisplayName().getString(), component.getString());
                 }
 
-                if (ConfigHandler.cached().getCommon().isGuildOn() && !ConfigHandler.cached().getCommon().getChannelIdList().isEmpty()) {
-                    for (String id : ConfigHandler.cached().getCommon().getChannelIdList())
-                        IMcBot.bot.sendGuildMsg(ConfigHandler.cached().getCommon().getGuildId(), id, String.format(msg, player.getDisplayName().getString()));
+                if (IMcBot.config.getCommon().isGuildOn() && !IMcBot.config.getCommon().getChannelIdList().isEmpty()) {
+                    for (String id : IMcBot.config.getCommon().getChannelIdList())
+                        IMcBot.bot.sendGuildMsg(IMcBot.config.getCommon().getGuildId(), id, String.format(msg, player.getDisplayName().getString()));
                 } else {
-                    for (long id : ConfigHandler.cached().getCommon().getGroupIdList())
+                    for (long id : IMcBot.config.getCommon().getGroupIdList())
                         IMcBot.bot.sendGroupMsg(id, String.format(msg, player.getDisplayName().getString()), true);
                 }
             }
@@ -87,14 +86,14 @@ public class IPlayerEvent {
 
     public static void advancement(Player player, Advancement advancement) {
 
-            if (ConfigHandler.cached().getStatus().isS_ADVANCE_ENABLE() && advancement.getDisplay() != null && ConfigHandler.cached().getStatus().isSEND_ENABLED()) {
+            if (IMcBot.config.getStatus().isSAdvanceEnable() && advancement.getDisplay() != null && IMcBot.config.getStatus().isSEnable()) {
                 String msg = ForgeI18n.parseMessage("mcbot.chat.type.advancement." + advancement.getDisplay().getFrame().getName(), player.getDisplayName().getString(), ForgeI18n.parseMessage(advancement.getDisplay().getTitle().getString()));
 
-                if (ConfigHandler.cached().getCommon().isGuildOn() && !ConfigHandler.cached().getCommon().getChannelIdList().isEmpty()) {
-                    for (String id : ConfigHandler.cached().getCommon().getChannelIdList())
-                        IMcBot.bot.sendGuildMsg(ConfigHandler.cached().getCommon().getGuildId(), id, msg);
+                if (IMcBot.config.getCommon().isGuildOn() && !IMcBot.config.getCommon().getChannelIdList().isEmpty()) {
+                    for (String id : IMcBot.config.getCommon().getChannelIdList())
+                        IMcBot.bot.sendGuildMsg(IMcBot.config.getCommon().getGuildId(), id, msg);
                 } else {
-                    for (long id : ConfigHandler.cached().getCommon().getGroupIdList())
+                    for (long id : IMcBot.config.getCommon().getGroupIdList())
                         IMcBot.bot.sendGroupMsg(id, msg, true);
                 }
             }

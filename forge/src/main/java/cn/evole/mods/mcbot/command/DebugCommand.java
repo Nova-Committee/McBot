@@ -1,9 +1,8 @@
 package cn.evole.mods.mcbot.command;
 
-import cn.evole.mods.mcbot.init.handler.ConfigHandler;
+import cn.evole.mods.mcbot.IMcBot;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import net.minecraft.ChatFormatting;
 import net.minecraft.commands.CommandSourceStack;
 //#if MC >= 11900
 import net.minecraft.network.chat.Component;
@@ -18,7 +17,7 @@ public class DebugCommand {
 
     public static int execute(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
         boolean isEnabled = context.getArgument("enabled", Boolean.class);
-        ConfigHandler.cached().getCommon().setDebuggable(isEnabled);
+        IMcBot.config.getCommon().setDebug(isEnabled);
         if (isEnabled) {
             //#if MC >= 12000
             context.getSource().sendSuccess(()->Component.literal("已开启开发者模式"), true);
@@ -36,7 +35,7 @@ public class DebugCommand {
             //$$ context.getSource().sendSuccess(Component.literal("已关闭开发者模式"), true);
             //#endif
         }
-        ConfigHandler.save();
+        IMcBot.config.save();
         return 1;
     }
 }

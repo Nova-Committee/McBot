@@ -2,7 +2,6 @@ package cn.evole.mods.mcbot.command;
 
 
 import cn.evole.mods.mcbot.IMcBot;
-import cn.evole.mods.mcbot.init.handler.ConfigHandler;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.commands.CommandSourceStack;
@@ -34,9 +33,9 @@ public class DisconnectCommand {
                 //$$ context.getSource().sendSuccess(Component.literal("WebSocket目前未连接"), true);
                 //#endif
             }
-            ConfigHandler.cached().getCommon().setEnable(false);
+            IMcBot.config.getCommon().setEnable(false);
         }
-        ConfigHandler.save();
+        IMcBot.config.save();
         return 1;
     }
 }
