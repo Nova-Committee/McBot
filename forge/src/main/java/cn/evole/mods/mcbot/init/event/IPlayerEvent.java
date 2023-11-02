@@ -9,6 +9,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 //#if MC >= 11800
 import net.minecraftforge.common.ForgeI18n;
 //#elseif MC < 11700
@@ -23,8 +24,11 @@ import net.minecraftforge.common.ForgeI18n;
  * Version: 1.0
  */
 public class IPlayerEvent {
-    public static void loggedIn(Player player) {
-        if (IMcBot.config.getStatus().isSJoinEnable() && IMcBot.config.getStatus().isSEnable()) {
+    public static void loggedIn(Level level, Player player) {
+        if (IMcBot.config.getStatus().isSJoinEnable()
+                && IMcBot.config.getStatus().isSEnable()
+                && !level.isClientSide
+        ) {
             if (IMcBot.config.getCommon().isGuildOn() && !IMcBot.config.getCommon().getChannelIdList().isEmpty()) {
                 for (String id : IMcBot.config.getCommon().getChannelIdList())
                     IMcBot.bot.sendGuildMsg(IMcBot.config.getCommon().getGuildId(), id, player.getDisplayName().getString() + " 加入了服务器");
@@ -34,10 +38,11 @@ public class IPlayerEvent {
             }
         }
     }
-    public static void loggedOut(Player player) {
-
-
-            if (IMcBot.config.getStatus().isSLeaveEnable() && IMcBot.config.getStatus().isSEnable()) {
+    public static void loggedOut(Level level, Player player) {
+            if (IMcBot.config.getStatus().isSLeaveEnable()
+                    && IMcBot.config.getStatus().isSEnable()
+                    && !level.isClientSide
+            ) {
                 if (IMcBot.config.getCommon().isGuildOn() && !IMcBot.config.getCommon().getChannelIdList().isEmpty()) {
                     for (String id : IMcBot.config.getCommon().getChannelIdList())
                         IMcBot.bot.sendGuildMsg(IMcBot.config.getCommon().getGuildId(), id, player.getDisplayName().getString() + " 离开了服务器");
@@ -47,8 +52,12 @@ public class IPlayerEvent {
                 }
             }
     }
-    public static void death(DamageSource source, ServerPlayer player) {
-            if (player != null && IMcBot.config.getStatus().isSDeathEnable() && IMcBot.config.getStatus().isSEnable()) {
+    public static void death(Level level, DamageSource source, ServerPlayer player) {
+            if (player != null
+                    && IMcBot.config.getStatus().isSDeathEnable()
+                    && IMcBot.config.getStatus().isSEnable()
+                    && !level.isClientSide
+            ) {
                 LivingEntity livingEntity2 = player.getKillCredit();
                 String msg = "";
 
@@ -84,9 +93,12 @@ public class IPlayerEvent {
             }
     }
 
-    public static void advancement(Player player, Advancement advancement) {
-
-            if (IMcBot.config.getStatus().isSAdvanceEnable() && advancement.getDisplay() != null && IMcBot.config.getStatus().isSEnable()) {
+    public static void advancement(Level level, Player player, Advancement advancement) {
+            if (IMcBot.config.getStatus().isSAdvanceEnable()
+                    && advancement.getDisplay() != null
+                    && IMcBot.config.getStatus().isSEnable()
+                    && !level.isClientSide
+            ) {
                 String msg = ForgeI18n.parseMessage("mcbot.chat.type.advancement." + advancement.getDisplay().getFrame().getName(), player.getDisplayName().getString(), ForgeI18n.parseMessage(advancement.getDisplay().getTitle().getString()));
 
                 if (IMcBot.config.getCommon().isGuildOn() && !IMcBot.config.getCommon().getChannelIdList().isEmpty()) {

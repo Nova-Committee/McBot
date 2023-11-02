@@ -1,6 +1,11 @@
 package cn.evole.mods.mcbot;
 
 //#if MC >= 11700
+import net.minecraftforge.fml.ModList;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.fml.javafmlmod.FMLModContainer;
+import net.minecraftforge.fml.loading.FMLLoader;
+import net.minecraftforge.fml.loading.FMLPaths;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 //#else
@@ -23,5 +28,8 @@ public class Const {
     //#endif
     public static boolean isShutdown = false;
 
+    public static boolean isLoad(String modId){
+        return ModList.get().isLoaded(modId);
+    }
 
 }

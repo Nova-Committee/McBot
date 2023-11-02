@@ -109,17 +109,17 @@ public class IMcBot {
     public void onServerChat(Level level, Player player, String msg) {
         IChatEvent.register(level, player, msg);
     }
-    public void onPlayerLogIn(Player player) {
-        IPlayerEvent.loggedIn(player);
+    public void onPlayerLogIn(Level level, Player player) {
+        IPlayerEvent.loggedIn(level, player);
     }
 
-    public void onPlayerLogOut(Player player) {
-        IPlayerEvent.loggedOut(player);
+    public void onPlayerLogOut(Level level, Player player) {
+        IPlayerEvent.loggedOut(level, player);
     }
-    public void onPlayerDeath(DamageSource source, ServerPlayer player) {
-        IPlayerEvent.death(source, player);
+    public void onPlayerDeath(Level level, DamageSource source, ServerPlayer player) {
+        IPlayerEvent.death(level, source, player);
     }
-    public void onPlayerAdvancement(Player player, Advancement advancement) {
-        IPlayerEvent.advancement(player, advancement);
+    public void onPlayerAdvancement(Level level, Player player, Advancement advancement) {
+        IPlayerEvent.advancement(level, player, advancement);
     }
 }

@@ -51,7 +51,7 @@ public class CQUtils {
                 val data = matcher.group(2);
                 switch (type) {
                     case "image": {
-                        if (IMcBot.config.getCommon().isImageOn()) {
+                        if (IMcBot.config.getCommon().isImageOn() && Const.isLoad("chatimage")) {
                             val url = Arrays.stream(data.split(","))//具体数据分割
                                     .filter(it -> it.startsWith("url"))//非空判断
                                     .map(it -> it.substring(it.indexOf('=') + 1))

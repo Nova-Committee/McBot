@@ -67,22 +67,24 @@ public class McBot {
 
     @SubscribeEvent
     public void onPlayerIn(PlayerEvent.@NotNull PlayerLoggedInEvent  event){
-        this.mcBot.onPlayerLogIn(event.getPlayer());
+        this.mcBot.onPlayerLogIn(event.getPlayer().level, event.getPlayer());
     }
     @SubscribeEvent
     public void onPlayerOut(PlayerEvent.@NotNull PlayerLoggedOutEvent  event){
-        this.mcBot.onPlayerLogOut(event.getPlayer());
+        this.mcBot.onPlayerLogOut(event.getPlayer().level, event.getPlayer());
     }
     @SubscribeEvent
     public void onPlayerDeath(@NotNull LivingDeathEvent event){
         if (event.getEntity() instanceof ServerPlayer)
             this.mcBot.onPlayerDeath(
+                    event.getEntity().level,
                     event.getSource(),
                     (ServerPlayer) event.getEntity());
     }
     @SubscribeEvent
     public void onPlayerAdvancement(@NotNull AdvancementEvent event){
         this.mcBot.onPlayerAdvancement(
+                event.getPlayer().level,
                 event.getPlayer(),
                 event.getAdvancement()
         );
