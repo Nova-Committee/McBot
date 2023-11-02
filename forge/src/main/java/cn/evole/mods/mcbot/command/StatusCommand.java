@@ -29,6 +29,8 @@ public class StatusCommand {
         boolean sQqLeaveEnabled = IMcBot.config.getStatus().isSQqLeaveEnable();
 
         val groupId = IMcBot.config.getCommon().getGroupIdList().toString();
+        val guildId = IMcBot.config.getCommon().getGuildId();
+        val channelId = IMcBot.config.getCommon().getChannelIdList().toString();
         boolean debuggable = IMcBot.config.getCommon().isDebug();
         boolean connected = IMcBot.service != null;
         boolean white = IMcBot.SERVER.getPlayerList().isUsingWhitelist();
@@ -40,6 +42,8 @@ public class StatusCommand {
                         + "框架服务器:" + host + " \n"
                         + "WebSocket连接状态:" + connected + "\n"
                         + "互通的群号:" + groupId + "\n"
+                        + "互通的频道号:" + guildId + "\n"
+                        + "互通的子频道号:" + channelId + "\n"
                         + "全局服务状态:" + clientEnabled + "\n"
                         + "开发者模式状态:" + debuggable + "\n"
                         + "白名单是否开启:" + white + "\n"
@@ -62,7 +66,6 @@ public class StatusCommand {
         //#else
         //$$ context.getSource().sendSuccess(Component.literal(toSend), true);
         //#endif
-        IMcBot.config.save();
         return 1;
     }
 }

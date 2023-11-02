@@ -55,7 +55,7 @@ public class McBot {
     }
     @SubscribeEvent
     public void onServerChat(@NotNull ServerChatEvent event){
-        this.mcBot.onServerChat(event.getPlayer(), event.getMessage());
+        this.mcBot.onServerChat(event.getPlayer().level, event.getPlayer(), event.getMessage());
     }
 
     @SubscribeEvent

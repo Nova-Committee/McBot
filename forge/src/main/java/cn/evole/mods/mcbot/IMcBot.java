@@ -16,6 +16,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
 
 import java.nio.file.Path;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -105,8 +106,8 @@ public class IMcBot {
     public void onServerTick(MinecraftServer server) {
         ITickEvent.register(server);
     }
-    public void onServerChat(Player player, String msg) {
-        IChatEvent.register(player, msg);
+    public void onServerChat(Level level, Player player, String msg) {
+        IChatEvent.register(level, player, msg);
     }
     public void onPlayerLogIn(Player player) {
         IPlayerEvent.loggedIn(player);

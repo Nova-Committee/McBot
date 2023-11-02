@@ -4,6 +4,7 @@ import cn.evole.config.YmlConfig;
 import cn.evole.config.api.ConfigComments;
 import cn.evole.config.api.ConfigField;
 import cn.evole.config.yaml.serialization.ConfigurationSerializable;
+import cn.evole.config.yaml.serialization.SerializableAs;
 import cn.evole.onebot.client.config.BotConfig;
 import lombok.Data;
 import lombok.Getter;
@@ -41,6 +42,7 @@ public class ModConfig extends YmlConfig {
     private Bot botConfig = new Bot();
 
 
+    @SerializableAs("Bot")
     public static class Bot extends BotConfig implements ConfigurationSerializable{
 
         @Override
@@ -60,6 +62,7 @@ public class ModConfig extends YmlConfig {
     }
 
     @Data
+    @SerializableAs("Status")
     public static class Status implements ConfigurationSerializable {
 
         //接收来自q群的消息开关
@@ -120,6 +123,7 @@ public class ModConfig extends YmlConfig {
     }
 
     @Data
+    @SerializableAs("Cmd")
     public static class Cmd implements ConfigurationSerializable {
         ////@SerializedName("welcome_notice")
         //@Comment("自定义q群加入事件消息")
@@ -201,13 +205,14 @@ public class ModConfig extends YmlConfig {
     }
 
     @Data
+    @SerializableAs("Common")
     public static class Common implements ConfigurationSerializable {
         //@SerializedName("group_on")
         //@Comment("开启q群功能")
         private boolean groupOn = true;
         //@SerializedName("group_id_list")
         //@Comment("支持多个q群")
-        private Set<Long> groupIdList = new HashSet<>();//支持多个q群
+        private HashSet<Long> groupIdList = new HashSet<>();//支持多个q群
         //@SerializedName("guild_on")
         //@Comment("是否开启频道")
         private boolean guildOn = false;//是否开启频道
@@ -216,7 +221,7 @@ public class ModConfig extends YmlConfig {
         private String guildId = "";//频道id
         //@SerializedName("channel_id_list")
         //@Comment("子频道列表")
-        private Set<String> channelIdList = new HashSet<>();//子频道列表
+        private HashSet<String> channelIdList = new HashSet<>();//子频道列表
         //@SerializedName("bot_id")
         //@Comment("机器人qq")
         private long botId = 0;//机器人qq

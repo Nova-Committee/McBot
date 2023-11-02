@@ -34,5 +34,5 @@ jobs:
     - name: Upload Build Artifacts
       uses: actions/upload-artifact@v3
       with:
-        name: McBot-forge
+        name: McBot-forge-all
         path: forge/build/libs

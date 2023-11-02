@@ -45,7 +45,7 @@ public class CustomCmdHandler {
     }
 
     public CustomCmdHandler(Path configDir){
-        this.dir = configDir.resolve("mcbot/cmds/").toFile();
+        this.dir = configDir.resolve("cmds/").toFile();
         this.GSON = (new GsonBuilder()).setPrettyPrinting().create();
     }
 

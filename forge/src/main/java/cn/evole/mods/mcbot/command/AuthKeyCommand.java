@@ -10,14 +10,14 @@ import net.minecraft.network.chat.Component;
 //#else
 //$$ import net.minecraft.network.chat.TextComponent;
 //#endif
-public class VerifyKeyCommand {
+public class AuthKeyCommand {
 
 
     public static int execute(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
-        val id = context.getArgument("VerifyKey", String.class);
+        val id = context.getArgument("AuthKey", String.class);
         IMcBot.config.getBotConfig().setToken(id);
         //#if MC >= 12000
-        context.getSource().sendSuccess(()->Component.literal("已设置Mirai框架的VerifyKey为:" + id), true);
+        context.getSource().sendSuccess(()->Component.literal("已设置Mirai框架的AuthKey为:" + id), true);
         //#elseif MC < 11900
         //$$ context.getSource().sendSuccess(new TextComponent("已设置Mirai框架的VerifyKey为:" + id), true);
         //#else
