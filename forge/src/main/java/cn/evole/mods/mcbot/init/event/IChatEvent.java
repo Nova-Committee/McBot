@@ -39,7 +39,7 @@ public class IChatEvent {
                                         player.getDisplayName().getString(),
                                         IMcBot.config.getCmd().isMcChatPrefixOn()
                                                 && IMcBot.config.getCmd().getMcChatPrefix().equals(split[0]) ? split[1] : message),
-                                true);
+                                false);
                 }
 
 

@@ -1,11 +1,12 @@
-apply plugin: "dev.architectury.loom"
-apply plugin: "com.replaymod.preprocess"
+apply(plugin: "dev.architectury.loom")
+apply(plugin: "maven-publish")
+apply(plugin: "com.replaymod.preprocess")
 
 int mcVersion = 1
 
 preprocess {
-    mcVersion = vars.get()["MC"]
-    tabIndentation = true
+    mcVersion = vars.get().get("MC")
+    tabIndentation.set(false)
 }
 
 
@@ -53,19 +54,52 @@ group = project.maven_group
 archivesBaseName = project.archives_base_name + "-" + project.minecraft_dependency
 
 processResources {
-    inputs.property "version", project.version
+    outputs.upToDateWhen { false }
 
     filesMatching("META-INF/mods.toml") {
-        expand "version": project.version.toString()
+        expand([
+                "minecraft_version_range"   : project.minecraft_version_range,
+                "mod_id"              : project.mod_id,
+                "mod_name"            : project.archives_base_name,
+                "mod_version"         : project.version
+        ])
+
     }
 }
 
 tasks.withType(JavaCompile).configureEach {
-    options.encoding = "UTF-8"
+    options.setEncoding("UTF-8")
 }
 
 jar {
     from("../../../LICENSE") {
         rename { "${it}_${project.archives_base_name}" }
+    }
+}
+
+
+publishing {
+    publications {
+        create("mavenJava", MavenPublication) {
+            from(components.java)
+            version("${project.version}")
+            artifactId("${project.archives_base_name}-${project.minecraft_dependency}")
+            groupId("${project.maven_group}")
+        }
+    }
+
+    repositories {
+        mavenLocal()
+        if (System.getenv('MAVEN_USERNAME') != null && System.getenv('MAVEN_PASSWORD') != null) {
+            maven {
+                name 'release'
+                url = 'https://maven.nova-committee.cn/releases'
+
+                credentials {
+                    username System.getenv('MAVEN_USERNAME')
+                    password System.getenv('MAVEN_PASSWORD')
+                }
+            }
+        }
     }
 }

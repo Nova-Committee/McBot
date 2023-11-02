@@ -30,7 +30,7 @@ public class IPlayerEvent {
                     IMcBot.bot.sendGuildMsg(IMcBot.config.getCommon().getGuildId(), id, player.getDisplayName().getString() + " 加入了服务器");
             } else {
                 for (long id : IMcBot.config.getCommon().getGroupIdList())
-                    IMcBot.bot.sendGroupMsg(id, player.getDisplayName().getString() + " 加入了服务器", true);
+                    IMcBot.bot.sendGroupMsg(id, player.getDisplayName().getString() + " 加入了服务器", false);
             }
         }
     }
@@ -43,7 +43,7 @@ public class IPlayerEvent {
                         IMcBot.bot.sendGuildMsg(IMcBot.config.getCommon().getGuildId(), id, player.getDisplayName().getString() + " 离开了服务器");
                 } else {
                     for (long id : IMcBot.config.getCommon().getGroupIdList())
-                        IMcBot.bot.sendGroupMsg(id, player.getDisplayName().getString() + " 离开了服务器", true);
+                        IMcBot.bot.sendGroupMsg(id, player.getDisplayName().getString() + " 离开了服务器", false);
                 }
             }
     }
@@ -79,7 +79,7 @@ public class IPlayerEvent {
                         IMcBot.bot.sendGuildMsg(IMcBot.config.getCommon().getGuildId(), id, String.format(msg, player.getDisplayName().getString()));
                 } else {
                     for (long id : IMcBot.config.getCommon().getGroupIdList())
-                        IMcBot.bot.sendGroupMsg(id, String.format(msg, player.getDisplayName().getString()), true);
+                        IMcBot.bot.sendGroupMsg(id, String.format(msg, player.getDisplayName().getString()), false);
                 }
             }
     }
@@ -94,7 +94,7 @@ public class IPlayerEvent {
                         IMcBot.bot.sendGuildMsg(IMcBot.config.getCommon().getGuildId(), id, msg);
                 } else {
                     for (long id : IMcBot.config.getCommon().getGroupIdList())
-                        IMcBot.bot.sendGroupMsg(id, msg, true);
+                        IMcBot.bot.sendGroupMsg(id, msg, false);
                 }
             }
     }

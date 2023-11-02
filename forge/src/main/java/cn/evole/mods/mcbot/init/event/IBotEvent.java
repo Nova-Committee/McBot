@@ -92,7 +92,7 @@ public class IBotEvent {
                         && IMcBot.config.getStatus().isREnable()
                         && IMcBot.config.getStatus().isSQqWelcomeEnable()) {
 
-                    IMcBot.bot.sendGroupMsg(event.getGroupId(), MsgUtils.builder().at(event.getUserId()).build() + "\n" + IMcBot.config.getCmd().getWelcomeNotice(), true);
+                    IMcBot.bot.sendGroupMsg(event.getGroupId(), MsgUtils.builder().at(event.getUserId()).build() + "\n" + IMcBot.config.getCmd().getWelcomeNotice(), false);
                 }
             }
         });
@@ -103,7 +103,7 @@ public class IBotEvent {
                 if (IMcBot.config.getCommon().getGroupIdList().contains(event.getGroupId())
                         && IMcBot.config.getStatus().isREnable()
                         && IMcBot.config.getStatus().isSQqLeaveEnable()) {
-                    IMcBot.bot.sendGroupMsg(event.getGroupId(), MsgUtils.builder().text(String.valueOf(event.getUserId())).build() + "\n" +IMcBot.config.getCmd().getLeaveNotice(), true);
+                    IMcBot.bot.sendGroupMsg(event.getGroupId(), MsgUtils.builder().text(String.valueOf(event.getUserId())).build() + "\n" +IMcBot.config.getCmd().getLeaveNotice(), false);
                 }
             }
         });
@@ -171,7 +171,7 @@ public class IBotEvent {
                 if (!IMcBot.config.getCommon().getGroupIdList().isEmpty()
                 ) {
                     for (val id : IMcBot.config.getCommon().getGroupIdList()){
-                        IMcBot.bot.sendGroupMsg(id, "▌ 群服互联已连接 ┈━═☆", true);
+                        IMcBot.bot.sendGroupMsg(id, "▌ 群服互联已连接 ┈━═☆", false);
                     }
                 }
                 if (!IMcBot.config.getCommon().getChannelIdList().isEmpty()

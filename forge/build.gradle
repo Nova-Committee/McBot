@@ -1,6 +1,7 @@
 plugins {
     id "com.replaymod.preprocess" version "SNAPSHOT"
     id 'dev.architectury.loom' version '1.4-SNAPSHOT' apply false
+    id 'maven-publish'
 }
 
 preprocess {
@@ -23,3 +24,5 @@ preprocess {
     mc1193.link(mc1194, null)
     mc1194.link(mc1201, null)
 }
+
+

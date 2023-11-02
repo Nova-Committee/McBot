@@ -2,11 +2,17 @@ modLoader="javafml"
 loaderVersion="[28,)"
 license="GNU AGPL 3.0"
 [[mods]]
-modId="mcbot"
-version="${version}"
-displayName="McBot"
-logoFile= "assets/mcbot/icon.png"
-authors="cnlimiter"
-description='''
-Adds chat linking between QQ and Minecraft and QQ commands to request server data.
-'''
+    modId="${mod_id}"
+    version="${mod_version}"
+    displayName="${mod_name}"
+    logoFile= "assets/mcbot/icon.png"
+    authors="cnlimiter"
+    description='''
+    Adds chat linking between QQ and Minecraft and QQ commands to request server data.
+    '''
+[[dependencies.${mod_id}]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="${minecraft_version_range}"
+    ordering="NONE"
+    side="SERVER"

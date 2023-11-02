@@ -38,7 +38,7 @@ public class ModConfig extends YmlConfig {
     private Cmd cmd = new Cmd();
     @ConfigField("bot_config")
     @ConfigComments("机器人")
-    private BotConfig botConfig = new BotConfig();
+    private Bot botConfig = new Bot();
 
 
     public static class Bot extends BotConfig implements ConfigurationSerializable{
