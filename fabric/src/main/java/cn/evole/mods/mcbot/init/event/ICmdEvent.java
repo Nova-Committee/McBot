@@ -60,9 +60,9 @@ public class ICmdEvent {
                         .then(Commands.literal("setBot")
                                 .then(Commands.argument("BotId", LongArgumentType.longArg())
                                         .executes(BotIDCommand::execute)))
-                        .then(Commands.literal("setVerifyKey")
-                                .then(Commands.argument("VerifyKey", StringArgumentType.string())
-                                        .executes(VerifyKeyCommand::execute)))
+                        .then(Commands.literal("setAuthKey")
+                                .then(Commands.argument("AuthKey", StringArgumentType.string())
+                                        .executes(AuthKeyCommand::execute)))
                         .then(Commands.literal("status").executes(StatusCommand::execute))
 
                         .then(Commands.literal("receive")
@@ -95,9 +95,12 @@ public class ICmdEvent {
                                 .then(Commands.literal("achievements")
                                         .then(Commands.argument("enabled", BoolArgumentType.bool())
                                                 .executes(SendCommand::achievementsExecute)))
-                                .then(Commands.literal("welcome")
+                                .then(Commands.literal("qqWelcome")
                                         .then(Commands.argument("enabled", BoolArgumentType.bool())
-                                                .executes(SendCommand::welcomeExecute)))
+                                                .executes(SendCommand::qqWelcomeExecute)))
+                                .then(Commands.literal("qqLeave")
+                                        .then(Commands.argument("enabled", BoolArgumentType.bool())
+                                                .executes(SendCommand::qqLeaveExecute)))
                         )
         );
 

@@ -1,8 +1,9 @@
 package cn.evole.mods.mcbot;
 
+import cn.evole.config.toml.TomlUtil;
 import cn.evole.mods.mcbot.init.callbacks.IEvents;
 import cn.evole.mods.mcbot.init.event.*;
-import cn.evole.mods.mcbot.init.handler.ConfigHandler;
+import cn.evole.mods.mcbot.init.config.ModConfig;
 import cn.evole.mods.mcbot.init.handler.CustomCmdHandler;
 import cn.evole.mods.mcbot.util.locale.I18n;
 import cn.evole.onebot.client.connection.ConnectFactory;
@@ -29,10 +30,8 @@ import java.util.concurrent.ScheduledExecutorService;
 
 public class McBot implements ModInitializer {
 
-    public static ScheduledExecutorService configWatcherExecutorService = Executors.newSingleThreadScheduledExecutor(new ThreadFactoryBuilder().setNameFormat("BotApi Config Watcher %d").setDaemon(true).build());
     public static MinecraftServer SERVER = null;
     public static Path CONFIG_FOLDER;
-    public static File CONFIG_FILE;
     public static LinkedBlockingQueue<String> blockingQueue;
     public static ConnectFactory service;
     public static EventBus bus;
@@ -48,7 +47,7 @@ public class McBot implements ModInitializer {
 
     @Override
     public void onInitialize() {
-        init(FabricLoader.getInstance().getConfigDir());
+        init();
         //#if MC >= 11900
         CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> ICmdEvent.register(dispatcher));
         //#else
@@ -71,11 +70,10 @@ public class McBot implements ModInitializer {
     }
 
 
-    public void init(Path config_dir) {
-        CONFIG_FOLDER = config_dir.resolve("mcbot");
+    public void init() {
+        CONFIG_FOLDER = Const.configDir.resolve("mcbot");
         FileUtils.checkFolder(CONFIG_FOLDER);
-        CONFIG_FILE = CONFIG_FOLDER.resolve(Const.MODID + ".json").toFile();
-        ConfigHandler.init(CONFIG_FILE);
+        //TomlUtil.readConfig(CONFIG_FOLDER.toFile().toPath() + File.separator + "config.toml", ModConfig.class, true);
         I18n.init();
         Runtime.getRuntime().addShutdownHook(new Thread(McBot::killOutThreads));
     }
@@ -86,10 +84,10 @@ public class McBot implements ModInitializer {
 
     public void onServerStarted(MinecraftServer server) {
         blockingQueue = new LinkedBlockingQueue<>();//使用队列传输数据
-        if (ConfigHandler.cached().getCommon().isAutoOpen()) {
+        if (ModConfig.INSTANCE.getCommon().isAutoOpen()) {
             try {
                 app = new Thread(() -> {
-                    service = new ConnectFactory(ConfigHandler.cached().getBotConfig(), blockingQueue);//创建websocket连接
+                    service = new ConnectFactory(ModConfig.INSTANCE.getBotConfig().toBot(), blockingQueue);//创建websocket连接
                     bot = service.ws.createBot();//创建机器人实例
                 }, "BotServer");
                 app.start();
@@ -116,10 +114,8 @@ public class McBot implements ModInitializer {
 
     private static void killOutThreads() {
         try {
-            ConfigHandler.save();//保存配置
+            ModConfig.INSTANCE.reload();//保存配置
             CustomCmdHandler.INSTANCE.clear();//自定义命令持久层清空
-            ConfigHandler.watcher.get().close();//配置监控关闭
-            McBot.configWatcherExecutorService.shutdownNow();//监控进程关闭
         } catch (Exception e) {
             e.printStackTrace();
         }

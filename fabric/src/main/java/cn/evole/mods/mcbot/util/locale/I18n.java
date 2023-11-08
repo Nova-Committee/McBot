@@ -1,7 +1,7 @@
 package cn.evole.mods.mcbot.util.locale;
 
 import cn.evole.mods.mcbot.Const;
-import cn.evole.mods.mcbot.init.handler.ConfigHandler;
+import cn.evole.mods.mcbot.init.config.ModConfig;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import net.fabricmc.loader.api.FabricLoader;
@@ -24,11 +24,11 @@ public class I18n {
         translations = new HashMap<>();
 
         Optional<Path> optional = FabricLoader.getInstance().getModContainer("mcbot").orElseThrow()
-                .findPath("/lang/" + ConfigHandler.cached().getCommon().getLanguageSelect() + ".json");
+                .findPath("/lang/" + ModConfig.INSTANCE.getCommon().getLanguageSelect() + ".json");
 
         if (optional.isEmpty()) {
             Const.LOGGER.warn("-----------------------------------------");
-            Const.LOGGER.warn("McBot cannot find translations for \"" + ConfigHandler.cached().getCommon().getLanguageSelect() + "\" and uses \"en_us\" by default!");
+            Const.LOGGER.warn("McBot cannot find translations for \"" + ModConfig.INSTANCE.getCommon().getLanguageSelect() + "\" and uses \"en_us\" by default!");
             Const.LOGGER.warn("");
             Const.LOGGER.warn("You are welcome to contribute translations!");
             Const.LOGGER.warn("Contributing: https://github.com/cnlimiter/McBot#Contributing");

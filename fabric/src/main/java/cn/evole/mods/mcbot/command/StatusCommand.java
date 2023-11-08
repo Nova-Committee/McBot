@@ -2,7 +2,7 @@ package cn.evole.mods.mcbot.command;
 
 
 import cn.evole.mods.mcbot.McBot;
-import cn.evole.mods.mcbot.init.handler.ConfigHandler;
+import cn.evole.mods.mcbot.init.config.ModConfig;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import lombok.val;
@@ -15,31 +15,36 @@ import net.minecraft.network.chat.Component;
 public class StatusCommand {
 
     public static int execute(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
-        boolean clientEnabled = ConfigHandler.cached().getCommon().isEnable();
+        boolean clientEnabled =  ModConfig.INSTANCE.getCommon().isEnable();
 
-        boolean receiveEnabled = ConfigHandler.cached().getStatus().isRECEIVE_ENABLED();
-        boolean rChatEnabled = ConfigHandler.cached().getStatus().isR_CHAT_ENABLE();
-        boolean rCmdEnabled = ConfigHandler.cached().getStatus().isR_COMMAND_ENABLED();
+        boolean receiveEnabled =  ModConfig.INSTANCE.getStatus().isREnable();
+        boolean rChatEnabled =  ModConfig.INSTANCE.getStatus().isRChatEnable();
+        boolean rCmdEnabled =  ModConfig.INSTANCE.getStatus().isRCmdEnable();
 
-        boolean sendEnabled = ConfigHandler.cached().getStatus().isSEND_ENABLED();
-        boolean sJoinEnabled = ConfigHandler.cached().getStatus().isS_JOIN_ENABLE();
-        boolean sLeaveEnabled = ConfigHandler.cached().getStatus().isS_LEAVE_ENABLE();
-        boolean sDeathEnabled = ConfigHandler.cached().getStatus().isS_DEATH_ENABLE();
-        boolean sAchievementsEnabled = ConfigHandler.cached().getStatus().isS_ADVANCE_ENABLE();
-        boolean sWelcomeEnabled = ConfigHandler.cached().getStatus().isS_QQ_WELCOME_ENABLE();
+        boolean sendEnabled =  ModConfig.INSTANCE.getStatus().isSEnable();
+        boolean sJoinEnabled =  ModConfig.INSTANCE.getStatus().isSJoinEnable();
+        boolean sLeaveEnabled =  ModConfig.INSTANCE.getStatus().isSLeaveEnable();
+        boolean sDeathEnabled =  ModConfig.INSTANCE.getStatus().isSDeathEnable();
+        boolean sAchievementsEnabled =  ModConfig.INSTANCE.getStatus().isSAdvanceEnable();
+        boolean sQqWelcomeEnabled =  ModConfig.INSTANCE.getStatus().isSQqWelcomeEnable();
+        boolean sQqLeaveEnabled =  ModConfig.INSTANCE.getStatus().isSQqLeaveEnable();
 
-        val groupId = ConfigHandler.cached().getCommon().getGroupIdList().toString();
-        boolean debuggable = ConfigHandler.cached().getCommon().isDebuggable();
+        val groupId =  ModConfig.INSTANCE.getCommon().getGroupIdList().toString();
+        val guildId =  ModConfig.INSTANCE.getCommon().getGuildId();
+        val channelId =  ModConfig.INSTANCE.getCommon().getChannelIdList().toString();
+        boolean debuggable =  ModConfig.INSTANCE.getCommon().isDebug();
         boolean connected = McBot.service != null;
         boolean white = McBot.SERVER.getPlayerList().isUsingWhitelist();
-        String host = ConfigHandler.cached().getBotConfig().getUrl();
-        long QQid = ConfigHandler.cached().getCommon().getBotId();
+        String host =  ModConfig.INSTANCE.getBotConfig().getUrl();
+        long QQid =  ModConfig.INSTANCE.getCommon().getBotId();
         String toSend =
                 "\n姬妻人服务状态:\n"
                         + "姬妻人QQId:" + QQid + " \n"
                         + "框架服务器:" + host + " \n"
                         + "WebSocket连接状态:" + connected + "\n"
                         + "互通的群号:" + groupId + "\n"
+                        + "互通的频道号:" + guildId + "\n"
+                        + "互通的子频道号:" + channelId + "\n"
                         + "全局服务状态:" + clientEnabled + "\n"
                         + "开发者模式状态:" + debuggable + "\n"
                         + "白名单是否开启:" + white + "\n"
@@ -53,7 +58,8 @@ public class StatusCommand {
                         + "发送玩家离开消息状态:" + sLeaveEnabled + "\n"
                         + "发送玩家死亡消息状态:" + sDeathEnabled + "\n"
                         + "发送玩家成就消息状态:" + sAchievementsEnabled + "\n"
-                        + "发送群成员进/退群消息状态:" + sWelcomeEnabled + "\n";
+                        + "发送群成员进群消息状态:" + sQqWelcomeEnabled + "\n"
+                        + "发送群成员退群消息状态:" + sQqLeaveEnabled + "\n";
         //#if MC >= 12000
         context.getSource().sendSuccess(()->Component.literal(toSend), true);
         //#elseif MC < 11900
@@ -61,7 +67,7 @@ public class StatusCommand {
         //#else
         //$$ context.getSource().sendSuccess(Component.literal(toSend), true);
         //#endif
-        ConfigHandler.save();
+        ModConfig.INSTANCE.reload();
         return 1;
     }
 }

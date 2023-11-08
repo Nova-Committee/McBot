@@ -1,9 +1,11 @@
 package cn.evole.mods.mcbot.init.event;
 
 import cn.evole.mods.mcbot.McBot;
-import cn.evole.mods.mcbot.init.handler.ConfigHandler;
+import cn.evole.mods.mcbot.init.config.ModConfig;
 import cn.evole.mods.mcbot.util.locale.I18n;
 import net.minecraft.advancements.Advancement;
+import net.minecraft.advancements.DisplayInfo;
+import net.minecraft.advancements.FrameType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
@@ -22,31 +24,31 @@ import net.minecraft.world.level.Level;
  */
 public class IPlayerEvent {
     public static void loggedIn(Level world, Player player) {
-        if (ConfigHandler.cached().getStatus().isS_JOIN_ENABLE() && ConfigHandler.cached().getStatus().isSEND_ENABLED()) {
-            if (ConfigHandler.cached().getCommon().isGuildOn() && !ConfigHandler.cached().getCommon().getChannelIdList().isEmpty()) {
-                for (String id : ConfigHandler.cached().getCommon().getChannelIdList())
-                    McBot.bot.sendGuildMsg(ConfigHandler.cached().getCommon().getGuildId(), id, player.getDisplayName().getString() + " 加入了服务器");
+        if (ModConfig.INSTANCE.getStatus().isSJoinEnable() && ModConfig.INSTANCE.getStatus().isSEnable()) {
+            if (ModConfig.INSTANCE.getCommon().isGuildOn() && !ModConfig.INSTANCE.getCommon().getChannelIdList().isEmpty()) {
+                for (String id : ModConfig.INSTANCE.getCommon().getChannelIdList())
+                    McBot.bot.sendGuildMsg(ModConfig.INSTANCE.getCommon().getGuildId(), id, player.getDisplayName().getString() + " 加入了服务器");
             } else {
-                for (long id : ConfigHandler.cached().getCommon().getGroupIdList())
-                    McBot.bot.sendGroupMsg(id, player.getDisplayName().getString() + " 加入了服务器", true);
+                for (long id : ModConfig.INSTANCE.getCommon().getGroupIdList())
+                    McBot.bot.sendGroupMsg(id, player.getDisplayName().getString() + " 加入了服务器", false);
             }
         }
     }
     public static void loggedOut(Level world, Player player) {
 
 
-            if (ConfigHandler.cached().getStatus().isS_LEAVE_ENABLE() && ConfigHandler.cached().getStatus().isSEND_ENABLED()) {
-                if (ConfigHandler.cached().getCommon().isGuildOn() && !ConfigHandler.cached().getCommon().getChannelIdList().isEmpty()) {
-                    for (String id : ConfigHandler.cached().getCommon().getChannelIdList())
-                        McBot.bot.sendGuildMsg(ConfigHandler.cached().getCommon().getGuildId(), id, player.getDisplayName().getString() + " 离开了服务器");
+            if (ModConfig.INSTANCE.getStatus().isSLeaveEnable() && ModConfig.INSTANCE.getStatus().isSEnable()) {
+                if (ModConfig.INSTANCE.getCommon().isGuildOn() && !ModConfig.INSTANCE.getCommon().getChannelIdList().isEmpty()) {
+                    for (String id : ModConfig.INSTANCE.getCommon().getChannelIdList())
+                        McBot.bot.sendGuildMsg(ModConfig.INSTANCE.getCommon().getGuildId(), id, player.getDisplayName().getString() + " 离开了服务器");
                 } else {
-                    for (long id : ConfigHandler.cached().getCommon().getGroupIdList())
-                        McBot.bot.sendGroupMsg(id, player.getDisplayName().getString() + " 离开了服务器", true);
+                    for (long id : ModConfig.INSTANCE.getCommon().getGroupIdList())
+                        McBot.bot.sendGroupMsg(id, player.getDisplayName().getString() + " 离开了服务器", false);
                 }
             }
     }
     public static void death(DamageSource source, ServerPlayer player) {
-            if (player != null && ConfigHandler.cached().getStatus().isS_DEATH_ENABLE() && ConfigHandler.cached().getStatus().isSEND_ENABLED()) {
+            if (player != null && ModConfig.INSTANCE.getStatus().isSDeathEnable() && ModConfig.INSTANCE.getStatus().isSEnable()) {
                 LivingEntity livingEntity2 = player.getKillCredit();
                 String msg = "";
 
@@ -72,27 +74,38 @@ public class IPlayerEvent {
                     msg = !itemStack.isEmpty() && itemStack.hasCustomHoverName() ? I18n.get(string + ".item", player.getDisplayName().getString(), component.getString(), itemStack.getDisplayName().getString()) : I18n.get(string,player.getDisplayName().getString(), component.getString());
                 }
 
-                if (ConfigHandler.cached().getCommon().isGuildOn() && !ConfigHandler.cached().getCommon().getChannelIdList().isEmpty()) {
-                    for (String id : ConfigHandler.cached().getCommon().getChannelIdList())
-                        McBot.bot.sendGuildMsg(ConfigHandler.cached().getCommon().getGuildId(), id, String.format(msg, player.getDisplayName().getString()));
+                if (ModConfig.INSTANCE.getCommon().isGuildOn() && !ModConfig.INSTANCE.getCommon().getChannelIdList().isEmpty()) {
+                    for (String id : ModConfig.INSTANCE.getCommon().getChannelIdList())
+                        McBot.bot.sendGuildMsg(ModConfig.INSTANCE.getCommon().getGuildId(), id, String.format(msg, player.getDisplayName().getString()));
                 } else {
-                    for (long id : ConfigHandler.cached().getCommon().getGroupIdList())
-                        McBot.bot.sendGroupMsg(id, String.format(msg, player.getDisplayName().getString()), true);
+                    for (long id : ModConfig.INSTANCE.getCommon().getGroupIdList())
+                        McBot.bot.sendGroupMsg(id, String.format(msg, player.getDisplayName().getString()), false);
                 }
             }
     }
 
     public static void advancement(Player player, Advancement advancement) {
+        //#if MC <= 12001
+        boolean displayExist = advancement.getDisplay() != null;
+        //#else
+        //$$ boolean displayExist = advancement.display().isPresent();
+        //#endif
 
-            if (ConfigHandler.cached().getStatus().isS_ADVANCE_ENABLE() && advancement.getDisplay() != null && ConfigHandler.cached().getStatus().isSEND_ENABLED()) {
-                String msg = I18n.get("mcbot.chat.type.advancement." + advancement.getDisplay().getFrame().getName(), player.getDisplayName().getString(), I18n.get(advancement.getDisplay().getTitle().getString()));
+            if (ModConfig.INSTANCE.getStatus().isSAdvanceEnable() && displayExist && ModConfig.INSTANCE.getStatus().isSEnable()) {
+                //#if MC <= 12001
+                DisplayInfo display = advancement.getDisplay();
+                //#else
+                //$$ DisplayInfo display = advancement.display().get();
+                //#endif
 
-                if (ConfigHandler.cached().getCommon().isGuildOn() && !ConfigHandler.cached().getCommon().getChannelIdList().isEmpty()) {
-                    for (String id : ConfigHandler.cached().getCommon().getChannelIdList())
-                        McBot.bot.sendGuildMsg(ConfigHandler.cached().getCommon().getGuildId(), id, msg);
+                String msg = I18n.get("mcbot.chat.type.advancement." + display.getFrame().getName(), player.getDisplayName().getString(), I18n.get(display.getTitle().getString()));
+
+                if (ModConfig.INSTANCE.getCommon().isGuildOn() && !ModConfig.INSTANCE.getCommon().getChannelIdList().isEmpty()) {
+                    for (String id : ModConfig.INSTANCE.getCommon().getChannelIdList())
+                        McBot.bot.sendGuildMsg(ModConfig.INSTANCE.getCommon().getGuildId(), id, msg);
                 } else {
-                    for (long id : ConfigHandler.cached().getCommon().getGroupIdList())
-                        McBot.bot.sendGroupMsg(id, msg, true);
+                    for (long id : ModConfig.INSTANCE.getCommon().getGroupIdList())
+                        McBot.bot.sendGroupMsg(id, msg, false);
                 }
             }
     }

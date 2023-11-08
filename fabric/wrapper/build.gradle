@@ -21,7 +21,7 @@ dependencies {
     modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
     modImplementation("cn.evole.bot:OneBot-Client:${project.onebot_client_version}")
-    modImplementation("blue.endless:jankson:${project.jankson_version}")
+    modImplementation("org.tomlj:tomlj:${project.tomlj_version}")
 
     compileOnly 'org.projectlombok:lombok:1.18.24'
     annotationProcessor "org.projectlombok:lombok:1.18.24"
@@ -61,6 +61,10 @@ processResources {
         ]
         expand valueMap
     }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = "UTF-8"
 }
 
 loom {

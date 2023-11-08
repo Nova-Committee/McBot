@@ -2,18 +2,17 @@
 package cn.evole.mods.mcbot.init.mixins;
 
 import cn.evole.mods.mcbot.McBot;
-import cn.evole.mods.mcbot.init.handler.ConfigHandler;
+import cn.evole.mods.mcbot.init.config.ModConfig;
 import com.mojang.brigadier.CommandDispatcher;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.Util;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.MessageArgument;
-import net.minecraft.network.chat.ChatType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.entity.Entity;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
@@ -27,6 +26,7 @@ import java.nio.charset.StandardCharsets;
  */
 @Mixin(value = Commands.class)
 public abstract class MixinSystemCmd {
+    @Unique
     private static void say_register(CommandDispatcher<CommandSourceStack> dispatcher) {
         dispatcher.register((Commands.literal("say").requires((CommandSourceStack) -> CommandSourceStack.hasPermission(2))).then(Commands.argument("message", MessageArgument.message()).executes((commandContext) -> {
             Component component = MessageArgument.getMessage(commandContext, "message");
@@ -34,20 +34,20 @@ public abstract class MixinSystemCmd {
             Entity entity = commandContext.getSource().getEntity();
 
 
-            if (FabricLoader.getInstance().isModLoaded("botapi")
-                        && ConfigHandler.cached() != null
-                        && ConfigHandler.cached().getStatus().isS_CHAT_ENABLE()
-                        && ConfigHandler.cached().getStatus().isSEND_ENABLED()
-                        && ConfigHandler.cached().getCmd().isMcSystemPrefixOn()) {
-                    if (ConfigHandler.cached().getCommon().isGuildOn() && !ConfigHandler.cached().getCommon().getChannelIdList().isEmpty()) {
-                        for (String id : ConfigHandler.cached().getCommon().getChannelIdList())
-                            McBot.bot.sendGuildMsg(ConfigHandler.cached().getCommon().getGuildId(),
+            if (FabricLoader.getInstance().isModLoaded("mcbot")
+                        && ModConfig.INSTANCE != null
+                        && ModConfig.INSTANCE.getStatus().isSChatEnable()
+                        && ModConfig.INSTANCE.getStatus().isSEnable()
+                        && ModConfig.INSTANCE.getCmd().isMcPrefixOn()) {
+                    if (ModConfig.INSTANCE.getCommon().isGuildOn() && !ModConfig.INSTANCE.getCommon().getChannelIdList().isEmpty()) {
+                        for (String id : ModConfig.INSTANCE.getCommon().getChannelIdList())
+                            McBot.bot.sendGuildMsg(ModConfig.INSTANCE.getCommon().getGuildId(),
                                     id,
-                                    String.format("[" + ConfigHandler.cached().getCmd().getMcSystemPrefix() + "] %s", new String(component.getString().getBytes(StandardCharsets.UTF_8), StandardCharsets.UTF_8)));
+                                    String.format("[" + ModConfig.INSTANCE.getCmd().getMcPrefix() + "] %s", new String(component.getString().getBytes(StandardCharsets.UTF_8), StandardCharsets.UTF_8)));
                     } else {
-                        for (long id : ConfigHandler.cached().getCommon().getGroupIdList())
+                        for (long id : ModConfig.INSTANCE.getCommon().getGroupIdList())
                             McBot.bot.sendGroupMsg(id,
-                                    String.format("[" + ConfigHandler.cached().getCmd().getMcSystemPrefix() + "] %s", new String(component.getString().getBytes(StandardCharsets.UTF_8), StandardCharsets.UTF_8)),
+                                    String.format("[" + ModConfig.INSTANCE.getCmd().getMcPrefix() + "] %s", new String(component.getString().getBytes(StandardCharsets.UTF_8), StandardCharsets.UTF_8)),
                                     true);
                     }
             }

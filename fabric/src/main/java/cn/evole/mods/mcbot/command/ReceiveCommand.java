@@ -1,6 +1,6 @@
 package cn.evole.mods.mcbot.command;
 
-import cn.evole.mods.mcbot.init.handler.ConfigHandler;
+import cn.evole.mods.mcbot.init.config.ModConfig;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.network.chat.Component;
@@ -15,7 +15,7 @@ public class ReceiveCommand {
 
     public static int allExecute(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
         boolean isEnabled = context.getArgument("enabled", Boolean.class);
-        ConfigHandler.cached().getStatus().setRECEIVE_ENABLED(isEnabled);
+        ModConfig.INSTANCE.getStatus().setREnable(isEnabled);
         if (isEnabled) {
             //#if MC >= 12000
             context.getSource().sendSuccess(()->Component.literal("全局接收群消息开关已被设置为打开"), true);
@@ -33,15 +33,15 @@ public class ReceiveCommand {
             //$$ context.getSource().sendSuccess(Component.literal("全局接收群消息开关已被设置为关闭"), true);
             //#endif
         }
-        ConfigHandler.save();
+        ModConfig.INSTANCE.reload();
         return 1;
     }
 
     public static int chatExecute(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
         boolean isEnabled = context.getArgument("enabled", Boolean.class);
-        ConfigHandler.cached().getStatus().setR_CHAT_ENABLE(isEnabled);
+        ModConfig.INSTANCE.getStatus().setRChatEnable(isEnabled);
         if (isEnabled) {
-            ConfigHandler.cached().getStatus().setRECEIVE_ENABLED(true);
+            ModConfig.INSTANCE.getStatus().setREnable(true);
             //#if MC >= 12000
             context.getSource().sendSuccess(()->Component.literal("接收群内聊天消息开关已被设置为打开"), true);
             //#elseif MC < 11900
@@ -58,16 +58,16 @@ public class ReceiveCommand {
             //$$ context.getSource().sendSuccess(Component.literal("接收群内聊天消息开关已被设置为关闭"), true);
             //#endif
         }
-        ConfigHandler.save();
+        ModConfig.INSTANCE.reload();
         return 1;
 
     }
 
     public static int cmdExecute(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
         boolean isEnabled = context.getArgument("enabled", Boolean.class);
-        ConfigHandler.cached().getStatus().setR_COMMAND_ENABLED(isEnabled);
+        ModConfig.INSTANCE.getStatus().setRCmdEnable(isEnabled);
         if (isEnabled) {
-            ConfigHandler.cached().getStatus().setRECEIVE_ENABLED(true);
+            ModConfig.INSTANCE.getStatus().setREnable(true);
             //#if MC >= 12000
             context.getSource().sendSuccess(()->Component.literal("接收群内命令消息开关已被设置为打开"), true);
             //#elseif MC < 11900
@@ -84,7 +84,7 @@ public class ReceiveCommand {
             //$$ context.getSource().sendSuccess(Component.literal("接收群内命令消息开关已被设置为关闭"), true);
             //#endif
         }
-        ConfigHandler.save();
+        ModConfig.INSTANCE.reload();
         return 1;
     }
 }

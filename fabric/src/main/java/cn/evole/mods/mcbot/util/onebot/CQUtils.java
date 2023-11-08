@@ -1,9 +1,10 @@
 package cn.evole.mods.mcbot.util.onebot;
 
 import cn.evole.mods.mcbot.Const;
-import cn.evole.mods.mcbot.init.handler.ConfigHandler;
+import cn.evole.mods.mcbot.init.config.ModConfig;
 import cn.evole.onebot.sdk.util.BotUtils;
 import lombok.val;
+import net.fabricmc.loader.api.FabricLoader;
 
 import java.util.Arrays;
 import java.util.concurrent.*;
@@ -31,7 +32,7 @@ public class CQUtils {
     }
 
     public static String replace(String msg) {
-        if (ConfigHandler.cached().getBotConfig().isMiraiHttp()){
+        if (ModConfig.INSTANCE.getBotConfig().isMiraiHttp()){
             return msg;
         }
 
@@ -51,7 +52,7 @@ public class CQUtils {
                 val data = matcher.group(2);
                 switch (type) {
                     case "image": {
-                        if (ConfigHandler.cached().getCommon().isImageOn()) {
+                        if (ModConfig.INSTANCE.getCommon().isImageOn() && Const.isLoad("chatimage")) {
                             val url = Arrays.stream(data.split(","))//具体数据分割
                                     .filter(it -> it.startsWith("url"))//非空判断
                                     .map(it -> it.substring(it.indexOf('=') + 1))
