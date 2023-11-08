@@ -48,7 +48,7 @@ public class BotUtils {
     public static String varParse(CustomCmd customCmd, String cmd) {
         String returnCmd = "";
         if (isVar(cmd)) {//存在变量
-            val replaceContent = customCmd.getCmdContent().split("%")[0].replaceAll(" ", "");
+            val replaceContent = customCmd.getCmdContent().split("%")[0].trim();
             returnCmd = cmd.replace(customCmd.getCmdAlies(), replaceContent);//返回q群指令
         } else returnCmd = customCmd.getCmdContent();//返回普通自定义命令指令
         return returnCmd;
