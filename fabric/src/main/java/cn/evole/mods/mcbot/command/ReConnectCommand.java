@@ -34,7 +34,7 @@ public class ReConnectCommand {
             //#endif
         }
 
-        ModConfig.INSTANCE.reload();
+ 
         return 1;
     }
 }

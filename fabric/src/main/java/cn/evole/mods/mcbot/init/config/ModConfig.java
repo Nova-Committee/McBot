@@ -1,16 +1,13 @@
 package cn.evole.mods.mcbot.init.config;
 
+import cn.evole.libs.tomlj.TomlTable;
+import cn.evole.mods.mcbot.McBot;
 import lombok.Getter;
 import lombok.Setter;
 import cn.evole.config.toml.AutoReloadToml;
 import cn.evole.config.toml.TomlUtil;
 import cn.evole.config.toml.annotation.Reload;
 import cn.evole.config.toml.annotation.TableField;
-import org.tomlj.TomlTable;
-
-import java.io.File;
-
-import static cn.evole.mods.mcbot.McBot.CONFIG_FOLDER;
 
 /**
  * Description:
@@ -22,8 +19,8 @@ import static cn.evole.mods.mcbot.McBot.CONFIG_FOLDER;
 @Getter
 @Setter
 public class ModConfig extends AutoReloadToml {
-    @Reload(value = "mcbot/config.toml", autoReload = true)
-    public static ModConfig INSTANCE = TomlUtil.readConfig(CONFIG_FOLDER.toFile().getPath() + File.separator + "config.toml", ModConfig.class, true);
+    @Reload(autoReload = true)
+    public static ModConfig INSTANCE = TomlUtil.readConfig(McBot.CONFIG_FILE, ModConfig.class, true);
 
     @TableField(value = "common", topComment = "通用")
     private CommonConfig common = new CommonConfig();
@@ -36,11 +33,11 @@ public class ModConfig extends AutoReloadToml {
 
 
     public ModConfig() {
-        super(null);
+        super(null, McBot.CONFIG_FILE);
     }
 
     public ModConfig(TomlTable source) {
-        super(source);
+        super(source, McBot.CONFIG_FILE);
         this.load(ModConfig.class);
     }
 

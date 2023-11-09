@@ -30,7 +30,6 @@ public class AddChannelIDCommand {
         } else {
             ModConfig.INSTANCE.getCommon().addChannelId(id);
         }
-        ModConfig.INSTANCE.reload();
         return 1;
     }
 

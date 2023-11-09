@@ -26,7 +26,7 @@ public class RemoveGroupIDCommand {
             //$$ context.getSource().sendSuccess(Component.literal("QQ群号:" + id + "并未出现！"), true);
             //#endif
         }
-        ModConfig.INSTANCE.reload();
+
         return 1;
     }
 

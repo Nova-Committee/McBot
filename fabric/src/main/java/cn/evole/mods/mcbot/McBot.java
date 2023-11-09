@@ -1,6 +1,5 @@
 package cn.evole.mods.mcbot;
 
-import cn.evole.config.toml.TomlUtil;
 import cn.evole.mods.mcbot.init.callbacks.IEvents;
 import cn.evole.mods.mcbot.init.event.*;
 import cn.evole.mods.mcbot.init.config.ModConfig;
@@ -10,7 +9,6 @@ import cn.evole.onebot.client.connection.ConnectFactory;
 import cn.evole.onebot.client.core.Bot;
 import cn.evole.onebot.client.handler.EventBus;
 import cn.evole.onebot.sdk.util.FileUtils;
-import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import net.fabricmc.api.ModInitializer;
 //#if MC >= 11900
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
@@ -19,19 +17,17 @@ import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 //#endif
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
-import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.server.MinecraftServer;
 
-import java.io.File;
 import java.nio.file.Path;
-import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.ScheduledExecutorService;
 
 public class McBot implements ModInitializer {
 
     public static MinecraftServer SERVER = null;
     public static Path CONFIG_FOLDER;
+    public static Path CONFIG_FILE;
+
     public static LinkedBlockingQueue<String> blockingQueue;
     public static ConnectFactory service;
     public static EventBus bus;
@@ -73,7 +69,7 @@ public class McBot implements ModInitializer {
     public void init() {
         CONFIG_FOLDER = Const.configDir.resolve("mcbot");
         FileUtils.checkFolder(CONFIG_FOLDER);
-        //TomlUtil.readConfig(CONFIG_FOLDER.toFile().toPath() + File.separator + "config.toml", ModConfig.class, true);
+        CONFIG_FILE = CONFIG_FOLDER.resolve("config.toml");
         I18n.init();
         Runtime.getRuntime().addShutdownHook(new Thread(McBot::killOutThreads));
     }
@@ -114,7 +110,7 @@ public class McBot implements ModInitializer {
 
     private static void killOutThreads() {
         try {
-            ModConfig.INSTANCE.reload();//保存配置
+     //保存配置
             CustomCmdHandler.INSTANCE.clear();//自定义命令持久层清空
         } catch (Exception e) {
             e.printStackTrace();

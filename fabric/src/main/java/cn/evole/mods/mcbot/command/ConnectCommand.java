@@ -48,7 +48,7 @@ public class ConnectCommand {
             }
             ModConfig.INSTANCE.getStatus().setREnable(true);
             ModConfig.INSTANCE.getCommon().setEnable(true);
-            ModConfig.INSTANCE.reload();
+     
             return 1;
 
         } else {
@@ -89,7 +89,7 @@ public class ConnectCommand {
             }
             ModConfig.INSTANCE.getStatus().setREnable(true);
             ModConfig.INSTANCE.getCommon().setEnable(true);
-            ModConfig.INSTANCE.reload();
+     
             return 1;
 
         } else {
@@ -124,7 +124,7 @@ public class ConnectCommand {
         }
         ModConfig.INSTANCE.getStatus().setREnable(true);
         ModConfig.INSTANCE.getCommon().setEnable(true);
-        ModConfig.INSTANCE.reload();
+ 
         return 1;
 
     }
@@ -150,7 +150,7 @@ public class ConnectCommand {
         ModConfig.INSTANCE.getStatus().setREnable(true);
         ModConfig.INSTANCE.getCommon().setEnable(true);
 
-        ModConfig.INSTANCE.reload();
+ 
         return 1;
 
     }

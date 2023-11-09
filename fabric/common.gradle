@@ -23,8 +23,7 @@ dependencies {
     modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
     api include("cn.evole.bot:OneBot-Client:${project.onebot_client_version}")
-    api include("org.tomlj:tomlj:${project.tomlj_version}")
-    api include("org.antlr:antlr4-runtime:${project.antlr4_version}")
+    api include("cn.evole.config:AtomConfig-Toml:${project.toml_version}")
 
     compileOnly 'org.projectlombok:lombok:1.18.24'
     annotationProcessor "org.projectlombok:lombok:1.18.24"

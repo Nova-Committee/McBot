@@ -24,7 +24,7 @@ public class GuildIDCommand {
         //#else
         //$$ context.getSource().sendSuccess(Component.literal("已设置互通的频道号为:" + id), true);
         //#endif
-        ModConfig.INSTANCE.reload();
+ 
         return 1;
     }
 

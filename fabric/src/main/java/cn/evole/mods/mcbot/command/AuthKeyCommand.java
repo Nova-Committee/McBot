@@ -23,7 +23,7 @@ public class AuthKeyCommand {
         //#else
         //$$ context.getSource().sendSuccess(Component.literal("已设置Mirai框架的VerifyKey为:" + id), true);
         //#endif
-        ModConfig.INSTANCE.reload();
+ 
         return 1;
     }
 

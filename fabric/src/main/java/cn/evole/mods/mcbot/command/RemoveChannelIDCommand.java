@@ -26,7 +26,7 @@ public class RemoveChannelIDCommand {
             //$$ context.getSource().sendSuccess(Component.literal("子频道号:" + id + "并未出现！"), true);
             //#endif
         }
-        ModConfig.INSTANCE.reload();
+ 
         return 1;
     }
 
