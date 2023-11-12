@@ -1,6 +1,7 @@
 package cn.evole.mods.mcbot.command;
 
 
+import cn.evole.mods.mcbot.init.config.ModConfig;
 import cn.evole.mods.mcbot.init.handler.CustomCmdHandler;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
@@ -25,7 +26,7 @@ public class ListCustomCommand {
         //#else
         //$$ context.getSource().sendSuccess(Component.literal(out.toString()), true);
         //#endif
-
+        ModConfig.INSTANCE.save();
         return 1;
     }
 }

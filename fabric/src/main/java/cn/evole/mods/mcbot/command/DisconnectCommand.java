@@ -36,7 +36,7 @@ public class DisconnectCommand {
             }
             ModConfig.INSTANCE.getCommon().setEnable(false);
         }
-
+        ModConfig.INSTANCE.save();
         return 1;
     }
 }

@@ -21,13 +21,13 @@ public class CommonConfig extends AutoLoadTomlConfig {
     @TableField(rightComment = "开启q群功能")
     private boolean groupOn = true;
     @TableField(rightComment = "支持多个q群")
-    private Long[] groupIdList = new Long[0];//支持多个q群
+    private List<Long> groupIdList = new ArrayList<Long>(){};//支持多个q群
     @TableField(rightComment = "是否开启频道")
     private boolean guildOn = false;//是否开启频道
     @TableField(rightComment = "频道id")
     private String guildId = "";//频道id
     @TableField(rightComment = "子频道列表")
-    private String[] channelIdList = new String[0];//子频道列表
+    private List<String> channelIdList = new ArrayList<String>(){};//子频道列表
     @TableField(rightComment = "机器人qq")
     private long botId = 0;//机器人qq
     @TableField(rightComment = "是否启用")
@@ -51,27 +51,19 @@ public class CommonConfig extends AutoLoadTomlConfig {
     }
 
     public void addChannelId(String id) {
-        if (!Arrays.stream(channelIdList).toList().contains(id)) Arrays.stream(channelIdList).toList().add(id);
+        if (!channelIdList.contains(id)) channelIdList.add(id);
     }
 
     public void removeChannelId(String id) {
-        Arrays.stream(channelIdList).toList().remove(id);
+        channelIdList.remove(id);
     }
 
     public void removeGroupId(long id) {
-        Arrays.stream(groupIdList).toList().remove(id);
+        groupIdList.remove(id);
     }
 
     public void addGroupId(long id) {
-        if (!Arrays.stream(groupIdList).toList().contains(id)) Arrays.stream(groupIdList).toList().add(id);
+        if (!groupIdList.contains(id)) groupIdList.add(id);
     }
 
-
-    public List<Long> getGroupIdList() {
-        return Arrays.asList(groupIdList);
-    }
-
-    public List<String> getChannelIdList() {
-        return Arrays.asList(channelIdList);
-    }
 }

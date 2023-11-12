@@ -36,7 +36,7 @@ public class DebugCommand {
             //$$ context.getSource().sendSuccess(Component.literal("已关闭开发者模式"), true);
             //#endif
         }
- 
+        ModConfig.INSTANCE.save();
         return 1;
     }
 }

@@ -67,7 +67,7 @@ public class StatusCommand {
         //#else
         //$$ context.getSource().sendSuccess(Component.literal(toSend), true);
         //#endif
- 
+        ModConfig.INSTANCE.save();
         return 1;
     }
 }

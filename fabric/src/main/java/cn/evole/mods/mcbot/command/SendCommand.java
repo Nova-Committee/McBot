@@ -35,7 +35,7 @@ public class SendCommand {
             //$$ context.getSource().sendSuccess(Component.literal("发送新人加入QQ群的消息开关已被设置为关闭"), true);
             //#endif
         }
-
+        ModConfig.INSTANCE.save();
         return 1;
     }
 
@@ -61,7 +61,7 @@ public class SendCommand {
             //$$ context.getSource().sendSuccess(Component.literal("发送新人加入QQ群的消息开关已被设置为关闭"), true);
             //#endif
         }
-
+        ModConfig.INSTANCE.save();
         return 1;
     }
 
@@ -85,7 +85,7 @@ public class SendCommand {
             //$$ context.getSource().sendSuccess(Component.literal("全局发送消息开关已被设置为关闭"), true);
             //#endif
         }
-
+        ModConfig.INSTANCE.save();
         return 1;
     }
 
@@ -110,7 +110,7 @@ public class SendCommand {
             //$$ context.getSource().sendSuccess(Component.literal("发送玩家加入游戏消息开关已被设置为关闭"), true);
             //#endif
         }
-
+        ModConfig.INSTANCE.save();
         return 1;
     }
 
@@ -135,7 +135,7 @@ public class SendCommand {
             //$$ context.getSource().sendSuccess(Component.literal("发送玩家离开游戏消息开关已被设置为关闭"), true);
             //#endif
         }
-
+        ModConfig.INSTANCE.save();
         return 1;
     }
 
@@ -160,7 +160,7 @@ public class SendCommand {
             //$$ context.getSource().sendSuccess(Component.literal("发送玩家死亡游戏消息开关已被设置为关闭"), true);
             //#endif
         }
-
+        ModConfig.INSTANCE.save();
         return 1;
     }
 
@@ -185,7 +185,7 @@ public class SendCommand {
             //$$ context.getSource().sendSuccess(Component.literal("发送玩家聊天游戏消息开关已被设置为关闭"), true);
             //#endif
         }
-
+        ModConfig.INSTANCE.save();
         return 1;
     }
 
@@ -210,7 +210,7 @@ public class SendCommand {
             //$$ context.getSource().sendSuccess(Component.literal("发送玩家成就游戏消息开关已被设置为关闭"), true);
             //#endif
         }
-
+        ModConfig.INSTANCE.save();
         return 1;
     }
 

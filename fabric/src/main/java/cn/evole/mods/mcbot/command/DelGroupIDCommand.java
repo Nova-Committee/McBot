@@ -10,7 +10,7 @@ import net.minecraft.network.chat.Component;
 //#else
 //$$ import net.minecraft.network.chat.TextComponent;
 //#endif
-public class RemoveGroupIDCommand {
+public class DelGroupIDCommand {
 
 
     public static int execute(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
@@ -26,7 +26,7 @@ public class RemoveGroupIDCommand {
             //$$ context.getSource().sendSuccess(Component.literal("QQ群号:" + id + "并未出现！"), true);
             //#endif
         }
-
+        ModConfig.INSTANCE.save();
         return 1;
     }
 

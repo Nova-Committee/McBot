@@ -33,8 +33,7 @@ public class ReConnectCommand {
             //$$ context.getSource().sendSuccess(Component.literal("已关闭自动重连"), true);
             //#endif
         }
-
- 
+        ModConfig.INSTANCE.save();
         return 1;
     }
 }

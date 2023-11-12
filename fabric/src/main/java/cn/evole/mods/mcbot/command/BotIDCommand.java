@@ -23,7 +23,7 @@ public class BotIDCommand {
         //#else
         //$$ context.getSource().sendSuccess(Component.literal("已设置机器人QQ号为:" + id + "！"), true);
         //#endif
-
+        ModConfig.INSTANCE.save();
         return 1;
     }
 

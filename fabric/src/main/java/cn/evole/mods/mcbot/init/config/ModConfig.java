@@ -41,4 +41,8 @@ public class ModConfig extends AutoReloadToml {
         this.load(ModConfig.class);
     }
 
+    public void save(){
+        TomlUtil.writeConfig(McBot.CONFIG_FILE,INSTANCE);
+    }
+
 }

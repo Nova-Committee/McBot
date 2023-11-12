@@ -10,7 +10,7 @@ import net.minecraft.network.chat.Component;
 //#else
 //$$ import net.minecraft.network.chat.TextComponent;
 //#endif
-public class RemoveChannelIDCommand {
+public class DelChannelIDCommand {
 
 
     public static int execute(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
@@ -26,7 +26,7 @@ public class RemoveChannelIDCommand {
             //$$ context.getSource().sendSuccess(Component.literal("子频道号:" + id + "并未出现！"), true);
             //#endif
         }
- 
+        ModConfig.INSTANCE.save();
         return 1;
     }
 
