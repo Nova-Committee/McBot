@@ -88,12 +88,12 @@ public class McBot implements ModInitializer {
                 }, "BotServer");
                 app.start();
             } catch (Exception e) {
-                Const.LOGGER.error("§c机器人服务端未配置或未打开");
+                Const.LOGGER.error("▌ §c机器人服务端未配置或未打开");
             }
         }
         bus = new EventBus(blockingQueue);//创建事件分发器
         CustomCmdHandler.INSTANCE.load();//自定义命令加载
-        IBotEvent.init(bus);//事件监听s
+        IBotEvent.init(bus);//事件监听
     }
 
     public void onServerStopping(MinecraftServer server) {
@@ -110,7 +110,6 @@ public class McBot implements ModInitializer {
 
     private static void killOutThreads() {
         try {
-     //保存配置
             CustomCmdHandler.INSTANCE.clear();//自定义命令持久层清空
         } catch (Exception e) {
             e.printStackTrace();

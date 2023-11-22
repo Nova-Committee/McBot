@@ -1,5 +1,6 @@
 package cn.evole.mods.mcbot.init.event;
 
+import cn.evole.mods.mcbot.Const;
 import cn.evole.mods.mcbot.McBot;
 import cn.evole.mods.mcbot.cmds.CmdApi;
 import cn.evole.mods.mcbot.init.config.ModConfig;
@@ -11,6 +12,7 @@ import cn.evole.onebot.sdk.event.message.GuildMessageEvent;
 import cn.evole.onebot.sdk.event.meta.LifecycleMetaEvent;
 import cn.evole.onebot.sdk.event.notice.group.GroupDecreaseNoticeEvent;
 import cn.evole.onebot.sdk.event.notice.group.GroupIncreaseNoticeEvent;
+import cn.evole.onebot.sdk.util.BotUtils;
 import cn.evole.onebot.sdk.util.MsgUtils;
 import lombok.val;
 
@@ -50,9 +52,10 @@ public class IBotEvent {
                             send = split[1];
                         else return;
                     }
-                    String nick = McBot.bot.getGroupMemberInfo(event.getGroupId(), event.getUserId(), true).getData().getCard();
+                    Const.LOGGER.info(send);
+                    var nick = McBot.bot.getGroupMemberInfo(event.getGroupId(), event.getUserId(), true);
                     String groupNick = ModConfig.INSTANCE.getCmd().isGroupNickOn() // 是否使用群昵称
-                            ? nick == null ? event.getSender().getCard() : nick // 防止api返回为空
+                            ? nick == null ? event.getSender().getCard() : nick.getData().getCard() // 防止api返回为空
                             : event.getSender().getNickname();
 
                     String toSend = ModConfig.INSTANCE.getCmd().isGamePrefixOn()
@@ -88,8 +91,8 @@ public class IBotEvent {
                 if (ModConfig.INSTANCE.getCommon().getGroupIdList().contains(event.getGroupId())
                         && ModConfig.INSTANCE.getStatus().isSEnable()
                         && ModConfig.INSTANCE.getStatus().isSQqWelcomeEnable()) {
-
-                    McBot.bot.sendGroupMsg(event.getGroupId(), MsgUtils.builder().at(event.getUserId()).build() + "\n" + ModConfig.INSTANCE.getCmd().getWelcomeNotice(), false);
+                    var msg = MsgUtils.builder().at(event.getUserId()).build() + "\n" + ModConfig.INSTANCE.getCmd().getWelcomeNotice();
+                    Const.groupMsg(event.getGroupId(), msg);
                 }
             }
         });
@@ -100,7 +103,9 @@ public class IBotEvent {
                 if (ModConfig.INSTANCE.getCommon().getGroupIdList().contains(event.getGroupId())
                         && ModConfig.INSTANCE.getStatus().isSEnable()
                         && ModConfig.INSTANCE.getStatus().isSQqLeaveEnable()) {
-                    McBot.bot.sendGroupMsg(event.getGroupId(), MsgUtils.builder().text(String.valueOf(event.getUserId())).build() + "\n" +ModConfig.INSTANCE.getCmd().getLeaveNotice(), false);
+
+                    var msg = MsgUtils.builder().text(String.valueOf(event.getUserId())).build() + "\n" +ModConfig.INSTANCE.getCmd().getLeaveNotice();
+                    Const.groupMsg(event.getGroupId(), msg);
                 }
             }
         });
@@ -126,9 +131,9 @@ public class IBotEvent {
                             send = split[1];
                         else return;
                     }
-                    String nick = McBot.bot.getGuildMemberProfile(event.getGuildId(), String.valueOf(event.getUserId())).getData().getNickname();
+                    var nick = McBot.bot.getGuildMemberProfile(event.getGuildId(), String.valueOf(event.getUserId()));
                     String guildNick = ModConfig.INSTANCE.getCmd().isGroupNickOn()
-                            ? nick == null ? event.getSender().getNickname() : nick
+                            ? nick == null ? event.getSender().getNickname() : nick.getData().getNickname()
                             : event.getSender().getNickname();
 
 
@@ -167,15 +172,14 @@ public class IBotEvent {
                 if (!event.getSubType().equals("connect")) return;
                 if (!ModConfig.INSTANCE.getCommon().getGroupIdList().isEmpty()
                 ) {
-                    for (val id : ModConfig.INSTANCE.getCommon().getGroupIdList()){
-                        McBot.bot.sendGroupMsg(id, "▌ 群服互联已连接 ┈━═☆", false);
-                    }
+                    var msg = "▌ 群服互联已连接 ┈━═☆";
+                    Const.sendGroupMsg(msg);
+
                 }
                 if (!ModConfig.INSTANCE.getCommon().getChannelIdList().isEmpty()
                 ) {
-                    for (val id : ModConfig.INSTANCE.getCommon().getChannelIdList()){
-                        McBot.bot.sendGuildMsg(ModConfig.INSTANCE.getCommon().getGuildId() , id, "▌ 群服互联已连接 ┈━═☆");
-                    }
+                    var msg = "▌ 群服互联已连接 ┈━═☆";
+                    Const.sendGuildMsg(msg);
                 }
             }
         });

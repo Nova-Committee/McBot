@@ -1,6 +1,7 @@
 //#if MC >= 11400
 package cn.evole.mods.mcbot.init.mixins;
 
+import cn.evole.mods.mcbot.Const;
 import cn.evole.mods.mcbot.McBot;
 import cn.evole.mods.mcbot.init.config.ModConfig;
 import com.mojang.brigadier.CommandDispatcher;
@@ -39,17 +40,13 @@ public abstract class MixinSystemCmd {
                         && ModConfig.INSTANCE.getStatus().isSChatEnable()
                         && ModConfig.INSTANCE.getStatus().isSEnable()
                         && ModConfig.INSTANCE.getCmd().isMcPrefixOn()) {
-                    if (ModConfig.INSTANCE.getCommon().isGuildOn() && !ModConfig.INSTANCE.getCommon().getChannelIdList().isEmpty()) {
-                        for (String id : ModConfig.INSTANCE.getCommon().getChannelIdList())
-                            McBot.bot.sendGuildMsg(ModConfig.INSTANCE.getCommon().getGuildId(),
-                                    id,
-                                    String.format("[" + ModConfig.INSTANCE.getCmd().getMcPrefix() + "] %s", new String(component.getString().getBytes(StandardCharsets.UTF_8), StandardCharsets.UTF_8)));
-                    } else {
-                        for (long id : ModConfig.INSTANCE.getCommon().getGroupIdList())
-                            McBot.bot.sendGroupMsg(id,
-                                    String.format("[" + ModConfig.INSTANCE.getCmd().getMcPrefix() + "] %s", new String(component.getString().getBytes(StandardCharsets.UTF_8), StandardCharsets.UTF_8)),
-                                    true);
-                    }
+                if (ModConfig.INSTANCE.getCommon().isGuildOn() && !ModConfig.INSTANCE.getCommon().getChannelIdList().isEmpty()) {
+                    var msg = String.format("[" + ModConfig.INSTANCE.getCmd().getMcPrefix() + "] %s", new String(component.getString().getBytes(StandardCharsets.UTF_8), StandardCharsets.UTF_8));
+                    Const.sendGuildMsg(msg);
+                } else {
+                    var msg = String.format("[" + ModConfig.INSTANCE.getCmd().getMcPrefix() + "] %s", new String(component.getString().getBytes(StandardCharsets.UTF_8), StandardCharsets.UTF_8));
+                    Const.sendGroupMsg(msg);
+                }
             }
             if (entity != null) {
                 commandContext.getSource().getServer().getPlayerList().broadcastMessage(component2, false);

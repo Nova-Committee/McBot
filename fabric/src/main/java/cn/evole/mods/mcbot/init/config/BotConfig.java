@@ -23,6 +23,7 @@ public class BotConfig extends AutoLoadTomlConfig {
     private boolean miraiHttp = false;
     private boolean reconnect = true;
     private int maxReconnectAttempts = 20;
+    private String msgType = "string";
 
     public BotConfig() {
         super(null);
@@ -34,6 +35,6 @@ public class BotConfig extends AutoLoadTomlConfig {
     }
 
     public cn.evole.onebot.client.config.BotConfig toBot(){
-        return new cn.evole.onebot.client.config.BotConfig(url, token, botId, isAccessToken, miraiHttp, reconnect, maxReconnectAttempts);
+        return new cn.evole.onebot.client.config.BotConfig(url, token, botId, isAccessToken, miraiHttp, reconnect, maxReconnectAttempts, msgType);
     }
 }

@@ -1,5 +1,7 @@
 package cn.evole.mods.mcbot;
 
+import cn.evole.mods.mcbot.init.config.ModConfig;
+import cn.evole.onebot.sdk.util.BotUtils;
 import net.fabricmc.loader.api.FabricLoader;
 import java.nio.file.Path;
 
@@ -29,6 +31,36 @@ public class Const {
 
     public static boolean isLoad(String modId){
         return FabricLoader.getInstance().isModLoaded(modId);
+    }
+
+    public static void sendGroupMsg(String message){
+        for (long id : ModConfig.INSTANCE.getCommon().getGroupIdList()){
+            groupMsg(id, message);
+        }
+    }
+
+    public static void groupMsg(long id, String message){
+        if (ModConfig.INSTANCE.getBotConfig().getMsgType().equalsIgnoreCase("string")){
+            McBot.bot.sendGroupMsg(id, message, false);
+        }
+        else {
+            McBot.bot.sendGroupMsg(id, BotUtils.rawToJson(message), false);
+        }
+    }
+
+    public static void sendGuildMsg(String message){
+        for (String id : ModConfig.INSTANCE.getCommon().getChannelIdList()){
+            guildMsg(ModConfig.INSTANCE.getCommon().getGuildId(), id, message);
+        }
+    }
+
+    public static void guildMsg(String guildId, String channelId, String message){
+        if (ModConfig.INSTANCE.getBotConfig().getMsgType().equalsIgnoreCase("string")){
+            McBot.bot.sendGuildMsg(guildId, channelId, message);
+        }
+        else {
+            McBot.bot.sendGuildMsg(guildId, channelId, BotUtils.rawToJson(message));
+        }
     }
 
 }

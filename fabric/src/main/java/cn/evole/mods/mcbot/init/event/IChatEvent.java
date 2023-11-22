@@ -1,10 +1,9 @@
 package cn.evole.mods.mcbot.init.event;
 
-import cn.evole.mods.mcbot.McBot;
+import cn.evole.mods.mcbot.Const;
 import cn.evole.mods.mcbot.init.config.ModConfig;
 import lombok.val;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.Level;
 
 /**
  * Description:
@@ -23,26 +22,25 @@ public class IChatEvent {
                     && !player.getCommandSenderWorld().isClientSide
             ) {
                 if (ModConfig.INSTANCE.getCommon().isGuildOn() && !ModConfig.INSTANCE.getCommon().getChannelIdList().isEmpty()) {
-                    for (String id : ModConfig.INSTANCE.getCommon().getChannelIdList())
-                        McBot.bot.sendGuildMsg(ModConfig.INSTANCE.getCommon().getGuildId(),
-                                id,
-                                String.format(ModConfig.INSTANCE.getCmd().isMcPrefixOn()
-                                                ? "[" + ModConfig.INSTANCE.getCmd().getMcPrefix() + "]<%s> %s"
-                                                : "<%s> %s",
+                        var msg = String.format(ModConfig.INSTANCE.getCmd().isMcPrefixOn()
+                                        ? "[" + ModConfig.INSTANCE.getCmd().getMcPrefix() + "]<%s> %s"
+                                        : "<%s> %s",
                                         player.getDisplayName().getString(),
                                         ModConfig.INSTANCE.getCmd().isMcChatPrefixOn()
-                                                && ModConfig.INSTANCE.getCmd().getMcChatPrefix().equals(split[0]) ? split[1] : message));
+                                        && ModConfig.INSTANCE.getCmd().getMcChatPrefix().equals(split[0]) ? split[1] : message);
+
+                        Const.sendGuildMsg(msg);
+
                 } else {
-                    for (long id : ModConfig.INSTANCE.getCommon().getGroupIdList())
-                        McBot.bot.sendGroupMsg(
-                                id,
-                                String.format(ModConfig.INSTANCE.getCmd().isMcPrefixOn()
-                                                ? "[" + ModConfig.INSTANCE.getCmd().getMcPrefix() + "]<%s> %s"
-                                                : "<%s> %s",
+                        var msg = String.format(ModConfig.INSTANCE.getCmd().isMcPrefixOn()
+                                        ? "[" + ModConfig.INSTANCE.getCmd().getMcPrefix() + "]<%s> %s"
+                                        : "<%s> %s",
                                         player.getDisplayName().getString(),
                                         ModConfig.INSTANCE.getCmd().isMcChatPrefixOn()
-                                                && ModConfig.INSTANCE.getCmd().getMcChatPrefix().equals(split[0]) ? split[1] : message),
-                                false);
+                                        && ModConfig.INSTANCE.getCmd().getMcChatPrefix().equals(split[0]) ? split[1] : message);
+
+                        Const.sendGroupMsg(msg);
+
                 }
 
 

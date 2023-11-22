@@ -1,8 +1,10 @@
 package cn.evole.mods.mcbot.init.event;
 
+import cn.evole.mods.mcbot.Const;
 import cn.evole.mods.mcbot.McBot;
 import cn.evole.mods.mcbot.init.config.ModConfig;
 import cn.evole.mods.mcbot.util.locale.I18n;
+import cn.evole.onebot.sdk.util.BotUtils;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.DisplayInfo;
 import net.minecraft.advancements.FrameType;
@@ -25,32 +27,20 @@ import net.minecraft.world.level.Level;
 public class IPlayerEvent {
     public static void loggedIn(Level world, Player player) {
         if (ModConfig.INSTANCE.getStatus().isSJoinEnable() && ModConfig.INSTANCE.getStatus().isSEnable()) {
-            if (ModConfig.INSTANCE.getCommon().isGuildOn() && !ModConfig.INSTANCE.getCommon().getChannelIdList().isEmpty()) {
-                for (String id : ModConfig.INSTANCE.getCommon().getChannelIdList())
-                    McBot.bot.sendGuildMsg(ModConfig.INSTANCE.getCommon().getGuildId(), id, player.getDisplayName().getString() + " 加入了服务器");
-            } else {
-                for (long id : ModConfig.INSTANCE.getCommon().getGroupIdList())
-                    McBot.bot.sendGroupMsg(id, player.getDisplayName().getString() + " 加入了服务器", false);
-            }
+            var msg = player.getDisplayName().getString() + " 加入了服务器";
+            send(msg);
         }
     }
     public static void loggedOut(Level world, Player player) {
-
-
-            if (ModConfig.INSTANCE.getStatus().isSLeaveEnable() && ModConfig.INSTANCE.getStatus().isSEnable()) {
-                if (ModConfig.INSTANCE.getCommon().isGuildOn() && !ModConfig.INSTANCE.getCommon().getChannelIdList().isEmpty()) {
-                    for (String id : ModConfig.INSTANCE.getCommon().getChannelIdList())
-                        McBot.bot.sendGuildMsg(ModConfig.INSTANCE.getCommon().getGuildId(), id, player.getDisplayName().getString() + " 离开了服务器");
-                } else {
-                    for (long id : ModConfig.INSTANCE.getCommon().getGroupIdList())
-                        McBot.bot.sendGroupMsg(id, player.getDisplayName().getString() + " 离开了服务器", false);
-                }
-            }
+        if (ModConfig.INSTANCE.getStatus().isSLeaveEnable() && ModConfig.INSTANCE.getStatus().isSEnable()) {
+            var msg = player.getDisplayName().getString() + " 离开了服务器";
+            send(msg);
+        }
     }
     public static void death(DamageSource source, ServerPlayer player) {
             if (player != null && ModConfig.INSTANCE.getStatus().isSDeathEnable() && ModConfig.INSTANCE.getStatus().isSEnable()) {
                 LivingEntity livingEntity2 = player.getKillCredit();
-                String msg = "";
+                String message = "";
 
                 //#if MC >= 11904
                 String string = "mcbot.death.attack." + source.type().msgId();
@@ -60,7 +50,7 @@ public class IPlayerEvent {
 
                 if (source.getEntity() == null && source.getDirectEntity() == null) {
                     String string2 = string + ".player";
-                    msg = livingEntity2 != null ? I18n.get(string2, player.getDisplayName().getString(), livingEntity2.getDisplayName().getString()) : I18n.get(string, player.getDisplayName().getString());
+                    message = livingEntity2 != null ? I18n.get(string2, player.getDisplayName().getString(), livingEntity2.getDisplayName().getString()) : I18n.get(string, player.getDisplayName().getString());
                 } else {//支持物品造成的死亡信息
                     assert source.getDirectEntity() != null;
                     Component component = source.getEntity() == null ? source.getDirectEntity().getDisplayName() : source.getEntity().getDisplayName();
@@ -71,16 +61,10 @@ public class IPlayerEvent {
                     } else {
                         itemStack = ItemStack.EMPTY;
                     }
-                    msg = !itemStack.isEmpty() && itemStack.hasCustomHoverName() ? I18n.get(string + ".item", player.getDisplayName().getString(), component.getString(), itemStack.getDisplayName().getString()) : I18n.get(string,player.getDisplayName().getString(), component.getString());
+                    message = !itemStack.isEmpty() && itemStack.hasCustomHoverName() ? I18n.get(string + ".item", player.getDisplayName().getString(), component.getString(), itemStack.getDisplayName().getString()) : I18n.get(string,player.getDisplayName().getString(), component.getString());
                 }
-
-                if (ModConfig.INSTANCE.getCommon().isGuildOn() && !ModConfig.INSTANCE.getCommon().getChannelIdList().isEmpty()) {
-                    for (String id : ModConfig.INSTANCE.getCommon().getChannelIdList())
-                        McBot.bot.sendGuildMsg(ModConfig.INSTANCE.getCommon().getGuildId(), id, String.format(msg, player.getDisplayName().getString()));
-                } else {
-                    for (long id : ModConfig.INSTANCE.getCommon().getGroupIdList())
-                        McBot.bot.sendGroupMsg(id, String.format(msg, player.getDisplayName().getString()), false);
-                }
+                var msg = String.format(message, player.getDisplayName().getString());
+                send(msg);
             }
     }
 
@@ -98,16 +82,18 @@ public class IPlayerEvent {
                 //$$ DisplayInfo display = advancement.display().get();
                 //#endif
 
-                String msg = I18n.get("mcbot.chat.type.advancement." + display.getFrame().getName(), player.getDisplayName().getString(), I18n.get(display.getTitle().getString()));
-
-                if (ModConfig.INSTANCE.getCommon().isGuildOn() && !ModConfig.INSTANCE.getCommon().getChannelIdList().isEmpty()) {
-                    for (String id : ModConfig.INSTANCE.getCommon().getChannelIdList())
-                        McBot.bot.sendGuildMsg(ModConfig.INSTANCE.getCommon().getGuildId(), id, msg);
-                } else {
-                    for (long id : ModConfig.INSTANCE.getCommon().getGroupIdList())
-                        McBot.bot.sendGroupMsg(id, msg, false);
-                }
+                String message = I18n.get("mcbot.chat.type.advancement." + display.getFrame().getName(), player.getDisplayName().getString(), I18n.get(display.getTitle().getString()));
+                var msg = String.format(message, player.getDisplayName().getString());
+                send(msg);
             }
+    }
+
+    private static void send(String msg){
+        if (ModConfig.INSTANCE.getCommon().isGuildOn() && !ModConfig.INSTANCE.getCommon().getChannelIdList().isEmpty()) {
+            Const.sendGuildMsg(msg);
+        } else {
+            Const.sendGroupMsg(msg);
+        }
     }
 
 }
