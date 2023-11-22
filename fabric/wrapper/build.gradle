@@ -57,7 +57,7 @@ remapJar {
 processResources {
     filesMatching("fabric.mod.json") {
         def valueMap = [
-                "version": project.mod_version
+                "version": project.version
         ]
         expand valueMap
     }
