@@ -1,6 +1,6 @@
 package cn.evole.mods.mcbot.command;
 
-import cn.evole.mods.mcbot.IMcBot;
+import cn.evole.mods.mcbot.init.config.ModConfig;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import lombok.val;
@@ -16,8 +16,8 @@ public class AddChannelIDCommand {
 
     public static int execute(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
         val id = context.getArgument("ChannelID", String.class);
-        IMcBot.config.getCommon().setGuildOn(true);
-        if (IMcBot.config.getCommon().getChannelIdList().contains(id)) {
+        ModConfig.INSTANCE.getCommon().setGuildOn(true);
+        if (ModConfig.INSTANCE.getCommon().getChannelIdList().contains(id)) {
 
             //#if MC >= 12000
             context.getSource().sendSuccess(()->Component.literal("子频道号:" + id + "已经出现了！"), true);
@@ -28,9 +28,9 @@ public class AddChannelIDCommand {
             //#endif
 
         } else {
-            IMcBot.config.getCommon().addChannelId(id);
+            ModConfig.INSTANCE.getCommon().addChannelId(id);
         }
-        IMcBot.config.save();
+        ModConfig.INSTANCE.save();
         return 1;
     }
 

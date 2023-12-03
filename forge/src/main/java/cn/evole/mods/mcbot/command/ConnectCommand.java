@@ -3,19 +3,19 @@ package cn.evole.mods.mcbot.command;
 
 import cn.evole.mods.mcbot.Const;
 import cn.evole.mods.mcbot.IMcBot;
+import cn.evole.mods.mcbot.init.config.ModConfig;
 import cn.evole.onebot.client.connection.ConnectFactory;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import lombok.val;
 import net.minecraft.ChatFormatting;
 import net.minecraft.commands.CommandSourceStack;
+import java.util.regex.Pattern;
 //#if MC >= 11900
 import net.minecraft.network.chat.Component;
 //#else
 //$$ import net.minecraft.network.chat.TextComponent;
 //#endif
-
-import java.util.regex.Pattern;
 
 public class ConnectCommand {
 
@@ -26,7 +26,7 @@ public class ConnectCommand {
         val pattern = Pattern.compile("(\\d+\\.\\d+\\.\\d+\\.\\d+):(\\d+)");
         val matcher = pattern.matcher(parameter);
         if (matcher.find()) {
-            IMcBot.config.getBotConfig().setUrl("ws://" + parameter);
+            ModConfig.INSTANCE.getBotConfig().setUrl("ws://" + parameter);
             //#if MC >= 12000
             context.getSource().sendSuccess(()->Component.literal("尝试链接框架" + ChatFormatting.LIGHT_PURPLE + "cqhttp"), true);
             //#elseif MC < 11900
@@ -34,20 +34,20 @@ public class ConnectCommand {
             //#else
             //$$ context.getSource().sendSuccess(Component.literal("尝试链接框架" + ChatFormatting.LIGHT_PURPLE + "cqhttp"), true);
             //#endif
-            IMcBot.config.getBotConfig().setMiraiHttp(false);
+            ModConfig.INSTANCE.getBotConfig().setMiraiHttp(false);
 
             try {
                 IMcBot.app = new Thread(() -> {
-                    IMcBot.service = new ConnectFactory(IMcBot.config.getBotConfig(), IMcBot.blockingQueue);//创建websocket连接
+                    IMcBot.service = new ConnectFactory(ModConfig.INSTANCE.getBotConfig().toBot(), IMcBot.blockingQueue);//创建websocket连接
                     IMcBot.bot = IMcBot.service.ws.createBot();//创建机器人实例
                 }, "BotServer");
                 IMcBot.app.start();
             } catch (Exception e) {
                 Const.LOGGER.error("§c机器人服务端配置不正确");
             }
-            IMcBot.config.getStatus().setREnable(true);
-            IMcBot.config.getCommon().setEnable(true);
-            IMcBot.config.save();
+            ModConfig.INSTANCE.getStatus().setREnable(true);
+            ModConfig.INSTANCE.getCommon().setEnable(true);
+            ModConfig.INSTANCE.save();
             return 1;
 
         } else {
@@ -68,7 +68,7 @@ public class ConnectCommand {
         val pattern = Pattern.compile("(\\d+\\.\\d+\\.\\d+\\.\\d+):(\\d+)");
         val matcher = pattern.matcher(parameter);
         if (matcher.find()) {
-            IMcBot.config.getBotConfig().setUrl("ws://" + parameter);
+            ModConfig.INSTANCE.getBotConfig().setUrl("ws://" + parameter);
             //#if MC >= 12000
             context.getSource().sendSuccess(()->Component.literal("尝试链接框架" + ChatFormatting.LIGHT_PURPLE + "mirai"), true);
             //#elseif MC < 11900
@@ -76,19 +76,19 @@ public class ConnectCommand {
             //#else
             //$$ context.getSource().sendSuccess(Component.literal("尝试链接框架" + ChatFormatting.LIGHT_PURPLE + "mirai"), true);
             //#endif
-            IMcBot.config.getBotConfig().setMiraiHttp(true);
+            ModConfig.INSTANCE.getBotConfig().setMiraiHttp(true);
             try {
                 IMcBot.app = new Thread(() -> {
-                    IMcBot.service = new ConnectFactory(IMcBot.config.getBotConfig(), IMcBot.blockingQueue);//创建websocket连接
+                    IMcBot.service = new ConnectFactory(ModConfig.INSTANCE.getBotConfig().toBot(), IMcBot.blockingQueue);//创建websocket连接
                     IMcBot.bot = IMcBot.service.ws.createBot();//创建机器人实例
                 }, "BotServer");
                 IMcBot.app.start();
             } catch (Exception e) {
                 Const.LOGGER.error("§c机器人服务端配置不正确");
             }
-            IMcBot.config.getStatus().setREnable(true);
-            IMcBot.config.getCommon().setEnable(true);
-            IMcBot.config.save();
+            ModConfig.INSTANCE.getStatus().setREnable(true);
+            ModConfig.INSTANCE.getCommon().setEnable(true);
+            ModConfig.INSTANCE.save();
             return 1;
 
         } else {
@@ -111,19 +111,19 @@ public class ConnectCommand {
         //#else
         //$$ context.getSource().sendSuccess(Component.literal("尝试链接框架" + ChatFormatting.LIGHT_PURPLE + "cqhttp"), true);
         //#endif
-        IMcBot.config.getBotConfig().setMiraiHttp(false);
+        ModConfig.INSTANCE.getBotConfig().setMiraiHttp(false);
         try {
             IMcBot.app = new Thread(() -> {
-                    IMcBot.service = new ConnectFactory(IMcBot.config.getBotConfig(), IMcBot.blockingQueue);//创建websocket连接
-                    IMcBot.bot = IMcBot.service.ws.createBot();//创建机器人实例
+                IMcBot.service = new ConnectFactory(ModConfig.INSTANCE.getBotConfig().toBot(), IMcBot.blockingQueue);//创建websocket连接
+                IMcBot.bot = IMcBot.service.ws.createBot();//创建机器人实例
                 }, "BotServer");
             IMcBot.app.start();
         } catch (Exception e) {
             Const.LOGGER.error("§c机器人服务端配置不正确");
         }
-        IMcBot.config.getStatus().setREnable(true);
-        IMcBot.config.getCommon().setEnable(true);
-        IMcBot.config.save();
+        ModConfig.INSTANCE.getStatus().setREnable(true);
+        ModConfig.INSTANCE.getCommon().setEnable(true);
+        ModConfig.INSTANCE.save();
         return 1;
 
     }
@@ -136,20 +136,19 @@ public class ConnectCommand {
         //#else
         //$$ context.getSource().sendSuccess(Component.literal("尝试链接框架" + ChatFormatting.LIGHT_PURPLE + "mirai"), true);
         //#endif
-        IMcBot.config.getBotConfig().setMiraiHttp(true);
+        ModConfig.INSTANCE.getBotConfig().setMiraiHttp(true);
         try {
             IMcBot.app = new Thread(() -> {
-                    IMcBot.service = new ConnectFactory(IMcBot.config.getBotConfig(), IMcBot.blockingQueue);//创建websocket连接
-                    IMcBot.bot = IMcBot.service.ws.createBot();//创建机器人实例
+                IMcBot.service = new ConnectFactory(ModConfig.INSTANCE.getBotConfig().toBot(), IMcBot.blockingQueue);//创建websocket连接
+                IMcBot.bot = IMcBot.service.ws.createBot();//创建机器人实例
                 }, "BotServer");
             IMcBot.app.start();
         } catch (Exception e) {
             Const.LOGGER.error("§c机器人服务端配置不正确");
         }
-        IMcBot.config.getStatus().setREnable(true);
-        IMcBot.config.getCommon().setEnable(true);
-
-        IMcBot.config.save();
+        ModConfig.INSTANCE.getStatus().setREnable(true);
+        ModConfig.INSTANCE.getCommon().setEnable(true);
+        ModConfig.INSTANCE.save();
         return 1;
 
     }

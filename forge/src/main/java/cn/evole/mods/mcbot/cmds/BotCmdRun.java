@@ -8,6 +8,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -59,7 +60,7 @@ public class BotCmdRun extends CommandSourceStack {
     }
     //#else
     //$$ @Override
-    //$$ public void sendSuccess(Component component, boolean p_81356_) {
+    //$$ public void sendSuccess(@NotNull Component component, boolean p_81356_) {
     //$$     super.sendSuccess(component, p_81356_);
     //$$     this.outPut.add(component.getString());
     //$$ }

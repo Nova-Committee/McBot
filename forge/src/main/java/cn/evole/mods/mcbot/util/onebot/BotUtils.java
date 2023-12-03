@@ -26,7 +26,7 @@ public class BotUtils {
 
     private static boolean isVar(String msg) {
         AtomicBoolean match = new AtomicBoolean(false);
-        IMcBot.CMD.getCustomCmds().forEach(
+        CustomCmdHandler.INSTANCE.getCustomCmds().forEach(
                 cmd -> {
                     if (cmd.getCmdContent().contains("%")) {//是否变量模板
                         if (msg.contains(cmd.getCmdAlies()))//去除命令符号

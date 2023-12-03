@@ -23,7 +23,7 @@ dependencies {
     forge "net.minecraftforge:forge:${project.minecraft_version}-${project.forge_version}"
 
     implementation forgeRuntimeLibrary(include("cn.evole.bot:OneBot-Client:${project.onebot_client_version}"))
-    implementation forgeRuntimeLibrary(include("cn.evole.config:AtomConfig-Yaml:${project.atomconfig_version}"))
+    implementation forgeRuntimeLibrary(include("cn.evole.config:AtomConfig-Toml:${project.toml_version}"))
 
     compileOnly 'org.projectlombok:lombok:1.18.24'
     annotationProcessor "org.projectlombok:lombok:1.18.24"

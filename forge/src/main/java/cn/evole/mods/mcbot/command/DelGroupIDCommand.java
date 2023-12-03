@@ -1,6 +1,6 @@
 package cn.evole.mods.mcbot.command;
 
-import cn.evole.mods.mcbot.IMcBot;
+import cn.evole.mods.mcbot.init.config.ModConfig;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import lombok.val;
@@ -10,13 +10,13 @@ import net.minecraft.network.chat.Component;
 //#else
 //$$ import net.minecraft.network.chat.TextComponent;
 //#endif
-public class RemoveGroupIDCommand {
+public class DelGroupIDCommand {
 
 
     public static int execute(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
         val id = context.getArgument("GroupID", Long.class);
-        if (IMcBot.config.getCommon().getGroupIdList().contains(id)) {
-            IMcBot.config.getCommon().removeGroupId(id);
+        if (ModConfig.INSTANCE.getCommon().getGroupIdList().contains(id)) {
+            ModConfig.INSTANCE.getCommon().removeGroupId(id);
         } else {
             //#if MC >= 12000
             context.getSource().sendSuccess(()->Component.literal("QQ群号:" + id + "并未出现！"), true);
@@ -26,7 +26,7 @@ public class RemoveGroupIDCommand {
             //$$ context.getSource().sendSuccess(Component.literal("QQ群号:" + id + "并未出现！"), true);
             //#endif
         }
-        IMcBot.config.save();
+        ModConfig.INSTANCE.save();
         return 1;
     }
 

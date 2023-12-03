@@ -9,6 +9,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import lombok.val;
+import net.minecraftforge.fml.loading.FMLPaths;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.filefilter.FileFilterUtils;
 
@@ -27,9 +28,11 @@ import java.util.concurrent.TimeUnit;
  * Version: 1.0
  */
 public class CustomCmdHandler {
-    private final Gson GSON ;
+    public static final CustomCmdHandler INSTANCE = new CustomCmdHandler();
+    private static final Gson GSON = (new GsonBuilder()).setPrettyPrinting().create();
 
-    private final File dir;
+    private static final File dir = FMLPaths.CONFIGDIR.get().resolve("mcbot/cmds/").toFile();
+
     private final Map<String, CustomCmd> customCmdMap = new LinkedHashMap<>();
 
     public List<CustomCmd> getCustomCmds() {
@@ -42,11 +45,6 @@ public class CustomCmdHandler {
 
     public Map<String, CustomCmd> getCustomCmdMap() {
         return customCmdMap;
-    }
-
-    public CustomCmdHandler(Path configDir){
-        this.dir = configDir.resolve("cmds/").toFile();
-        this.GSON = (new GsonBuilder()).setPrettyPrinting().create();
     }
 
     public void load() {
