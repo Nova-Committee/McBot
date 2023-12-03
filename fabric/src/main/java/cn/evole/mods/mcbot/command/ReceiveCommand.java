@@ -3,7 +3,6 @@ package cn.evole.mods.mcbot.command;
 import cn.evole.mods.mcbot.init.config.ModConfig;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import net.minecraft.network.chat.Component;
 import net.minecraft.commands.CommandSourceStack;
 //#if MC >= 11900
 import net.minecraft.network.chat.Component;
