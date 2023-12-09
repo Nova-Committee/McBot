@@ -28,10 +28,8 @@ public class I18n {
 
 
 
-    public static void init(Path folder) {
+    public static void init() {
         translations = new HashMap<>();
-        LANG_FOLDER = folder.resolve("lang");
-        FileUtils.checkFolder(LANG_FOLDER);
         LANG_FILE = "/lang/" + ModConfig.INSTANCE.getCommon().getLanguageSelect() + ".json";
         DEFAULT_LANG_FILE = "/lang/en_us.json";
 
