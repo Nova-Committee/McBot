@@ -23,7 +23,6 @@ import org.jetbrains.annotations.NotNull;
 
 @Mod(Const.MODID)
 public class McBot {
-    public static McBot INSTANCE = new McBot();
     public IMcBot mcBot;
     public McBot(){
         this.mcBot = new IMcBot(FMLPaths.CONFIGDIR.get());
