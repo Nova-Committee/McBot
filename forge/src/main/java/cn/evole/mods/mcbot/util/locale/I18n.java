@@ -22,16 +22,13 @@ import java.util.Optional;
 
 public class I18n {
     private static Map<String, String> translations;
-    public static Path LANG_FOLDER;
     public static String LANG_FILE;
     public static String DEFAULT_LANG_FILE;
 
 
 
-    public static void init(Path folder) {
+    public static void init() {
         translations = new HashMap<>();
-        LANG_FOLDER = folder.resolve("lang");
-        FileUtils.checkFolder(LANG_FOLDER);
         LANG_FILE = "assets/mcbot/lang/" + ModConfig.INSTANCE.getCommon().getLanguageSelect() + ".json";
         DEFAULT_LANG_FILE = "assets/mcbot/lang/en_us.json";
 

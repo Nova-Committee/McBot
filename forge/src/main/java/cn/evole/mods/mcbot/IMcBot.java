@@ -38,14 +38,14 @@ public class IMcBot {
     }
 
     public IMcBot(Path configDir) {
-        init(configDir);
+        init();
     }
 
-    public void init(Path config_dir) {
+    public void init() {
         CONFIG_FOLDER = Const.configDir.resolve("mcbot");
         FileUtils.checkFolder(CONFIG_FOLDER);
         CONFIG_FILE = CONFIG_FOLDER.resolve("config.toml");
-        I18n.init(config_dir);
+        I18n.init();
         Runtime.getRuntime().addShutdownHook(new Thread(IMcBot::killOutThreads));
     }
 
