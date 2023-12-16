@@ -28,10 +28,12 @@ public class I18n {
 
 
 
-    public static void init() {
+    public static void init(Path folder) {
         translations = new HashMap<>();
-        LANG_FILE = "/lang/" + ModConfig.INSTANCE.getCommon().getLanguageSelect() + ".json";
-        DEFAULT_LANG_FILE = "/lang/en_us.json";
+        LANG_FOLDER = folder.resolve("lang");
+        FileUtils.checkFolder(LANG_FOLDER);
+        LANG_FILE = "assets/mcbot/lang/" + ModConfig.INSTANCE.getCommon().getLanguageSelect() + ".json";
+        DEFAULT_LANG_FILE = "assets/mcbot/lang/en_us.json";
 
         Path optional = FMLLoader.getLoadingModList().getModFileById("mcbot").getFile().findResource(LANG_FILE);
 

@@ -45,7 +45,7 @@ public class IMcBot {
         CONFIG_FOLDER = Const.configDir.resolve("mcbot");
         FileUtils.checkFolder(CONFIG_FOLDER);
         CONFIG_FILE = CONFIG_FOLDER.resolve("config.toml");
-        I18n.init();
+        I18n.init(config_dir);
         Runtime.getRuntime().addShutdownHook(new Thread(IMcBot::killOutThreads));
     }
 

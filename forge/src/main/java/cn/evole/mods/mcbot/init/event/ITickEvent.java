@@ -33,11 +33,12 @@ public class ITickEvent {
     public static void register(MinecraftServer server) {
         String toSend = SEND_QUEUE.poll();
         if (ModConfig.INSTANCE != null
+                && server != null
                 && server.isDedicatedServer()
                 && toSend != null
         ) {
             //#if MC >= 11900
-            server.getPlayerList().broadcastSystemMessage(Component.literal(toSend), false);
+                        server.getPlayerList().broadcastSystemMessage(Component.literal(toSend), false);
             //#elseif MC <= 11502
             //$$ server.getPlayerList().broadcastMessage(new TextComponent(toSend), false);
             //#else
