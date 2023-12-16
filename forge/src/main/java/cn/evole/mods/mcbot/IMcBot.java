@@ -6,6 +6,7 @@ import cn.evole.mods.mcbot.init.event.IChatEvent;
 import cn.evole.mods.mcbot.init.event.IPlayerEvent;
 import cn.evole.mods.mcbot.init.event.ITickEvent;
 import cn.evole.mods.mcbot.init.handler.CustomCmdHandler;
+import cn.evole.mods.mcbot.util.locale.I18n;
 import cn.evole.onebot.client.connection.ConnectFactory;
 import cn.evole.onebot.client.core.Bot;
 import cn.evole.onebot.client.handler.EventBus;
@@ -44,6 +45,7 @@ public class IMcBot {
         CONFIG_FOLDER = Const.configDir.resolve("mcbot");
         FileUtils.checkFolder(CONFIG_FOLDER);
         CONFIG_FILE = CONFIG_FOLDER.resolve("config.toml");
+        I18n.init(config_dir);
         Runtime.getRuntime().addShutdownHook(new Thread(IMcBot::killOutThreads));
     }
 

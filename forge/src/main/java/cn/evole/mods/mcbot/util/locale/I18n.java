@@ -32,8 +32,8 @@ public class I18n {
         translations = new HashMap<>();
         LANG_FOLDER = folder.resolve("lang");
         FileUtils.checkFolder(LANG_FOLDER);
-        LANG_FILE = "/lang/" + ModConfig.INSTANCE.getCommon().getLanguageSelect() + ".json";
-        DEFAULT_LANG_FILE = "/lang/en_us.json";
+        LANG_FILE = "assets/mcbot/lang/" + ModConfig.INSTANCE.getCommon().getLanguageSelect() + ".json";
+        DEFAULT_LANG_FILE = "assets/mcbot/lang/en_us.json";
 
         Path optional = FMLLoader.getLoadingModList().getModFileById("mcbot").getFile().findResource(LANG_FILE);
 
