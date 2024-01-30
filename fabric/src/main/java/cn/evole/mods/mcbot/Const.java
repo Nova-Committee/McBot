@@ -41,12 +41,14 @@ public class Const {
     }
 
     public static void groupMsg(long id, String message){
+        MessageThread thread;
         if (ModConfig.INSTANCE.getBotConfig().getMsgType().equalsIgnoreCase("string")){
-            McBot.bot.sendGroupMsg(id, message, false);
+            thread = new MessageThread(id, message, false);
         }
         else {
-            McBot.bot.sendGroupMsg(id, BotUtils.rawToJson(message), false);
+            thread = new MessageThread(id, BotUtils.rawToJson(message), false);
         }
+        thread.start();
     }
 
     public static void sendGuildMsg(String message){
@@ -69,33 +71,53 @@ public class Const {
 }
 
 class MessageThread extends Thread {
-    private final String guildID;
-    private final String channelID;
-    private String messageString = null;
-    private JsonArray messageJson = null;
+    private long groupIDInt;
+    private String guildIDString;
+    private String messageString;
+    private JsonArray messageArray;
+    private boolean autoEscape;
+    private String channelIDString;
+    private final short mode;
 
+    MessageThread(long groupId, String msg, boolean autoEscape) {
+        this.mode = 0;
+        this.groupIDInt = groupId;
+        this.messageString = msg;
+        this.autoEscape = autoEscape;
+    }
+
+    MessageThread(long groupId, JsonArray msg, boolean autoEscape) {
+        this.mode = 1;
+        this.groupIDInt = groupId;
+        this.messageArray = msg;
+        this.autoEscape = autoEscape;
+    }
     MessageThread(String guildID, String channelID, String message) {
-        this.guildID = guildID;
-        this.channelID = channelID;
+        this.mode = 2;
+        this.guildIDString = guildID;
+        this.channelIDString = channelID;
         this.messageString = message;
     }
 
     MessageThread(String guildID, String channelID, JsonArray message) {
-        this.guildID = guildID;
-        this.channelID = channelID;
-        this.messageJson = message;
+        this.mode = 3;
+        this.guildIDString = guildID;
+        this.channelIDString = channelID;
+        this.messageArray = message;
     }
 
     public void run() {
-        if (this.messageString != null) {
-            McBot.bot.sendGuildMsg(this.guildID, this.channelID, this.messageString);
-        } else {
-            McBot.bot.sendGuildMsg(this.guildID, this.channelID, this.messageJson);
+        switch (mode) {
+            case 0 -> McBot.bot.sendGroupMsg(groupIDInt, messageString, autoEscape);
+            case 1 -> McBot.bot.sendGroupMsg(groupIDInt, messageArray, autoEscape);
+            case 2 -> McBot.bot.sendGuildMsg(guildIDString, channelIDString, messageString);
+            case 3 -> McBot.bot.sendGuildMsg(guildIDString, channelIDString, messageArray);
         }
     }
 
     public void start() {
-        Const.LOGGER.info(String.format("转发游戏消息: %s", messageString!= null ? messageString : messageJson));
+        Const.LOGGER.info(String.format("转发游戏消息: %s", messageString!= null ? messageString : messageArray));
         Thread thread = new Thread(this, "MessageThread");
+        thread.start();
     }
 }
