@@ -115,6 +115,4 @@ public class McBot implements ModInitializer {
             e.printStackTrace();
         }
     }
-
-
 }

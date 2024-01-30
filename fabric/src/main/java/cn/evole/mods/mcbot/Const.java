@@ -2,6 +2,7 @@ package cn.evole.mods.mcbot;
 
 import cn.evole.mods.mcbot.init.config.ModConfig;
 import cn.evole.onebot.sdk.util.BotUtils;
+import com.google.gson.JsonArray;
 import net.fabricmc.loader.api.FabricLoader;
 import java.nio.file.Path;
 
@@ -55,12 +56,46 @@ public class Const {
     }
 
     public static void guildMsg(String guildId, String channelId, String message){
+        // 发送消息时实际上所调用的函数。
+        MessageThread thread;
         if (ModConfig.INSTANCE.getBotConfig().getMsgType().equalsIgnoreCase("string")){
-            McBot.bot.sendGuildMsg(guildId, channelId, message);
+            thread = new MessageThread(guildId, channelId, message);
         }
         else {
-            McBot.bot.sendGuildMsg(guildId, channelId, BotUtils.rawToJson(message));
+            thread = new MessageThread(guildId, channelId, BotUtils.rawToJson(message));
+        }
+        thread.start();
+    }
+}
+
+class MessageThread extends Thread {
+    private final String guildID;
+    private final String channelID;
+    private String messageString = null;
+    private JsonArray messageJson = null;
+
+    MessageThread(String guildID, String channelID, String message) {
+        this.guildID = guildID;
+        this.channelID = channelID;
+        this.messageString = message;
+    }
+
+    MessageThread(String guildID, String channelID, JsonArray message) {
+        this.guildID = guildID;
+        this.channelID = channelID;
+        this.messageJson = message;
+    }
+
+    public void run() {
+        if (this.messageString != null) {
+            McBot.bot.sendGuildMsg(this.guildID, this.channelID, this.messageString);
+        } else {
+            McBot.bot.sendGuildMsg(this.guildID, this.channelID, this.messageJson);
         }
     }
 
+    public void start() {
+        Const.LOGGER.info(String.format("转发游戏消息: %s", messageString!= null ? messageString : messageJson));
+        Thread thread = new Thread(this, "MessageThread");
+    }
 }
