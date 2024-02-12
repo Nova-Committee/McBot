@@ -11,9 +11,9 @@ import cn.evole.onebot.client.handler.EventBus;
 import cn.evole.onebot.sdk.util.FileUtils;
 import net.fabricmc.api.ModInitializer;
 //#if MC >= 11900
-import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
+//$$ import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 //#else
-//$$ import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
+import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
 //#endif
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
@@ -45,9 +45,9 @@ public class McBot implements ModInitializer {
     public void onInitialize() {
         init();
         //#if MC >= 11900
-        CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> ICmdEvent.register(dispatcher));
+        //$$ CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> ICmdEvent.register(dispatcher));
         //#else
-        //$$ CommandRegistrationCallback.EVENT.register((dispatcher, dedicated) -> ICmdEvent.register(dispatcher));
+        CommandRegistrationCallback.EVENT.register((dispatcher, dedicated) -> ICmdEvent.register(dispatcher));
         //#endif
 
         ServerLifecycleEvents.SERVER_STARTING.register(this::onServerStarting);

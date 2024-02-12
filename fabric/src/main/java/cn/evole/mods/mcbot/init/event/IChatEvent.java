@@ -14,37 +14,37 @@ import net.minecraft.world.entity.player.Player;
 public class IChatEvent {
     public static void register(Player player, String message) {
 
-            val split = message.split(" ");
-            if (ModConfig.INSTANCE != null
-                    && ModConfig.INSTANCE.getStatus().isSChatEnable()
-                    && ModConfig.INSTANCE.getStatus().isSEnable()
-                    && !message.contains("CICode")
-                    && !player.getCommandSenderWorld().isClientSide
-            ) {
-                if (ModConfig.INSTANCE.getCommon().isGuildOn() && !ModConfig.INSTANCE.getCommon().getChannelIdList().isEmpty()) {
-                        var msg = String.format(ModConfig.INSTANCE.getCmd().isMcPrefixOn()
-                                        ? "[" + ModConfig.INSTANCE.getCmd().getMcPrefix() + "]<%s> %s"
-                                        : "<%s> %s",
-                                        player.getDisplayName().getString(),
-                                        ModConfig.INSTANCE.getCmd().isMcChatPrefixOn()
-                                        && ModConfig.INSTANCE.getCmd().getMcChatPrefix().equals(split[0]) ? split[1] : message);
+        val split = message.split(" ");
+        if (ModConfig.INSTANCE != null
+                && ModConfig.INSTANCE.getStatus().isSChatEnable()
+                && ModConfig.INSTANCE.getStatus().isSEnable()
+                && !message.contains("CICode")
+                && !player.getCommandSenderWorld().isClientSide
+        ) {
+            if (ModConfig.INSTANCE.getCommon().isGuildOn() && !ModConfig.INSTANCE.getCommon().getChannelIdList().isEmpty()) {
+                val msg = String.format(ModConfig.INSTANCE.getCmd().isMcPrefixOn()
+                                ? "[" + ModConfig.INSTANCE.getCmd().getMcPrefix() + "]<%s> %s"
+                                : "<%s> %s",
+                        player.getDisplayName().getString(),
+                        ModConfig.INSTANCE.getCmd().isMcChatPrefixOn()
+                                && ModConfig.INSTANCE.getCmd().getMcChatPrefix().equals(split[0]) ? split[1] : message);
 
-                        Const.sendGuildMsg(msg);
+                Const.sendGuildMsg(msg);
 
-                } else {
-                        var msg = String.format(ModConfig.INSTANCE.getCmd().isMcPrefixOn()
-                                        ? "[" + ModConfig.INSTANCE.getCmd().getMcPrefix() + "]<%s> %s"
-                                        : "<%s> %s",
-                                        player.getDisplayName().getString(),
-                                        ModConfig.INSTANCE.getCmd().isMcChatPrefixOn()
-                                        && ModConfig.INSTANCE.getCmd().getMcChatPrefix().equals(split[0]) ? split[1] : message);
+            } else {
+                val msg = String.format(ModConfig.INSTANCE.getCmd().isMcPrefixOn()
+                                ? "[" + ModConfig.INSTANCE.getCmd().getMcPrefix() + "]<%s> %s"
+                                : "<%s> %s",
+                        player.getDisplayName().getString(),
+                        ModConfig.INSTANCE.getCmd().isMcChatPrefixOn()
+                                && ModConfig.INSTANCE.getCmd().getMcChatPrefix().equals(split[0]) ? split[1] : message);
 
-                        Const.sendGroupMsg(msg);
-
-                }
-
+                Const.sendGroupMsg(msg);
 
             }
+
+
         }
+    }
 
 }

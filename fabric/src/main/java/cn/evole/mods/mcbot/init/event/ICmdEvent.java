@@ -2,9 +2,12 @@ package cn.evole.mods.mcbot.init.event;
 
 import cn.evole.mods.mcbot.command.*;
 import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.arguments.ArgumentType;
 import com.mojang.brigadier.arguments.BoolArgumentType;
 import com.mojang.brigadier.arguments.LongArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
+import com.mojang.brigadier.builder.LiteralArgumentBuilder;
+import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 
@@ -16,6 +19,14 @@ import net.minecraft.commands.Commands;
  * Version: 1.0
  */
 public class ICmdEvent {
+    public static LiteralArgumentBuilder<CommandSourceStack> literal(String name) {
+        return LiteralArgumentBuilder.literal(name);
+    }
+
+    public static <T> RequiredArgumentBuilder<CommandSourceStack, T> argument(String arg, ArgumentType<T> type) {
+        return RequiredArgumentBuilder.argument(arg, type);
+    }
+
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher){
         dispatcher.register(
                 Commands.literal("mcbot")

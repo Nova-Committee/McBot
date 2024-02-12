@@ -1,0 +1,48 @@
+name: Fabric Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          show-progress: false
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'dragonwell'
+
+      - name: Validate Gradle Wrapper
+        uses: gradle/wrapper-validation-action@v1
+
+      - name: Make Gradle Wrapper Executable
+        run: chmod +x ./fabric/gradlew
+
+      - name: Build
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: buildNeeded
+          build-root-directory: forge
+
+      - name: Find Correct JAR
+        id: findjar
+        run: |
+          output="$(find fabric/wrapper/build/libs/ ! -name "*-sources.jar" -type f -printf "%f\n")"
+          echo "::set-output name=jarname::$output"
+
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: fabric/wrapper/build/libs/${{ steps.findjar.outputs.jarname }}
+          body: Please refer to [CHANGELOG.md](https://github.com/Nova-Committee/re-avaritia/blob/master/CHANGELOG.md) for details.

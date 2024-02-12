@@ -16,16 +16,7 @@
   "environment": "server",
   "jars": [
     {
-      "file": "META-INF/jars/McBot-fabric-1.14.x-${version}.jar"
-    },
-    {
-      "file": "META-INF/jars/McBot-fabric-1.15.x-${version}.jar"
-    },
-    {
       "file": "META-INF/jars/McBot-fabric-1.16.x-${version}.jar"
-    },
-    {
-      "file": "META-INF/jars/McBot-fabric-1.17.x-${version}.jar"
     },
     {
       "file": "META-INF/jars/McBot-fabric-1.18.2-${version}.jar"

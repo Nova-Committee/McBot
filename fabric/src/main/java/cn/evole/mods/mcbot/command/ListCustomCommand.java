@@ -1,15 +1,15 @@
 package cn.evole.mods.mcbot.command;
 
 
+
 import cn.evole.mods.mcbot.init.config.ModConfig;
 import cn.evole.mods.mcbot.init.handler.CustomCmdHandler;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.commands.CommandSourceStack;
-//#if MC >= 11900
 import net.minecraft.network.chat.Component;
-//#else
-//$$ import net.minecraft.network.chat.TextComponent;
+//#if MC <11900
+import net.minecraft.network.chat.TextComponent;
 //#endif
 
 public class ListCustomCommand {
@@ -20,9 +20,9 @@ public class ListCustomCommand {
             out.append(s).append("\n");
         }
         //#if MC >= 12000
-        context.getSource().sendSuccess(()->Component.literal(out.toString()), true);
+        //$$ context.getSource().sendSuccess(()->Component.literal(out.toString()), true);
         //#elseif MC < 11900
-        //$$ context.getSource().sendSuccess(new TextComponent(out.toString()), true);
+        context.getSource().sendSuccess(new TextComponent(out.toString()), true);
         //#else
         //$$ context.getSource().sendSuccess(Component.literal(out.toString()), true);
         //#endif

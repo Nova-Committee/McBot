@@ -5,6 +5,7 @@ import cn.evole.mods.mcbot.Const;
 import cn.evole.mods.mcbot.McBot;
 import cn.evole.mods.mcbot.init.config.ModConfig;
 import com.mojang.brigadier.CommandDispatcher;
+import lombok.val;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
@@ -40,10 +41,10 @@ public abstract class MixinSystemCmd {
                         && ModConfig.INSTANCE.getStatus().isSEnable()
                         && ModConfig.INSTANCE.getCmd().isMcPrefixOn()) {
                     if (ModConfig.INSTANCE.getCommon().isGuildOn() && !ModConfig.INSTANCE.getCommon().getChannelIdList().isEmpty()) {
-                        var msg = String.format("[" + ModConfig.INSTANCE.getCmd().getMcPrefix() + "] %s", new String(playerChatMessage.serverContent().getString().getBytes(StandardCharsets.UTF_8), StandardCharsets.UTF_8));
+                        val msg = String.format("[" + ModConfig.INSTANCE.getCmd().getMcPrefix() + "] %s", new String(playerChatMessage.serverContent().getString().getBytes(StandardCharsets.UTF_8), StandardCharsets.UTF_8));
                         Const.sendGuildMsg(msg);
                     } else {
-                        var msg = String.format("[" + ModConfig.INSTANCE.getCmd().getMcPrefix() + "] %s", new String(playerChatMessage.serverContent().getString().getBytes(StandardCharsets.UTF_8), StandardCharsets.UTF_8));
+                        val msg = String.format("[" + ModConfig.INSTANCE.getCmd().getMcPrefix() + "] %s", new String(playerChatMessage.serverContent().getString().getBytes(StandardCharsets.UTF_8), StandardCharsets.UTF_8));
                         Const.sendGroupMsg(msg);
                     }
                 }

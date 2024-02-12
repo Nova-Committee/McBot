@@ -1,12 +1,13 @@
 package cn.evole.mods.mcbot.init.config;
 
-import cn.evole.libs.tomlj.TomlTable;
-import lombok.Getter;
-import lombok.Setter;
 import cn.evole.config.toml.AutoLoadTomlConfig;
 import cn.evole.config.toml.annotation.TableField;
+import lombok.Getter;
+import lombok.Setter;
+import org.tomlj.TomlTable;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Name: McBot-fabric / CommonConfig
