@@ -1,4 +1,4 @@
-name: Release
+name: Forge Release
 
 on:
   push:
@@ -38,5 +38,6 @@ jobs:
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
         with:
+          name: McBot-Forge-${{ github.ref }}
           files: forge/build/libs/*
           body: Please refer to [CHANGELOG.md](https://github.com/Nova-Committee/re-avaritia/blob/master/CHANGELOG.md) for details.
