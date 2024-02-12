@@ -52,7 +52,7 @@ public class IBotEvent {
                         else return;
                     }
                     Const.LOGGER.info(send);
-                    var nick = IMcBot.bot.getGroupMemberInfo(event.getGroupId(), event.getUserId(), true);
+                    val nick = IMcBot.bot.getGroupMemberInfo(event.getGroupId(), event.getUserId(), true);
                     String groupNick = ModConfig.INSTANCE.getCmd().isGroupNickOn() // 是否使用群昵称
                             ? nick == null ? event.getSender().getCard() : nick.getData().getCard() // 防止api返回为空
                             : event.getSender().getNickname();
@@ -90,7 +90,7 @@ public class IBotEvent {
                 if (ModConfig.INSTANCE.getCommon().getGroupIdList().contains(event.getGroupId())
                         && ModConfig.INSTANCE.getStatus().isSEnable()
                         && ModConfig.INSTANCE.getStatus().isSQqWelcomeEnable()) {
-                    var msg = MsgUtils.builder().at(event.getUserId()).build() + "\n" + ModConfig.INSTANCE.getCmd().getWelcomeNotice();
+                    val msg = MsgUtils.builder().at(event.getUserId()).build() + "\n" + ModConfig.INSTANCE.getCmd().getWelcomeNotice();
                     Const.groupMsg(event.getGroupId(), msg);
                 }
             }
@@ -103,7 +103,7 @@ public class IBotEvent {
                         && ModConfig.INSTANCE.getStatus().isSEnable()
                         && ModConfig.INSTANCE.getStatus().isSQqLeaveEnable()) {
 
-                    var msg = MsgUtils.builder().text(String.valueOf(event.getUserId())).build() + "\n" +ModConfig.INSTANCE.getCmd().getLeaveNotice();
+                    val msg = MsgUtils.builder().text(String.valueOf(event.getUserId())).build() + "\n" +ModConfig.INSTANCE.getCmd().getLeaveNotice();
                     Const.groupMsg(event.getGroupId(), msg);
                 }
             }
@@ -130,7 +130,7 @@ public class IBotEvent {
                             send = split[1];
                         else return;
                     }
-                    var nick = IMcBot.bot.getGuildMemberProfile(event.getGuildId(), String.valueOf(event.getUserId()));
+                    val nick = IMcBot.bot.getGuildMemberProfile(event.getGuildId(), String.valueOf(event.getUserId()));
                     String guildNick = ModConfig.INSTANCE.getCmd().isGroupNickOn()
                             ? nick == null ? event.getSender().getNickname() : nick.getData().getNickname()
                             : event.getSender().getNickname();
@@ -171,13 +171,13 @@ public class IBotEvent {
                 if (!event.getSubType().equals("connect")) return;
                 if (!ModConfig.INSTANCE.getCommon().getGroupIdList().isEmpty()
                 ) {
-                    var msg = "▌ 群服互联已连接 ┈━═☆";
+                    val msg = "▌ 群服互联已连接 ┈━═☆";
                     Const.sendGroupMsg(msg);
 
                 }
                 if (!ModConfig.INSTANCE.getCommon().getChannelIdList().isEmpty()
                 ) {
-                    var msg = "▌ 群服互联已连接 ┈━═☆";
+                    val msg = "▌ 群服互联已连接 ┈━═☆";
                     Const.sendGuildMsg(msg);
                 }
             }

@@ -1,14 +1,11 @@
 package cn.evole.mods.mcbot.util.locale;
 
 import cn.evole.mods.mcbot.Const;
-import cn.evole.mods.mcbot.IMcBot;
 import cn.evole.mods.mcbot.init.config.ModConfig;
-import cn.evole.onebot.sdk.util.FileUtils;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import net.minecraft.locale.Language;
 import net.minecraftforge.fml.loading.FMLLoader;
-import net.minecraftforge.fml.loading.FMLPaths;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 
@@ -18,7 +15,6 @@ import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 public class I18n {
     private static Map<String, String> translations;
@@ -62,11 +58,7 @@ public class I18n {
             if (translation1 != null) {
                 return String.format(translation1, args);
             } else {
-                //#if MC >= 11600
                 String translation2 = Language.getInstance().getOrDefault(key);
-                //#else
-                //$$ String translation2 = Language.getInstance().getElement(key);
-                //#endif
                 if (!translation2.equals(key)) {
                     return String.format(translation2, args);
                 } else {

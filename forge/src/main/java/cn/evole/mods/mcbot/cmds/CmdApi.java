@@ -17,9 +17,9 @@ public class CmdApi {
     private static StringBuilder CmdMain(String cmd, boolean isOp) {
         StringBuilder result = new StringBuilder();
         //#if MC >= 11900
-        IMcBot.SERVER.getCommands().performPrefixedCommand(isOp ? BotCmdRun.OP : BotCmdRun.CUSTOM, cmd);//优雅
+        //$$ IMcBot.SERVER.getCommands().performPrefixedCommand(isOp ? BotCmdRun.OP : BotCmdRun.CUSTOM, cmd);//优雅
         //#else
-        //$$ IMcBot.SERVER.getCommands().performCommand(isOp ? BotCmdRun.OP : BotCmdRun.CUSTOM, cmd);
+        IMcBot.SERVER.getCommands().performCommand(isOp ? BotCmdRun.OP : BotCmdRun.CUSTOM, cmd);
         //#endif
         for (String s : (isOp ? BotCmdRun.OP.outPut : BotCmdRun.CUSTOM.outPut)) {
             result.append(s.replaceAll("§\\S", "")).append("\n");

@@ -9,13 +9,13 @@ import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.player.AdvancementEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.event.server.ServerAboutToStartEvent;
+import net.minecraftforge.event.server.ServerStartedEvent;
+import net.minecraftforge.event.server.ServerStoppedEvent;
+import net.minecraftforge.event.server.ServerStoppingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.loading.FMLPaths;
-import net.minecraftforge.fmlserverevents.FMLServerAboutToStartEvent;
-import net.minecraftforge.fmlserverevents.FMLServerStartedEvent;
-import net.minecraftforge.fmlserverevents.FMLServerStoppedEvent;
-import net.minecraftforge.fmlserverevents.FMLServerStoppingEvent;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -39,55 +39,55 @@ public class McBot {
     }
 
     @SubscribeEvent
-    public void onServerAboutToStart(@NotNull FMLServerAboutToStartEvent event) {
+    public void onServerAboutToStart(@NotNull ServerAboutToStartEvent event) {
         this.mcBot.onServerStarting(event.getServer());
     }
 
     @SubscribeEvent
-    public void onServerStarted(@NotNull FMLServerStartedEvent event) {
+    public void onServerStarted(@NotNull ServerStartedEvent event) {
         this.mcBot.onServerStarted(event.getServer());
     }
 
     @SubscribeEvent
-    public void onServerTick(TickEvent.WorldTickEvent event) {
-        this.mcBot.onServerTick(event.world.getServer());
+    public void onServerTick(TickEvent.LevelTickEvent event) {
+        this.mcBot.onServerTick(event.level.getServer());
     }
     @SubscribeEvent
     public void onServerChat(@NotNull ServerChatEvent event){
-        this.mcBot.onServerChat(event.getPlayer().level, event.getPlayer(), event.getMessage());
+        this.mcBot.onServerChat(event.getPlayer().level(), event.getPlayer(), event.getRawText());
     }
 
     @SubscribeEvent
-    public void onServerStopping(@NotNull FMLServerStoppingEvent event){
+    public void onServerStopping(@NotNull ServerStoppingEvent event){
         this.mcBot.onServerStopping(event.getServer());
     }
     @SubscribeEvent
-    public void onServerStopped(@NotNull FMLServerStoppedEvent event){
+    public void onServerStopped(@NotNull ServerStoppedEvent event){
         this.mcBot.onServerStopped(event.getServer());
     }
 
 
     @SubscribeEvent
     public void onPlayerIn(PlayerEvent.@NotNull PlayerLoggedInEvent  event){
-        this.mcBot.onPlayerLogIn(event.getPlayer().level, event.getPlayer());
+        this.mcBot.onPlayerLogIn(event.getEntity().level(), event.getEntity());
     }
     @SubscribeEvent
     public void onPlayerOut(PlayerEvent.@NotNull PlayerLoggedOutEvent  event){
-        this.mcBot.onPlayerLogOut(event.getPlayer().level, event.getPlayer());
+        this.mcBot.onPlayerLogOut(event.getEntity().level(), event.getEntity());
     }
     @SubscribeEvent
     public void onPlayerDeath(@NotNull LivingDeathEvent event){
-        if (event.getEntity() instanceof ServerPlayer serverPlayer)
+        if (event.getEntity() instanceof ServerPlayer)
             this.mcBot.onPlayerDeath(
-                    event.getEntity().level,
+                    event.getEntity().level(),
                     event.getSource(),
-                    serverPlayer);
+                    (ServerPlayer) event.getEntity());
     }
     @SubscribeEvent
-    public void onPlayerAdvancement(@NotNull AdvancementEvent event){
+    public void onPlayerAdvancement(@NotNull AdvancementEvent.AdvancementEarnEvent event){
         this.mcBot.onPlayerAdvancement(
-                event.getPlayer().level,
-                event.getPlayer(),
+                event.getEntity().level(),
+                event.getEntity(),
                 event.getAdvancement()
         );
     }

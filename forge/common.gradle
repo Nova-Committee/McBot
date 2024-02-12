@@ -40,11 +40,17 @@ remapJar {
 
 
 tasks.register('copyJars', Copy) {
+    delete "$projectDir/build/libs"
+    delete "$rootDir/build/libs"
     from "$projectDir/build/libs"
     into "$rootDir/build/libs"
 }
 
 buildNeeded.finalizedBy("copyJars")
+
+
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
 
 version = project.mod_version
 group = project.maven_group

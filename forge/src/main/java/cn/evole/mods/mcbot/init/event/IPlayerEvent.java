@@ -3,6 +3,7 @@ package cn.evole.mods.mcbot.init.event;
 import cn.evole.mods.mcbot.Const;
 import cn.evole.mods.mcbot.init.config.ModConfig;
 import cn.evole.mods.mcbot.util.locale.I18n;
+import lombok.val;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.DisplayInfo;
 import net.minecraft.network.chat.Component;
@@ -24,13 +25,13 @@ import net.minecraft.world.level.Level;
 public class IPlayerEvent {
     public static void loggedIn(Level world, Player player) {
         if (ModConfig.INSTANCE.getStatus().isSJoinEnable() && ModConfig.INSTANCE.getStatus().isSEnable()) {
-            var msg = player.getDisplayName().getString() + " 加入了服务器";
+            val msg = player.getDisplayName().getString() + " 加入了服务器";
             send(msg);
         }
     }
     public static void loggedOut(Level world, Player player) {
         if (ModConfig.INSTANCE.getStatus().isSLeaveEnable() && ModConfig.INSTANCE.getStatus().isSEnable()) {
-            var msg = player.getDisplayName().getString() + " 离开了服务器";
+            val msg = player.getDisplayName().getString() + " 离开了服务器";
             send(msg);
         }
     }
@@ -40,9 +41,9 @@ public class IPlayerEvent {
             String message = "";
 
             //#if MC >= 11904
-            String string = "mcbot.death.attack." + source.type().msgId();
+            //$$ String string = "mcbot.death.attack." + source.type().msgId();
             //#else
-            //$$ String string = "mcbot.death.attack." + source.getMsgId();
+            String string = "mcbot.death.attack." + source.getMsgId();
             //#endif
 
             if (source.getEntity() == null && source.getDirectEntity() == null) {
@@ -53,14 +54,14 @@ public class IPlayerEvent {
                 Component component = source.getEntity() == null ? source.getDirectEntity().getDisplayName() : source.getEntity().getDisplayName();
                 Entity sourceEntity = source.getEntity();
                 ItemStack itemStack;
-                if (sourceEntity instanceof LivingEntity livingEntity3) {
-                    itemStack = livingEntity3.getMainHandItem();
+                if (sourceEntity instanceof LivingEntity) {
+                    itemStack = ((LivingEntity)sourceEntity).getMainHandItem();
                 } else {
                     itemStack = ItemStack.EMPTY;
                 }
                 message = !itemStack.isEmpty() && itemStack.hasCustomHoverName() ? I18n.get(string + ".item", player.getDisplayName().getString(), component.getString(), itemStack.getDisplayName().getString()) : I18n.get(string,player.getDisplayName().getString(), component.getString());
             }
-            var msg = String.format(message, player.getDisplayName().getString());
+            val msg = String.format(message, player.getDisplayName().getString());
             send(msg);
         }
     }
@@ -80,7 +81,7 @@ public class IPlayerEvent {
             //#endif
 
             String message = I18n.get("mcbot.chat.type.advancement." + display.getFrame().getName(), player.getDisplayName().getString(), I18n.get(display.getTitle().getString()));
-            var msg = String.format(message, player.getDisplayName().getString());
+            val msg = String.format(message, player.getDisplayName().getString());
             send(msg);
         }
     }

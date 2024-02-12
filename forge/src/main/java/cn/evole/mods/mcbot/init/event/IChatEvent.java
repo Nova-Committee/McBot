@@ -22,7 +22,7 @@ public class IChatEvent {
                 && !player.getCommandSenderWorld().isClientSide
         ) {
             if (ModConfig.INSTANCE.getCommon().isGuildOn() && !ModConfig.INSTANCE.getCommon().getChannelIdList().isEmpty()) {
-                var msg = String.format(ModConfig.INSTANCE.getCmd().isMcPrefixOn()
+                val msg = String.format(ModConfig.INSTANCE.getCmd().isMcPrefixOn()
                                 ? "[" + ModConfig.INSTANCE.getCmd().getMcPrefix() + "]<%s> %s"
                                 : "<%s> %s",
                         player.getDisplayName().getString(),
@@ -32,7 +32,7 @@ public class IChatEvent {
                 Const.sendGuildMsg(msg);
 
             } else {
-                var msg = String.format(ModConfig.INSTANCE.getCmd().isMcPrefixOn()
+                val msg = String.format(ModConfig.INSTANCE.getCmd().isMcPrefixOn()
                                 ? "[" + ModConfig.INSTANCE.getCmd().getMcPrefix() + "]<%s> %s"
                                 : "<%s> %s",
                         player.getDisplayName().getString(),

@@ -8,10 +8,9 @@ import lombok.val;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.ClickEvent;
-//#if MC >= 11900
 import net.minecraft.network.chat.Component;
-//#else
-//$$ import net.minecraft.network.chat.TextComponent;
+//#if MC <11900
+import net.minecraft.network.chat.TextComponent;
 //#endif
 
 public class HelpCommand {
@@ -52,21 +51,17 @@ public class HelpCommand {
         val url = "https://github.com/Nova-Committee/Bot-Connect/issues/new";
         val end = "提交问题";
         //#if MC >= 11900
-        var urlC = Component.literal(url).setStyle(Style.EMPTY.withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://github.com/Nova-Committee/Bot-Connect/issues/new")));
-        var endC = Component.literal(end);
-        //#elseif MC < 11600
-        //$$ Style style = new Style();
-        //$$ var urlC = new TextComponent(url).setStyle(style.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://github.com/Nova-Committee/Bot-Connect/issues/new")));
-        //$$ var endC = new TextComponent(end);
+        //$$ val urlC = Component.literal(url).setStyle(Style.EMPTY.withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://github.com/Nova-Committee/Bot-Connect/issues/new")));
+        //$$ val endC = Component.literal(end);
         //#else
-        //$$ var urlC = new TextComponent(url).setStyle(Style.EMPTY.withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://github.com/Nova-Committee/Bot-Connect/issues/new")));
-        //$$ var endC = new TextComponent(end);
+        val urlC = new TextComponent(url).setStyle(Style.EMPTY.withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://github.com/Nova-Committee/Bot-Connect/issues/new")));
+        val endC = new TextComponent(end);
         //#endif
 
         //#if MC >= 12000
-        context.getSource().sendSuccess(()->Component.literal(toSend).append(urlC).append(endC), true);
+        //$$ context.getSource().sendSuccess(()->Component.literal(toSend).append(urlC).append(endC), true);
         //#elseif MC < 11900
-        //$$ context.getSource().sendSuccess(new TextComponent(toSend).append(urlC).append(endC), true);
+        context.getSource().sendSuccess(new TextComponent(toSend).append(urlC).append(endC), true);
         //#else
         //$$ context.getSource().sendSuccess(Component.literal(toSend).append(urlC).append(endC), true);
         //#endif

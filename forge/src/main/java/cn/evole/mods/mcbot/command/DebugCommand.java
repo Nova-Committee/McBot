@@ -5,10 +5,9 @@ import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.ChatFormatting;
 import net.minecraft.commands.CommandSourceStack;
-//#if MC >= 11900
 import net.minecraft.network.chat.Component;
-//#else
-//$$ import net.minecraft.network.chat.TextComponent;
+//#if MC <11900
+import net.minecraft.network.chat.TextComponent;
 //#endif
 /**
  * @author cnlimiter
@@ -21,17 +20,17 @@ public class DebugCommand {
         ModConfig.INSTANCE.getCommon().setDebug(isEnabled);
         if (isEnabled) {
             //#if MC >= 12000
-            context.getSource().sendSuccess(()->Component.literal("已开启开发者模式"), true);
+            //$$ context.getSource().sendSuccess(()->Component.literal("已开启开发者模式"), true);
             //#elseif MC < 11900
-            //$$ context.getSource().sendSuccess(new TextComponent("已开启开发者模式"), true);
+            context.getSource().sendSuccess(new TextComponent("已开启开发者模式"), true);
             //#else
             //$$ context.getSource().sendSuccess(Component.literal("已开启开发者模式"), true);
             //#endif
         } else {
             //#if MC >= 12000
-            context.getSource().sendSuccess(()->Component.literal("已关闭开发者模式"), true);
+            //$$ context.getSource().sendSuccess(()->Component.literal("已关闭开发者模式"), true);
             //#elseif MC < 11900
-            //$$ context.getSource().sendSuccess(new TextComponent("已关闭开发者模式"), true);
+            context.getSource().sendSuccess(new TextComponent("已关闭开发者模式"), true);
             //#else
             //$$ context.getSource().sendSuccess(Component.literal("已关闭开发者模式"), true);
             //#endif

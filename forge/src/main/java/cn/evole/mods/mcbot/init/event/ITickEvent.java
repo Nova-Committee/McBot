@@ -4,15 +4,13 @@ import net.minecraft.server.MinecraftServer;
 import java.util.LinkedList;
 import java.util.Queue;
 import cn.evole.mods.mcbot.init.config.ModConfig;
-//#if MC >= 11900
 import net.minecraft.network.chat.Component;
-//#else
-//$$ import net.minecraft.network.chat.TextComponent;
+//#if MC < 11900
+import net.minecraft.network.chat.TextComponent;
 //#endif
 //#if MC <= 11802
-//$$ import java.util.UUID;
-//$$ import net.minecraft.network.chat.ChatType;
-//$$ import net.minecraft.Util;
+import net.minecraft.network.chat.ChatType;
+import net.minecraft.Util;
 //#endif
 
 
@@ -38,11 +36,9 @@ public class ITickEvent {
                 && toSend != null
         ) {
             //#if MC >= 11900
-                        server.getPlayerList().broadcastSystemMessage(Component.literal(toSend), false);
-            //#elseif MC <= 11502
-            //$$ server.getPlayerList().broadcastMessage(new TextComponent(toSend), false);
+            //$$  server.getPlayerList().broadcastSystemMessage(Component.literal(toSend), false);
             //#else
-            //$$ server.getPlayerList().broadcastMessage(new TextComponent(toSend), ChatType.SYSTEM, Util.NIL_UUID);
+            server.getPlayerList().broadcastMessage(new TextComponent(toSend), ChatType.SYSTEM, Util.NIL_UUID);
             //#endif
         }
     }
