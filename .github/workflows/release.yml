@@ -1,0 +1,42 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          show-progress: false
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'dragonwell'
+
+      - name: Validate Gradle Wrapper
+        uses: gradle/wrapper-validation-action@v1
+
+      - name: Make Gradle Wrapper Executable
+        run: chmod +x ./forge/gradlew
+
+      - name: Build
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: buildNeeded
+          build-root-directory: forge
+
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: forge/build/libs/*
+          body: Please refer to [CHANGELOG.md](https://github.com/Nova-Committee/re-avaritia/blob/master/CHANGELOG.md) for details.
