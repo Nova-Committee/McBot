@@ -44,6 +44,6 @@ jobs:
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
         with:
-          name: McBot-Fabric-${{ github.ref }}
+          name: McBot-Fabric-${{ github.ref_name }}
           files: fabric/wrapper/build/libs/${{ steps.findjar.outputs.jarname }}
           body: Please refer to [CHANGELOG.md](https://github.com/Nova-Committee/re-avaritia/blob/master/CHANGELOG.md) for details.
