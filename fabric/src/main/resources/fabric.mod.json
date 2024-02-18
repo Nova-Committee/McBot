@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "id": "mcbot-${mc_version}",
+  "id": "mcbot_${mc_version}",
   "version": "${version}",
   "name": "McBot",
   "description": "Adds chat linking between QQ and Minecraft and QQ commands to request server data.",
@@ -26,6 +26,6 @@
     "fabricloader": ">=0.14.21",
     "fabric": "*",
     "minecraft": "${minecraft_dependency}",
-    "java": ">=17"
+    "java": ">=8"
   }
 }

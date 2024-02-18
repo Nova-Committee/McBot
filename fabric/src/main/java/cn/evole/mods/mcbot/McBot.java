@@ -110,6 +110,9 @@ public class McBot implements ModInitializer {
 
     private static void killOutThreads() {
         try {
+            bus.stop();//分发器关闭
+            service.stop();
+            app.interrupt();
             CustomCmdHandler.INSTANCE.clear();//自定义命令持久层清空
         } catch (Exception e) {
             e.printStackTrace();

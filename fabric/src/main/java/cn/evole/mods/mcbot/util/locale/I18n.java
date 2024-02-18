@@ -2,9 +2,12 @@ package cn.evole.mods.mcbot.util.locale;
 
 import cn.evole.mods.mcbot.Const;
 import cn.evole.mods.mcbot.init.config.ModConfig;
+import cn.evole.mods.mcbot.util.Reflection;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import lombok.val;
 import net.fabricmc.loader.api.FabricLoader;
+import net.fabricmc.loader.impl.FabricLoaderImpl;
 import net.minecraft.locale.Language;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
@@ -23,10 +26,12 @@ public class I18n {
     public static void init() {
         translations = new HashMap<>();
 
-        Optional<Path> optional = FabricLoader.getInstance().getModContainer("mcbot").orElseThrow()
+        val version = getMcVersion().replace(".", "_");
+
+        Optional<Path> optional = FabricLoader.getInstance().getModContainer("mcbot_" + version).orElseThrow(null)
                 .findPath("/lang/" + ModConfig.INSTANCE.getCommon().getLanguageSelect() + ".json");
 
-        if (optional.isEmpty()) {
+        if (!optional.isPresent()) {
             Const.LOGGER.warn("-----------------------------------------");
             Const.LOGGER.warn("McBot cannot find translations for \"" + ModConfig.INSTANCE.getCommon().getLanguageSelect() + "\" and uses \"en_us\" by default!");
             Const.LOGGER.warn("");
@@ -34,7 +39,7 @@ public class I18n {
             Const.LOGGER.warn("Contributing: https://github.com/cnlimiter/McBot#Contributing");
             Const.LOGGER.warn("-----------------------------------------");
 
-            optional = FabricLoader.getInstance().getModContainer("mcbot").orElseThrow()
+            optional = FabricLoader.getInstance().getModContainer("mcbot_" + version).orElseThrow(null)
                     .findPath("/lang/en_us.json");
         }
 
@@ -79,5 +84,27 @@ public class I18n {
         } else {
             return key;
         }
+    }
+
+    private static String getMcVersion() {
+        try {
+            // Fabric
+            return (String) Reflection.clazz("net.fabricmc.loader.impl.FabricLoaderImpl")
+                    .get("INSTANCE")
+                    .get("getGameProvider()")
+                    .get("getNormalizedGameVersion()").get();
+        } catch (Exception ignored) {
+
+        }
+        try {
+            // Quilt
+            return (String) Reflection.clazz("org.quiltmc.loader.impl.QuiltLoaderImpl")
+                    .get("INSTANCE")
+                    .get("getGameProvider()")
+                    .get("getNormalizedGameVersion()").get();
+        } catch (Exception ignored) {
+
+        }
+        return null;
     }
 }

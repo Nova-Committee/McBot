@@ -34,7 +34,7 @@
       "file": "META-INF/jars/McBot-fabric-1.20.1-${version}.jar"
     },
     {
-      "file": "META-INF/jars/McBot-fabric-1.20.2-${version}.jar"
+      "file": "META-INF/jars/McBot-fabric-1.20.x-${version}.jar"
     }
   ]
 }
