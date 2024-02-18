@@ -32,7 +32,7 @@ jobs:
         uses: gradle/gradle-build-action@v2
         with:
           arguments: buildNeeded
-          build-root-directory: forge
+          build-root-directory: fabric
 
       - name: Find Correct JAR
         id: findjar
