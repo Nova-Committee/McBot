@@ -35,7 +35,7 @@ import net.minecraft.network.chat.Component;
 public class BotCmdRun extends CommandSourceStack {
 
     //#if MC >= 11900
-    public static BotCmdRun CUSTOM = new BotCmdRun(CommandSource.NULL, Vec3.ZERO, Vec2.ZERO, McBot.SERVER.overworld()， 0, "Bot", Component.literal("Bot")， McBot.SERVER, null);
+    public static BotCmdRun CUSTOM = new BotCmdRun(CommandSource.NULL, Vec3.ZERO, Vec2.ZERO, McBot.SERVER.overworld(), 0, "Bot", Component.literal("Bot"), McBot.SERVER, null);
     public static BotCmdRun OP = new BotCmdRun(CommandSource.NULL, Vec3.ZERO, Vec2.ZERO, McBot.SERVER.overworld(), 4, "OP", Component.literal("OP"), McBot.SERVER, null);
     //#elseif MC < 11600
     //$$ public static BotCmdRun CUSTOM = new BotCmdRun(CommandSource.NULL, Vec3.ZERO, Vec2.ZERO, McBot.SERVER.getLevel(DimensionType.OVERWORLD), 0, "Bot", new TextComponent("Bot"), McBot.SERVER, null);
@@ -65,5 +65,7 @@ public class BotCmdRun extends CommandSourceStack {
     //$$     this.outPut.add(component.getString());
     //$$ }
     //#endif
+
+}
 
 }
