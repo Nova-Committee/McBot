@@ -1,5 +1,6 @@
 package cn.evole.mods.mcbot;
 
+import cn.evole.mods.mcbot.data.UserBindApi;
 import cn.evole.mods.mcbot.init.callbacks.IEvents;
 import cn.evole.mods.mcbot.init.event.*;
 import cn.evole.mods.mcbot.init.config.ModConfig;
@@ -71,6 +72,7 @@ public class McBot implements ModInitializer {
         FileUtils.checkFolder(CONFIG_FOLDER);
         CONFIG_FILE = CONFIG_FOLDER.resolve("config.toml");
         I18n.init();
+        UserBindApi.load(CONFIG_FOLDER);
         Runtime.getRuntime().addShutdownHook(new Thread(McBot::killOutThreads));
     }
 
@@ -102,6 +104,8 @@ public class McBot implements ModInitializer {
         bus.stop();//分发器关闭
         service.stop();
         app.interrupt();
+        UserBindApi.save(CONFIG_FOLDER);
+        CustomCmdHandler.INSTANCE.clear();//自定义命令持久层清空
     }
 
     public void onServerStopped(MinecraftServer server) {
@@ -113,9 +117,7 @@ public class McBot implements ModInitializer {
             bus.stop();//分发器关闭
             service.stop();
             app.interrupt();
-            CustomCmdHandler.INSTANCE.clear();//自定义命令持久层清空
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (Exception ignored) {
         }
     }
 }
