@@ -39,15 +39,25 @@ public class CmdApi {
 
     public static void invokeCommandGroup(GroupMessageEvent event) {
         String command = event.getMessage().substring(1);//去除前缀
+        String origincommand = command;
+        command = BotUtils.cmdParse(command);
+        String performedcommand = command;
 
-        if (BotUtils.groupAdminParse(event)) {
+        if (performedcommand.equals("list")) {
+            // 如果指令包含list,则强行以非管理员身份执行
             CustomCmdHandler.INSTANCE.getCustomCmds().stream()
-                    .filter(customCmd -> command.contains(customCmd.getCmdAlies()))
-                    .forEach(customCmd -> GroupCmd(event.getGroupId(), BotUtils.varParse(customCmd, command), true));//admin
-        } else
-            CustomCmdHandler.INSTANCE.getCustomCmds().stream()
-                    .filter(customCmd -> customCmd.getRequirePermission() < 1 && command.contains(customCmd.getCmdAlies()))
-                    .forEach(customCmd -> GroupCmd(event.getGroupId(), BotUtils.varParse(customCmd, command), false));
+                    .filter(customCmd -> customCmd.getRequirePermission() < 1 && performedcommand.equals(customCmd.getCmdAlies()))
+                    .forEach(customCmd -> GroupCmd(event.getGroupId(), BotUtils.varParse(customCmd, origincommand), false));
+        }else{
+            if (BotUtils.groupAdminParse(event)) {
+                CustomCmdHandler.INSTANCE.getCustomCmds().stream()
+                        .filter(customCmd -> performedcommand.equals(customCmd.getCmdAlies()))
+                        .forEach(customCmd -> GroupCmd(event.getGroupId(), BotUtils.varParse(customCmd, origincommand), true));//admin
+            } else
+                CustomCmdHandler.INSTANCE.getCustomCmds().stream()
+                        .filter(customCmd -> customCmd.getRequirePermission() < 1 && performedcommand.equals(customCmd.getCmdAlies()))
+                        .forEach(customCmd -> GroupCmd(event.getGroupId(), BotUtils.varParse(customCmd, origincommand), false));
+        }
 
     }
 
@@ -56,10 +66,10 @@ public class CmdApi {
 
         if (BotUtils.guildAdminParse(event)) {
             CustomCmdHandler.INSTANCE.getCustomCmds().stream()
-                    .filter(customCmd -> command.contains(customCmd.getCmdAlies()))
-                    .forEach(customCmd -> GuildCmd(event.getGuildId(), event.getChannelId(), BotUtils.varParse(customCmd, command), true));//admin
+                    。filter(customCmd -> command.contains(customCmd.getCmdAlies()))
+                    。forEach(customCmd -> GuildCmd(event.getGuildId(), event.getChannelId(), BotUtils.varParse(customCmd, command), true));//admin
         } else CustomCmdHandler.INSTANCE.getCustomCmds().stream()
-                .filter(customCmd -> customCmd.getRequirePermission() < 1 && command.contains(customCmd.getCmdAlies()))
-                .forEach(customCmd -> GuildCmd(event.getGuildId(), event.getChannelId(), BotUtils.varParse(customCmd, command), false));
+                。filter(customCmd -> customCmd.getRequirePermission() < 1 && command.contains(customCmd.getCmdAlies()))
+                。forEach(customCmd -> GuildCmd(event.getGuildId(), event.getChannelId(), BotUtils.varParse(customCmd, command)， false));
     }
 }
