@@ -17,9 +17,9 @@ public class CmdApi {
     private static StringBuilder CmdMain(String cmd, boolean isOp) {
         StringBuilder result = new StringBuilder();
         //#if MC >= 11900
-        //$$ McBot.SERVER.getCommands().performPrefixedCommand(isOp ? BotCmdRun.OP : BotCmdRun.CUSTOM, cmd);//优雅
+        McBot.SERVER.getCommands().performPrefixedCommand(isOp ? BotCmdRun.OP : BotCmdRun.CUSTOM, cmd);//优雅
         //#else
-        McBot.SERVER.getCommands().performCommand(isOp ? BotCmdRun.OP : BotCmdRun.CUSTOM, cmd);
+        //$$ McBot.SERVER.getCommands().performCommand(isOp ? BotCmdRun.OP : BotCmdRun.CUSTOM, cmd);
         //#endif
         for (String s : (isOp ? BotCmdRun.OP.outPut : BotCmdRun.CUSTOM.outPut)) {
             result.append(s.replaceAll("§\\S", "")).append("\n");
@@ -66,10 +66,10 @@ public class CmdApi {
 
         if (BotUtils.guildAdminParse(event)) {
             CustomCmdHandler.INSTANCE.getCustomCmds().stream()
-                    。filter(customCmd -> command.contains(customCmd.getCmdAlies()))
-                    。forEach(customCmd -> GuildCmd(event.getGuildId(), event.getChannelId(), BotUtils.varParse(customCmd, command), true));//admin
+                    .filter(customCmd -> command.contains(customCmd.getCmdAlies()))
+                    .forEach(customCmd -> GuildCmd(event.getGuildId(), event.getChannelId(), BotUtils.varParse(customCmd, command), true));//admin
         } else CustomCmdHandler.INSTANCE.getCustomCmds().stream()
-                。filter(customCmd -> customCmd.getRequirePermission() < 1 && command.contains(customCmd.getCmdAlies()))
-                。forEach(customCmd -> GuildCmd(event.getGuildId(), event.getChannelId(), BotUtils.varParse(customCmd, command)， false));
+                .filter(customCmd -> customCmd.getRequirePermission() < 1 && command.contains(customCmd.getCmdAlies()))
+                .forEach(customCmd -> GuildCmd(event.getGuildId(), event.getChannelId(), BotUtils.varParse(customCmd, command), false));
     }
 }
