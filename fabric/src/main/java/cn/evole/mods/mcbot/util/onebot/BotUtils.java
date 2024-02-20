@@ -84,4 +84,16 @@ public class BotUtils {
         // 查找字符出现的个数 = （原字符串长度 - 替换后的字符串长度）/要查找的字符串长度
         return (str.length() - destStr.length()) / "%".length();
     }
+    public static String cmdParse(String command) {
+        // 找到最后一个空格的位置
+        int lastSpaceIndex = command.lastIndexOf(" ");
+
+        // 如果没有空格，则整个命令就是关键词
+        if (lastSpaceIndex == -1) {
+            return command;
+        }
+
+        // 返回最后一个空格之前的内容
+        return command.substring(0, lastSpaceIndex);
+    }
 }
