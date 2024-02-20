@@ -80,7 +80,12 @@ public class IPlayerEvent {
             //$$ DisplayInfo display = advancement.display().get();
             //#endif
 
+            //#if MC > 12001
+            //$$ String message = I18n.get("mcbot.chat.type.advancement." + display.getType().getSerializedName(), player.getDisplayName().getString(), I18n.get(display.getTitle().getString()));
+            //#else
             String message = I18n.get("mcbot.chat.type.advancement." + display.getFrame().getName(), player.getDisplayName().getString(), I18n.get(display.getTitle().getString()));
+            //#endif
+
             val msg = String.format(message, player.getDisplayName().getString());
             send(msg);
         }

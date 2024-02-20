@@ -15,7 +15,7 @@ import java.util.*;
  */
 
 public class UserBindApi {
-    public static String BIND_NAME = "bind.csv";
+    private static final String BIND_NAME = "bind.csv";
     private static final EasyCsv easyCsv = new EasyCsv();
     public static Map<String, UserBind> users;
 
@@ -27,11 +27,12 @@ public class UserBindApi {
             if (!bindFile.toFile().isFile()) Files.createFile(bindFile);
             userBinds = easyCsv.readAll(bindFile.toFile().getAbsolutePath()
                     , UserBind.class);
+            for (UserBind userBind : userBinds){
+                userBindMap.put(userBind.getQqId(), userBind);
+            }
         } catch (IOException ignored) {
         }
-        for (UserBind userBind : userBinds){
-            userBindMap.put(userBind.getQqId(), userBind);
-        }
+
         users = userBindMap;
     }
 
@@ -45,15 +46,15 @@ public class UserBindApi {
         }
     }
 
-    public static boolean exist(String qq_id){
+    public static boolean has(String qq_id){
         return users.containsKey(qq_id);
     }
 
     public static void add(String group_name, String qq_id, String game_name){
-        if (!exist(qq_id)) users.put(qq_id, new UserBind(System.currentTimeMillis(), qq_id, group_name, game_name));
+        if (!has(qq_id)) users.put(qq_id, new UserBind(System.currentTimeMillis(), qq_id, group_name, game_name));
     }
 
-    public static void delete(String qq_id){
-        if (exist(qq_id)) users.remove(qq_id);
+    public static void del(String qq_id){
+        if (has(qq_id)) users.remove(qq_id);
     }
 }

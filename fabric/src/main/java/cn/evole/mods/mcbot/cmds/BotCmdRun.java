@@ -3,7 +3,6 @@ package cn.evole.mods.mcbot.cmds;
 import cn.evole.mods.mcbot.McBot;
 import net.minecraft.commands.CommandSource;
 import net.minecraft.commands.CommandSourceStack;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
@@ -14,16 +13,10 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Supplier;
-//#if MC >= 11900
 import net.minecraft.network.chat.Component;
-//#else
-//$$ import net.minecraft.network.chat.TextComponent;
-//$$ import net.minecraft.network.chat.Component;
-//#endif
-
-//#if MC < 11600
-//$$ import net.minecraft.world.level.dimension.DimensionType;
+import java.util.function.Supplier;
+//#if MC < 11900
+import net.minecraft.network.chat.TextComponent;
 //#endif
 
 

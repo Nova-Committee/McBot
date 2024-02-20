@@ -1,5 +1,5 @@
-apply plugin: "fabric-loom"
-apply plugin: "com.replaymod.preprocess"
+apply(plugin: "dev.architectury.loom")
+apply(plugin: "com.replaymod.preprocess")
 
 int mcVersion = 1
 
@@ -11,22 +11,22 @@ preprocess {
 
 repositories {
     mavenCentral()
-    maven {
-        url = 'https://maven.nova-committee.cn/releases'
-    }
+    maven { url = "https://maven.nova-committee.cn/releases" }
+    maven { url =  "https://api.modrinth.com/maven" }
 }
 
 dependencies {
-    minecraft "com.mojang:minecraft:${project.minecraft_version}"
+    minecraft ("com.mojang:minecraft:${project.minecraft_version}")
     mappings loom.officialMojangMappings()
 
-    modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
-    modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
-    api include("cn.evole.bot:OneBot-Client:${project.onebot_client_version}")
-    api include("cn.evole.config:AtomConfig-Toml:${project.toml_version}")
-
-    compileOnly 'org.projectlombok:lombok:1.18.24'
-    annotationProcessor "org.projectlombok:lombok:1.18.24"
+    modImplementation ("net.fabricmc:fabric-loader:${project.loader_version}")
+    modImplementation ("net.fabricmc.fabric-api:fabric-api:${project.fabric_version}")
+    api include ("cn.evole.bot:OneBot-Client:${project.onebot_client_version}")
+    api include ("cn.evole.config:AtomConfig-Toml:${project.toml_version}")
+    if (mcVersion == 11605) include ("org.slf4j:slf4j-api:2.0.7")
+    if (mcVersion == 12101) modCompileOnly ("maven.modrinth:vanish:1.5.2")
+    compileOnly ("org.projectlombok:lombok:1.18.24")
+    annotationProcessor ("org.projectlombok:lombok:1.18.24")
 
 }
 
@@ -34,6 +34,15 @@ loom {
     runConfigs.all {
         ideConfigGenerated = true
         runDir "../../run"
+    }
+}
+
+
+
+loom {
+    silentMojangMappingsLicense()
+    mixin {
+        useLegacyMixinAp = false
     }
 }
 

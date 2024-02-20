@@ -1,7 +1,7 @@
-apply plugin: "fabric-loom"
+apply(plugin: "dev.architectury.loom")
 
-sourceCompatibility = JavaVersion.VERSION_17
-targetCompatibility = JavaVersion.VERSION_17
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
 
 archivesBaseName = project.archives_base_name
 version = project.mod_version
@@ -23,7 +23,7 @@ dependencies {
     api("cn.evole.bot:OneBot-Client:${project.onebot_client_version}")
     api("cn.evole.config:AtomConfig-Toml:${project.toml_version}")
 
-    compileOnly 'org.projectlombok:lombok:1.18.24'
+    compileOnly "org.projectlombok:lombok:1.18.24"
     annotationProcessor "org.projectlombok:lombok:1.18.24"
 }
 

@@ -8,8 +8,8 @@
     "cnlimiter"
   ],
   "contact": {
-    "issues": "https://github.com/cnlimiter/Bot-Connect/issues",
-    "sources": "https://github.com/cnlimiter/Bot-Connect"
+    "issues": "https://github.com/cnlimiter/McBot/issues",
+    "sources": "https://github.com/cnlimiter/McBot"
   },
   "license": "AGPL-3.0",
   "icon": "assets/mcbot/icon.png",
@@ -23,7 +23,7 @@
     "mcbot.mixins.json"
   ],
   "depends": {
-    "fabricloader": ">=0.14.21",
+    "fabricloader": ">=0.14.0",
     "fabric": "*",
     "minecraft": "${minecraft_dependency}",
     "java": ">=8"
