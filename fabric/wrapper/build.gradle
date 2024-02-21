@@ -20,8 +20,8 @@ dependencies {
 
     modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
-    api("cn.evole.bot:OneBot-Client:${project.onebot_client_version}")
-    api("cn.evole.config:AtomConfig-Toml:${project.toml_version}")
+    implementation("cn.evole.bot:OneBot-Client:${project.onebot_client_version}"){transitive = false}
+    implementation("cn.evole.config:AtomConfig-Toml:${project.toml_version}"){transitive = false}
 
     compileOnly "org.projectlombok:lombok:1.18.24"
     annotationProcessor "org.projectlombok:lombok:1.18.24"

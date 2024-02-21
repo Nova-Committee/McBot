@@ -10,9 +10,9 @@ preprocess {
 
 
 repositories {
-    mavenCentral()
     maven { url = "https://maven.nova-committee.cn/releases" }
     maven { url =  "https://api.modrinth.com/maven" }
+    mavenCentral()
 }
 
 dependencies {
@@ -21,10 +21,10 @@ dependencies {
 
     modImplementation ("net.fabricmc:fabric-loader:${project.loader_version}")
     modImplementation ("net.fabricmc.fabric-api:fabric-api:${project.fabric_version}")
-    api include ("cn.evole.bot:OneBot-Client:${project.onebot_client_version}")
-    api include ("cn.evole.config:AtomConfig-Toml:${project.toml_version}")
+    implementation include ("cn.evole.bot:OneBot-Client:${project.onebot_client_version}"){transitive = false}
+    implementation include ("cn.evole.config:AtomConfig-Toml:${project.toml_version}"){transitive = false}
     if (mcVersion == 11605) include ("org.slf4j:slf4j-api:2.0.7")
-    if (mcVersion == 12101) modCompileOnly ("maven.modrinth:vanish:1.5.2")
+    if (mcVersion == 12001) modCompileOnly ("maven.modrinth:vanish:1.5.2-1.20.1")
     compileOnly ("org.projectlombok:lombok:1.18.24")
     annotationProcessor ("org.projectlombok:lombok:1.18.24")
 

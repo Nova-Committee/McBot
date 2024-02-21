@@ -5,6 +5,7 @@ import cn.evole.mods.mcbot.McBot;
 import cn.evole.mods.mcbot.cmds.CmdApi;
 import cn.evole.mods.mcbot.init.config.ModConfig;
 import cn.evole.mods.mcbot.util.onebot.CQUtils;
+import cn.evole.onebot.client.handler.DefaultEventHandler;
 import cn.evole.onebot.client.handler.EventBus;
 import cn.evole.onebot.client.listener.SimpleEventListener;
 import cn.evole.onebot.sdk.event.message.GroupMessageEvent;
@@ -33,7 +34,7 @@ public class IBotEvent {
     }
 
     private static void GroupChatHandler(EventBus dispatchers) {
-        dispatchers.addListener(new SimpleEventListener<GroupMessageEvent>() {
+        dispatchers.addListener(new DefaultEventHandler<GroupMessageEvent>() {
             @Override
             public void onMessage(GroupMessageEvent event) {
                 if (ModConfig.INSTANCE.getCommon().getGroupIdList().contains(event.getGroupId())//判断是否是配置中的群

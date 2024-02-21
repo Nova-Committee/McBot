@@ -23,13 +23,13 @@ import net.minecraft.world.level.Level;
  * Version: 1.0
  */
 public class IPlayerEvent {
-    public static void loggedIn(Level world, Player player) {
+    public static void loggedIn(Level world, ServerPlayer player) {
         if (ModConfig.INSTANCE.getStatus().isSJoinEnable() && ModConfig.INSTANCE.getStatus().isSEnable()) {
             val msg = player.getDisplayName().getString() + " 加入了服务器";
             send(msg);
         }
     }
-    public static void loggedOut(Level world, Player player) {
+    public static void loggedOut(Level world, ServerPlayer player) {
         if (ModConfig.INSTANCE.getStatus().isSLeaveEnable() && ModConfig.INSTANCE.getStatus().isSEnable()) {
             val msg = player.getDisplayName().getString() + " 离开了服务器";
             send(msg);

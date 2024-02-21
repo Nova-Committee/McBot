@@ -17,26 +17,26 @@ import net.minecraft.world.level.block.state.BlockState;
  * Version: 1.0
  */
 public final class IEvents {
-    public static final Event<Player_Tick> PLAYER_TICK = EventFactory.createArrayBacked(Player_Tick.class, callbacks -> (world, player) -> {
-        for (Player_Tick callback : callbacks) {
+    public static final Event<PlayerTick> PLAYER_TICK = EventFactory.createArrayBacked(PlayerTick.class, callbacks -> (world, player) -> {
+        for (PlayerTick callback : callbacks) {
             callback.onTick(world, player);
         }
     });
 
-    public static final Event<Player_Death> PLAYER_DEATH = EventFactory.createArrayBacked(Player_Death.class, callbacks -> (source, player) -> {
-        for (Player_Death callback : callbacks) {
+    public static final Event<PlayerDeath> PLAYER_DEATH = EventFactory.createArrayBacked(PlayerDeath.class, callbacks -> (source, player) -> {
+        for (PlayerDeath callback : callbacks) {
             callback.onDeath(source, player);
         }
     });
 
-    public static final Event<Player_Change_Dimension> PLAYER_CHANGE_DIMENSION = EventFactory.createArrayBacked(Player_Change_Dimension.class, callbacks -> (world, player) -> {
-        for (Player_Change_Dimension callback : callbacks) {
+    public static final Event<PlayerChangeDimension> PLAYER_CHANGE_DIMENSION = EventFactory.createArrayBacked(PlayerChangeDimension.class, callbacks -> (world, player) -> {
+        for (PlayerChangeDimension callback : callbacks) {
             callback.onChangeDimension(world, player);
         }
     });
 
-    public static final Event<Player_Dig_Speed_Calc> ON_PLAYER_DIG_SPEED_CALC = EventFactory.createArrayBacked(Player_Dig_Speed_Calc.class, callbacks -> (world, player, digSpeed, state) -> {
-        for (Player_Dig_Speed_Calc callback : callbacks) {
+    public static final Event<PlayerDigSpeedCalc> ON_PLAYER_DIG_SPEED_CALC = EventFactory.createArrayBacked(PlayerDigSpeedCalc.class, callbacks -> (world, player, digSpeed, state) -> {
+        for (PlayerDigSpeedCalc callback : callbacks) {
             float newSpeed = callback.onDigSpeedCalc(world, player, digSpeed, state);
             if (newSpeed != digSpeed) {
                 return newSpeed;
@@ -46,68 +46,68 @@ public final class IEvents {
         return -1;
     });
 
-    public static final Event<Player_Logged_In> PLAYER_LOGGED_IN = EventFactory.createArrayBacked(Player_Logged_In.class, callbacks -> (world, player) -> {
-        for (Player_Logged_In callback : callbacks) {
+    public static final Event<PlayerLoggedIn> PLAYER_LOGGED_IN = EventFactory.createArrayBacked(PlayerLoggedIn.class, callbacks -> (world, player) -> {
+        for (PlayerLoggedIn callback : callbacks) {
             callback.onPlayerLoggedIn(world, player);
         }
     });
 
-    public static final Event<Player_Logged_Out> PLAYER_LOGGED_OUT = EventFactory.createArrayBacked(Player_Logged_Out.class, callbacks -> (world, player) -> {
-        for (Player_Logged_Out callback : callbacks) {
+    public static final Event<PlayerLoggedOut> PLAYER_LOGGED_OUT = EventFactory.createArrayBacked(PlayerLoggedOut.class, callbacks -> (world, player) -> {
+        for (PlayerLoggedOut callback : callbacks) {
             callback.onPlayerLoggedOut(world, player);
         }
     });
 
-    public static final Event<Player_Advancement> PLAYER_ADVANCEMENT = EventFactory.createArrayBacked(Player_Advancement.class, callbacks -> (player, advancement) -> {
-        for (Player_Advancement callback : callbacks) {
+    public static final Event<PlayerAdvancement> PLAYER_ADVANCEMENT = EventFactory.createArrayBacked(PlayerAdvancement.class, callbacks -> (player, advancement) -> {
+        for (PlayerAdvancement callback : callbacks) {
             callback.onAdvancement(player, advancement);
         }
     });
 
 
-    public static final Event<Server_Chat> SERVER_CHAT = EventFactory.createArrayBacked(Server_Chat.class, callbacks -> (player, message) -> {
-        for (Server_Chat callback : callbacks) {
+    public static final Event<ServerChat> SERVER_CHAT = EventFactory.createArrayBacked(ServerChat.class, callbacks -> (player, message) -> {
+        for (ServerChat callback : callbacks) {
             callback.onChat(player, message);
         }
     });
 
     @FunctionalInterface
-    public interface Player_Advancement {
+    public interface PlayerAdvancement {
         void onAdvancement(Player player, Advancement advancement);
     }
 
     @FunctionalInterface
-    public interface Player_Tick {
+    public interface PlayerTick {
         void onTick(ServerLevel world, ServerPlayer player);
     }
 
     @FunctionalInterface
-    public interface Player_Death {
+    public interface PlayerDeath {
         void onDeath(DamageSource source, ServerPlayer player);
     }
 
     @FunctionalInterface
-    public interface Player_Change_Dimension {
+    public interface PlayerChangeDimension {
         void onChangeDimension(ServerLevel world, ServerPlayer player);
     }
 
     @FunctionalInterface
-    public interface Player_Dig_Speed_Calc {
+    public interface PlayerDigSpeedCalc {
         float onDigSpeedCalc(Level world, Player player, float digSpeed, BlockState state);
     }
 
     @FunctionalInterface
-    public interface Player_Logged_In {
-        void onPlayerLoggedIn(Level world, Player player);
+    public interface PlayerLoggedIn {
+        void onPlayerLoggedIn(Level world, ServerPlayer player);
     }
 
     @FunctionalInterface
-    public interface Player_Logged_Out {
-        void onPlayerLoggedOut(Level world, Player player);
+    public interface PlayerLoggedOut {
+        void onPlayerLoggedOut(Level world, ServerPlayer player);
     }
 
     @FunctionalInterface
-    public interface Server_Chat {
+    public interface ServerChat {
         void onChat(ServerPlayer player, String message);
     }
 }
