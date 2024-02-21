@@ -1,6 +1,7 @@
 package cn.evole.mods.mcbot.util.onebot;
 
 import cn.evole.mods.mcbot.Const;
+import cn.evole.mods.mcbot.McBot;
 import cn.evole.mods.mcbot.init.config.ModConfig;
 import cn.evole.onebot.sdk.util.BotUtils;
 import lombok.val;
@@ -36,7 +37,6 @@ public class CQUtils {
             return BotUtils.unescape(msg);
 
 
-        final ExecutorService exec = Executors.newSingleThreadExecutor();
         String back = "";
         StringBuffer message = new StringBuffer();
         Pattern pattern = Pattern.compile(CQ_CODE_REGEX);
@@ -47,7 +47,7 @@ public class CQUtils {
                 val type = matcher.group(1);
                 val data = matcher.group(2);
                 switch (type) {
-                    case "image": {
+                    case "image" -> {
                         if (ModConfig.INSTANCE.getCommon().isImageOn() && Const.isLoad("chatimage")) {
                             val url = Arrays.stream(data.split(","))//具体数据分割
                                     .filter(it -> it.startsWith("url"))//非空判断
@@ -61,9 +61,8 @@ public class CQUtils {
                         } else {
                             matcher.appendReplacement(message, "[图片]");
                         }
-                        break;
                     }
-                    case "at":
+                    case "at" -> {
                         val id = Arrays.stream(data.split(","))//具体数据分割
                                 .filter(it -> it.startsWith("qq"))//非空判断
                                 .map(it -> it.substring(it.indexOf('=') + 1))
@@ -73,45 +72,28 @@ public class CQUtils {
                         } else {
                             matcher.appendReplacement(message, "[@]");
                         }
-                        break;
-                    case "record":
-                        matcher.appendReplacement(message, "[语音]");
-                        break;
-                    case "forward":
-                        matcher.appendReplacement(message, "[合并转发]");
-                        break;
-                    case "video":
-                        matcher.appendReplacement(message, "[视频]");
-                        break;
-                    case "music":
-                        matcher.appendReplacement(message, "[音乐]");
-                        break;
-                    case "redbag":
-                        matcher.appendReplacement(message, "[红包]");
-                        break;
-                    case "face":
-                        matcher.appendReplacement(message, "[表情]");
-                        break;
-                    case "reply":
-                        matcher.appendReplacement(message, "[回复]");
-                        break;
-                    default:
-                        matcher.appendReplacement(message, "[?]");
-                        break;
+                    }
+                    case "record" -> matcher.appendReplacement(message, "[语音]");
+                    case "forward" -> matcher.appendReplacement(message, "[合并转发]");
+                    case "video" -> matcher.appendReplacement(message, "[视频]");
+                    case "music" -> matcher.appendReplacement(message, "[音乐]");
+                    case "redbag" -> matcher.appendReplacement(message, "[红包]");
+                    case "face" -> matcher.appendReplacement(message, "[表情]");
+                    case "reply" -> matcher.appendReplacement(message, "[回复]");
+                    default -> matcher.appendReplacement(message, "[?]");
                 }
             }
             matcher.appendTail(message);
             return message.toString();
         });
         try {
-            exec.execute(call);
+            McBot.CQUtilsExecutor.execute(call);
             back = call.get(1000 * 3, TimeUnit.MILLISECONDS);
         } catch (ExecutionException | InterruptedException | TimeoutException e) {
             back = msg;
             call.cancel(true);
             Const.LOGGER.error(e.getLocalizedMessage());
         }
-        exec.shutdownNow();
         return back;
     }
 }

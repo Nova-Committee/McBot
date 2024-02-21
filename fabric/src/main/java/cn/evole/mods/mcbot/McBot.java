@@ -17,6 +17,8 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.minecraft.server.MinecraftServer;
 import java.nio.file.Path;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
 //#if MC >= 11900
 //$$ import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
@@ -46,6 +48,7 @@ public class McBot implements ModInitializer {
     public static McBot INSTANCE = new McBot();
 
     public static MessageThread messageThread;
+    public static ExecutorService CQUtilsExecutor;
 
 
     public MinecraftServer getServer() {
@@ -114,6 +117,7 @@ public class McBot implements ModInitializer {
         CustomCmdHandler.INSTANCE.load();//自定义命令加载
         IBotEvent.init(listenerFactory);//事件监听
         messageThread = new MessageThread();  // 创建消息处理线程池
+        CQUtilsExecutor = Executors.newSingleThreadExecutor();  // 创建CQ码处理线程池
     }
 
     public void onServerStopping(MinecraftServer server) {
@@ -126,6 +130,7 @@ public class McBot implements ModInitializer {
         service.stop();
         app.interrupt();
         messageThread.stop();
+        CQUtilsExecutor.shutdownNow();
     }
 
     public void onServerStopped(MinecraftServer server) {
