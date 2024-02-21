@@ -55,10 +55,23 @@ public class ICmdEvent {
                         .then(Commands.literal("setGuild")
                                 .then(Commands.argument("GuildId", StringArgumentType.greedyString())
                                         .executes(GuildIDCommand::execute)))
+
+
                         .then(Commands.literal("help").executes(HelpCommand::execute))
                         .then(Commands.literal("recall")
                                 .then(Commands.argument("MessageId", IntegerArgumentType.integer())
                                         .executes(RecallCommand::execute)))
+                        .then(Commands.literal("addBind")
+                                .then(Commands.argument("GroupName", StringArgumentType.greedyString())
+                                        .then(Commands.argument("QQId", StringArgumentType.greedyString())
+                                                .then(Commands.argument("GameName", StringArgumentType.greedyString())
+                                                        .executes(AddBindCommand::execute)
+                                                ))))
+                        .then(Commands.literal("delBind")
+                                .then(Commands.argument("QQId", StringArgumentType.greedyString())
+                                        .executes(DelBindCommand::execute)))
+
+
                         .then(Commands.literal("debug")
                                 .then(Commands.argument("enabled", BoolArgumentType.bool())
                                         .executes(DebugCommand::execute)))

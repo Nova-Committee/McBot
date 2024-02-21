@@ -41,6 +41,8 @@ public class CommonConfig extends AutoLoadTomlConfig {
     private boolean autoOpen = true;//自动连接
     @TableField(rightComment = "是否开启聊天栏图片功能")
     private boolean imageOn = true;//是否开启聊天栏图片功能
+    @TableField(rightComment = "是否开启绑定校验")
+    private boolean bindOn = true;//是否开启绑定校验
 
     public CommonConfig() {
         super(null);

@@ -16,16 +16,15 @@ import java.util.*;
 
 public class ChatRecordApi {
     private static final String FILE_NAME = "chat.csv";
-    private static final EasyCsv easyCsv = new EasyCsv();
     public static Map<String, ChatRecord> users;
 
     public static void load(Path folder){
-        Path bindFile = folder.resolve(FILE_NAME);
+        Path chatFile = folder.resolve(FILE_NAME);
         List<ChatRecord> chatRecords = new ArrayList<>();
         Map<String, ChatRecord> chatRecordMap = new HashMap<>();
         try {
-            if (!bindFile.toFile().isFile()) Files.createFile(bindFile);
-            chatRecords = easyCsv.readAll(bindFile.toFile().getAbsolutePath()
+            if (!chatFile.toFile().isFile()) Files.createFile(chatFile);
+            chatRecords = new EasyCsv().readAll(chatFile.toFile().getAbsolutePath()
                     , ChatRecord.class);
             for (ChatRecord chatRecord : chatRecords){
                 chatRecordMap.put(chatRecord.getMessageId(), chatRecord);
@@ -40,7 +39,7 @@ public class ChatRecordApi {
         Path bindFile = folder.resolve(FILE_NAME);
         try {
             Files.deleteIfExists(bindFile);
-            easyCsv.write(bindFile.toFile().getAbsolutePath()
+            new EasyCsv().write(bindFile.toFile().getAbsolutePath()
                     , Arrays.asList(users.values().toArray()));
         } catch (IOException ignored) {
         }

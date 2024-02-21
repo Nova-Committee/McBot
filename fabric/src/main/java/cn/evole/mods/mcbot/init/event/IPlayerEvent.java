@@ -1,6 +1,7 @@
 package cn.evole.mods.mcbot.init.event;
 
 import cn.evole.mods.mcbot.Const;
+import cn.evole.mods.mcbot.data.UserBindApi;
 import cn.evole.mods.mcbot.init.config.ModConfig;
 import cn.evole.mods.mcbot.util.locale.I18n;
 import lombok.val;
@@ -14,7 +15,10 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-
+import net.minecraft.network.chat.Component;
+//#if MC <11900
+import net.minecraft.network.chat.TextComponent;
+//#endif
 
 /**
  * Description:
@@ -24,6 +28,15 @@ import net.minecraft.world.level.Level;
  */
 public class IPlayerEvent {
     public static void loggedIn(Level world, ServerPlayer player) {
+        if (ModConfig.INSTANCE.getCommon().isBindOn() && !UserBindApi.isIn(player.getGameProfile().getName())){
+            //#if MC >= 11900
+            //$$ val toSend = Component.literal("请先完成绑定");
+            //#else
+            val toSend = new TextComponent("请先完成绑定");
+            //#endif
+            player.connection.disconnect(toSend);
+        }
+
         if (ModConfig.INSTANCE.getStatus().isSJoinEnable() && ModConfig.INSTANCE.getStatus().isSEnable()) {
             val msg = player.getDisplayName().getString() + " 加入了服务器";
             send(msg);

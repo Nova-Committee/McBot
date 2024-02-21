@@ -6,6 +6,8 @@ import com.xykj.easycsv.listener.CsvToMapListener;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -75,7 +77,7 @@ public class EasyCsv {
      * @param <T>
      * @return
      */
-    public  <T> List<T> readAll(String fileName, Class<T> classA){
+    public <T> List<T> readAll(String fileName, Class<T> classA){
         try {
             return read(new FileInputStream(fileName), classA,null);
         } catch (FileNotFoundException e) {
@@ -91,7 +93,7 @@ public class EasyCsv {
      * @param <T>
      * @return
      */
-    public  <T> List<T> readAll(InputStream inputStream, Class<T> classA) {
+    public <T> List<T> readAll(InputStream inputStream, Class<T> classA) {
         return read(inputStream, classA,null);
     }
 
@@ -143,7 +145,7 @@ public class EasyCsv {
         List<Map<Integer,String>>  result = new ArrayList<>();
         InputStream resourceAsStream=null;
         try {
-            resourceAsStream = new FileInputStream(fileName);
+            resourceAsStream = Files.newInputStream(Paths.get(fileName));
             reader = new BufferedReader(new InputStreamReader(resourceAsStream,"GBK"));
             String oneColumnStr;
             int i=0;
@@ -233,8 +235,7 @@ public class EasyCsv {
                 csvListener.readOver();
             }
             reader.close();
-        } catch (IOException | InstantiationException | IllegalAccessException e) {
-            e.printStackTrace();
+        } catch (IOException | InstantiationException | IllegalAccessException ignored) {
         } finally {
             if (reader != null) {
                 try {

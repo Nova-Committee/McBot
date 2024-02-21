@@ -50,6 +50,13 @@ public class UserBindApi {
         return users.containsKey(qq_id);
     }
 
+    public static boolean isIn(String user_name){
+        for (UserBind userBind : users.values()){
+            return userBind.getGameName().equals(user_name);
+        }
+        return false;
+    }
+
     public static void add(String group_name, String qq_id, String game_name){
         if (!has(qq_id)) users.put(qq_id, new UserBind(System.currentTimeMillis(), qq_id, group_name, game_name));
     }
