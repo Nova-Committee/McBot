@@ -1,5 +1,6 @@
 package cn.evole.mods.mcbot.init.event;
 
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.MinecraftServer;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -21,24 +22,24 @@ import net.minecraft.Util;
  * Version: 1.0
  */
 public class ITickEvent {
-    private static final Queue<String> SEND_QUEUE = new LinkedList<>();
+    private static final Queue<MutableComponent> SEND_QUEUE = new LinkedList<>();
 
-    public static Queue<String> getSendQueue() {
+    public static Queue<MutableComponent> getSendQueue() {
         return SEND_QUEUE;
     }
 
 
     public static void register(MinecraftServer server) {
-        String toSend = SEND_QUEUE.poll();
+        MutableComponent toSend = SEND_QUEUE.poll();
         if (ModConfig.INSTANCE != null
                 && server != null
                 && server.isDedicatedServer()
                 && toSend != null
         ) {
             //#if MC >= 11900
-            //$$  server.getPlayerList().broadcastSystemMessage(Component.literal(toSend), false);
+            //$$  server.getPlayerList().broadcastSystemMessage(toSend, false);
             //#else
-            server.getPlayerList().broadcastMessage(new TextComponent(toSend), ChatType.SYSTEM, Util.NIL_UUID);
+            server.getPlayerList().broadcastMessage(toSend, ChatType.SYSTEM, Util.NIL_UUID);
             //#endif
         }
     }

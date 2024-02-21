@@ -1,6 +1,7 @@
 package cn.evole.mods.mcbot;
 
 import cn.evole.mods.mcbot.data.UserBindApi;
+import cn.evole.mods.mcbot.data.ChatRecordApi;
 import cn.evole.mods.mcbot.init.callbacks.IEvents;
 import cn.evole.mods.mcbot.init.event.*;
 import cn.evole.mods.mcbot.init.config.ModConfig;
@@ -73,6 +74,7 @@ public class McBot implements ModInitializer {
         CONFIG_FILE = CONFIG_FOLDER.resolve("config.toml");
         I18n.init();
         UserBindApi.load(CONFIG_FOLDER);
+        ChatRecordApi.load(CONFIG_FOLDER);
         Runtime.getRuntime().addShutdownHook(new Thread(McBot::killOutThreads));
     }
 
@@ -103,6 +105,7 @@ public class McBot implements ModInitializer {
         Const.isShutdown = true;
         Const.LOGGER.info("▌ §c正在关闭群服互联 §a┈━═☆");
         UserBindApi.save(CONFIG_FOLDER);
+        ChatRecordApi.save(CONFIG_FOLDER);
         CustomCmdHandler.INSTANCE.clear();//自定义命令持久层清空
         listenerFactory.stop();//分发器关闭
         service.stop();

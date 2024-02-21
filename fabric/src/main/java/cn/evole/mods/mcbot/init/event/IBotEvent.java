@@ -3,6 +3,7 @@ package cn.evole.mods.mcbot.init.event;
 import cn.evole.mods.mcbot.Const;
 import cn.evole.mods.mcbot.McBot;
 import cn.evole.mods.mcbot.cmds.CmdApi;
+import cn.evole.mods.mcbot.data.ChatRecordApi;
 import cn.evole.mods.mcbot.init.config.ModConfig;
 import cn.evole.mods.mcbot.util.onebot.CQUtils;
 import cn.evole.onebot.client.factory.ListenerFactory;
@@ -10,12 +11,18 @@ import cn.evole.onebot.client.interfaces.handler.DefaultHandler;
 import cn.evole.onebot.client.interfaces.listener.SimpleListener;
 import cn.evole.onebot.sdk.event.message.GroupMessageEvent;
 import cn.evole.onebot.sdk.event.message.GuildMessageEvent;
-import cn.evole.onebot.sdk.event.message.MessageEvent;
 import cn.evole.onebot.sdk.event.meta.LifecycleMetaEvent;
 import cn.evole.onebot.sdk.event.notice.group.GroupDecreaseNoticeEvent;
 import cn.evole.onebot.sdk.event.notice.group.GroupIncreaseNoticeEvent;
 import cn.evole.onebot.sdk.util.MsgUtils;
 import lombok.val;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.ClickEvent;
+import net.minecraft.network.chat.Style;
+import net.minecraft.network.chat.Component;
+//#if MC <11900
+import net.minecraft.network.chat.TextComponent;
+//#endif
 
 /**
  * Description:
@@ -47,22 +54,45 @@ public class IBotEvent {
 
                     String send = CQUtils.replace(event.getMessage());//暂时匹配仅符合字符串聊天内容与图片
 
+
                     if (ModConfig.INSTANCE.getCmd().isQqChatPrefixOn()) {
                         val split = event.getMessage().split(" ");
                         if (ModConfig.INSTANCE.getCmd().getQqChatPrefix().equals(split[0])) //指定前缀发送
                             send = split[1];
                         else return;
                     }
+
                     val nick = McBot.bot.getGroupMemberInfo(event.getGroupId(), event.getUserId(), true);
                     String groupNick = ModConfig.INSTANCE.getCmd().isGroupNickOn() // 是否使用群昵称
                             ? nick == null ? event.getSender().getCard() : nick.getData().getCard() // 防止api返回为空
                             : event.getSender().getNickname();
 
-                    String toSend = ModConfig.INSTANCE.getCmd().isGamePrefixOn()
+                    String finalMsg = ModConfig.INSTANCE.getCmd().isGamePrefixOn()
                             ? ModConfig.INSTANCE.getCmd().isIdGamePrefixOn()
                             ? String.format("§b[§l%s§r(§5%s§b)]§a<%s>§f %s", ModConfig.INSTANCE.getCmd().getQqGamePrefix(), event.getGroupId(), groupNick, send)
                             : String.format("§b[§l%s§b]§a<%s>§f %s", ModConfig.INSTANCE.getCmd().getQqGamePrefix(), groupNick, send)
                             : String.format("§a<%s>§f %s", groupNick, send);
+
+                    ChatRecordApi.add(String.valueOf(event.getMessageId()), String.valueOf(event.getGroupId()), String.valueOf(event.getSelfId()), finalMsg);
+
+
+                    //todo 撤回机制？
+//                    val recallCmd = "/mcbot recall" + event.getMessageId();
+//                    val end = " [撤回]";
+//                    //#if MC >= 11900
+//                    //$$ val recall = Component.literal(end).withStyle(ChatFormatting.BLUE).setStyle(Style.EMPTY.withClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, recallCmd)));
+//                    //$$ val toSend = Component.literal(finalMsg).append(recall);
+//                    //#else
+//                    val recall = new TextComponent(end).withStyle(ChatFormatting.BLUE).setStyle(Style.EMPTY.withClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, recallCmd)));
+//                    val toSend = new TextComponent(finalMsg).append(recall);
+
+                    //#endif
+                    //#if MC >= 11900
+                    //$$ val toSend = Component.literal(finalMsg);
+                    //#else
+                    val toSend = new TextComponent(finalMsg);
+                    //#endif
+
                     ITickEvent.getSendQueue().add(toSend);
                 }
             }
@@ -137,11 +167,19 @@ public class IBotEvent {
                             : event.getSender().getNickname();
 
 
-                    String toSend = ModConfig.INSTANCE.getCmd().isGamePrefixOn()
+                    String finalMsg = ModConfig.INSTANCE.getCmd().isGamePrefixOn()
                             ? ModConfig.INSTANCE.getCmd().isIdGamePrefixOn()
                             ? String.format("§b[§l%s§r(§5%s§b)]§a<%s>§f %s", ModConfig.INSTANCE.getCmd().getGuildGamePrefix(), event.getChannelId(), guildNick, send)
                             : String.format("§b[§l%s§b]§a<%s>§f %s", ModConfig.INSTANCE.getCmd().getGuildGamePrefix(), guildNick, send)
                             : String.format("§a<%s>§f %s", guildNick, send);
+
+
+                    //#if MC >= 11900
+                    //$$ val toSend = Component.literal(finalMsg);
+                    //#else
+                    val toSend = new TextComponent(finalMsg);
+                    //#endif
+
                     ITickEvent.getSendQueue().add(toSend);
 
                 }

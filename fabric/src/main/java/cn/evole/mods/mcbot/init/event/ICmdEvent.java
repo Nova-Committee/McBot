@@ -2,10 +2,7 @@ package cn.evole.mods.mcbot.init.event;
 
 import cn.evole.mods.mcbot.command.*;
 import com.mojang.brigadier.CommandDispatcher;
-import com.mojang.brigadier.arguments.ArgumentType;
-import com.mojang.brigadier.arguments.BoolArgumentType;
-import com.mojang.brigadier.arguments.LongArgumentType;
-import com.mojang.brigadier.arguments.StringArgumentType;
+import com.mojang.brigadier.arguments.*;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import net.minecraft.commands.CommandSourceStack;
@@ -59,6 +56,9 @@ public class ICmdEvent {
                                 .then(Commands.argument("GuildId", StringArgumentType.greedyString())
                                         .executes(GuildIDCommand::execute)))
                         .then(Commands.literal("help").executes(HelpCommand::execute))
+                        .then(Commands.literal("recall")
+                                .then(Commands.argument("MessageId", IntegerArgumentType.integer())
+                                        .executes(RecallCommand::execute)))
                         .then(Commands.literal("debug")
                                 .then(Commands.argument("enabled", BoolArgumentType.bool())
                                         .executes(DebugCommand::execute)))
