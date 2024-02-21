@@ -6,6 +6,7 @@ import cn.evole.mods.mcbot.init.callbacks.IEvents;
 import cn.evole.mods.mcbot.init.event.*;
 import cn.evole.mods.mcbot.init.config.ModConfig;
 import cn.evole.mods.mcbot.init.handler.CustomCmdHandler;
+import cn.evole.mods.mcbot.util.MessageThread;
 import cn.evole.mods.mcbot.util.locale.I18n;
 import cn.evole.onebot.client.connection.ConnectFactory;
 import cn.evole.onebot.client.core.Bot;
@@ -37,6 +38,8 @@ public class McBot implements ModInitializer {
     public static Thread app;
 
     public static McBot INSTANCE = new McBot();
+
+    public static MessageThread messageThread;
 
 
     public MinecraftServer getServer() {
@@ -99,6 +102,7 @@ public class McBot implements ModInitializer {
         listenerFactory.start();
         CustomCmdHandler.INSTANCE.load();//自定义命令加载
         IBotEvent.init(listenerFactory);//事件监听
+        messageThread = new MessageThread();  // 创建消息处理线程池
     }
 
     public void onServerStopping(MinecraftServer server) {
@@ -110,6 +114,7 @@ public class McBot implements ModInitializer {
         listenerFactory.stop();//分发器关闭
         service.stop();
         app.interrupt();
+        messageThread.stop();
     }
 
     public void onServerStopped(MinecraftServer server) {

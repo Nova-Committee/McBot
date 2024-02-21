@@ -2,7 +2,6 @@ package cn.evole.mods.mcbot;
 
 import cn.evole.mods.mcbot.init.config.ModConfig;
 import net.fabricmc.loader.api.FabricLoader;
-import cn.evole.mods.mcbot.util.MessageThread;
 import cn.evole.onebot.sdk.util.BotUtils;
 import java.nio.file.Path;
 //#if MC >= 11700
@@ -40,14 +39,13 @@ public class Const {
     }
 
     public static void groupMsg(long id, String message){
-        MessageThread thread;
+        // 发送消息时实际上所调用的函数。
         if (ModConfig.INSTANCE.getBotConfig().getMsgType().equalsIgnoreCase("string")){
-            thread = new MessageThread(id, message, false);
+            McBot.messageThread.submit(id, message, false);
         }
         else {
-            thread = new MessageThread(id, BotUtils.rawToJson(message), false);
+            McBot.messageThread.submit(id, BotUtils.rawToJson(message), false);
         }
-        thread.start();
     }
 
     public static void sendGuildMsg(String message){
@@ -57,15 +55,12 @@ public class Const {
     }
 
     public static void guildMsg(String guildId, String channelId, String message){
-        // 发送消息时实际上所调用的函数。
-        MessageThread thread;
         if (ModConfig.INSTANCE.getBotConfig().getMsgType().equalsIgnoreCase("string")){
-            thread = new MessageThread(guildId, channelId, message);
+            McBot.messageThread.submit(guildId, channelId, message);
         }
         else {
-            thread = new MessageThread(guildId, channelId, BotUtils.rawToJson(message));
+            McBot.messageThread.submit(guildId, channelId, BotUtils.rawToJson(message));
         }
-        thread.start();
     }
 }
 
