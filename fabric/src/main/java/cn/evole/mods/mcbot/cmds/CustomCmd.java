@@ -1,6 +1,6 @@
 package cn.evole.mods.mcbot.cmds;
 
-import cn.evole.onebot.sdk.util.json.JsonsObject;
+import cn.evole.onebot.sdk.util.json.GsonUtils;
 import com.google.gson.JsonObject;
 import lombok.val;
 
@@ -28,13 +28,13 @@ public class CustomCmd {
 
     public static CustomCmd loadFromJson(JsonObject json) {
 
-        val alies = JsonsObject.parse(json).optString("alies");
-        val content = JsonsObject.parse(json).optString("content");
-        int role = JsonsObject.parse(json).optInt("role", 0);
+        val alies = GsonUtils.getAsString(json,"alies");
+        val content = GsonUtils.getAsString(json,"content");
+        int role = GsonUtils.getAsInt(json,"role", 0);
 
         val cmd = new CustomCmd(alies, content, role);
 
-        val enabled = JsonsObject.parse(json).optBool("enabled", true);
+        val enabled = GsonUtils.getAsBoolean(json,"enabled", true);
 
         cmd.setEnabled(enabled);
 

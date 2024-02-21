@@ -8,7 +8,7 @@ import cn.evole.mods.mcbot.init.handler.CustomCmdHandler;
 import cn.evole.mods.mcbot.util.locale.I18n;
 import cn.evole.onebot.client.connection.ConnectFactory;
 import cn.evole.onebot.client.core.Bot;
-import cn.evole.onebot.client.handler.EventBus;
+import cn.evole.onebot.client.factory.ListenerFactory;
 import cn.evole.onebot.sdk.util.FileUtils;
 import net.fabricmc.api.ModInitializer;
 //#if MC >= 11900
@@ -31,7 +31,7 @@ public class McBot implements ModInitializer {
 
     public static LinkedBlockingQueue<String> blockingQueue;
     public static ConnectFactory service;
-    public static EventBus bus;
+    public static ListenerFactory listenerFactory;
     public static Bot bot;
     public static Thread app;
 
@@ -93,19 +93,20 @@ public class McBot implements ModInitializer {
                 Const.LOGGER.error("▌ §c机器人服务端未配置或未打开");
             }
         }
-        bus = new EventBus(blockingQueue);//创建事件分发器
+        listenerFactory = new ListenerFactory(blockingQueue);//创建事件分发器
+        listenerFactory.start();
         CustomCmdHandler.INSTANCE.load();//自定义命令加载
-        IBotEvent.init(bus);//事件监听
+        IBotEvent.init(listenerFactory);//事件监听
     }
 
     public void onServerStopping(MinecraftServer server) {
         Const.isShutdown = true;
         Const.LOGGER.info("▌ §c正在关闭群服互联 §a┈━═☆");
-        bus.stop();//分发器关闭
-        service.stop();
-        app.interrupt();
         UserBindApi.save(CONFIG_FOLDER);
         CustomCmdHandler.INSTANCE.clear();//自定义命令持久层清空
+        listenerFactory.stop();//分发器关闭
+        service.stop();
+        app.interrupt();
     }
 
     public void onServerStopped(MinecraftServer server) {
@@ -114,7 +115,7 @@ public class McBot implements ModInitializer {
 
     private static void killOutThreads() {
         try {
-            bus.stop();//分发器关闭
+            listenerFactory.stop();//分发器关闭
             service.stop();
             app.interrupt();
         } catch (Exception ignored) {

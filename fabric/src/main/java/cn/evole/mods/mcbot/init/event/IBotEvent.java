@@ -5,11 +5,12 @@ import cn.evole.mods.mcbot.McBot;
 import cn.evole.mods.mcbot.cmds.CmdApi;
 import cn.evole.mods.mcbot.init.config.ModConfig;
 import cn.evole.mods.mcbot.util.onebot.CQUtils;
-import cn.evole.onebot.client.handler.DefaultEventHandler;
-import cn.evole.onebot.client.handler.EventBus;
-import cn.evole.onebot.client.listener.SimpleEventListener;
+import cn.evole.onebot.client.factory.ListenerFactory;
+import cn.evole.onebot.client.interfaces.handler.DefaultHandler;
+import cn.evole.onebot.client.interfaces.listener.SimpleListener;
 import cn.evole.onebot.sdk.event.message.GroupMessageEvent;
 import cn.evole.onebot.sdk.event.message.GuildMessageEvent;
+import cn.evole.onebot.sdk.event.message.MessageEvent;
 import cn.evole.onebot.sdk.event.meta.LifecycleMetaEvent;
 import cn.evole.onebot.sdk.event.notice.group.GroupDecreaseNoticeEvent;
 import cn.evole.onebot.sdk.event.notice.group.GroupIncreaseNoticeEvent;
@@ -23,7 +24,7 @@ import lombok.val;
  * Version: 1.0
  */
 public class IBotEvent {
-    public static void init(EventBus dispatchers) {
+    public static void init(ListenerFactory dispatchers) {
 
         GroupChatHandler(dispatchers);
         GroupCmdsHandler(dispatchers);
@@ -33,8 +34,8 @@ public class IBotEvent {
         LifeCycleHandler(dispatchers);
     }
 
-    private static void GroupChatHandler(EventBus dispatchers) {
-        dispatchers.addListener(new DefaultEventHandler<GroupMessageEvent>() {
+    private static void GroupChatHandler(ListenerFactory dispatchers) {
+        dispatchers.addListener(new DefaultHandler<GroupMessageEvent>() {
             @Override
             public void onMessage(GroupMessageEvent event) {
                 if (ModConfig.INSTANCE.getCommon().getGroupIdList().contains(event.getGroupId())//判断是否是配置中的群
@@ -69,8 +70,8 @@ public class IBotEvent {
         });
     }
 
-    private static void GroupCmdsHandler(EventBus dispatchers) {
-        dispatchers.addListener(new SimpleEventListener<GroupMessageEvent>() {
+    private static void GroupCmdsHandler(ListenerFactory dispatchers) {
+        dispatchers.addListener(new SimpleListener<GroupMessageEvent>() {
             @Override
             public void onMessage(GroupMessageEvent event) {
                 if (ModConfig.INSTANCE.getCommon().getGroupIdList().contains(event.getGroupId())
@@ -84,8 +85,8 @@ public class IBotEvent {
         });
     }
 
-    private static void GroupNoticeHandler(EventBus dispatchers) {
-        dispatchers.addListener(new SimpleEventListener<GroupIncreaseNoticeEvent>() {
+    private static void GroupNoticeHandler(ListenerFactory dispatchers) {
+        dispatchers.addListener(new SimpleListener<GroupIncreaseNoticeEvent>() {
             @Override
             public void onMessage(GroupIncreaseNoticeEvent event) {
                 if (ModConfig.INSTANCE.getCommon().getGroupIdList().contains(event.getGroupId())
@@ -97,7 +98,7 @@ public class IBotEvent {
             }
         });
 
-        dispatchers.addListener(new SimpleEventListener<GroupDecreaseNoticeEvent>() {
+        dispatchers.addListener(new SimpleListener<GroupDecreaseNoticeEvent>() {
             @Override
             public void onMessage(GroupDecreaseNoticeEvent event) {
                 if (ModConfig.INSTANCE.getCommon().getGroupIdList().contains(event.getGroupId())
@@ -112,8 +113,8 @@ public class IBotEvent {
 
     }
 
-    private static void GuildChatHandler(EventBus dispatchers) {
-        dispatchers.addListener(new SimpleEventListener<GuildMessageEvent>() {
+    private static void GuildChatHandler(ListenerFactory dispatchers) {
+        dispatchers.addListener(new SimpleListener<GuildMessageEvent>() {
             @Override
             public void onMessage(GuildMessageEvent event) {
                 if (event.getGuildId().equals(ModConfig.INSTANCE.getCommon().getGuildId())
@@ -149,8 +150,8 @@ public class IBotEvent {
         });
     }
 
-    private static void GuildCmdsHandler(EventBus dispatchers) {
-        dispatchers.addListener(new SimpleEventListener<GuildMessageEvent>() {
+    private static void GuildCmdsHandler(ListenerFactory dispatchers) {
+        dispatchers.addListener(new SimpleListener<GuildMessageEvent>() {
             @Override
             public void onMessage(GuildMessageEvent event) {
                 if (ModConfig.INSTANCE.getCommon().getChannelIdList().contains(event.getChannelId())
@@ -165,8 +166,8 @@ public class IBotEvent {
     }
 
 
-    private static void LifeCycleHandler(EventBus dispatchers) {
-        dispatchers.addListener(new SimpleEventListener<LifecycleMetaEvent>() {
+    private static void LifeCycleHandler(ListenerFactory dispatchers) {
+        dispatchers.addListener(new SimpleListener<LifecycleMetaEvent>() {
             @Override
             public void onMessage(LifecycleMetaEvent event) {
                 if (!event.getSubType().equals("connect")) return;

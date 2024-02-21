@@ -34,7 +34,7 @@ public class BotConfig extends AutoLoadTomlConfig {
         this.load(BotConfig.class);
     }
 
-    public cn.evole.onebot.client.config.BotConfig toBot(){
-        return new cn.evole.onebot.client.config.BotConfig(url, token, botId, isAccessToken, miraiHttp, reconnect, maxReconnectAttempts, msgType);
+    public cn.evole.onebot.client.core.BotConfig toBot(){
+        return new cn.evole.onebot.client.core.BotConfig(url, token, botId, isAccessToken, miraiHttp, reconnect, maxReconnectAttempts, msgType);
     }
 }
