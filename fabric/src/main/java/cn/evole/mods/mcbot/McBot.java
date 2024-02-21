@@ -13,17 +13,23 @@ import cn.evole.onebot.client.core.Bot;
 import cn.evole.onebot.client.factory.ListenerFactory;
 import cn.evole.onebot.sdk.util.FileUtils;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
+import net.minecraft.server.MinecraftServer;
+import java.nio.file.Path;
+import java.util.concurrent.LinkedBlockingQueue;
 //#if MC >= 11900
 //$$ import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 //#else
 import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
 //#endif
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
-import net.minecraft.server.MinecraftServer;
 
-import java.nio.file.Path;
-import java.util.concurrent.LinkedBlockingQueue;
+//兼容1.20.1版本vanish
+//#if MC == 12001
+//$$ import cn.evole.mods.mcbot.init.compat.VanishCompat;
+//#endif
+
+
 
 public class McBot implements ModInitializer {
 
@@ -68,6 +74,11 @@ public class McBot implements ModInitializer {
         IEvents.PLAYER_DEATH.register(IPlayerEvent::death);
 
         IEvents.SERVER_CHAT.register(IChatEvent::register);
+
+        //#if MC == 12001
+        //$$ VanishCompat.init();
+        //#endif
+
     }
 
 

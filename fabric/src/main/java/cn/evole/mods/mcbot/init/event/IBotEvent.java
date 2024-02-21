@@ -85,8 +85,8 @@ public class IBotEvent {
 //                    //#else
 //                    val recall = new TextComponent(end).withStyle(ChatFormatting.BLUE).setStyle(Style.EMPTY.withClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, recallCmd)));
 //                    val toSend = new TextComponent(finalMsg).append(recall);
-
 //                    //#endif
+
                     //#if MC >= 11900
                     //$$ val toSend = Component.literal(finalMsg);
                     //#else

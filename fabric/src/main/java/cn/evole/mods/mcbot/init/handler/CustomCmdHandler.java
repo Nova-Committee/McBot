@@ -77,24 +77,35 @@ public class CustomCmdHandler {
             json2.addProperty("role", 1);
             json2.addProperty("enable", true);
 
+            val json3 = new JsonObject();
+            json3.addProperty("alies", "bind");
+            json3.addProperty("content", "mcbot addBind %");
+            json3.addProperty("role", 0);
+            json3.addProperty("enable", true);
+
             FileWriter writer = null;
             FileWriter writer2 = null;
+            FileWriter writer3 = null;
 
             try {
                 val file = new File(dir, "list.json");
                 val file2 = new File(dir, "say.json");
+                val file3 = new File(dir, "bind.json");
                 writer = new FileWriter(file);
                 writer2 = new FileWriter(file2);
+                writer3 = new FileWriter(file3);
 
                 GSON.toJson(json, writer);
                 GSON.toJson(json2, writer2);
+                GSON.toJson(json3, writer3);
 
                 writer.close();
                 writer2.close();
+                writer3.close();
             } catch (Exception e) {
                 Const.LOGGER.error("An error occurred while generating default custom cmd", e);
             } finally {
-                IOUtils.closeQuietly(writer, writer2);
+                IOUtils.closeQuietly(writer, writer2, writer3);
             }
 
         }
