@@ -32,10 +32,6 @@ public class CQUtils {
     }
 
     public static String replace(String msg) {
-        if (ModConfig.INSTANCE.getBotConfig().isMiraiHttp()){
-            return msg;
-        }
-
         if (msg.indexOf('[') == -1)
             return BotUtils.unescape(msg);
 

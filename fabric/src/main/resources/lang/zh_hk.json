@@ -39,6 +39,8 @@
     "mcbot.death.attack.freeze.player": "%1$s 被 %2$s 凍死咗",
     "mcbot.death.attack.generic": "%1$s 死咗",
     "mcbot.death.attack.generic.player": "%1$s 死於 %2$s",
+    "mcbot.death.attack.genericKill": "%1$s 死咗",
+    "mcbot.death.attack.genericKill.player": "%1$s 死於 %2$s",
     "mcbot.death.attack.hotFloor": "%1$s 發覺地板係熔岩鋪嘅",
     "mcbot.death.attack.hotFloor.player": "%1$s 因為 %2$s 而行入咗危險地帶",
     "mcbot.death.attack.inFire": "%1$s 燒到熔咗",

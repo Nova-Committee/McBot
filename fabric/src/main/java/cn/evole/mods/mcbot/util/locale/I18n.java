@@ -72,7 +72,6 @@ public class I18n {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
             return "TranslateError{\"key\":\"" + key + "\",\"args\":" + Arrays.toString(args) + "}";
         }
     }

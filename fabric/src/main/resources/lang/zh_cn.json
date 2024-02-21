@@ -39,6 +39,8 @@
   "mcbot.death.attack.freeze.player": "%1$s被%2$s冻死了",
   "mcbot.death.attack.generic": "%1$s死了",
   "mcbot.death.attack.generic.player": "%1$s死于%2$s",
+  "mcbot.death.attack.genericKill": "%1$s死了",
+  "mcbot.death.attack.genericKill.player": "%1$s死于%2$s",
   "mcbot.death.attack.hotFloor": "%1$s发现了地板是熔岩做的",
   "mcbot.death.attack.hotFloor.player": "%1$s因%2$s而步入危险之地",
   "mcbot.death.attack.inFire": "%1$s浴火焚身",

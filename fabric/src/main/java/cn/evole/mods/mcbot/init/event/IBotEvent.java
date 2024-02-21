@@ -53,7 +53,6 @@ public class IBotEvent {
                             send = split[1];
                         else return;
                     }
-                    Const.LOGGER.info(send);
                     val nick = McBot.bot.getGroupMemberInfo(event.getGroupId(), event.getUserId(), true);
                     String groupNick = ModConfig.INSTANCE.getCmd().isGroupNickOn() // 是否使用群昵称
                             ? nick == null ? event.getSender().getCard() : nick.getData().getCard() // 防止api返回为空

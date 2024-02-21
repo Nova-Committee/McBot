@@ -39,6 +39,8 @@
   "mcbot.death.attack.freeze.player": "%1$s was frozen to death by %2$s",
   "mcbot.death.attack.generic": "%1$s died",
   "mcbot.death.attack.generic.player": "%1$s died because of %2$s",
+  "mcbot.death.attack.genericKill": "%1$s died",
+  "mcbot.death.attack.genericKill.player": "%1$s died because of %2$s",
   "mcbot.death.attack.hotFloor": "%1$s discovered the floor was lava",
   "mcbot.death.attack.hotFloor.player": "%1$s walked into the danger zone due to %2$s",
   "mcbot.death.attack.indirectMagic": "%1$s was killed by %2$s using magic",

@@ -57,7 +57,7 @@ public class MessageThread extends Thread {
     }
 
     public void start() {
-        Const.LOGGER.info(String.format("转发游戏消息: %s", messageString != null ? messageString : messageArray));
+        Const.LOGGER.debug(String.format("转发游戏消息: %s", messageString != null ? messageString : messageArray));
         Thread thread = new Thread(this, "MessageThread");
         thread.start();
     }
