@@ -78,8 +78,11 @@ public class McBot implements ModInitializer {
 
         IEvents.SERVER_CHAT.register(IChatEvent::register);
 
+
         //#if MC == 12001
-        //$$ VanishCompat.init();
+        //$$ if (Const.isLoad("melius_vanish")){
+        //$$     VanishCompat.init();
+        //$$ }
         //#endif
 
     }
