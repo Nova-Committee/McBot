@@ -26,6 +26,7 @@ jobs:
       with:
         java-version: '17'
         distribution: 'dragonwell'
+        source-version: '17'
 
     - name: Validate Gradle Wrapper
       uses: gradle/wrapper-validation-action@v1
