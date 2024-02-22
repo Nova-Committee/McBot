@@ -25,7 +25,8 @@ jobs:
       uses: actions/setup-java@v4
       with:
         java-version: '17'
-        distribution: 'dragonwell'
+        distribution: 'zulu'
+        check-latest: true
 
     - name: Validate Gradle Wrapper
       uses: gradle/wrapper-validation-action@v1
