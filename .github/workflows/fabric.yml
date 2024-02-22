@@ -25,7 +25,7 @@ jobs:
       uses: actions/setup-java@v4
       with:
         java-version: '17'
-        distribution: 'dragonwell'
+        distribution: 'azul'
         source-version: '17'
 
     - name: Validate Gradle Wrapper
