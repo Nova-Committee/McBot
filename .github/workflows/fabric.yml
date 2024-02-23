@@ -10,7 +10,7 @@ name: Fabric Action
 on:
   push:
     branches: [ "fabric" ]
-workflow_dispatch:
+  workflow_dispatch:
 
 
 jobs:
