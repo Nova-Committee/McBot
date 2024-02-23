@@ -29,6 +29,7 @@ import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
 //兼容1.20.1版本vanish
 //#if MC == 12001
 //$$ import cn.evole.mods.mcbot.init.compat.VanishCompat;
+//$$ import cn.evole.mods.mcbot.integration.VanishLoader;
 //#endif
 
 
@@ -81,6 +82,7 @@ public class McBot implements ModInitializer {
 
         //#if MC == 12001
         //$$ if (Const.isLoad("melius_vanish")){
+        //$$     VanishLoader.ISLOADED = true;
         //$$     VanishCompat.init();
         //$$ }
         //#endif

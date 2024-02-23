@@ -24,7 +24,7 @@ import com.mojang.authlib.GameProfile;
 
 //兼容1.20.1版本vanish
 //#if MC == 12001
-//$$ import cn.evole.mods.mcbot.init.compat.VanishCompat;
+//$$ import cn.evole.mods.mcbot.integration.VanishLoader;
 //#endif
 
 /**
@@ -49,7 +49,7 @@ public abstract class MixinPlayerList {
     @Inject(method = "placeNewPlayer", at = @At(value = "TAIL"))
     public void PlayerList_placeNewPlayer(Connection connection, ServerPlayer player, CallbackInfo ci) {
         //#if MC == 12001
-        //$$ if (!isVanished(player)) IEvents.PLAYER_LOGGED_IN.invoker().onPlayerLoggedIn(player.getCommandSenderWorld(), player);
+        //$$ if (!VanishLoader.isVanished(player)) IEvents.PLAYER_LOGGED_IN.invoker().onPlayerLoggedIn(player.getCommandSenderWorld(), player);
         //#else
         IEvents.PLAYER_LOGGED_IN.invoker().onPlayerLoggedIn(player.getCommandSenderWorld(), player);
         //#endif
@@ -57,34 +57,11 @@ public abstract class MixinPlayerList {
     @Inject(method = "remove", at = @At(value = "HEAD"))
     public void PlayerList_remove(ServerPlayer player, CallbackInfo ci) {
         //#if MC == 12001
-        //$$ if (!isVanished(player)) IEvents.PLAYER_LOGGED_OUT.invoker().onPlayerLoggedOut(player.getCommandSenderWorld(), player);
+        //$$ if (!VanishLoader.isVanished(player)) IEvents.PLAYER_LOGGED_OUT.invoker().onPlayerLoggedOut(player.getCommandSenderWorld(), player);
         //#else
         IEvents.PLAYER_LOGGED_OUT.invoker().onPlayerLoggedOut(player.getCommandSenderWorld(), player);
         //#endif
 
     }
-    //#endif
-
-    //兼容1.20.1 Vanish Fabric
-    //#if MC == 12001
-    //$$ @Unique
-    //$$ private boolean isVanished(ServerPlayer player) {
-    //$$     if (VanishCompat.VANISH){
-    //$$        try {
-    //$$            // 动态加载 Mod 中的类
-    //$$            Class<?> VanishManager = Class.forName("me.drex.vanish.util.VanishManager");
-    //$$            // 获取玩家的 GameProfile
-    //$$            GameProfile gameProfile = player.getGameProfile();
-    //$$            // 从 GameProfile 中获取 UUID
-    //$$            UUID uuid = gameProfile.getId();
-    //$$            // 使用反射调用 VanishManager.isVanished 方法检查玩家是否处于隐身状态
-    //$$            Method isVanishedMethod = VanishManager.getMethod("isVanished", MinecraftServer.class, UUID.class);
-    //$$            boolean isVanished = (boolean) isVanishedMethod.invoke(null, player.getServer(), uuid);
-    //$$        } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-    //$$            e.printStackTrace();
-    //$$        }
-    //$$     }
-    //$$     return false;
-    //$$ }
     //#endif
 }
