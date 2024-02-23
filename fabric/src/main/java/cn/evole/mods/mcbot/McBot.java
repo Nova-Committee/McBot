@@ -6,6 +6,7 @@ import cn.evole.mods.mcbot.init.callbacks.IEvents;
 import cn.evole.mods.mcbot.init.event.*;
 import cn.evole.mods.mcbot.init.config.ModConfig;
 import cn.evole.mods.mcbot.init.handler.CustomCmdHandler;
+import cn.evole.mods.mcbot.util.MessageThread;
 import cn.evole.mods.mcbot.util.locale.I18n;
 import cn.evole.onebot.client.connection.ConnectFactory;
 import cn.evole.onebot.client.core.Bot;
@@ -16,6 +17,8 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.minecraft.server.MinecraftServer;
 import java.nio.file.Path;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
 //#if MC >= 11900
 //$$ import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
@@ -26,6 +29,7 @@ import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
 //兼容1.20.1版本vanish
 //#if MC == 12001
 //$$ import cn.evole.mods.mcbot.init.compat.VanishCompat;
+//$$ import cn.evole.mods.mcbot.init.compat.VanishLoader;
 //#endif
 
 
@@ -43,6 +47,9 @@ public class McBot implements ModInitializer {
     public static Thread app;
 
     public static McBot INSTANCE = new McBot();
+
+    public static MessageThread messageThread;
+    public static ExecutorService CQUtilsExecutor;
 
 
     public MinecraftServer getServer() {
@@ -72,8 +79,11 @@ public class McBot implements ModInitializer {
 
         IEvents.SERVER_CHAT.register(IChatEvent::register);
 
+
         //#if MC == 12001
-        //$$ VanishCompat.init();
+        //$$ if (Const.isLoad("melius_vanish")){
+        //$$     VanishCompat.init();
+        //$$ }
         //#endif
 
     }
@@ -110,6 +120,8 @@ public class McBot implements ModInitializer {
         listenerFactory.start();
         CustomCmdHandler.INSTANCE.load();//自定义命令加载
         IBotEvent.init(listenerFactory);//事件监听
+        messageThread = new MessageThread();  // 创建消息处理线程池
+        CQUtilsExecutor = Executors.newSingleThreadExecutor();  // 创建CQ码处理线程池
     }
 
     public void onServerStopping(MinecraftServer server) {
@@ -121,6 +133,8 @@ public class McBot implements ModInitializer {
         listenerFactory.stop();//分发器关闭
         service.stop();
         app.interrupt();
+        messageThread.stop();
+        CQUtilsExecutor.shutdownNow();
     }
 
     public void onServerStopped(MinecraftServer server) {

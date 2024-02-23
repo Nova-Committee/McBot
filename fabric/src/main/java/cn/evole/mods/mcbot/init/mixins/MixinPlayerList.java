@@ -11,6 +11,9 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 //注意不能优化import
+import java.lang.reflect.InvocationTargetException;
+import net.minecraft.server.MinecraftServer;
+import java.lang.reflect.Method;
 import java.util.UUID;
 import org.spongepowered.asm.mixin.Unique;
 import com.mojang.authlib.GameProfile;
@@ -18,10 +21,10 @@ import com.mojang.authlib.GameProfile;
 //#if MC >= 12002
 //$$ import net.minecraft.server.network.CommonListenerCookie;
 //#endif
+
 //兼容1.20.1版本vanish
 //#if MC == 12001
-//$$ import cn.evole.mods.mcbot.init.compat.VanishCompat;
-//$$ import me.drex.vanish.util.VanishManager;
+//$$ import cn.evole.mods.mcbot.init.compat.VanishLoader;
 //#endif
 
 /**
@@ -46,7 +49,7 @@ public abstract class MixinPlayerList {
     @Inject(method = "placeNewPlayer", at = @At(value = "TAIL"))
     public void PlayerList_placeNewPlayer(Connection connection, ServerPlayer player, CallbackInfo ci) {
         //#if MC == 12001
-        //$$ if (!isVanished(player)) IEvents.PLAYER_LOGGED_IN.invoker().onPlayerLoggedIn(player.getCommandSenderWorld(), player);
+        //$$ if (!VanishLoader.isVanished(player)) IEvents.PLAYER_LOGGED_IN.invoker().onPlayerLoggedIn(player.getCommandSenderWorld(), player);
         //#else
         IEvents.PLAYER_LOGGED_IN.invoker().onPlayerLoggedIn(player.getCommandSenderWorld(), player);
         //#endif
@@ -54,23 +57,11 @@ public abstract class MixinPlayerList {
     @Inject(method = "remove", at = @At(value = "HEAD"))
     public void PlayerList_remove(ServerPlayer player, CallbackInfo ci) {
         //#if MC == 12001
-        //$$ if (!isVanished(player)) IEvents.PLAYER_LOGGED_OUT.invoker().onPlayerLoggedOut(player.getCommandSenderWorld(), player);
+        //$$ if (!VanishLoader.isVanished(player)) IEvents.PLAYER_LOGGED_OUT.invoker().onPlayerLoggedOut(player.getCommandSenderWorld(), player);
         //#else
         IEvents.PLAYER_LOGGED_OUT.invoker().onPlayerLoggedOut(player.getCommandSenderWorld(), player);
         //#endif
 
     }
-    //#endif
-
-    //#if MC == 12001
-    //$$ @Unique
-    //$$ private boolean isVanished(ServerPlayer player) {
-    //$$     // 获取玩家的 GameProfile
-    //$$     GameProfile gameProfile = player.getGameProfile();
-    //$$     // 从 GameProfile 中获取 UUID
-    //$$     UUID uuid = gameProfile.getId();
-    //$$     // 使用 VanishManager.isVanished 方法检查玩家是否处于隐身状态
-    //$$     return VanishCompat.VANISH && VanishManager.isVanished(player.getServer(), uuid)  ;
-    //$$ }
     //#endif
 }
