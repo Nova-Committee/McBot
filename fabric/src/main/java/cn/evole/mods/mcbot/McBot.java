@@ -29,6 +29,7 @@ import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
 //兼容1.20.1版本vanish
 //#if MC == 12001
 //$$ import cn.evole.mods.mcbot.init.compat.VanishCompat;
+//$$ import cn.evole.mods.mcbot.init.compat.VanishLoader;
 //#endif
 
 

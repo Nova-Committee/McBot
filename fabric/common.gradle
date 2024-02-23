@@ -50,8 +50,8 @@ remapJar {
     remapperIsolation = true
 }
 
-sourceCompatibility = JavaVersion.VERSION_17
-targetCompatibility = JavaVersion.VERSION_17
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
 
 version = project.mod_version
 group = project.maven_group
