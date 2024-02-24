@@ -81,7 +81,7 @@ public class McBot implements ModInitializer {
 
 
         //#if MC == 12001
-        //$$ if (Const.isLoad("melius_vanish")){
+        //$$ if (VanishCompat.VANISH)){
         //$$     VanishCompat.init();
         //$$ }
         //#endif
