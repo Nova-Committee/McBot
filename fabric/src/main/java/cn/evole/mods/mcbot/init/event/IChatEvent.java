@@ -5,6 +5,11 @@ import cn.evole.mods.mcbot.init.config.ModConfig;
 import lombok.val;
 import net.minecraft.world.entity.player.Player;
 
+//兼容1.20.1版本vanish
+//#if MC == 12001
+//$$ import cn.evole.mods.mcbot.init.compat.VanishLoader;
+//#endif
+
 /**
  * Description:
  * Author: cnlimiter
@@ -21,26 +26,20 @@ public class IChatEvent {
                 && !message.contains("CICode")
                 && !player.getCommandSenderWorld().isClientSide
         ) {
+            val msg = String.format(ModConfig.INSTANCE.getCmd().isMcPrefixOn()
+                            ? "[" + ModConfig.INSTANCE.getCmd().getMcPrefix() + "]<%s> %s"
+                            : "<%s> %s",
+                    player.getDisplayName().getString(),
+                    ModConfig.INSTANCE.getCmd().isMcChatPrefixOn()
+                            && ModConfig.INSTANCE.getCmd().getMcChatPrefix().equals(split[0]) ? split[1] : message);
+
+            //#if MC == 12001
+            //$$ if (VanishLoader.isVanished(player)) return;
+            //#endif
             if (ModConfig.INSTANCE.getCommon().isGuildOn() && !ModConfig.INSTANCE.getCommon().getChannelIdList().isEmpty()) {
-                val msg = String.format(ModConfig.INSTANCE.getCmd().isMcPrefixOn()
-                                ? "[" + ModConfig.INSTANCE.getCmd().getMcPrefix() + "]<%s> %s"
-                                : "<%s> %s",
-                        player.getDisplayName().getString(),
-                        ModConfig.INSTANCE.getCmd().isMcChatPrefixOn()
-                                && ModConfig.INSTANCE.getCmd().getMcChatPrefix().equals(split[0]) ? split[1] : message);
-
                 Const.sendGuildMsg(msg);
-
             } else {
-                val msg = String.format(ModConfig.INSTANCE.getCmd().isMcPrefixOn()
-                                ? "[" + ModConfig.INSTANCE.getCmd().getMcPrefix() + "]<%s> %s"
-                                : "<%s> %s",
-                        player.getDisplayName().getString(),
-                        ModConfig.INSTANCE.getCmd().isMcChatPrefixOn()
-                                && ModConfig.INSTANCE.getCmd().getMcChatPrefix().equals(split[0]) ? split[1] : message);
-
                 Const.sendGroupMsg(msg);
-
             }
 
 
