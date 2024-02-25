@@ -12,6 +12,7 @@ import cn.evole.onebot.client.connection.ConnectFactory;
 import cn.evole.onebot.client.core.Bot;
 import cn.evole.onebot.client.factory.ListenerFactory;
 import cn.evole.onebot.sdk.util.FileUtils;
+import lombok.Getter;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
@@ -29,13 +30,13 @@ import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
 //兼容1.20.1版本vanish
 //#if MC == 12001
 //$$ import cn.evole.mods.mcbot.init.compat.VanishCompat;
-//$$ import cn.evole.mods.mcbot.init.compat.VanishLoader;
 //#endif
 
 
 
 public class McBot implements ModInitializer {
 
+    @Getter
     public static MinecraftServer SERVER = null;
     public static Path CONFIG_FOLDER;
     public static Path CONFIG_FILE;
@@ -50,11 +51,6 @@ public class McBot implements ModInitializer {
 
     public static MessageThread messageThread;
     public static ExecutorService CQUtilsExecutor;
-
-
-    public MinecraftServer getServer() {
-        return SERVER;
-    }
 
     @Override
     public void onInitialize() {
@@ -81,9 +77,7 @@ public class McBot implements ModInitializer {
 
 
         //#if MC == 12001
-        //$$ if (VanishCompat.VANISH){
-        //$$     VanishCompat.init();
-        //$$ }
+        //$$ VanishCompat.init();
         //#endif
 
     }

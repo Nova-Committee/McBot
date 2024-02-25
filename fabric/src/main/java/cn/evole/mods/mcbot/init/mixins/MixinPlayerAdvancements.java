@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 //兼容1.20.1版本vanish
 //#if MC == 12001
-//$$ import cn.evole.mods.mcbot.init.compat.VanishLoader;
+//$$ import cn.evole.mods.mcbot.init.compat.VanishAPI;
 //#endif
 
 /**
@@ -36,7 +36,7 @@ public abstract class MixinPlayerAdvancements {
         ServerPlayer player = this.player;
 
         //#if MC == 12001
-        //$$ if (VanishLoader.isVanished(player)) return;
+        //$$ if (VanishAPI.isVanished(player)) return;
         //#endif
         IEvents.PLAYER_ADVANCEMENT.invoker().onAdvancement(player, advancement);
     }
