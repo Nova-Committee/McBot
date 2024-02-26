@@ -21,16 +21,16 @@ public class CustomCmd {
 
     private final int requirePermission;
 
-    private final boolean OPEscape;
+    private final boolean vanishSupport;
 
     @Setter
     private boolean enabled;
 
-    public CustomCmd(String cmdAlies, String cmdContent, int requirePermission, boolean OPEscape, boolean enabled) {
+    public CustomCmd(String cmdAlies, String cmdContent, int requirePermission, boolean vanish, boolean enabled) {
         this.cmdAlies = cmdAlies;
         this.cmdContent = cmdContent;
         this.requirePermission = requirePermission;
-        this.OPEscape = OPEscape;
+        this.vanishSupport = vanish;
         this.enabled = enabled;
     }
 
@@ -39,9 +39,9 @@ public class CustomCmd {
         val alies = GsonUtils.getAsString(json,"alies");
         val content = GsonUtils.getAsString(json,"content");
         val role = GsonUtils.getAsInt(json,"role", 0);
-        val escape = GsonUtils.getAsBoolean(json, "escape");
+        val vanish = GsonUtils.getAsBoolean(json, "vanish", false);
         val enabled = GsonUtils.getAsBoolean(json,"enabled", true);
 
-        return new CustomCmd(alies, content, role, escape, enabled);
+        return new CustomCmd(alies, content, role, vanish, enabled);
     }
 }

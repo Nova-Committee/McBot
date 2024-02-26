@@ -19,10 +19,10 @@ import cn.evole.onebot.sdk.event.message.GuildMessageEvent;
  * Version: 1.0
  */
 public class CmdApi {
-    private static StringBuilder CmdMain(String cmd, boolean isOp, boolean OPEscape) {
+    private static StringBuilder CmdMain(String cmd, boolean isOp, boolean vanishSupport) {
         StringBuilder result = new StringBuilder();
         //#if MC == 12001
-        //$$ if (!OPEscape) {
+        //$$ if (!vanishSupport) {
         //$$    VanishAPI.performPrefixedCommand(McBot.SERVER.getCommands(), isOp ? BotCmdRun.OP : BotCmdRun.CUSTOM, cmd);
         //$$ }
         //#else
@@ -58,16 +58,16 @@ public class CmdApi {
             // 如果指令包含list,则强行以非管理员身份执行
             CustomCmdHandler.INSTANCE.getCustomCmds().stream()
                     .filter(customCmd -> customCmd.getRequirePermission() < 1 && performedcommand.equals(customCmd.getCmdAlies()))
-                    .forEach(customCmd -> GroupCmd(event.getGroupId(), BotUtils.varParse(customCmd, origincommand), false, customCmd.isOPEscape()));
+                    .forEach(customCmd -> GroupCmd(event.getGroupId(), BotUtils.varParse(customCmd, origincommand), false, customCmd.isVanishSupport()));
         }else{
             if (BotUtils.groupAdminParse(event)) {
                 CustomCmdHandler.INSTANCE.getCustomCmds().stream()
                         .filter(customCmd -> performedcommand.equals(customCmd.getCmdAlies()))
-                        .forEach(customCmd -> GroupCmd(event.getGroupId(), BotUtils.varParse(customCmd, origincommand), true, customCmd.isOPEscape()));//admin
+                        .forEach(customCmd -> GroupCmd(event.getGroupId(), BotUtils.varParse(customCmd, origincommand), true, customCmd.isVanishSupport()));//admin
             } else
                 CustomCmdHandler.INSTANCE.getCustomCmds().stream()
                         .filter(customCmd -> customCmd.getRequirePermission() < 1 && performedcommand.equals(customCmd.getCmdAlies()))
-                        .forEach(customCmd -> GroupCmd(event.getGroupId(), BotUtils.varParse(customCmd, origincommand), false, customCmd.isOPEscape()));
+                        .forEach(customCmd -> GroupCmd(event.getGroupId(), BotUtils.varParse(customCmd, origincommand), false, customCmd.isVanishSupport()));
         }
 
     }
@@ -78,9 +78,9 @@ public class CmdApi {
         if (BotUtils.guildAdminParse(event)) {
             CustomCmdHandler.INSTANCE.getCustomCmds().stream()
                     .filter(customCmd -> command.contains(customCmd.getCmdAlies()))
-                    .forEach(customCmd -> GuildCmd(event.getGuildId(), event.getChannelId(), BotUtils.varParse(customCmd, command), true, customCmd.isOPEscape()));//admin
+                    .forEach(customCmd -> GuildCmd(event.getGuildId(), event.getChannelId(), BotUtils.varParse(customCmd, command), true, customCmd.isVanishSupport()));//admin
         } else CustomCmdHandler.INSTANCE.getCustomCmds().stream()
                 .filter(customCmd -> customCmd.getRequirePermission() < 1 && command.contains(customCmd.getCmdAlies()))
-                .forEach(customCmd -> GuildCmd(event.getGuildId(), event.getChannelId(), BotUtils.varParse(customCmd, command), false, customCmd.isOPEscape()));
+                .forEach(customCmd -> GuildCmd(event.getGuildId(), event.getChannelId(), BotUtils.varParse(customCmd, command), false, customCmd.isVanishSupport()));
     }
 }

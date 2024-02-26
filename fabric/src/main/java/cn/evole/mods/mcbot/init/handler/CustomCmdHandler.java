@@ -63,9 +63,9 @@ public class CustomCmdHandler {
 
     public void writeDefault() {
         if (!dir.exists() && dir.mkdirs()) {
-            JsonObject json1 = GSON.fromJson("{'alies': 'list', 'content': 'list', 'role': 0, 'OPEscape': false, 'enable': true}", JsonObject.class);
-            JsonObject json2 = GSON.fromJson("{'alies': 'say', 'content': 'say %', 'role': 1, 'OPEscape': true, 'enable': true}", JsonObject.class);
-            JsonObject json3 = GSON.fromJson("{'alies': 'bind', 'content': 'mcbot addBind %', 'role': 0, 'OPEscape': false, 'enable': true}", JsonObject.class);
+            JsonObject json1 = GSON.fromJson("{'alies': 'list', 'content': 'list', 'role': 0, 'enable': true}", JsonObject.class);
+            JsonObject json2 = GSON.fromJson("{'alies': 'say', 'content': 'say %', 'role': 1, 'enable': true}", JsonObject.class);
+            JsonObject json3 = GSON.fromJson("{'alies': 'bind', 'content': 'mcbot addBind %', 'role': 0, 'enable': true}", JsonObject.class);
 
             FileWriter writer1 = null;
             FileWriter writer2 = null;
