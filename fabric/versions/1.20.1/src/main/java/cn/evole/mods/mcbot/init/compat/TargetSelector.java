@@ -9,10 +9,10 @@ public class TargetSelector {
     private static String removeVanishedPlayers(String string) {
         String str = string;
         for (ServerPlayer player : VanishCompat.getVanishedPlayers()) {
-            int index = str.indexOf(player.getName().toString());
+            int index = str.indexOf(player.getName().getString());
             if (index != -1) {
                 // 移除名称
-                str = str.substring(0, index) + str.substring(index + player.getName().toString().length() + 2);
+                str = str.substring(0, index) + str.substring(index + player.getName().getString().length() + 2);
             }
         }
         return str;
@@ -20,13 +20,15 @@ public class TargetSelector {
 
     public static String getEntityList(ServerLevel level) {
         final String[] back = new String[1];
-        level.getAllEntities().forEach(entity -> back[0] += String.format("%s%s", entity.getName(), ", "));
+        back[0] = "";
+        level.getAllEntities().forEach(entity -> back[0] += String.format("%s%s", entity.getName().getString(), ", "));
         back[0] = back[0].contains(", ") ? back[0].substring(0, back[0].length() - 2) : back[0];
         return removeVanishedPlayers(back[0]);
     }
 
     public static String getPlayerList(ServerLevel level) {
         final String[] back = new String[1];
+        back[0] = "";
         level.players().forEach(player -> back[0] += String.format("%s%s", player.getName().getString(), ", "));
         back[0] = back[0].contains(", ") ? back[0].substring(0, back[0].length() - 2) : back[0];
         return removeVanishedPlayers(back[0]);
