@@ -5,10 +5,6 @@ import net.minecraft.server.MinecraftServer;
 import java.util.LinkedList;
 import java.util.Queue;
 import cn.evole.mods.mcbot.init.config.ModConfig;
-import net.minecraft.network.chat.Component;
-//#if MC < 11900
-import net.minecraft.network.chat.TextComponent;
-//#endif
 //#if MC <= 11802
 import net.minecraft.network.chat.ChatType;
 import net.minecraft.Util;

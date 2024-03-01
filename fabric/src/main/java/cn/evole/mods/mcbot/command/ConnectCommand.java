@@ -36,11 +36,8 @@ public class ConnectCommand {
             ModConfig.INSTANCE.getBotConfig().setMiraiHttp(false);
 
             try {
-                McBot.app = new Thread(() -> {
-                    McBot.service = new ConnectFactory(ModConfig.INSTANCE.getBotConfig().toBot(), McBot.blockingQueue);//创建websocket连接
-                    McBot.bot = McBot.service.ws.createBot();//创建机器人实例
-                }, "BotServer");
-                McBot.app.start();
+                McBot.service = new ConnectFactory(ModConfig.INSTANCE.getBotConfig().toBot(), McBot.blockingQueue);//创建websocket连接
+                McBot.bot = McBot.service.getBot();//创建机器人实例
             } catch (Exception e) {
                 Const.LOGGER.error("§c机器人服务端配置不正确");
             }
@@ -77,11 +74,8 @@ public class ConnectCommand {
             //#endif
             ModConfig.INSTANCE.getBotConfig().setMiraiHttp(true);
             try {
-                McBot.app = new Thread(() -> {
-                    McBot.service = new ConnectFactory(ModConfig.INSTANCE.getBotConfig().toBot(), McBot.blockingQueue);//创建websocket连接
-                    McBot.bot = McBot.service.ws.createBot();//创建机器人实例
-                }, "BotServer");
-                McBot.app.start();
+                McBot.service = new ConnectFactory(ModConfig.INSTANCE.getBotConfig().toBot(), McBot.blockingQueue);//创建websocket连接
+                McBot.bot = McBot.service.getBot();//创建机器人实例
             } catch (Exception e) {
                 Const.LOGGER.error("§c机器人服务端配置不正确");
             }
@@ -112,11 +106,8 @@ public class ConnectCommand {
         //#endif
         ModConfig.INSTANCE.getBotConfig().setMiraiHttp(false);
         try {
-            McBot.app = new Thread(() -> {
-                McBot.service = new ConnectFactory(ModConfig.INSTANCE.getBotConfig().toBot(), McBot.blockingQueue);//创建websocket连接
-                McBot.bot = McBot.service.ws.createBot();//创建机器人实例
-                }, "BotServer");
-            McBot.app.start();
+            McBot.service = new ConnectFactory(ModConfig.INSTANCE.getBotConfig().toBot(), McBot.blockingQueue);//创建websocket连接
+            McBot.bot = McBot.service.getBot();//创建机器人实例
         } catch (Exception e) {
             Const.LOGGER.error("§c机器人服务端配置不正确");
         }
@@ -137,11 +128,8 @@ public class ConnectCommand {
         //#endif
         ModConfig.INSTANCE.getBotConfig().setMiraiHttp(true);
         try {
-            McBot.app = new Thread(() -> {
-                McBot.service = new ConnectFactory(ModConfig.INSTANCE.getBotConfig().toBot(), McBot.blockingQueue);//创建websocket连接
-                McBot.bot = McBot.service.ws.createBot();//创建机器人实例
-                }, "BotServer");
-            McBot.app.start();
+            McBot.service = new ConnectFactory(ModConfig.INSTANCE.getBotConfig().toBot(), McBot.blockingQueue);//创建websocket连接
+            McBot.bot = McBot.service.getBot();//创建机器人实例
         } catch (Exception e) {
             Const.LOGGER.error("§c机器人服务端配置不正确");
         }

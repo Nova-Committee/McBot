@@ -24,7 +24,7 @@ dependencies {
     implementation include ("cn.evole.bot:OneBot-Client:${project.onebot_client_version}"){transitive = false}
     implementation include ("cn.evole.config:AtomConfig-Toml:${project.toml_version}"){transitive = false}
     if (mcVersion == 11605) include ("org.slf4j:slf4j-api:2.0.7")
-    if (mcVersion == 12001) modCompileOnly ("maven.modrinth:vanish:1.5.2-1.20.1")
+    modCompileOnly ("maven.modrinth:vanish:1.5.2-1.20.1")
     compileOnly ("org.projectlombok:lombok:1.18.24")
     annotationProcessor ("org.projectlombok:lombok:1.18.24")
 

@@ -23,10 +23,8 @@ import cn.evole.mods.mcbot.McBot;
 //$$ import net.minecraft.server.network.CommonListenerCookie;
 //#endif
 
-//兼容1.20.1版本vanish
-//#if MC == 12001
-//$$ import cn.evole.mods.mcbot.init.compat.VanishAPI;
-//#endif
+//兼容vanish
+import cn.evole.mods.mcbot.init.compat.vanish.VanishAPI;
 
 /**
  * Author cnlimiter
@@ -40,25 +38,23 @@ public abstract class MixinPlayerList {
     //#if MC >= 12002
     //$$ @Inject(method = "placeNewPlayer", at = @At(value = "TAIL"))
     //$$ public void PlayerList_placeNewPlayer(Connection connection, ServerPlayer player, CommonListenerCookie commonListenerCookie, CallbackInfo ci) {
+    //$$     if (VanishAPI.isVanished(player)) return;
     //$$     IEvents.PLAYER_LOGGED_IN.invoker().onPlayerLoggedIn(player.getCommandSenderWorld(), player);
     //$$ }
     //$$ @Inject(method = "remove", at = @At(value = "HEAD"))
     //$$ public void PlayerList_remove(ServerPlayer player, CallbackInfo ci) {
+    //$$     if (VanishAPI.isVanished(player)) return;
     //$$     IEvents.PLAYER_LOGGED_OUT.invoker().onPlayerLoggedOut(player.getCommandSenderWorld(), player);
     //$$ }
     //#else
     @Inject(method = "placeNewPlayer", at = @At(value = "TAIL"))
     public void PlayerList_placeNewPlayer(Connection connection, ServerPlayer player, CallbackInfo ci) {
-        //#if MC == 12001
-        //$$ if (VanishAPI.isVanished(player)) return;
-        //#endif
+        if (VanishAPI.isVanished(player)) return;
         IEvents.PLAYER_LOGGED_IN.invoker().onPlayerLoggedIn(player.getCommandSenderWorld(), player);
     }
     @Inject(method = "remove", at = @At(value = "HEAD"))
     public void PlayerList_remove(ServerPlayer player, CallbackInfo ci) {
-        //#if MC == 12001
-        //$$ if (VanishAPI.isVanished(player)) return;
-        //#endif
+        if (VanishAPI.isVanished(player)) return;
         IEvents.PLAYER_LOGGED_OUT.invoker().onPlayerLoggedOut(player.getCommandSenderWorld(), player);
     }
     //#endif

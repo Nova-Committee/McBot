@@ -1,5 +1,4 @@
-//#if MC == 12001
-package cn.evole.mods.mcbot.init.compat;
+package cn.evole.mods.mcbot.init.compat.vanish;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -55,4 +54,3 @@ public class TargetSelector {
         return "";
     }
 }
-//#endif

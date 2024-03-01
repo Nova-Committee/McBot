@@ -27,10 +27,8 @@ import java.util.concurrent.LinkedBlockingQueue;
 import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
 //#endif
 
-//兼容1.20.1版本vanish
-//#if MC == 12001
-//$$ import cn.evole.mods.mcbot.init.compat.VanishCompat;
-//#endif
+//兼容vanish
+import cn.evole.mods.mcbot.init.compat.vanish.VanishCompat;
 
 
 
@@ -45,7 +43,6 @@ public class McBot implements ModInitializer {
     public static ConnectFactory service;
     public static ListenerFactory listenerFactory;
     public static Bot bot;
-    public static Thread app;
 
     public static McBot INSTANCE = new McBot();
 
@@ -72,14 +69,9 @@ public class McBot implements ModInitializer {
         IEvents.PLAYER_LOGGED_OUT.register(IPlayerEvent::loggedOut);
         IEvents.PLAYER_ADVANCEMENT.register(IPlayerEvent::advancement);
         IEvents.PLAYER_DEATH.register(IPlayerEvent::death);
-
         IEvents.SERVER_CHAT.register(IChatEvent::register);
 
-
-        //#if MC == 12001
-        //$$ VanishCompat.init();
-        //#endif
-
+        VanishCompat.init();
     }
 
 
@@ -90,7 +82,7 @@ public class McBot implements ModInitializer {
         I18n.init();
         UserBindApi.load(CONFIG_FOLDER);
         ChatRecordApi.load(CONFIG_FOLDER);
-        Runtime.getRuntime().addShutdownHook(new Thread(McBot::killOutThreads));
+        //Runtime.getRuntime().addShutdownHook(new Thread(McBot::killOutThreads));
     }
 
     public void onServerStarting(MinecraftServer server) {
@@ -101,11 +93,8 @@ public class McBot implements ModInitializer {
         blockingQueue = new LinkedBlockingQueue<>();//使用队列传输数据
         if (ModConfig.INSTANCE.getCommon().isAutoOpen()) {
             try {
-                app = new Thread(() -> {
-                    service = new ConnectFactory(ModConfig.INSTANCE.getBotConfig().toBot(), blockingQueue);//创建websocket连接
-                    bot = service.ws.createBot();//创建机器人实例
-                }, "BotServer");
-                app.start();
+                service = new ConnectFactory(ModConfig.INSTANCE.getBotConfig().toBot(), blockingQueue);//创建websocket连接
+                bot = service.getBot();//创建机器人实例
             } catch (Exception e) {
                 Const.LOGGER.error("▌ §c机器人服务端未配置或未打开");
             }
@@ -126,7 +115,6 @@ public class McBot implements ModInitializer {
         CustomCmdHandler.INSTANCE.clear();//自定义命令持久层清空
         listenerFactory.stop();//分发器关闭
         service.stop();
-        app.interrupt();
         messageThread.stop();
         CQUtilsExecutor.shutdownNow();
     }
@@ -139,7 +127,8 @@ public class McBot implements ModInitializer {
         try {
             listenerFactory.stop();//分发器关闭
             service.stop();
-            app.interrupt();
+            messageThread.stop();
+            CQUtilsExecutor.shutdownNow();
         } catch (Exception ignored) {
         }
     }

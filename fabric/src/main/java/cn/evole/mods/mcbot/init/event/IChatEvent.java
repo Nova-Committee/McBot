@@ -2,14 +2,9 @@ package cn.evole.mods.mcbot.init.event;
 
 import cn.evole.mods.mcbot.Const;
 import cn.evole.mods.mcbot.init.config.ModConfig;
-import cn.evole.mods.mcbot.util.onebot.CQUtils;
 import lombok.val;
-import net.minecraft.world.entity.player.Player;
-
-//兼容1.20.1版本vanish
-//#if MC == 12001
-//$$ import cn.evole.mods.mcbot.init.compat.VanishAPI;
-//#endif
+import net.minecraft.server.level.ServerPlayer;
+import cn.evole.mods.mcbot.init.compat.vanish.VanishAPI;
 
 /**
  * Description:
@@ -18,10 +13,8 @@ import net.minecraft.world.entity.player.Player;
  * Version: 1.0
  */
 public class IChatEvent {
-    public static void register(Player player, String message) {
-        //#if MC == 12001
-        //$$ if (VanishAPI.isVanished(player)) return;
-        //#endif
+    public static void register(ServerPlayer player, String message) {
+        if (VanishAPI.isVanished(player)) return;
 
         val split = message.split(" ");
         if (ModConfig.INSTANCE != null

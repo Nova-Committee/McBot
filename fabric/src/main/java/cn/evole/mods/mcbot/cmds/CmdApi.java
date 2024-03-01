@@ -7,10 +7,8 @@ import cn.evole.mods.mcbot.util.onebot.BotUtils;
 import cn.evole.onebot.sdk.event.message.GroupMessageEvent;
 import cn.evole.onebot.sdk.event.message.GuildMessageEvent;
 
-//兼容1.20.1版本vanish
-//#if MC == 12001
-//$$ import cn.evole.mods.mcbot.init.compat.VanishAPI;
-//#endif
+//兼容vanish
+import cn.evole.mods.mcbot.init.compat.vanish.VanishAPI;
 
 /**
  * Description:
@@ -19,55 +17,47 @@ import cn.evole.onebot.sdk.event.message.GuildMessageEvent;
  * Version: 1.0
  */
 public class CmdApi {
-    private static StringBuilder CmdMain(String cmd, boolean isOp, boolean vanishSupport) {
+    private static String CmdMain(String cmd, boolean isOp, boolean vanishSupport) {
         StringBuilder result = new StringBuilder();
-        //#if MC == 12001
-        //$$ if (!vanishSupport) {
-        //$$    VanishAPI.performPrefixedCommand(McBot.SERVER.getCommands(), isOp ? BotCmdRun.OP : BotCmdRun.CUSTOM, cmd);
-        //$$ }
-        //#else
-        //#if MC >= 11900
-        //$$ McBot.SERVER.getCommands().performPrefixedCommand(isOp ? BotCmdRun.OP : BotCmdRun.CUSTOM, cmd);//优雅
-        //#else
-        McBot.SERVER.getCommands().performCommand(isOp ? BotCmdRun.OP : BotCmdRun.CUSTOM, cmd);
-        //#endif
-        //#endif
+        if (!vanishSupport) {
+            VanishAPI.performPrefixedCommand(McBot.SERVER.getCommands(), isOp ? BotCmdRun.OP : BotCmdRun.CUSTOM, cmd);
+        }
         for (String s : (isOp ? BotCmdRun.OP.outPut : BotCmdRun.CUSTOM.outPut)) {
             result.append(s.replaceAll("§\\S", "")).append("\n");
         }
         if (isOp) BotCmdRun.OP.outPut.clear();
         else BotCmdRun.CUSTOM.outPut.clear();
-        return result;
+        return result.toString();
     }
 
     private static void GroupCmd(long groupId, String cmd, boolean isOp, boolean OPEscape) {
-        Const.groupMsg(groupId, CmdMain(cmd, isOp, OPEscape).toString());
+        Const.groupMsg(groupId, CmdMain(cmd, isOp, OPEscape));
     }
 
     private static void GuildCmd(String guildId, String channelId, String cmd, boolean isOp, boolean OPEscape) {
-        Const.guildMsg(guildId, channelId, CmdMain(cmd, isOp, OPEscape).toString());
+        Const.guildMsg(guildId, channelId, CmdMain(cmd, isOp, OPEscape));
     }
 
     public static void invokeCommandGroup(GroupMessageEvent event) {
         String command = event.getMessage().substring(1);//去除前缀
-        String origincommand = command;
+        String originCommand = command;
         command = BotUtils.cmdParse(command);
-        String performedcommand = command;
+        String performedCommand = command;
 
-        if (performedcommand.equals("list")) {
+        if (performedCommand.equals("list")) {
             // 如果指令包含list,则强行以非管理员身份执行
             CustomCmdHandler.INSTANCE.getCustomCmds().stream()
-                    .filter(customCmd -> customCmd.getRequirePermission() < 1 && performedcommand.equals(customCmd.getCmdAlies()))
-                    .forEach(customCmd -> GroupCmd(event.getGroupId(), BotUtils.varParse(customCmd, origincommand), false, customCmd.isVanishSupport()));
+                    .filter(customCmd -> customCmd.getRequirePermission() < 1 && performedCommand.equals(customCmd.getCmdAlies()))
+                    .forEach(customCmd -> GroupCmd(event.getGroupId(), BotUtils.varParse(customCmd, originCommand), false, customCmd.isVanishSupport()));
         }else{
             if (BotUtils.groupAdminParse(event)) {
                 CustomCmdHandler.INSTANCE.getCustomCmds().stream()
-                        .filter(customCmd -> performedcommand.equals(customCmd.getCmdAlies()))
-                        .forEach(customCmd -> GroupCmd(event.getGroupId(), BotUtils.varParse(customCmd, origincommand), true, customCmd.isVanishSupport()));//admin
+                        .filter(customCmd -> performedCommand.equals(customCmd.getCmdAlies()))
+                        .forEach(customCmd -> GroupCmd(event.getGroupId(), BotUtils.varParse(customCmd, originCommand), true, customCmd.isVanishSupport()));//admin
             } else
                 CustomCmdHandler.INSTANCE.getCustomCmds().stream()
-                        .filter(customCmd -> customCmd.getRequirePermission() < 1 && performedcommand.equals(customCmd.getCmdAlies()))
-                        .forEach(customCmd -> GroupCmd(event.getGroupId(), BotUtils.varParse(customCmd, origincommand), false, customCmd.isVanishSupport()));
+                        .filter(customCmd -> customCmd.getRequirePermission() < 1 && performedCommand.equals(customCmd.getCmdAlies()))
+                        .forEach(customCmd -> GroupCmd(event.getGroupId(), BotUtils.varParse(customCmd, originCommand), false, customCmd.isVanishSupport()));
         }
 
     }
