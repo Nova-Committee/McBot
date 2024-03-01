@@ -3,13 +3,20 @@ package cn.evole.mods.mcbot.util.onebot;
 import cn.evole.mods.mcbot.Const;
 import cn.evole.mods.mcbot.McBot;
 import cn.evole.mods.mcbot.init.config.ModConfig;
+import cn.evole.onebot.sdk.entity.ArrayMsg;
+import cn.evole.onebot.sdk.event.message.MessageEvent;
 import cn.evole.onebot.sdk.util.BotUtils;
+import cn.evole.onebot.sdk.util.json.GsonUtils;
+import com.google.gson.JsonObject;
 import lombok.val;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static cn.evole.onebot.sdk.util.BotUtils.arrayMsgToCode;
 
 /**
  * Project: Bot-Connect-fabric-1.18
@@ -31,14 +38,20 @@ public class CQUtils {
         return m.find();
     }
 
-    public static String replace(String msg) {
-        if (!ModConfig.INSTANCE.getCommon().isCQUtils()){
-            return msg;
+    public static void rawConvert(String message, MessageEvent event) {
+        if (message.startsWith("[") && !message.startsWith("[CQ:")) {//如果是消息链（消息链以[开头）
+            List<ArrayMsg> arrayMsg = GsonUtils.convertToList(message, ArrayMsg.class);
+            event.setArrayMsg(arrayMsg);
+            event.setMessage(arrayMsgToCode(arrayMsg));
         }
+    }
 
-        if (msg.indexOf('[') == -1)
-            return BotUtils.unescape(msg);
+    public static String replace(MessageEvent event) {
 
+        //将消息链转化成cq码
+        rawConvert(event.getMessage(), event);
+        //获取转化完的
+        String msg = event.getMessage();
 
         String back;
         StringBuffer message = new StringBuffer();

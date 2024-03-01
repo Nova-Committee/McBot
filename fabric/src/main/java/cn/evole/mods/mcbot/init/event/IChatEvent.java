@@ -37,7 +37,6 @@ public class IChatEvent {
                     ModConfig.INSTANCE.getCmd().isMcChatPrefixOn()
                             && ModConfig.INSTANCE.getCmd().getMcChatPrefix().equals(split[0]) ? split[1] : message);
 
-            msg = CQUtils.replace(msg);
             if (ModConfig.INSTANCE.getCommon().isGuildOn() && !ModConfig.INSTANCE.getCommon().getChannelIdList().isEmpty()) {
                 Const.sendGuildMsg(msg);
             } else {

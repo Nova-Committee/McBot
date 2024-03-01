@@ -14,6 +14,7 @@ import cn.evole.onebot.sdk.event.message.GuildMessageEvent;
 import cn.evole.onebot.sdk.event.meta.LifecycleMetaEvent;
 import cn.evole.onebot.sdk.event.notice.group.GroupDecreaseNoticeEvent;
 import cn.evole.onebot.sdk.event.notice.group.GroupIncreaseNoticeEvent;
+import cn.evole.onebot.sdk.util.BotUtils;
 import cn.evole.onebot.sdk.util.MsgUtils;
 import lombok.val;
 import net.minecraft.ChatFormatting;
@@ -52,7 +53,7 @@ public class IBotEvent {
                         && event.getUserId() != ModConfig.INSTANCE.getCommon().getBotId()//过滤机器人
                 ) {
 
-                    String send = CQUtils.replace(event.getMessage());//暂时匹配仅符合字符串聊天内容与图片
+                    String send = CQUtils.replace(event);//暂时匹配仅符合字符串聊天内容与图片
 
 
                     if (ModConfig.INSTANCE.getCmd().isQqChatPrefixOn()) {
@@ -154,7 +155,7 @@ public class IBotEvent {
                         && event.getUserId() != ModConfig.INSTANCE.getCommon().getBotId()
                 ) {
 
-                    String send = CQUtils.replace(event.getMessage());//暂时匹配仅符合字符串聊天内容与图片
+                    String send = CQUtils.replace(event);//暂时匹配仅符合字符串聊天内容与图片
                     if (ModConfig.INSTANCE.getCmd().isQqChatPrefixOn()) {
                         val split = event.getMessage().split(" ");
                         if (ModConfig.INSTANCE.getCmd().getQqChatPrefix().equals(split[0])) //指定前缀发送
