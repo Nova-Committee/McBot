@@ -17,6 +17,7 @@ import java.lang.reflect.Method;
 import java.util.UUID;
 import org.spongepowered.asm.mixin.Unique;
 import com.mojang.authlib.GameProfile;
+import cn.evole.mods.mcbot.McBot;
 
 //#if MC >= 12002
 //$$ import net.minecraft.server.network.CommonListenerCookie;
@@ -24,7 +25,7 @@ import com.mojang.authlib.GameProfile;
 
 //兼容1.20.1版本vanish
 //#if MC == 12001
-//$$ import cn.evole.mods.mcbot.init.compat.VanishLoader;
+//$$ import cn.evole.mods.mcbot.init.compat.VanishAPI;
 //#endif
 
 /**
@@ -49,19 +50,16 @@ public abstract class MixinPlayerList {
     @Inject(method = "placeNewPlayer", at = @At(value = "TAIL"))
     public void PlayerList_placeNewPlayer(Connection connection, ServerPlayer player, CallbackInfo ci) {
         //#if MC == 12001
-        //$$ if (!VanishLoader.isVanished(player)) IEvents.PLAYER_LOGGED_IN.invoker().onPlayerLoggedIn(player.getCommandSenderWorld(), player);
-        //#else
-        IEvents.PLAYER_LOGGED_IN.invoker().onPlayerLoggedIn(player.getCommandSenderWorld(), player);
+        //$$ if (VanishAPI.isVanished(player)) return;
         //#endif
+        IEvents.PLAYER_LOGGED_IN.invoker().onPlayerLoggedIn(player.getCommandSenderWorld(), player);
     }
     @Inject(method = "remove", at = @At(value = "HEAD"))
     public void PlayerList_remove(ServerPlayer player, CallbackInfo ci) {
         //#if MC == 12001
-        //$$ if (!VanishLoader.isVanished(player)) IEvents.PLAYER_LOGGED_OUT.invoker().onPlayerLoggedOut(player.getCommandSenderWorld(), player);
-        //#else
-        IEvents.PLAYER_LOGGED_OUT.invoker().onPlayerLoggedOut(player.getCommandSenderWorld(), player);
+        //$$ if (VanishAPI.isVanished(player)) return;
         //#endif
-
+        IEvents.PLAYER_LOGGED_OUT.invoker().onPlayerLoggedOut(player.getCommandSenderWorld(), player);
     }
     //#endif
 }

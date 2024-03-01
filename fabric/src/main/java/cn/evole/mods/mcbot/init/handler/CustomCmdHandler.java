@@ -4,10 +4,7 @@ import cn.evole.mods.mcbot.Const;
 import cn.evole.mods.mcbot.cmds.CustomCmd;
 import com.google.common.base.Stopwatch;
 import com.google.common.collect.Lists;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.google.gson.*;
 import lombok.val;
 import net.fabricmc.loader.api.FabricLoader;
 import org.apache.commons.io.IOUtils;
@@ -15,6 +12,7 @@ import org.apache.commons.io.filefilter.FileFilterUtils;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -60,52 +58,38 @@ public class CustomCmdHandler {
 
         stopwatch.stop();
 
-        Const.LOGGER.info("Loaded {} custom cmd(s) in {} ms", this.customCmdMap.size(), stopwatch.elapsed(TimeUnit.MILLISECONDS));
+        Const.LOGGER.info("加载 {} 个自定义命令，耗时 {} 毫秒", this.customCmdMap.size(), stopwatch.elapsed(TimeUnit.MILLISECONDS));
     }
 
     public void writeDefault() {
         if (!dir.exists() && dir.mkdirs()) {
-            val json = new JsonObject();
-            json.addProperty("alies", "list");
-            json.addProperty("content", "list");
-            json.addProperty("role", 0);
-            json.addProperty("enable", true);
+            JsonObject json1 = GSON.fromJson("{'alies': 'list', 'content': 'list', 'role': 0, 'enable': true}", JsonObject.class);
+            JsonObject json2 = GSON.fromJson("{'alies': 'say', 'content': 'say %', 'role': 1, 'enable': true}", JsonObject.class);
+            JsonObject json3 = GSON.fromJson("{'alies': 'bind', 'content': 'mcbot addBind %', 'role': 0, 'enable': true}", JsonObject.class);
 
-            val json2 = new JsonObject();
-            json2.addProperty("alies", "say");
-            json2.addProperty("content", "say %");
-            json2.addProperty("role", 1);
-            json2.addProperty("enable", true);
-
-            val json3 = new JsonObject();
-            json3.addProperty("alies", "bind");
-            json3.addProperty("content", "mcbot addBind %");
-            json3.addProperty("role", 0);
-            json3.addProperty("enable", true);
-
-            FileWriter writer = null;
+            FileWriter writer1 = null;
             FileWriter writer2 = null;
             FileWriter writer3 = null;
 
             try {
-                val file = new File(dir, "list.json");
+                val file1 = new File(dir, "list.json");
                 val file2 = new File(dir, "say.json");
                 val file3 = new File(dir, "bind.json");
-                writer = new FileWriter(file);
+                writer1 = new FileWriter(file1);
                 writer2 = new FileWriter(file2);
                 writer3 = new FileWriter(file3);
 
-                GSON.toJson(json, writer);
+                GSON.toJson(json1, writer1);
                 GSON.toJson(json2, writer2);
                 GSON.toJson(json3, writer3);
 
-                writer.close();
+                writer1.close();
                 writer2.close();
                 writer3.close();
             } catch (Exception e) {
                 Const.LOGGER.error("An error occurred while generating default custom cmd", e);
             } finally {
-                IOUtils.closeQuietly(writer, writer2, writer3);
+                IOUtils.closeQuietly(writer1, writer2, writer3);
             }
 
         }
@@ -122,7 +106,7 @@ public class CustomCmdHandler {
             CustomCmd customCmd = null;
 
             try {
-                reader = new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8);
+                reader = new InputStreamReader(Files.newInputStream(file.toPath()), StandardCharsets.UTF_8);
                 json = new JsonParser().parse(reader).getAsJsonObject();
 
                 customCmd = CustomCmd.loadFromJson(json);

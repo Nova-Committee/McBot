@@ -5,7 +5,6 @@ import cn.evole.mods.mcbot.McBot;
 import cn.evole.mods.mcbot.init.config.ModConfig;
 import cn.evole.onebot.sdk.util.BotUtils;
 import lombok.val;
-import net.fabricmc.loader.api.FabricLoader;
 
 import java.util.Arrays;
 import java.util.concurrent.*;
@@ -33,6 +32,10 @@ public class CQUtils {
     }
 
     public static String replace(String msg) {
+        if (!ModConfig.INSTANCE.getCommon().isCQUtils()){
+            return msg;
+        }
+
         if (msg.indexOf('[') == -1)
             return BotUtils.unescape(msg);
 
@@ -105,7 +108,7 @@ public class CQUtils {
         try {
             McBot.CQUtilsExecutor.execute(call);
             back = call.get(1000 * 3, TimeUnit.MILLISECONDS);
-        } catch (ExecutionException | InterruptedException | TimeoutException e) {
+        } catch (ExecutionException | InterruptedException | TimeoutException | IllegalStateException e) {
             back = msg;
             call.cancel(true);
             Const.LOGGER.error(e.getLocalizedMessage());

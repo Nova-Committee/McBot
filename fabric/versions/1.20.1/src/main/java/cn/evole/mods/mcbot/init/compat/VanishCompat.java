@@ -3,13 +3,20 @@ package cn.evole.mods.mcbot.init.compat;
 
 import cn.evole.mods.mcbot.Const;
 import cn.evole.mods.mcbot.init.event.IPlayerEvent;
+import lombok.Getter;
 import me.drex.vanish.api.VanishEvents;
-import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.Level;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class VanishCompat {
     public static final boolean VANISH = Const.isLoad("melius-vanish");
+
+    @Getter
+    public static List<ServerPlayer> vanishedPlayers = new ArrayList<>();  // 维护一个列表，包含全部隐身的玩家
 
     public static void init() {
         if (VANISH) {
@@ -23,6 +30,8 @@ public class VanishCompat {
         VanishEvents.UN_VANISH_MESSAGE_EVENT.register((serverPlayer) -> {
             // 获取玩家所在的世界信息
             Level world = serverPlayer.getCommandSenderWorld();
+            // 维护列表
+            vanishedPlayers.remove(serverPlayer);
             // 调用 loggedIn 方法
             IPlayerEvent.loggedIn(world, serverPlayer);
             // 返回一个空的 Component
@@ -33,6 +42,8 @@ public class VanishCompat {
         VanishEvents.VANISH_MESSAGE_EVENT.register((serverPlayer) -> {
             // 获取玩家所在的世界信息
             Level world = serverPlayer.getCommandSenderWorld();
+            // 维护列表
+            vanishedPlayers.add(serverPlayer);
             // 调用 loggedOut 方法
             IPlayerEvent.loggedOut(world, serverPlayer);
             // 返回一个空的 Component

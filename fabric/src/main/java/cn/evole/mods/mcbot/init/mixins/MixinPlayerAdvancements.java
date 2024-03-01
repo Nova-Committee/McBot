@@ -10,6 +10,11 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+//兼容1.20.1版本vanish
+//#if MC == 12001
+//$$ import cn.evole.mods.mcbot.init.compat.VanishAPI;
+//#endif
+
 /**
  * Author cnlimiter
  * CreateTime 2023/6/6 0:43
@@ -30,6 +35,9 @@ public abstract class MixinPlayerAdvancements {
 
         ServerPlayer player = this.player;
 
+        //#if MC == 12001
+        //$$ if (VanishAPI.isVanished(player)) return;
+        //#endif
         IEvents.PLAYER_ADVANCEMENT.invoker().onAdvancement(player, advancement);
     }
 }
