@@ -10,8 +10,13 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+//#if MC >= 11202
+//$$ import net.minecraft.advancements.AdvancementHolder;
+//#endif
+
 //兼容vanish
 import cn.evole.mods.mcbot.init.compat.vanish.VanishAPI;
+import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 /**
  * Author cnlimiter
@@ -24,16 +29,23 @@ import cn.evole.mods.mcbot.init.compat.vanish.VanishAPI;
 public abstract class MixinPlayerAdvancements {
     @Shadow
     private ServerPlayer player;
-    //#if MC < 11900
-    @Inject(method = "award", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/players/PlayerList;broadcastMessage(Lnet/minecraft/network/chat/Component;Lnet/minecraft/network/chat/ChatType;Ljava/util/UUID;)V", shift = At.Shift.AFTER))
+    @Inject(method = "award", at = @At(value = "TAIL"), locals = LocalCapture.CAPTURE_FAILEXCEPTION)
+
+    //#if MC >= 11202
+    //$$ public void mcbot$award(AdvancementHolder advancement, String string, CallbackInfoReturnable<Boolean> cir) {
     //#else
-    //$$ @Inject(method = "award", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/players/PlayerList;broadcastSystemMessage(Lnet/minecraft/network/chat/Component;Z)V", shift = At.Shift.AFTER))
-    //#endif
     public void mcbot$award(Advancement advancement, String string, CallbackInfoReturnable<Boolean> cir) {
+    //#endif
+
+
 
         ServerPlayer player = this.player;
 
         if (VanishAPI.isVanished(player)) return;
+        //#if MC >= 11202
+        //$$ IEvents.PLAYER_ADVANCEMENT.invoker().onAdvancement(player, advancement.value());
+        //#else
         IEvents.PLAYER_ADVANCEMENT.invoker().onAdvancement(player, advancement);
+        //#endif
     }
 }

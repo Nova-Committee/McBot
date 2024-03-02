@@ -2,6 +2,7 @@ package cn.evole.mods.mcbot.util.locale;
 
 import cn.evole.mods.mcbot.Const;
 import cn.evole.mods.mcbot.init.config.ModConfig;
+import cn.evole.mods.mcbot.util.MCVersion;
 import cn.evole.mods.mcbot.util.Reflection;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -26,7 +27,7 @@ public class I18n {
     public static void init() {
         translations = new HashMap<>();
 
-        val version = getMcVersion().replace(".", "_");
+        val version = MCVersion.getMcVersion().replace(".", "_");
 
         Optional<Path> optional = FabricLoader.getInstance().getModContainer("mcbot_" + version).orElseThrow(null)
                 .findPath("/lang/" + ModConfig.INSTANCE.getCommon().getLanguageSelect() + ".json");
@@ -85,25 +86,5 @@ public class I18n {
         }
     }
 
-    private static String getMcVersion() {
-        try {
-            // Fabric
-            return (String) Reflection.clazz("net.fabricmc.loader.impl.FabricLoaderImpl")
-                    .get("INSTANCE")
-                    .get("getGameProvider()")
-                    .get("getNormalizedGameVersion()").get();
-        } catch (Exception ignored) {
 
-        }
-        try {
-            // Quilt
-            return (String) Reflection.clazz("org.quiltmc.loader.impl.QuiltLoaderImpl")
-                    .get("INSTANCE")
-                    .get("getGameProvider()")
-                    .get("getNormalizedGameVersion()").get();
-        } catch (Exception ignored) {
-
-        }
-        return null;
-    }
 }
