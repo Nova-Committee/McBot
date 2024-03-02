@@ -25,14 +25,14 @@ public abstract class MixinServerGamePktImpl {
     @Shadow
     public ServerPlayer player;
     @Inject(method = "handleChat(Ljava/lang/String;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/players/PlayerList;broadcastMessage(Lnet/minecraft/network/chat/Component;Lnet/minecraft/network/chat/ChatType;Ljava/util/UUID;)V", shift = At.Shift.BEFORE))
-    public void handleChat(String string, CallbackInfo ci) {
+    public void mcbot$handleChat(String string, CallbackInfo ci) {
         IEvents.SERVER_CHAT.invoker().onChat(this.player, string);
     }
     //#elseif MC < 11900
     //$$ @Shadow
     //$$ public ServerPlayer player;
     //$$ @Inject(method = "handleChat(Lnet/minecraft/server/network/TextFilter$FilteredText;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/players/PlayerList;broadcastMessage(Lnet/minecraft/network/chat/Component;Ljava/util/function/Function;Lnet/minecraft/network/chat/ChatType;Ljava/util/UUID;)V", shift = At.Shift.BEFORE))
-    //$$ public void handleChat(TextFilter.FilteredText filteredText, CallbackInfo ci) {
+    //$$ public void mcbot$handleChat(TextFilter.FilteredText filteredText, CallbackInfo ci) {
     //$$     String s1 = filteredText.getRaw();
     //$$     IEvents.SERVER_CHAT.invoker().onChat(this.player, s1);
     //$$ }
@@ -40,7 +40,7 @@ public abstract class MixinServerGamePktImpl {
     //$$@Shadow
     //$$public ServerPlayer player;
     //$$@Inject(method = "broadcastChatMessage", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/players/PlayerList;broadcastChatMessage(Lnet/minecraft/network/chat/PlayerChatMessage;Lnet/minecraft/server/level/ServerPlayer;Lnet/minecraft/network/chat/ChatType$Bound;)V", shift = At.Shift.BEFORE))
-    //$$public void handleChat(PlayerChatMessage filteredText, CallbackInfo ci) {
+    //$$public void mcbot$handleChat(PlayerChatMessage filteredText, CallbackInfo ci) {
     //$$    String s1 = filteredText.serverContent().getString();
     //$$    IEvents.SERVER_CHAT.invoker().onChat(this.player, s1);
     //$$}
@@ -48,7 +48,7 @@ public abstract class MixinServerGamePktImpl {
     //$$@Shadow
     //$$public ServerPlayer player;
     //$$@Inject(method = "broadcastChatMessage", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/players/PlayerList;broadcastChatMessage(Lnet/minecraft/network/chat/PlayerChatMessage;Lnet/minecraft/server/level/ServerPlayer;Lnet/minecraft/network/chat/ChatType$Bound;)V", shift = At.Shift.BEFORE))
-    //$$public void handleChat(PlayerChatMessage filteredText, CallbackInfo ci) {
+    //$$public void mcbot$handleChat(PlayerChatMessage filteredText, CallbackInfo ci) {
     //$$    String s1 = filteredText.decoratedContent().getString();
     //$$    IEvents.SERVER_CHAT.invoker().onChat(this.player, s1);
     //$$}

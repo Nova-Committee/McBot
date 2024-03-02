@@ -12,6 +12,7 @@ import cn.evole.onebot.client.connection.ConnectFactory;
 import cn.evole.onebot.client.core.Bot;
 import cn.evole.onebot.client.factory.ListenerFactory;
 import cn.evole.onebot.sdk.util.FileUtils;
+import com.google.gson.JsonObject;
 import lombok.Getter;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
@@ -39,7 +40,7 @@ public class McBot implements ModInitializer {
     public static Path CONFIG_FOLDER;
     public static Path CONFIG_FILE;
 
-    public static LinkedBlockingQueue<String> blockingQueue;
+    public static LinkedBlockingQueue<JsonObject> blockingQueue;
     public static ConnectFactory service;
     public static ListenerFactory listenerFactory;
     public static Bot bot;
@@ -82,7 +83,6 @@ public class McBot implements ModInitializer {
         I18n.init();
         UserBindApi.load(CONFIG_FOLDER);
         ChatRecordApi.load(CONFIG_FOLDER);
-        //Runtime.getRuntime().addShutdownHook(new Thread(McBot::killOutThreads));
     }
 
     public void onServerStarting(MinecraftServer server) {
@@ -113,23 +113,13 @@ public class McBot implements ModInitializer {
         UserBindApi.save(CONFIG_FOLDER);
         ChatRecordApi.save(CONFIG_FOLDER);
         CustomCmdHandler.INSTANCE.clear();//自定义命令持久层清空
+    }
+
+    public void onServerStopped(MinecraftServer server) {
         listenerFactory.stop();//分发器关闭
         service.stop();
         messageThread.stop();
         CQUtilsExecutor.shutdownNow();
     }
 
-    public void onServerStopped(MinecraftServer server) {
-        killOutThreads();
-    }
-
-    private static void killOutThreads() {
-        try {
-            listenerFactory.stop();//分发器关闭
-            service.stop();
-            messageThread.stop();
-            CQUtilsExecutor.shutdownNow();
-        } catch (Exception ignored) {
-        }
-    }
 }

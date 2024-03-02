@@ -54,7 +54,7 @@ public abstract class MixinSystemCmd {
     }
 
     @Redirect(method = "<init>", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/commands/SayCommand;register(Lcom/mojang/brigadier/CommandDispatcher;)V"))
-    private void sayRedirect(CommandDispatcher<CommandSourceStack> dispatcher) {
+    private void mcbot$sayRedirect(CommandDispatcher<CommandSourceStack> dispatcher) {
         say_register(dispatcher);
     }
 }

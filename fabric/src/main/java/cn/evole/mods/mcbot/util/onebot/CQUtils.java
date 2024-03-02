@@ -8,6 +8,7 @@ import cn.evole.onebot.sdk.event.message.MessageEvent;
 import cn.evole.onebot.sdk.util.BotUtils;
 import cn.evole.onebot.sdk.util.json.GsonUtils;
 import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
 import lombok.val;
 
 import java.util.Arrays;
@@ -40,14 +41,14 @@ public class CQUtils {
 
     public static void rawConvert(String message, MessageEvent event) {
         if (message.startsWith("[") && !message.startsWith("[CQ:")) {//如果是消息链（消息链以[开头）
-            List<ArrayMsg> arrayMsg = GsonUtils.convertToList(message, ArrayMsg.class);
-            event.setArrayMsg(arrayMsg);
-            event.setMessage(arrayMsgToCode(arrayMsg));
+            List<ArrayMsg> msg = GsonUtils.fromJson(message, new TypeToken<List<ArrayMsg>>() {
+            }.getType());
+            event.setArrayMsg(msg);
+            event.setMessage(arrayMsgToCode(msg));
         }
     }
 
     public static String replace(MessageEvent event) {
-
         //将消息链转化成cq码
         rawConvert(event.getMessage(), event);
         //获取转化完的

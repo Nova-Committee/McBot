@@ -37,23 +37,23 @@ import cn.evole.mods.mcbot.init.compat.vanish.VanishAPI;
 public abstract class MixinPlayerList {
     //#if MC >= 12002
     //$$ @Inject(method = "placeNewPlayer", at = @At(value = "TAIL"))
-    //$$ public void PlayerList_placeNewPlayer(Connection connection, ServerPlayer player, CommonListenerCookie commonListenerCookie, CallbackInfo ci) {
+    //$$ public void mcbot$placeNewPlayer(Connection connection, ServerPlayer player, CommonListenerCookie commonListenerCookie, CallbackInfo ci) {
     //$$     if (VanishAPI.isVanished(player)) return;
     //$$     IEvents.PLAYER_LOGGED_IN.invoker().onPlayerLoggedIn(player.getCommandSenderWorld(), player);
     //$$ }
     //$$ @Inject(method = "remove", at = @At(value = "HEAD"))
-    //$$ public void PlayerList_remove(ServerPlayer player, CallbackInfo ci) {
+    //$$ public void mcbot$removePlayer(ServerPlayer player, CallbackInfo ci) {
     //$$     if (VanishAPI.isVanished(player)) return;
     //$$     IEvents.PLAYER_LOGGED_OUT.invoker().onPlayerLoggedOut(player.getCommandSenderWorld(), player);
     //$$ }
     //#else
     @Inject(method = "placeNewPlayer", at = @At(value = "TAIL"))
-    public void PlayerList_placeNewPlayer(Connection connection, ServerPlayer player, CallbackInfo ci) {
+    public void mcbot$placeNewPlayer(Connection connection, ServerPlayer player, CallbackInfo ci) {
         if (VanishAPI.isVanished(player)) return;
         IEvents.PLAYER_LOGGED_IN.invoker().onPlayerLoggedIn(player.getCommandSenderWorld(), player);
     }
     @Inject(method = "remove", at = @At(value = "HEAD"))
-    public void PlayerList_remove(ServerPlayer player, CallbackInfo ci) {
+    public void mcbot$removePlayer(ServerPlayer player, CallbackInfo ci) {
         if (VanishAPI.isVanished(player)) return;
         IEvents.PLAYER_LOGGED_OUT.invoker().onPlayerLoggedOut(player.getCommandSenderWorld(), player);
     }

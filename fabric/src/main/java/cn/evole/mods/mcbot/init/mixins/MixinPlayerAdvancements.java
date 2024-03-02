@@ -29,7 +29,7 @@ public abstract class MixinPlayerAdvancements {
     //#else
     //$$ @Inject(method = "award", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/players/PlayerList;broadcastSystemMessage(Lnet/minecraft/network/chat/Component;Z)V", shift = At.Shift.AFTER))
     //#endif
-    public void PlayerAdvancements_award(Advancement advancement, String string, CallbackInfoReturnable<Boolean> cir) {
+    public void mcbot$award(Advancement advancement, String string, CallbackInfoReturnable<Boolean> cir) {
 
         ServerPlayer player = this.player;
 

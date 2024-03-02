@@ -18,7 +18,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(value = ServerPlayer.class, priority = 1001)
 public abstract class MixinServerPlayer {
     @Inject(method = "die(Lnet/minecraft/world/damagesource/DamageSource;)V", at = @At(value = "HEAD"))
-    public void ServerPlayer_die(DamageSource damageSource, CallbackInfo ci) {
+    public void mcbot$die(DamageSource damageSource, CallbackInfo ci) {
         ServerPlayer player = (ServerPlayer) (Object) this;
 
         IEvents.PLAYER_DEATH.invoker().onDeath(damageSource, player);

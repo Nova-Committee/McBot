@@ -16,7 +16,7 @@ public class DisconnectCommand {
     public static int execute(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
         if (McBot.service != null) {
             McBot.service.stop();
-            if (!McBot.service.ws.isOpen()) {
+            if (!McBot.service.getWs().isOpen()) {
                 //#if MC >= 12000
                 //$$ context.getSource().sendSuccess(()->Component.literal("WebSocket已断开连接"), true);
                 //#elseif MC < 11900
