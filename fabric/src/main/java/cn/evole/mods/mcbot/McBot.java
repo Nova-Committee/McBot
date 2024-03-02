@@ -113,10 +113,10 @@ public class McBot implements ModInitializer {
         UserBindApi.save(CONFIG_FOLDER);
         ChatRecordApi.save(CONFIG_FOLDER);
         CustomCmdHandler.INSTANCE.clear();//自定义命令持久层清空
+        listenerFactory.stop();//分发器关闭
     }
 
     public void onServerStopped(MinecraftServer server) {
-        listenerFactory.stop();//分发器关闭
         service.stop();
         messageThread.stop();
         CQUtilsExecutor.shutdownNow();
