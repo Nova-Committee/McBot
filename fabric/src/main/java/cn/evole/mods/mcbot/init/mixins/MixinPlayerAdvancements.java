@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-//#if MC >= 11202
+//#if MC >= 12002
 //$$ import net.minecraft.advancements.AdvancementHolder;
 //#endif
 
@@ -31,7 +31,7 @@ public abstract class MixinPlayerAdvancements {
     private ServerPlayer player;
     @Inject(method = "award", at = @At(value = "TAIL"), locals = LocalCapture.CAPTURE_FAILEXCEPTION)
 
-    //#if MC >= 11202
+    //#if MC >= 12002
     //$$ public void mcbot$award(AdvancementHolder advancement, String string, CallbackInfoReturnable<Boolean> cir) {
     //#else
     public void mcbot$award(Advancement advancement, String string, CallbackInfoReturnable<Boolean> cir) {
@@ -42,7 +42,7 @@ public abstract class MixinPlayerAdvancements {
         ServerPlayer player = this.player;
 
         if (VanishAPI.isVanished(player)) return;
-        //#if MC >= 11202
+        //#if MC >= 12002
         //$$ IEvents.PLAYER_ADVANCEMENT.invoker().onAdvancement(player, advancement.value());
         //#else
         IEvents.PLAYER_ADVANCEMENT.invoker().onAdvancement(player, advancement);
