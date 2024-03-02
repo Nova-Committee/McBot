@@ -22,6 +22,7 @@ public class IChatEvent {
                 && ModConfig.INSTANCE.getStatus().isSEnable()
                 && !message.contains("CICode")
                 && !player.getCommandSenderWorld().isClientSide
+                //&& !message.startsWith(ModConfig.INSTANCE.getCmd().getCmdStart())
         ) {
             String msg = String.format(ModConfig.INSTANCE.getCmd().isMcPrefixOn()
                             ? "[" + ModConfig.INSTANCE.getCmd().getMcPrefix() + "]<%s> %s"

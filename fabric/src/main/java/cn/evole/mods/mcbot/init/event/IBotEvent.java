@@ -46,15 +46,13 @@ public class IBotEvent {
         dispatchers.addListener(new DefaultHandler<GroupMessageEvent>() {
             @Override
             public void onMessage(GroupMessageEvent event) {
+                String send = CQUtils.replace(event);//暂时匹配仅符合字符串聊天内容与图片
                 if (ModConfig.INSTANCE.getCommon().getGroupIdList().contains(event.getGroupId())//判断是否是配置中的群
-                        && !event.getMessage().startsWith(ModConfig.INSTANCE.getCmd().getCmdStart())//过滤命令前缀
+                        && !send.startsWith(ModConfig.INSTANCE.getCmd().getCmdStart())//过滤命令前缀
                         && ModConfig.INSTANCE.getStatus().isREnable()//总接受开关
                         && ModConfig.INSTANCE.getStatus().isRChatEnable()//接受聊天开关
                         && event.getUserId() != ModConfig.INSTANCE.getCommon().getBotId()//过滤机器人
                 ) {
-
-                    String send = CQUtils.replace(event);//暂时匹配仅符合字符串聊天内容与图片
-
 
                     if (ModConfig.INSTANCE.getCmd().isQqChatPrefixOn()) {
                         val split = event.getMessage().split(" ");
@@ -104,8 +102,9 @@ public class IBotEvent {
         dispatchers.addListener(new SimpleListener<GroupMessageEvent>() {
             @Override
             public void onMessage(GroupMessageEvent event) {
+                String send = CQUtils.replace(event);//暂时匹配仅符合字符串聊天内容与图片
                 if (ModConfig.INSTANCE.getCommon().getGroupIdList().contains(event.getGroupId())
-                        && event.getMessage().startsWith(ModConfig.INSTANCE.getCmd().getCmdStart())//命令前缀
+                        && send.startsWith(ModConfig.INSTANCE.getCmd().getCmdStart())//命令前缀
                         && ModConfig.INSTANCE.getStatus().isREnable()//总接受开关
                         && ModConfig.INSTANCE.getStatus().isRCmdEnable()//接受命令开关
                 ) {
@@ -147,15 +146,15 @@ public class IBotEvent {
         dispatchers.addListener(new SimpleListener<GuildMessageEvent>() {
             @Override
             public void onMessage(GuildMessageEvent event) {
+                String send = CQUtils.replace(event);//暂时匹配仅符合字符串聊天内容与图片
                 if (event.getGuildId().equals(ModConfig.INSTANCE.getCommon().getGuildId())
                         && ModConfig.INSTANCE.getCommon().getChannelIdList().contains(event.getChannelId())
-                        && !event.getMessage().startsWith(ModConfig.INSTANCE.getCmd().getCmdStart())//过滤命令前缀
+                        && !send.startsWith(ModConfig.INSTANCE.getCmd().getCmdStart())//过滤命令前缀
                         && ModConfig.INSTANCE.getStatus().isREnable()//总接受开关
                         && ModConfig.INSTANCE.getStatus().isRChatEnable()//接受聊天开关
                         && event.getUserId() != ModConfig.INSTANCE.getCommon().getBotId()
                 ) {
 
-                    String send = CQUtils.replace(event);//暂时匹配仅符合字符串聊天内容与图片
                     if (ModConfig.INSTANCE.getCmd().isQqChatPrefixOn()) {
                         val split = event.getMessage().split(" ");
                         if (ModConfig.INSTANCE.getCmd().getQqChatPrefix().equals(split[0])) //指定前缀发送
@@ -192,8 +191,9 @@ public class IBotEvent {
         dispatchers.addListener(new SimpleListener<GuildMessageEvent>() {
             @Override
             public void onMessage(GuildMessageEvent event) {
+                String send = CQUtils.replace(event);//暂时匹配仅符合字符串聊天内容与图片
                 if (ModConfig.INSTANCE.getCommon().getChannelIdList().contains(event.getChannelId())
-                        && event.getMessage().startsWith(ModConfig.INSTANCE.getCmd().getCmdStart())//命令前缀
+                        && send.startsWith(ModConfig.INSTANCE.getCmd().getCmdStart())//命令前缀
                         && ModConfig.INSTANCE.getStatus().isREnable()//总接受开关
                         && ModConfig.INSTANCE.getStatus().isRCmdEnable()//接受命令开关
                 ) {

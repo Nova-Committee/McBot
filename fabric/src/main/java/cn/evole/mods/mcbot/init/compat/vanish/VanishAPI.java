@@ -30,12 +30,15 @@ public class VanishAPI {
     public static void performPrefixedCommand(Commands commands, CommandSourceStack sender, String cmd) {
         String targetCmd = cmd.length() > Short.MAX_VALUE ? cmd.substring(0, Short.MAX_VALUE) : cmd;  // 截断字符串以防管理不当人（？
 
-        if (targetCmd.indexOf('@') == -1)
+        if (targetCmd.indexOf('@') == -1){
             //#if MC < 11900
             commands.performCommand(sender, cmd);
             //#else
             //$$ commands.performPrefixedCommand(sender, cmd);
             //#endif
+            return;
+        }
+
 
         HashMap<String, String> cache = new HashMap<>();
 

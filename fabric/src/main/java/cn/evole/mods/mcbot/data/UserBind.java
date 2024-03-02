@@ -3,6 +3,7 @@ package cn.evole.mods.mcbot.data;
 import com.xykj.easycsv.entity.CsvProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
@@ -15,13 +16,14 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
+@NoArgsConstructor
 public class UserBind {
     @CsvProperty("添加日期")
-    private long createTime;
+    private long createTime = 0L;
     @CsvProperty("qq")
-    private String qqId;
+    private String qqId = "";
     @CsvProperty("群号")
-    private String groupId;
+    private String groupId = "";
     @CsvProperty("游戏名")
-    private String gameName;
+    private String gameName = "";
 }
