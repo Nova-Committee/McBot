@@ -1,8 +1,8 @@
 package cn.evole.mods.mcbot.init.mixins;
 
 import cn.evole.mods.mcbot.Const;
-import cn.evole.mods.mcbot.init.config.ModConfig;
-import cn.evole.mods.mcbot.util.MCVersion;
+import cn.evole.mods.mcbot.config.ModConfig;
+import cn.evole.mods.mcbot.util.MCVerUtil;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import lombok.val;
@@ -28,20 +28,16 @@ import java.nio.charset.StandardCharsets;
 public abstract class MixinSystemCmd {
     @Inject(method = "method_13563", at = @At(value = "RETURN"))
     private static void mcbot$say(CommandContext commandContext, CallbackInfoReturnable<Integer> cir) throws CommandSyntaxException {
-        val version = MCVersion.getMcVersion().replace(".", "_");
+        val version = MCVerUtil.getMcVersion().replace(".", "_");
         if (FabricLoader.getInstance().isModLoaded("mcbot_" + version)
                 && ModConfig.INSTANCE != null
                 && ModConfig.INSTANCE.getStatus().isSChatEnable()
                 && ModConfig.INSTANCE.getStatus().isSEnable()
                 && ModConfig.INSTANCE.getCmd().isMcPrefixOn()) {
             Component component = MessageArgument.getMessage(commandContext, "message");
-            if (ModConfig.INSTANCE.getCommon().isGuildOn() && !ModConfig.INSTANCE.getCommon().getChannelIdList().isEmpty()) {
-                val msg = String.format("[" + ModConfig.INSTANCE.getCmd().getMcPrefix() + "] %s", new String(component.getString().getBytes(StandardCharsets.UTF_8), StandardCharsets.UTF_8));
-                Const.sendGuildMsg(msg);
-            } else {
-                val msg = String.format("[" + ModConfig.INSTANCE.getCmd().getMcPrefix() + "] %s", new String(component.getString().getBytes(StandardCharsets.UTF_8), StandardCharsets.UTF_8));
-                Const.sendGroupMsg(msg);
-            }
+            val msg = String.format("[" + ModConfig.INSTANCE.getCmd().getMcPrefix() + "] %s", new String(component.getString().getBytes(StandardCharsets.UTF_8), StandardCharsets.UTF_8));
+            Const.sendAllGroupMsg(msg);
+
         }
     }
 }

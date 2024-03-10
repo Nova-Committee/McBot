@@ -10,13 +10,13 @@ import org.jetbrains.annotations.NotNull;
  * @description 获取minecraft的版本
  * @date 2024/3/2 23:23
  */
-public class MCVersion {
+public class MCVerUtil {
 
     @NotNull
     public static String getMcVersion() {
         try {
             // Fabric
-            return (String) Reflection.clazz("net.fabricmc.loader.impl.FabricLoaderImpl")
+            return (String) ReflectionUtil.clazz("net.fabricmc.loader.impl.FabricLoaderImpl")
                     .get("INSTANCE")
                     .get("getGameProvider()")
                     .get("getNormalizedGameVersion()").get();
@@ -25,7 +25,7 @@ public class MCVersion {
         }
         try {
             // Quilt
-            return (String) Reflection.clazz("org.quiltmc.loader.impl.QuiltLoaderImpl")
+            return (String) ReflectionUtil.clazz("org.quiltmc.loader.impl.QuiltLoaderImpl")
                     .get("INSTANCE")
                     .get("getGameProvider()")
                     .get("getNormalizedGameVersion()").get();

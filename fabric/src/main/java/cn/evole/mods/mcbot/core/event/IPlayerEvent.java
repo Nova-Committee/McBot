@@ -1,8 +1,8 @@
-package cn.evole.mods.mcbot.init.event;
+package cn.evole.mods.mcbot.core.event;
 
 import cn.evole.mods.mcbot.Const;
-import cn.evole.mods.mcbot.data.UserBindApi;
-import cn.evole.mods.mcbot.init.config.ModConfig;
+import cn.evole.mods.mcbot.core.data.UserBindApi;
+import cn.evole.mods.mcbot.config.ModConfig;
 import cn.evole.mods.mcbot.util.locale.I18n;
 import lombok.val;
 import net.minecraft.advancements.Advancement;
@@ -30,9 +30,9 @@ public class IPlayerEvent {
     public static void loggedIn(Level world, ServerPlayer player) {
         if (ModConfig.INSTANCE.getCommon().isBindOn() && !UserBindApi.isIn(player.getGameProfile().getName())){
             //#if MC >= 11900
-            //$$ val toSend = Component.literal("请先完成绑定");
+            //$$ val toSend = Component.literal("请先完成绑定(爱来自群服互联~)");
             //#else
-            val toSend = new TextComponent("请先完成绑定");
+            val toSend = new TextComponent("请先完成绑定(爱来自群服互联~)");
             //#endif
             player.connection.disconnect(toSend);
         }
@@ -105,11 +105,7 @@ public class IPlayerEvent {
     }
 
     private static void send(String msg){
-        if (ModConfig.INSTANCE.getCommon().isGuildOn() && !ModConfig.INSTANCE.getCommon().getChannelIdList().isEmpty()) {
-            Const.sendGuildMsg(msg);
-        } else {
-            Const.sendGroupMsg(msg);
-        }
+        Const.sendAllGroupMsg(msg);
     }
 
 }

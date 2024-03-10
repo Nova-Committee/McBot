@@ -1,7 +1,8 @@
-package cn.evole.mods.mcbot.init.event;
+package cn.evole.mods.mcbot.core.event;
 
 import cn.evole.mods.mcbot.Const;
-import cn.evole.mods.mcbot.init.config.ModConfig;
+import cn.evole.mods.mcbot.config.ModConfig;
+import cn.evole.onebot.sdk.util.MsgUtils;
 import lombok.val;
 import net.minecraft.server.level.ServerPlayer;
 import cn.evole.mods.mcbot.init.compat.vanish.VanishAPI;
@@ -22,7 +23,6 @@ public class IChatEvent {
                 && ModConfig.INSTANCE.getStatus().isSEnable()
                 && !message.contains("CICode")
                 && !player.getCommandSenderWorld().isClientSide
-                //&& !message.startsWith(ModConfig.INSTANCE.getCmd().getCmdStart())
         ) {
             String msg = String.format(ModConfig.INSTANCE.getCmd().isMcPrefixOn()
                             ? "[" + ModConfig.INSTANCE.getCmd().getMcPrefix() + "]<%s> %s"
@@ -31,12 +31,7 @@ public class IChatEvent {
                     ModConfig.INSTANCE.getCmd().isMcChatPrefixOn()
                             && ModConfig.INSTANCE.getCmd().getMcChatPrefix().equals(split[0]) ? split[1] : message);
 
-            if (ModConfig.INSTANCE.getCommon().isGuildOn() && !ModConfig.INSTANCE.getCommon().getChannelIdList().isEmpty()) {
-                Const.sendGuildMsg(msg);
-            } else {
-                Const.sendGroupMsg(msg);
-            }
-
+            Const.sendAllGroupMsg(MsgUtils.builder().text(msg).build());
 
         }
     }

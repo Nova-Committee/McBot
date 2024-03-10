@@ -1,18 +1,16 @@
 package cn.evole.mods.mcbot;
 
-import cn.evole.mods.mcbot.data.UserBindApi;
-import cn.evole.mods.mcbot.data.ChatRecordApi;
+import cn.evole.mods.mcbot.core.event.*;
+import cn.evole.mods.mcbot.core.data.UserBindApi;
+import cn.evole.mods.mcbot.core.data.ChatRecordApi;
 import cn.evole.mods.mcbot.init.callbacks.IEvents;
-import cn.evole.mods.mcbot.init.event.*;
-import cn.evole.mods.mcbot.init.config.ModConfig;
+import cn.evole.mods.mcbot.config.ModConfig;
 import cn.evole.mods.mcbot.init.handler.CustomCmdHandler;
-import cn.evole.mods.mcbot.util.MessageThread;
+import cn.evole.mods.mcbot.util.lib.LibUtils;
 import cn.evole.mods.mcbot.util.locale.I18n;
-import cn.evole.onebot.client.connection.ConnectFactory;
-import cn.evole.onebot.client.core.Bot;
-import cn.evole.onebot.client.factory.ListenerFactory;
+import cn.evole.onebot.client.OneBotClient;
 import cn.evole.onebot.sdk.util.FileUtils;
-import com.google.gson.JsonObject;
+import cn.evole.onebot.sdk.util.java.Assert;
 import lombok.Getter;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
@@ -21,7 +19,6 @@ import net.minecraft.server.MinecraftServer;
 import java.nio.file.Path;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.LinkedBlockingQueue;
 //#if MC >= 11900
 //$$ import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 //#else
@@ -39,15 +36,11 @@ public class McBot implements ModInitializer {
     public static MinecraftServer SERVER = null;
     public static Path CONFIG_FOLDER;
     public static Path CONFIG_FILE;
-
-    public static LinkedBlockingQueue<JsonObject> blockingQueue;
-    public static ConnectFactory service;
-    public static ListenerFactory listenerFactory;
-    public static Bot bot;
+    public static Path LIB_FOLDER;
 
     public static McBot INSTANCE = new McBot();
 
-    public static MessageThread messageThread;
+    public static OneBotClient onebot;
     public static ExecutorService CQUtilsExecutor;
 
     @Override
@@ -77,9 +70,12 @@ public class McBot implements ModInitializer {
 
 
     public void init() {
-        CONFIG_FOLDER = Const.configDir.resolve("mcbot");
+        CONFIG_FOLDER = Const.gameDir.resolve("mcbot");
         FileUtils.checkFolder(CONFIG_FOLDER);
+        LIB_FOLDER = CONFIG_FOLDER.resolve("libs");
+        FileUtils.checkFolder(LIB_FOLDER);
         CONFIG_FILE = CONFIG_FOLDER.resolve("config.toml");
+        LibUtils.create(LIB_FOLDER, "libs.txt").download();
         I18n.init();
         UserBindApi.load(CONFIG_FOLDER);
         ChatRecordApi.load(CONFIG_FOLDER);
@@ -90,35 +86,24 @@ public class McBot implements ModInitializer {
     }
 
     public void onServerStarted(MinecraftServer server) {
-        blockingQueue = new LinkedBlockingQueue<>();//使用队列传输数据
         if (ModConfig.INSTANCE.getCommon().isAutoOpen()) {
-            try {
-                service = new ConnectFactory(ModConfig.INSTANCE.getBotConfig().toBot(), blockingQueue);//创建websocket连接
-                bot = service.getBot();//创建机器人实例
-            } catch (Exception e) {
-                Const.LOGGER.error("▌ §c机器人服务端未配置或未打开");
-            }
+            onebot = OneBotClient.create(ModConfig.INSTANCE.getBotConfig().build()).open().registerEvents(new IBotEvent());
         }
-        listenerFactory = new ListenerFactory(blockingQueue);//创建事件分发器
-        listenerFactory.start();
+        if (onebot != null) onebot.getEventsBus().register(new IBotEvent());
         CustomCmdHandler.INSTANCE.load();//自定义命令加载
-        IBotEvent.init(listenerFactory);//事件监听
-        messageThread = new MessageThread();  // 创建消息处理线程池
         CQUtilsExecutor = Executors.newSingleThreadExecutor();  // 创建CQ码处理线程池
     }
 
     public void onServerStopping(MinecraftServer server) {
         Const.isShutdown = true;
-        Const.LOGGER.info("▌ §c正在关闭群服互联 §a┈━═☆");
+        Const.LOGGER.info("▌ §c正在关闭群服互联");
         UserBindApi.save(CONFIG_FOLDER);
         ChatRecordApi.save(CONFIG_FOLDER);
         CustomCmdHandler.INSTANCE.clear();//自定义命令持久层清空
-        listenerFactory.stop();//分发器关闭
     }
 
     public void onServerStopped(MinecraftServer server) {
-        service.stop();
-        messageThread.stop();
+        if (onebot != null) onebot.close();
         CQUtilsExecutor.shutdownNow();
     }
 

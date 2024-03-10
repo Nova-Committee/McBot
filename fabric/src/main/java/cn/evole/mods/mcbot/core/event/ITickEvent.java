@@ -1,10 +1,10 @@
-package cn.evole.mods.mcbot.init.event;
+package cn.evole.mods.mcbot.core.event;
 
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.MinecraftServer;
 import java.util.LinkedList;
 import java.util.Queue;
-import cn.evole.mods.mcbot.init.config.ModConfig;
+import cn.evole.mods.mcbot.config.ModConfig;
 //#if MC <= 11802
 import net.minecraft.network.chat.ChatType;
 import net.minecraft.Util;

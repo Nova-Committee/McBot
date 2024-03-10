@@ -1,4 +1,4 @@
-package cn.evole.mods.mcbot.init.config;
+package cn.evole.mods.mcbot.config;
 
 import cn.evole.config.toml.AutoLoadTomlConfig;
 import cn.evole.config.toml.annotation.TableField;
@@ -23,14 +23,6 @@ public class CommonConfig extends AutoLoadTomlConfig {
     private boolean groupOn = true;
     @TableField(rightComment = "支持多个q群")
     private List<Long> groupIdList = new ArrayList<Long>(){};//支持多个q群
-    @TableField(rightComment = "是否开启频道")
-    private boolean guildOn = false;//是否开启频道
-    @TableField(rightComment = "频道id")
-    private String guildId = "";//频道id
-    @TableField(rightComment = "子频道列表")
-    private List<String> channelIdList = new ArrayList<String>(){};//子频道列表
-    @TableField(rightComment = "机器人qq")
-    private long botId = 0;//机器人qq
     @TableField(rightComment = "是否启用")
     private boolean enable = true;//是否启用
     @TableField(rightComment = "是否开发模式，将显示事件信息操作")
@@ -43,8 +35,7 @@ public class CommonConfig extends AutoLoadTomlConfig {
     private boolean imageOn = true;//是否开启聊天栏图片功能
     @TableField(rightComment = "是否开启绑定校验")
     private boolean bindOn = false;//是否开启绑定校验
-    @TableField(rightComment = "是否启用CQ解析")
-    private boolean CQUtils = true;//是否启用CQ解析
+
 
     public CommonConfig() {
         super(null);
@@ -53,14 +44,6 @@ public class CommonConfig extends AutoLoadTomlConfig {
     public CommonConfig(TomlTable source) {
         super(source);
         this.load(CommonConfig.class);
-    }
-
-    public void addChannelId(String id) {
-        if (!channelIdList.contains(id)) channelIdList.add(id);
-    }
-
-    public void removeChannelId(String id) {
-        channelIdList.remove(id);
     }
 
     public void removeGroupId(long id) {

@@ -1,6 +1,6 @@
 package cn.evole.mods.mcbot.cmds;
 
-import cn.evole.onebot.sdk.util.json.GsonUtils;
+import cn.evole.onebot.sdk.util.GsonUtils;
 import com.google.gson.JsonObject;
 import lombok.Getter;
 import lombok.Setter;

@@ -1,0 +1,4 @@
+===ALGORITHM SHA-256
+cn.evole.onebot:OneBot-Client:0.4.0 1b4321761f5c3a1b52bbc350b0aabc1571d3c1ef8cd3df3eee09022a25678ee6
+cn.evole.config:AtomConfig-Toml:0.1.5 53e0c80d6d8fc789c8bdf75764474bf4a106e355d2dd761acb5ae627e14450c1
+

@@ -3,9 +3,9 @@ apply(plugin: "dev.architectury.loom")
 sourceCompatibility = JavaVersion.VERSION_17
 targetCompatibility = JavaVersion.VERSION_17
 
-archivesBaseName = project.archives_base_name
-version = project.mod_version
-group = project.maven_group
+archivesBaseName = archives_base_name
+version = mod_version
+group = maven_group
 
 repositories {
     mavenCentral()
@@ -18,10 +18,8 @@ dependencies {
     minecraft "com.mojang:minecraft:${project.parent.minecraft_version}"
     mappings loom.officialMojangMappings()
 
-    modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
-    modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
-    implementation("cn.evole.bot:OneBot-Client:${project.onebot_client_version}"){transitive = false}
-    implementation("cn.evole.config:AtomConfig-Toml:${project.toml_version}"){transitive = false}
+    modImplementation "net.fabricmc:fabric-loader:${loader_version}"
+    modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
 
     compileOnly "org.projectlombok:lombok:1.18.24"
     annotationProcessor "org.projectlombok:lombok:1.18.24"
@@ -54,14 +52,17 @@ remapJar {
     from("build/tmp/versions")
 }
 
-processResources {
-    filesMatching("fabric.mod.json") {
-        def valueMap = [
-                "version": project.version
-        ]
-        expand valueMap
+tasks.withType(ProcessResources).configureEach {
+    def replaceProperties = [
+            "version"             : mod_version,
+    ]
+    inputs.properties replaceProperties
+
+    filesMatching(["fabric.mod.json"]) {
+        expand replaceProperties + [project: project]
     }
 }
+
 
 tasks.withType(JavaCompile).configureEach {
     options.encoding = "UTF-8"

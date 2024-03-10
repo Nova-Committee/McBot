@@ -1,5 +1,6 @@
 apply(plugin: "dev.architectury.loom")
 apply(plugin: "com.replaymod.preprocess")
+apply(plugin: "dev.vankka.dependencydownload.plugin")
 
 int mcVersion = 1
 
@@ -14,15 +15,19 @@ repositories {
     maven { url =  "https://api.modrinth.com/maven" }
     mavenCentral()
 }
+jar.dependsOn generateRuntimeDownloadResourceForRuntimeDownload
 
 dependencies {
-    minecraft ("com.mojang:minecraft:${project.minecraft_version}")
+    minecraft ("com.mojang:minecraft:${minecraft_version}")
     mappings loom.officialMojangMappings()
 
-    modImplementation ("net.fabricmc:fabric-loader:${project.loader_version}")
-    modImplementation ("net.fabricmc.fabric-api:fabric-api:${project.fabric_version}")
-    implementation include ("cn.evole.bot:OneBot-Client:${project.onebot_client_version}"){transitive = false}
-    implementation include ("cn.evole.config:AtomConfig-Toml:${project.toml_version}"){transitive = false}
+    modImplementation ("net.fabricmc:fabric-loader:${loader_version}")
+    modImplementation ("net.fabricmc.fabric-api:fabric-api:${fabric_version}")
+    modImplementation include("dev.vankka:dependencydownload-runtime:1.3.1") {exclude module: 'jar-relocator'}
+    modImplementation include("dev.vankka:dependencydownload-common:1.3.1")
+    implementation ("cn.evole.onebot:OneBot-Client:${onebot_client_version}"){transitive = false}
+    implementation ("cn.evole.config:AtomConfig-Toml:${toml_version}"){transitive = false}
+
     if (mcVersion == 11605) include ("org.slf4j:slf4j-api:2.0.7")
     modCompileOnly ("maven.modrinth:vanish:1.5.2-1.20.1")
     compileOnly ("org.projectlombok:lombok:1.18.24")
@@ -53,18 +58,20 @@ remapJar {
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 
-version = project.mod_version
-group = project.maven_group
-archivesBaseName = project.archives_base_name + "-" + project.minecraft_dependency
+version = mod_version
+group = maven_group
+archivesBaseName = archives_base_name + "-" + minecraft_dependency
 
-processResources {
-    filesMatching("fabric.mod.json") {
-        def valueMap = [
-                "mc_version"          : project.minecraft_dependency.replace(".", "_"),
-                "version"             : project.version,
-                "minecraft_dependency": project.minecraft_dependency
-        ]
-        expand valueMap
+tasks.withType(ProcessResources).configureEach {
+    def replaceProperties = [
+            "mc_version"          : minecraft_dependency.replace(".", "_"),
+            "version"             : mod_version,
+            "minecraft_dependency": minecraft_dependency
+    ]
+    inputs.properties replaceProperties
+
+    filesMatching(["fabric.mod.json"]) {
+        expand replaceProperties + [project: project]
     }
 }
 
@@ -74,6 +81,6 @@ tasks.withType(JavaCompile).configureEach {
 
 jar {
     from("../../../LICENSE") {
-        rename { "${it}_${project.archives_base_name}" }
+        rename { "${it}_${archives_base_name}" }
     }
 }

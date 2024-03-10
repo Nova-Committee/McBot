@@ -1,14 +1,12 @@
 package cn.evole.mods.mcbot.util.locale;
 
 import cn.evole.mods.mcbot.Const;
-import cn.evole.mods.mcbot.init.config.ModConfig;
-import cn.evole.mods.mcbot.util.MCVersion;
-import cn.evole.mods.mcbot.util.Reflection;
+import cn.evole.mods.mcbot.config.ModConfig;
+import cn.evole.mods.mcbot.util.MCVerUtil;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import lombok.val;
 import net.fabricmc.loader.api.FabricLoader;
-import net.fabricmc.loader.impl.FabricLoaderImpl;
 import net.minecraft.locale.Language;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
@@ -27,7 +25,7 @@ public class I18n {
     public static void init() {
         translations = new HashMap<>();
 
-        val version = MCVersion.getMcVersion().replace(".", "_");
+        val version = MCVerUtil.getMcVersion().replace(".", "_");
 
         Optional<Path> optional = FabricLoader.getInstance().getModContainer("mcbot_" + version).orElseThrow(null)
                 .findPath("/lang/" + ModConfig.INSTANCE.getCommon().getLanguageSelect() + ".json");

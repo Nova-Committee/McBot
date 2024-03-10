@@ -1,7 +1,7 @@
 package cn.evole.mods.mcbot.init.compat.vanish;
 
 import cn.evole.mods.mcbot.Const;
-import cn.evole.mods.mcbot.init.event.IPlayerEvent;
+import cn.evole.mods.mcbot.core.event.IPlayerEvent;
 import lombok.Getter;
 import me.drex.vanish.api.VanishEvents;
 import net.minecraft.network.chat.Component;

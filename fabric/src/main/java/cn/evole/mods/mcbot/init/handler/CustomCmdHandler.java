@@ -1,7 +1,9 @@
 package cn.evole.mods.mcbot.init.handler;
 
 import cn.evole.mods.mcbot.Const;
+import cn.evole.mods.mcbot.McBot;
 import cn.evole.mods.mcbot.cmds.CustomCmd;
+import cn.evole.onebot.sdk.util.GsonUtils;
 import com.google.common.base.Stopwatch;
 import com.google.common.collect.Lists;
 import com.google.gson.*;
@@ -27,9 +29,9 @@ import java.util.concurrent.TimeUnit;
 public class CustomCmdHandler {
 
     public static final CustomCmdHandler INSTANCE = new CustomCmdHandler();
-    private static final Gson GSON = (new GsonBuilder()).setPrettyPrinting().create();
+    private static final Gson GSON = GsonUtils.getNullGson();
 
-    private static final File dir = FabricLoader.getInstance().getConfigDir().resolve("mcbot/cmds/").toFile();
+    private static final File dir = McBot.CONFIG_FOLDER.resolve("cmds").toFile();
 
     private final Map<String, CustomCmd> customCmdMap = new LinkedHashMap<>();
 

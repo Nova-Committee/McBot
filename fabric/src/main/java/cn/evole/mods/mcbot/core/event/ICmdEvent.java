@@ -1,4 +1,4 @@
-package cn.evole.mods.mcbot.init.event;
+package cn.evole.mods.mcbot.core.event;
 
 import cn.evole.mods.mcbot.command.*;
 import com.mojang.brigadier.CommandDispatcher;
@@ -29,33 +29,16 @@ public class ICmdEvent {
                 Commands.literal("mcbot")
                         .requires(source -> source.hasPermission(2))
                         .then(Commands.literal("connect")
-                                .then(Commands.literal("cqhttp")
-                                        .executes(ConnectCommand::cqhttpCommonExecute)
-                                        .then(Commands.argument("parameter", StringArgumentType.greedyString())
-                                                .executes(ConnectCommand::cqhttpExecute)
-                                        )
-                                )
-                                .then(Commands.literal("mirai")
-                                        .executes(ConnectCommand::miraiCommonExecute)
-                                        .then(Commands.argument("parameter", StringArgumentType.greedyString())
-                                                .executes(ConnectCommand::miraiExecute)
-                                        )
-                                )
+                                .executes(ConnectCommand::cqhttpCommonExecute)
+                                    .then(Commands.argument("parameter", StringArgumentType.greedyString())
+                                            .executes(ConnectCommand::cqhttpExecute)
+                                    )
+
 
                         )
                         .then(Commands.literal("customs").executes(ListCustomCommand::execute))
                         .then(Commands.literal("reload").executes(ReloadConfigCmd::execute))
                         .then(Commands.literal("disconnect").executes(DisconnectCommand::execute))
-                        .then(Commands.literal("addChannelId")
-                                .then(Commands.argument("ChannelId", StringArgumentType.greedyString())
-                                        .executes(AddChannelIDCommand::execute)))
-                        .then(Commands.literal("delChannelId")
-                                .then(Commands.argument("ChannelId", StringArgumentType.greedyString())
-                                        .executes(DelChannelIDCommand::execute)))
-                        .then(Commands.literal("setGuild")
-                                .then(Commands.argument("GuildId", StringArgumentType.greedyString())
-                                        .executes(GuildIDCommand::execute)))
-
 
                         .then(Commands.literal("help").executes(HelpCommand::execute))
                         .then(Commands.literal("recall")

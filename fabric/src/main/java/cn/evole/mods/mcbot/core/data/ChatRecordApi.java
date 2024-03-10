@@ -1,4 +1,4 @@
-package cn.evole.mods.mcbot.data;
+package cn.evole.mods.mcbot.core.data;
 
 import com.xykj.easycsv.EasyCsv;
 

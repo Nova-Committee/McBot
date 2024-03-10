@@ -7,15 +7,15 @@ import java.lang.reflect.Method;
  * from i18nupdatemod
  */
 
-public class Reflection {
+public class ReflectionUtil {
     private final Class<?> clazz;
     private Object instance;
 
-    public Reflection(Class<?> clazz) {
+    public ReflectionUtil(Class<?> clazz) {
         this.clazz = clazz;
     }
 
-    public Reflection(Object instance) {
+    public ReflectionUtil(Object instance) {
         if (instance == null) {
             throw new IllegalArgumentException("Instance cannot be null");
         }
@@ -23,28 +23,28 @@ public class Reflection {
         this.instance = instance;
     }
 
-    public static Reflection clazz(String className) throws ClassNotFoundException {
-        return new Reflection(Class.forName(className));
+    public static ReflectionUtil clazz(String className) throws ClassNotFoundException {
+        return new ReflectionUtil(Class.forName(className));
     }
 
-    public static Reflection clazz(Class<?> clazz) {
-        return new Reflection(clazz);
+    public static ReflectionUtil clazz(Class<?> clazz) {
+        return new ReflectionUtil(clazz);
     }
 
-    public static Reflection clazz(Object instance) {
-        return new Reflection(instance);
+    public static ReflectionUtil clazz(Object instance) {
+        return new ReflectionUtil(instance);
     }
 
-    private Reflection getField(String field) throws Exception {
+    private ReflectionUtil getField(String field) throws Exception {
         Field field0 = clazz.getDeclaredField(field);
         field0.setAccessible(true);
-        return new Reflection(field0.get(instance));
+        return new ReflectionUtil(field0.get(instance));
     }
 
-    private Reflection invokeMethod(String method) throws Exception {
+    private ReflectionUtil invokeMethod(String method) throws Exception {
         Method method1 = clazz.getDeclaredMethod(method);
         method1.setAccessible(true);
-        return new Reflection(method1.invoke(instance));
+        return new ReflectionUtil(method1.invoke(instance));
     }
 
     /**
@@ -54,7 +54,7 @@ public class Reflection {
      * @return result
      * @throws Exception
      */
-    public Reflection get(String fieldOrMethod) throws Exception {
+    public ReflectionUtil get(String fieldOrMethod) throws Exception {
 //        System.out.println("Getting " + fieldOrMethod);
         if (fieldOrMethod.endsWith(")")) {
             return invokeMethod(fieldOrMethod.replace("()", ""));

@@ -1,4 +1,4 @@
-package cn.evole.mods.mcbot.init.config;
+package cn.evole.mods.mcbot.config;
 
 import cn.evole.config.toml.AutoReloadToml;
 import cn.evole.config.toml.TomlUtil;

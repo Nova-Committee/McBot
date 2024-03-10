@@ -1,10 +1,10 @@
 package cn.evole.mods.mcbot.command;
 
 
-import cn.evole.mods.mcbot.Const;
 import cn.evole.mods.mcbot.McBot;
-import cn.evole.mods.mcbot.init.config.ModConfig;
-import cn.evole.onebot.client.connection.ConnectFactory;
+import cn.evole.mods.mcbot.config.ModConfig;
+import cn.evole.mods.mcbot.core.event.IBotEvent;
+import cn.evole.onebot.client.OneBotClient;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import lombok.val;
@@ -25,22 +25,15 @@ public class ConnectCommand {
         val pattern = Pattern.compile("(\\d+\\.\\d+\\.\\d+\\.\\d+):(\\d+)");
         val matcher = pattern.matcher(parameter);
         if (matcher.find()) {
-            ModConfig.INSTANCE.getBotConfig().setUrl("ws://" + parameter);
+            ModConfig.INSTANCE.getBotConfig().setUrl(parameter);
             //#if MC >= 12000
-            //$$ context.getSource().sendSuccess(()->Component.literal("尝试链接框架" + ChatFormatting.LIGHT_PURPLE + "cqhttp"), true);
+            //$$ context.getSource().sendSuccess(()->Component.literal("▌ " +ChatFormatting.LIGHT_PURPLE + "尝试链接框架"), true);
             //#elseif MC < 11900
-            context.getSource().sendSuccess(new TextComponent("尝试链接框架" + ChatFormatting.LIGHT_PURPLE + "cqhttp"), true);
+            context.getSource().sendSuccess(new TextComponent("▌ " + ChatFormatting.LIGHT_PURPLE + "尝试链接框架"), true);
             //#else
-            //$$ context.getSource().sendSuccess(Component.literal("尝试链接框架" + ChatFormatting.LIGHT_PURPLE + "cqhttp"), true);
+            //$$ context.getSource().sendSuccess(Component.literal("▌ " +ChatFormatting.LIGHT_PURPLE + "尝试链接框架"), true);
             //#endif
-            ModConfig.INSTANCE.getBotConfig().setMiraiHttp(false);
-
-            try {
-                McBot.service = new ConnectFactory(ModConfig.INSTANCE.getBotConfig().toBot(), McBot.blockingQueue);//创建websocket连接
-                McBot.bot = McBot.service.getBot();//创建机器人实例
-            } catch (Exception e) {
-                Const.LOGGER.error("§c机器人服务端配置不正确");
-            }
+            McBot.onebot = OneBotClient.create(ModConfig.INSTANCE.getBotConfig().build()).open().registerEvents(new IBotEvent());
             ModConfig.INSTANCE.getStatus().setREnable(true);
             ModConfig.INSTANCE.getCommon().setEnable(true);
             ModConfig.INSTANCE.save();
@@ -48,69 +41,27 @@ public class ConnectCommand {
 
         } else {
             //#if MC >= 12000
-            //$$ context.getSource().sendSuccess(()->Component.literal(ChatFormatting.RED + "参数错误❌"), true);
+            //$$ context.getSource().sendSuccess(()->Component.literal("▌ " +ChatFormatting.RED + "参数错误❌"), true);
             //#elseif MC < 11900
-            context.getSource().sendSuccess(new TextComponent(ChatFormatting.RED + "参数错误❌"), true);
+            context.getSource().sendSuccess(new TextComponent("▌ " +ChatFormatting.RED + "参数错误❌"), true);
             //#else
-            //$$ context.getSource().sendSuccess(Component.literal(ChatFormatting.RED + "参数错误❌"), true);
+            //$$ context.getSource().sendSuccess(Component.literal("▌ " +ChatFormatting.RED + "参数错误❌"), true);
             //#endif
             return 0;
         }
     }
 
-    public static int miraiExecute(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
-        val parameter = context.getArgument("parameter", String.class);
 
-        val pattern = Pattern.compile("(\\d+\\.\\d+\\.\\d+\\.\\d+):(\\d+)");
-        val matcher = pattern.matcher(parameter);
-        if (matcher.find()) {
-            ModConfig.INSTANCE.getBotConfig().setUrl("ws://" + parameter);
-            //#if MC >= 12000
-            //$$ context.getSource().sendSuccess(()->Component.literal("尝试链接框架" + ChatFormatting.LIGHT_PURPLE + "mirai"), true);
-            //#elseif MC < 11900
-            context.getSource().sendSuccess(new TextComponent("尝试链接框架" + ChatFormatting.LIGHT_PURPLE + "mirai"), true);
-            //#else
-            //$$ context.getSource().sendSuccess(Component.literal("尝试链接框架" + ChatFormatting.LIGHT_PURPLE + "mirai"), true);
-            //#endif
-            ModConfig.INSTANCE.getBotConfig().setMiraiHttp(true);
-            try {
-                McBot.service = new ConnectFactory(ModConfig.INSTANCE.getBotConfig().toBot(), McBot.blockingQueue);//创建websocket连接
-                McBot.bot = McBot.service.getBot();//创建机器人实例
-            } catch (Exception e) {
-                Const.LOGGER.error("§c机器人服务端配置不正确");
-            }
-            ModConfig.INSTANCE.getStatus().setREnable(true);
-            ModConfig.INSTANCE.getCommon().setEnable(true);
-            ModConfig.INSTANCE.save();
-            return 1;
-
-        } else {
-            //#if MC >= 12000
-            //$$ context.getSource().sendSuccess(()->Component.literal(ChatFormatting.RED + "参数错误❌"), true);
-            //#elseif MC < 11900
-            context.getSource().sendSuccess(new TextComponent(ChatFormatting.RED + "参数错误❌"), true);
-            //#else
-            //$$ context.getSource().sendSuccess(Component.literal(ChatFormatting.RED + "参数错误❌"), true);
-            //#endif
-            return 0;
-        }
-    }
 
     public static int cqhttpCommonExecute(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
         //#if MC >= 12000
-        //$$ context.getSource().sendSuccess(()->Component.literal("尝试链接框架" + ChatFormatting.LIGHT_PURPLE + "cqhttp"), true);
+        //$$ context.getSource().sendSuccess(()->Component.literal("▌ " +ChatFormatting.LIGHT_PURPLE + "尝试链接框架"), true);
         //#elseif MC < 11900
-        context.getSource().sendSuccess(new TextComponent("尝试链接框架" + ChatFormatting.LIGHT_PURPLE + "cqhttp"), true);
+        context.getSource().sendSuccess(new TextComponent("▌ " +ChatFormatting.LIGHT_PURPLE + "尝试链接框架"), true);
         //#else
-        //$$ context.getSource().sendSuccess(Component.literal("尝试链接框架" + ChatFormatting.LIGHT_PURPLE + "cqhttp"), true);
+        //$$ context.getSource().sendSuccess(Component.literal("▌ " +ChatFormatting.LIGHT_PURPLE + "尝试链接框架"), true);
         //#endif
-        ModConfig.INSTANCE.getBotConfig().setMiraiHttp(false);
-        try {
-            McBot.service = new ConnectFactory(ModConfig.INSTANCE.getBotConfig().toBot(), McBot.blockingQueue);//创建websocket连接
-            McBot.bot = McBot.service.getBot();//创建机器人实例
-        } catch (Exception e) {
-            Const.LOGGER.error("§c机器人服务端配置不正确");
-        }
+        McBot.onebot = OneBotClient.create(ModConfig.INSTANCE.getBotConfig().build()).open().registerEvents(new IBotEvent());
         ModConfig.INSTANCE.getStatus().setREnable(true);
         ModConfig.INSTANCE.getCommon().setEnable(true);
         ModConfig.INSTANCE.save();
@@ -118,26 +69,5 @@ public class ConnectCommand {
 
     }
 
-    public static int miraiCommonExecute(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
-        //#if MC >= 12000
-        //$$ context.getSource().sendSuccess(()->Component.literal("尝试链接框架" + ChatFormatting.LIGHT_PURPLE + "mirai"), true);
-        //#elseif MC < 11900
-        context.getSource().sendSuccess(new TextComponent("尝试链接框架" + ChatFormatting.LIGHT_PURPLE + "mirai"), true);
-        //#else
-        //$$ context.getSource().sendSuccess(Component.literal("尝试链接框架" + ChatFormatting.LIGHT_PURPLE + "mirai"), true);
-        //#endif
-        ModConfig.INSTANCE.getBotConfig().setMiraiHttp(true);
-        try {
-            McBot.service = new ConnectFactory(ModConfig.INSTANCE.getBotConfig().toBot(), McBot.blockingQueue);//创建websocket连接
-            McBot.bot = McBot.service.getBot();//创建机器人实例
-        } catch (Exception e) {
-            Const.LOGGER.error("§c机器人服务端配置不正确");
-        }
-        ModConfig.INSTANCE.getStatus().setREnable(true);
-        ModConfig.INSTANCE.getCommon().setEnable(true);
-        ModConfig.INSTANCE.save();
-        return 1;
-
-    }
 
 }
