@@ -6,11 +6,10 @@ import cn.evole.mods.mcbot.core.data.ChatRecordApi;
 import cn.evole.mods.mcbot.init.callbacks.IEvents;
 import cn.evole.mods.mcbot.config.ModConfig;
 import cn.evole.mods.mcbot.init.handler.CustomCmdHandler;
+import cn.evole.mods.mcbot.util.FileUtil;
 import cn.evole.mods.mcbot.util.lib.LibUtils;
 import cn.evole.mods.mcbot.util.locale.I18n;
 import cn.evole.onebot.client.OneBotClient;
-import cn.evole.onebot.sdk.util.FileUtils;
-import cn.evole.onebot.sdk.util.java.Assert;
 import lombok.Getter;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
@@ -71,9 +70,9 @@ public class McBot implements ModInitializer {
 
     public void init() {
         CONFIG_FOLDER = Const.gameDir.resolve("mcbot");
-        FileUtils.checkFolder(CONFIG_FOLDER);
+        FileUtil.checkFolder(CONFIG_FOLDER);
         LIB_FOLDER = CONFIG_FOLDER.resolve("libs");
-        FileUtils.checkFolder(LIB_FOLDER);
+        FileUtil.checkFolder(LIB_FOLDER);
         CONFIG_FILE = CONFIG_FOLDER.resolve("config.toml");
         LibUtils.create(LIB_FOLDER, "libs.txt").download();
         I18n.init();
