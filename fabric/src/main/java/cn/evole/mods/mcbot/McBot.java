@@ -89,7 +89,6 @@ public class McBot implements ModInitializer {
         if (ModConfig.INSTANCE.getCommon().isAutoOpen()) {
             onebot = OneBotClient.create(ModConfig.INSTANCE.getBotConfig().build()).open().registerEvents(new IBotEvent());
         }
-        if (onebot != null) onebot.getEventsBus().register(new IBotEvent());
         CustomCmdHandler.INSTANCE.load();//自定义命令加载
         CQUtilsExecutor = Executors.newSingleThreadExecutor();  // 创建CQ码处理线程池
     }
@@ -103,8 +102,8 @@ public class McBot implements ModInitializer {
     }
 
     public void onServerStopped(MinecraftServer server) {
-        if (onebot != null) onebot.close();
         CQUtilsExecutor.shutdownNow();
+        if (onebot != null) onebot.close();
     }
 
 }
