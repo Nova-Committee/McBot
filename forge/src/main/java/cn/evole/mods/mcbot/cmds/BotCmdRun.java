@@ -1,6 +1,7 @@
 package cn.evole.mods.mcbot.cmds;
 
 import cn.evole.mods.mcbot.IMcBot;
+import cn.evole.mods.mcbot.McBot;
 import net.minecraft.commands.CommandSource;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.server.MinecraftServer;
@@ -13,14 +14,11 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import net.minecraft.network.chat.Component;
 import java.util.function.Supplier;
 //#if MC < 11900
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
-//#else
-//$$ import net.minecraft.network.chat.Component;
 //#endif
-
 
 
 /**
@@ -32,10 +30,10 @@ import net.minecraft.network.chat.TextComponent;
 public class BotCmdRun extends CommandSourceStack {
 
     //#if MC < 11900
-    public static BotCmdRun CUSTOM = new BotCmdRun(CommandSource.NULL, Vec3.ZERO, Vec2.ZERO, IMcBot.SERVER.overworld(), 4, "Bot", new TextComponent("Bot"), IMcBot.SERVER, null);
+    public static BotCmdRun CUSTOM = new BotCmdRun(CommandSource.NULL, Vec3.ZERO, Vec2.ZERO, IMcBot.SERVER.overworld(), 0, "Bot", new TextComponent("Bot"), IMcBot.SERVER, null);
     public static BotCmdRun OP = new BotCmdRun(CommandSource.NULL, Vec3.ZERO, Vec2.ZERO, IMcBot.SERVER.overworld(), 4, "OP", new TextComponent("OP"), IMcBot.SERVER, null);
     //#else
-    //$$ public static BotCmdRun CUSTOM = new BotCmdRun(CommandSource.NULL, Vec3.ZERO, Vec2.ZERO, IMcBot.SERVER.overworld(), 4, "Bot", Component.literal("Bot"), IMcBot.SERVER, null);
+    //$$ public static BotCmdRun CUSTOM = new BotCmdRun(CommandSource.NULL, Vec3.ZERO, Vec2.ZERO, IMcBot.SERVER.overworld(), 0, "Bot", Component.literal("Bot"), IMcBot.SERVER, null);
     //$$ public static BotCmdRun OP = new BotCmdRun(CommandSource.NULL, Vec3.ZERO, Vec2.ZERO, IMcBot.SERVER.overworld(), 4, "OP", Component.literal("OP"), IMcBot.SERVER, null);
     //#endif
 
@@ -55,8 +53,8 @@ public class BotCmdRun extends CommandSourceStack {
     //#else
     @Override
     public void sendSuccess(@NotNull Component component, boolean p_81356_) {
-         super.sendSuccess(component, p_81356_);
-         this.outPut.add(component.getString());
+        super.sendSuccess(component, p_81356_);
+        this.outPut.add(component.getString());
     }
     //#endif
 

@@ -1,13 +1,11 @@
 package cn.evole.mods.mcbot.util.onebot;
 
-import cn.evole.mods.mcbot.IMcBot;
 import cn.evole.mods.mcbot.cmds.CustomCmd;
 import cn.evole.mods.mcbot.init.handler.CustomCmdHandler;
 import cn.evole.onebot.sdk.event.message.GroupMessageEvent;
-import cn.evole.onebot.sdk.event.message.GuildMessageEvent;
+import cn.evole.onebot.sdk.util.NetUtils;
 import lombok.val;
 
-import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -54,18 +52,6 @@ public class BotUtils {
         return returnCmd;
     }
 
-    public static boolean guildAdminParse(GuildMessageEvent event) {
-        AtomicBoolean isAdmin = new AtomicBoolean(false);
-        for (val roleInfo : IMcBot.bot.getGuildMemberProfile(event.getGuildId(), event.getSender().getTinyId())
-                .getData()
-                .getRoles()) {
-            if (Integer.parseInt(roleInfo.getRoleId()) >= 2 || Arrays.stream(GuildRole.values()).anyMatch(s -> s.role.equals(roleInfo.getRoleName()))) {
-                isAdmin.set(true);
-                break;
-            }
-        }
-        return isAdmin.get();
-    }
 
     public static boolean groupAdminParse(GroupMessageEvent event) {
         return !event.getSender().getRole().equals("MEMBER") && !event.getSender().getRole().equals("member");
@@ -84,4 +70,57 @@ public class BotUtils {
         // 查找字符出现的个数 = （原字符串长度 - 替换后的字符串长度）/要查找的字符串长度
         return (str.length() - destStr.length()) / "%".length();
     }
+    public static String cmdParse(String command) {
+        // 找到最后一个空格的位置
+        int lastSpaceIndex = command.lastIndexOf(" ");
+
+        // 如果没有空格，则整个命令就是关键词
+        if (lastSpaceIndex == -1) {
+            return command;
+        }
+
+        // 返回最后一个空格之前的内容
+        return command.substring(0, lastSpaceIndex);
+    }
+
+
+
+    /**
+     * 获取群头像
+     *
+     * @param groupId 群号
+     * @param size    头像尺寸
+     * @return 头像链接 （size为0返回真实大小, 40(40*40), 100(100*100), 640(640*640)）
+     */
+    public static String getGroupAvatar(long groupId, int size) {
+        return String.format("https://p.qlogo.cn/gh/%s/%s/%s", groupId, groupId, size);
+    }
+
+    /**
+     * 获取用户昵称
+     *
+     * @param userId QQ号
+     * @return 用户昵称
+     */
+    public static String getNickname(long userId) {
+        val url = String.format("https://r.qzone.qq.com/fcg-bin/cgi_get_portrait.fcg?uins=%s", userId);
+        val result = NetUtils.get(url, "GBK");
+        if (result != null && !result.isEmpty()) {
+            String nickname = result.split(",")[6];
+            return nickname.substring(1, nickname.length() - 1);
+        }
+        return "";
+    }
+
+    /**
+     * 获取用户头像
+     *
+     * @param userId QQ号
+     * @param size   头像尺寸
+     * @return 头像链接 （size为0返回真实大小, 40(40*40), 100(100*100), 640(640*640)）
+     */
+    public static String getUserAvatar(long userId, int size) {
+        return String.format("https://q1.qlogo.cn/g?b=qq&nk=%s&s=%s", userId, size);
+    }
+
 }

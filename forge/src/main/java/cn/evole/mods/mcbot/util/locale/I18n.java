@@ -1,7 +1,7 @@
 package cn.evole.mods.mcbot.util.locale;
 
 import cn.evole.mods.mcbot.Const;
-import cn.evole.mods.mcbot.init.config.ModConfig;
+import cn.evole.mods.mcbot.config.ModConfig;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import net.minecraft.locale.Language;
@@ -18,17 +18,10 @@ import java.util.Map;
 
 public class I18n {
     private static Map<String, String> translations;
-    public static String LANG_FILE;
-    public static String DEFAULT_LANG_FILE;
-
-
 
     public static void init() {
         translations = new HashMap<>();
-        LANG_FILE = "assets/mcbot/lang/" + ModConfig.INSTANCE.getCommon().getLanguageSelect() + ".json";
-        DEFAULT_LANG_FILE = "assets/mcbot/lang/en_us.json";
-
-        Path optional = FMLLoader.getLoadingModList().getModFileById("mcbot").getFile().findResource(LANG_FILE);
+        Path optional = FMLLoader.getLoadingModList().getModFileById("mcbot").getFile().findResource("lang/" + ModConfig.INSTANCE.getCommon().getLanguageSelect() + ".json");
 
         if (optional == null) {
             Const.LOGGER.warn("-----------------------------------------");
@@ -38,7 +31,7 @@ public class I18n {
             Const.LOGGER.warn("Contributing: https://github.com/cnlimiter/McBot#Contributing");
             Const.LOGGER.warn("-----------------------------------------");
 
-            optional = FMLLoader.getLoadingModList().getModFileById("mcbot").getFile().findResource(DEFAULT_LANG_FILE);
+            optional = FMLLoader.getLoadingModList().getModFileById("mcbot").getFile().findResource("lang/en_us.json");
         }
 
         try {
@@ -58,7 +51,11 @@ public class I18n {
             if (translation1 != null) {
                 return String.format(translation1, args);
             } else {
+                //#if MC >= 11600
                 String translation2 = Language.getInstance().getOrDefault(key);
+                //#else
+                //$$ String translation2 = Language.getInstance().getElement(key);
+                //#endif
                 if (!translation2.equals(key)) {
                     return String.format(translation2, args);
                 } else {
@@ -66,7 +63,6 @@ public class I18n {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
             return "TranslateError{\"key\":\"" + key + "\",\"args\":" + Arrays.toString(args) + "}";
         }
     }

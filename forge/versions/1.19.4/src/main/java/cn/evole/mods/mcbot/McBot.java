@@ -1,6 +1,6 @@
 package cn.evole.mods.mcbot;
 
-import cn.evole.mods.mcbot.init.event.ICmdEvent;
+import cn.evole.mods.mcbot.core.event.ICmdEvent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegisterCommandsEvent;
@@ -15,7 +15,6 @@ import net.minecraftforge.event.server.ServerStoppedEvent;
 import net.minecraftforge.event.server.ServerStoppingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.loading.FMLPaths;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -29,7 +28,7 @@ import org.jetbrains.annotations.NotNull;
 public class McBot {
     public IMcBot mcBot;
     public McBot(){
-        this.mcBot = new IMcBot(FMLPaths.CONFIGDIR.get());
+        this.mcBot = new IMcBot();
         MinecraftForge.EVENT_BUS.register(this);
     }
 
@@ -69,11 +68,11 @@ public class McBot {
 
     @SubscribeEvent
     public void onPlayerIn(PlayerEvent.@NotNull PlayerLoggedInEvent  event){
-        this.mcBot.onPlayerLogIn(event.getEntity().level, event.getEntity());
+        this.mcBot.onPlayerLogIn(event.getEntity().level, (ServerPlayer) event.getEntity());
     }
     @SubscribeEvent
     public void onPlayerOut(PlayerEvent.@NotNull PlayerLoggedOutEvent  event){
-        this.mcBot.onPlayerLogOut(event.getEntity().level, event.getEntity());
+        this.mcBot.onPlayerLogOut(event.getEntity().level, (ServerPlayer) event.getEntity());
     }
     @SubscribeEvent
     public void onPlayerDeath(@NotNull LivingDeathEvent event){

@@ -1,7 +1,9 @@
 package cn.evole.mods.mcbot.cmds;
 
-import cn.evole.onebot.sdk.util.json.JsonsObject;
+import cn.evole.onebot.sdk.util.GsonUtils;
 import com.google.gson.JsonObject;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.val;
 
 /**
@@ -10,6 +12,7 @@ import lombok.val;
  * Date: 2022/9/2 13:19
  * Version: 1.0
  */
+@Getter
 public class CustomCmd {
 
     private final String cmdAlies;
@@ -18,46 +21,27 @@ public class CustomCmd {
 
     private final int requirePermission;
 
-    private boolean enabled = true;
+    private final boolean vanishSupport;
 
-    public CustomCmd(String cmdAlies, String cmdContent, int requirePermission) {
+    @Setter
+    private boolean enabled;
+
+    public CustomCmd(String cmdAlies, String cmdContent, int requirePermission, boolean vanish, boolean enabled) {
         this.cmdAlies = cmdAlies;
         this.cmdContent = cmdContent;
         this.requirePermission = requirePermission;
+        this.vanishSupport = vanish;
+        this.enabled = enabled;
     }
 
     public static CustomCmd loadFromJson(JsonObject json) {
 
-        val alies = JsonsObject.parse(json).optString("alies");
-        val content = JsonsObject.parse(json).optString("content");
-        int role = JsonsObject.parse(json).optInt("role", 0);
+        val alies = GsonUtils.getAsString(json,"alies");
+        val content = GsonUtils.getAsString(json,"content");
+        val role = GsonUtils.getAsInt(json,"role", 0);
+        val vanish = GsonUtils.getAsBoolean(json, "vanish", false);
+        val enabled = GsonUtils.getAsBoolean(json,"enabled", true);
 
-        val cmd = new CustomCmd(alies, content, role);
-
-        val enabled = JsonsObject.parse(json).optBool("enabled", true);
-
-        cmd.setEnabled(enabled);
-
-        return cmd;
-    }
-
-    public String getCmdAlies() {
-        return cmdAlies;
-    }
-
-    public String getCmdContent() {
-        return cmdContent;
-    }
-
-    public int getRequirePermission() {
-        return requirePermission;
-    }
-
-    public boolean isEnabled() {
-        return enabled;
-    }
-
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
+        return new CustomCmd(alies, content, role, vanish, enabled);
     }
 }

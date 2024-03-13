@@ -2,12 +2,16 @@ package cn.evole.mods.mcbot.util.onebot;
 
 import cn.evole.mods.mcbot.Const;
 import cn.evole.mods.mcbot.IMcBot;
-import cn.evole.mods.mcbot.init.config.ModConfig;
-import cn.evole.onebot.sdk.util.BotUtils;
+import cn.evole.mods.mcbot.McBot;
+import cn.evole.mods.mcbot.config.ModConfig;
+import cn.evole.onebot.sdk.event.message.MessageEvent;
 import lombok.val;
 
 import java.util.Arrays;
-import java.util.concurrent.*;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.FutureTask;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -25,33 +29,23 @@ public class CQUtils {
 
 
     public static boolean hasImg(String msg) {
-        String regex = "\\[CQ:image,[(\\s\\S)]*\\]";
+        String regex = "\\[CQ:image,[(\\s\\S)]*]";
         val p = Pattern.compile(regex);
         val m = p.matcher(msg);
         return m.find();
     }
 
-    public static String replace(String msg) {
-        if (ModConfig.INSTANCE.getBotConfig().isMiraiHttp()){
-            return msg;
-        }
-
-        if (msg.indexOf('[') == -1)
-            return BotUtils.unescape(msg);
-
-
-        final ExecutorService exec = Executors.newSingleThreadExecutor();
-        String back = "";
+    public static String replace(MessageEvent event) {
+        String back;
         StringBuffer message = new StringBuffer();
         Pattern pattern = Pattern.compile(CQ_CODE_REGEX);
-        Matcher matcher = pattern.matcher(msg);
-
+        Matcher matcher = pattern.matcher(event.getRawMessage());
         val call = new FutureTask<>(() -> {
             while (matcher.find()) {//全局匹配
                 val type = matcher.group(1);
                 val data = matcher.group(2);
                 switch (type) {
-                    case "image": {
+                    case "image":
                         if (ModConfig.INSTANCE.getCommon().isImageOn() && Const.isLoad("chatimage")) {
                             val url = Arrays.stream(data.split(","))//具体数据分割
                                     .filter(it -> it.startsWith("url"))//非空判断
@@ -66,7 +60,6 @@ public class CQUtils {
                             matcher.appendReplacement(message, "[图片]");
                         }
                         break;
-                    }
                     case "at":
                         val id = Arrays.stream(data.split(","))//具体数据分割
                                 .filter(it -> it.startsWith("qq"))//非空判断
@@ -108,14 +101,13 @@ public class CQUtils {
             return message.toString();
         });
         try {
-            exec.execute(call);
+            IMcBot.CQUtilsExecutor.execute(call);
             back = call.get(1000 * 3, TimeUnit.MILLISECONDS);
-        } catch (ExecutionException | InterruptedException | TimeoutException e) {
-            back = msg;
+        } catch (ExecutionException | InterruptedException | TimeoutException | IllegalStateException e) {
+            back = event.getRawMessage();
             call.cancel(true);
             Const.LOGGER.error(e.getLocalizedMessage());
         }
-        exec.shutdownNow();
         return back;
     }
 }

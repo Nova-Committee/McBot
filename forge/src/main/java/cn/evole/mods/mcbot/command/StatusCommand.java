@@ -2,7 +2,8 @@ package cn.evole.mods.mcbot.command;
 
 
 import cn.evole.mods.mcbot.IMcBot;
-import cn.evole.mods.mcbot.init.config.ModConfig;
+import cn.evole.mods.mcbot.McBot;
+import cn.evole.mods.mcbot.config.ModConfig;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import lombok.val;
@@ -29,21 +30,17 @@ public class StatusCommand {
         boolean sQqLeaveEnabled =  ModConfig.INSTANCE.getStatus().isSQqLeaveEnable();
 
         val groupId =  ModConfig.INSTANCE.getCommon().getGroupIdList().toString();
-        val guildId =  ModConfig.INSTANCE.getCommon().getGuildId();
-        val channelId =  ModConfig.INSTANCE.getCommon().getChannelIdList().toString();
         boolean debuggable =  ModConfig.INSTANCE.getCommon().isDebug();
-        boolean connected = IMcBot.service != null;
+        boolean connected = IMcBot.onebot.getWs().isOpen();
         boolean white = IMcBot.SERVER.getPlayerList().isUsingWhitelist();
         String host =  ModConfig.INSTANCE.getBotConfig().getUrl();
-        long QQid =  ModConfig.INSTANCE.getCommon().getBotId();
+        long QQid =  ModConfig.INSTANCE.getBotConfig().getBotId();
         String toSend =
                 "\n姬妻人服务状态:\n"
                         + "姬妻人QQId:" + QQid + " \n"
                         + "框架服务器:" + host + " \n"
                         + "WebSocket连接状态:" + connected + "\n"
                         + "互通的群号:" + groupId + "\n"
-                        + "互通的频道号:" + guildId + "\n"
-                        + "互通的子频道号:" + channelId + "\n"
                         + "全局服务状态:" + clientEnabled + "\n"
                         + "开发者模式状态:" + debuggable + "\n"
                         + "白名单是否开启:" + white + "\n"
