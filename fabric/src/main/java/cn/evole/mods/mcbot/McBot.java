@@ -9,6 +9,7 @@ import cn.evole.mods.mcbot.init.handler.CustomCmdHandler;
 import cn.evole.mods.mcbot.util.FileUtil;
 import cn.evole.mods.mcbot.util.lib.LibUtils;
 import cn.evole.mods.mcbot.util.locale.I18n;
+import cn.evole.mods.mcbot.util.onebot.CQUtils;
 import cn.evole.onebot.client.OneBotClient;
 import lombok.Getter;
 import net.fabricmc.api.ModInitializer;
@@ -16,8 +17,6 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.minecraft.server.MinecraftServer;
 import java.nio.file.Path;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 //#if MC >= 11900
 //$$ import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 //#else
@@ -40,7 +39,6 @@ public class McBot implements ModInitializer {
     public static McBot INSTANCE = new McBot();
 
     public static OneBotClient onebot;
-    public static ExecutorService CQUtilsExecutor;
 
     @Override
     public void onInitialize() {
@@ -89,7 +87,6 @@ public class McBot implements ModInitializer {
             onebot = OneBotClient.create(ModConfig.INSTANCE.getBotConfig().build()).open().registerEvents(new IBotEvent());
         }
         CustomCmdHandler.INSTANCE.load();//自定义命令加载
-        CQUtilsExecutor = Executors.newSingleThreadExecutor();  // 创建CQ码处理线程池
     }
 
     public void onServerStopping(MinecraftServer server) {
@@ -101,7 +98,8 @@ public class McBot implements ModInitializer {
     }
 
     public void onServerStopped(MinecraftServer server) {
-        CQUtilsExecutor.shutdownNow();
+        Const.shutdown();
+        CQUtils.shutdown();
         if (onebot != null) onebot.close();
     }
 

@@ -1,6 +1,7 @@
 package cn.evole.mods.mcbot;
 
 import cn.evole.mods.mcbot.config.ModConfig;
+import cn.evole.mods.mcbot.util.onebot.MessageThread;
 import net.fabricmc.loader.api.FabricLoader;
 import java.nio.file.Path;
 //#if MC >= 11700
@@ -27,6 +28,7 @@ public class Const {
     public static boolean isShutdown = false;
     public static Path configDir = FabricLoader.getInstance().getConfigDir();
     public static Path gameDir = FabricLoader.getInstance().getGameDir();
+    private static final MessageThread messageThread = new MessageThread();
 
     public static boolean isLoad(String modId){
         return FabricLoader.getInstance().isModLoaded(modId);
@@ -39,11 +41,10 @@ public class Const {
     }
 
     public static void sendGroupMsg(long id, String message){
-        McBot.onebot.getBot().sendGroupMsg(id, message, false);
+        messageThread.submit(id, message, false);
     }
 
-
+    public static void shutdown() {
+        messageThread.stop();
+    }
 }
-
-
-
