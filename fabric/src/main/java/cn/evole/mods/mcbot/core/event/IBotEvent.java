@@ -31,7 +31,7 @@ public class IBotEvent implements Listener {
                     && ModConfig.INSTANCE.getStatus().isREnable()//总接受开关
                     && event.getUserId() != ModConfig.INSTANCE.getBotConfig().getBotId()//过滤机器人
             ){
-                String send = CQUtils.replace(event);//暂时匹配仅符合字符串聊天内容与图片
+                String send = CQUtils.replace(event, 3000);//暂时匹配仅符合字符串聊天内容与图片
                 if (!send.startsWith(ModConfig.INSTANCE.getCmd().getCmdStart())//过滤命令前缀
                 ) {
                     if (ModConfig.INSTANCE.getStatus().isRChatEnable())/*接受聊天开关*/ onGroupMessage(event, send);

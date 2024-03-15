@@ -4,6 +4,7 @@ import cn.evole.mods.mcbot.config.ModConfig;
 import cn.evole.mods.mcbot.util.onebot.MessageThread;
 import net.fabricmc.loader.api.FabricLoader;
 import java.nio.file.Path;
+import java.util.concurrent.Callable;
 //#if MC >= 11700
 //$$ import org.slf4j.Logger;
 //$$ import org.slf4j.LoggerFactory;
@@ -40,7 +41,17 @@ public class Const {
         }
     }
 
+    public static void sendAllGroupMsg(Callable<String> message){
+        for (long id : ModConfig.INSTANCE.getCommon().getGroupIdList()){
+            sendGroupMsg(id, message);
+        }
+    }
+
     public static void sendGroupMsg(long id, String message){
+        messageThread.submit(id, message, false);
+    }
+
+    public static void sendGroupMsg(long id, Callable<String> message){
         messageThread.submit(id, message, false);
     }
 

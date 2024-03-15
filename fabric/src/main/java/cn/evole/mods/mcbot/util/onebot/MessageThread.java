@@ -3,6 +3,8 @@ package cn.evole.mods.mcbot.util.onebot;
 import cn.evole.mods.mcbot.Const;
 import cn.evole.mods.mcbot.McBot;
 import com.google.gson.JsonArray;
+
+import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -38,6 +40,15 @@ public class MessageThread {
         executor.submit(() -> McBot.onebot.getBot().sendGuildMsg(guildID, channelID, message));
     }
 
+    public void submit(long groupId, Callable<String> msg, boolean autoEscape) {
+        executor.submit(() -> {
+            try {
+                submit(groupId, msg.call(), autoEscape);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        });
+    }
     public void stop() {
         executor.shutdownNow();
     }

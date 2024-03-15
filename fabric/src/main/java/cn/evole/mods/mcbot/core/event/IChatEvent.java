@@ -2,6 +2,7 @@ package cn.evole.mods.mcbot.core.event;
 
 import cn.evole.mods.mcbot.Const;
 import cn.evole.mods.mcbot.config.ModConfig;
+import cn.evole.mods.mcbot.util.onebot.CQUtils;
 import cn.evole.onebot.sdk.util.MsgUtils;
 import lombok.val;
 import net.minecraft.server.level.ServerPlayer;
@@ -31,7 +32,7 @@ public class IChatEvent {
                     ModConfig.INSTANCE.getCmd().isMcChatPrefixOn()
                             && ModConfig.INSTANCE.getCmd().getMcChatPrefix().equals(split[0]) ? split[1] : message);
 
-            Const.sendAllGroupMsg(MsgUtils.builder().text(msg).build());
+            Const.sendAllGroupMsg(() -> MsgUtils.builder().text(CQUtils.replace(msg)).build());
 
         }
     }
