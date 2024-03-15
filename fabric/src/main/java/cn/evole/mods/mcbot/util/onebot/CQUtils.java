@@ -41,75 +41,77 @@ public class CQUtils {
         StringBuffer message = new StringBuffer();
         Pattern pattern = Pattern.compile(CQ_CODE_REGEX);
         Matcher matcher = pattern.matcher(msg);
-        val call = new FutureTask<>(() -> {
-            while (matcher.find()) {//全局匹配
-                val type = matcher.group(1);
-                val data = matcher.group(2);
-                switch (type) {
-                    case "image":
-                        if (ModConfig.INSTANCE.getCommon().isImageOn() && Const.isLoad("chatimage")) {
-                            val url = Arrays.stream(data.split(","))//具体数据分割
-                                    .filter(it -> it.startsWith("url"))//非空判断
-                                    .map(it -> it.substring(it.indexOf('=') + 1))
-                                    .findFirst();
-                            if (url.isPresent()) {
-                                matcher.appendReplacement(message, String.format("[[CICode,url=%s,name=来自QQ的图片]]", url.get()));
-                            } else {
-                                matcher.appendReplacement(message, "[图片]");
-                            }
-                        } else {
-                            matcher.appendReplacement(message, "[图片]");
-                        }
-                        break;
-                    case "at":
-//                        val id = data.split("=");
-//                        if (id.length == 2) {
-//                            if (id[0].equals("qq"))
-//                                try {
-//                                    matcher.appendReplacement(message, String.format("[@%s]", BotUtils.getNickname(Long.parseLong(id[1]))));
-//                                    break;
-//                                } catch (NumberFormatException ignored) {}
-//                        }
-                        matcher.appendReplacement(message, "[@]");
-                        break;
-                    case "record":
-                        matcher.appendReplacement(message, "[语音]");
-                        break;
-                    case "forward":
-                        matcher.appendReplacement(message, "[合并转发]");
-                        break;
-                    case "video":
-                        matcher.appendReplacement(message, "[视频]");
-                        break;
-                    case "music":
-                        matcher.appendReplacement(message, "[音乐]");
-                        break;
-                    case "redbag":
-                        matcher.appendReplacement(message, "[红包]");
-                        break;
-                    case "face":
-                        matcher.appendReplacement(message, "[表情]");
-                        break;
-                    case "reply":
-                        matcher.appendReplacement(message, "[回复]");
-                        break;
-                    default:
-                        matcher.appendReplacement(message, "[?]");
-                        break;
-                }
-            }
-            matcher.appendTail(message);
-            return message.toString();
-        });
         try {
-            Executor.execute(call);
-            back = call.get(1000 * 3, TimeUnit.MILLISECONDS);  // TODO 毫无意义的额外性能开销
-        } catch (ExecutionException | InterruptedException | TimeoutException | IllegalStateException e) {
+            back = doReplace(matcher, message);
+        } catch (Exception e) {
             back = msg;
-            call.cancel(true);
             Const.LOGGER.error(e.getLocalizedMessage());
         }
         return back;
+    }
+
+    private static @NotNull String doReplace(@NotNull Matcher matcher, StringBuffer message) {
+        while (matcher.find()) {//全局匹配
+            val type = matcher.group(1);
+            val data = matcher.group(2);
+            switch (type) {
+                case "image":
+                    if (ModConfig.INSTANCE.getCommon().isImageOn() && Const.isLoad("chatimage")) {
+                        val url = Arrays.stream(data.split(","))//具体数据分割
+                                .filter(it -> it.startsWith("url"))//非空判断
+                                .map(it -> it.substring(it.indexOf('=') + 1))
+                                .findFirst();
+                        if (url.isPresent()) {
+                            matcher.appendReplacement(message, String.format("[[CICode,url=%s,name=来自QQ的图片]]", url.get()));
+                        } else {
+                            matcher.appendReplacement(message, "[图片]");
+                        }
+                    } else {
+                        matcher.appendReplacement(message, "[图片]");
+                    }
+                    break;
+                case "at":
+/* TODO @cnlimiter need to fix it.
+                        val id = data.split("=");
+                        if (id.length == 2) {
+                            if (id[0].equals("qq"))
+                                try {
+                                    matcher.appendReplacement(message, String.format("[@%s]", BotUtils.getNickname(Long.parseLong(id[1]))));
+                                    break;
+                                } catch (NumberFormatException ignored) {}
+                        }
+*/
+                    matcher.appendReplacement(message, "[@]");
+                    break;
+                case "record":
+                    matcher.appendReplacement(message, "[语音]");
+                    break;
+                case "forward":
+                    matcher.appendReplacement(message, "[合并转发]");
+                    break;
+                case "video":
+                    matcher.appendReplacement(message, "[视频]");
+                    break;
+                case "music":
+                    matcher.appendReplacement(message, "[音乐]");
+                    break;
+                case "redbag":
+                    matcher.appendReplacement(message, "[红包]");
+                    break;
+                case "face":
+                    matcher.appendReplacement(message, "[表情]");
+                    break;
+                case "reply":
+                    matcher.appendReplacement(message, "[回复]");
+                    break;
+                default:
+                    matcher.appendReplacement(message, "[?]");
+                    break;
+            }
+        }
+        matcher.appendTail(message);
+        return message.toString();
+
     }
 
     public static void shutdown() {
