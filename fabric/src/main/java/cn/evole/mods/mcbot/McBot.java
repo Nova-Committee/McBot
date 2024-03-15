@@ -9,6 +9,7 @@ import cn.evole.mods.mcbot.init.handler.CustomCmdHandler;
 import cn.evole.mods.mcbot.util.FileUtil;
 import cn.evole.mods.mcbot.util.lib.LibUtils;
 import cn.evole.mods.mcbot.util.locale.I18n;
+import cn.evole.mods.mcbot.util.onebot.CQUtils;
 import cn.evole.onebot.client.OneBotClient;
 import lombok.Getter;
 import net.fabricmc.api.ModInitializer;
@@ -98,6 +99,7 @@ public class McBot implements ModInitializer {
 
     public void onServerStopped(MinecraftServer server) {
         Const.shutdown();
+        CQUtils.shutdown();
         if (onebot != null) onebot.close();
     }
 

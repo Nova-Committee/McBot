@@ -3,11 +3,13 @@ package cn.evole.mods.mcbot.util.onebot;
 import cn.evole.mods.mcbot.Const;
 import cn.evole.mods.mcbot.config.ModConfig;
 import cn.evole.onebot.sdk.event.message.MessageEvent;
+import io.netty.util.concurrent.SingleThreadEventExecutor;
 import lombok.val;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 import java.util.concurrent.*;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -23,11 +25,29 @@ public class CQUtils {
 
     private final static String CQ_CODE_REGEX = "\\[CQ:(.*?),(.*?)]";
 
+    private static final ExecutorService Executor = Executors.newSingleThreadExecutor();  // 创建CQ码处理线程池;
+
     public static boolean hasImg(String msg) {
         String regex = "\\[CQ:image,[(\\s\\S)]*]";
         val p = Pattern.compile(regex);
         val m = p.matcher(msg);
         return m.find();
+    }
+
+    /**
+     * @param timeout 超时时间（毫秒），超时后返回空字符串。
+     */
+    public static @NotNull String replace(@NotNull MessageEvent event, long timeout) {
+        String back = "";
+        val task = new FutureTask<>(() -> replace(event));
+        try {
+            Executor.execute(task);
+            back = task.get(timeout, TimeUnit.MILLISECONDS);
+        } catch (ExecutionException | InterruptedException | TimeoutException | IllegalStateException e) {
+            task.cancel(true);
+            Const.LOGGER.error(e.getLocalizedMessage());
+        }
+        return back;
     }
 
     public static String replace(@NotNull MessageEvent event) {
@@ -110,5 +130,9 @@ public class CQUtils {
         matcher.appendTail(message);
         return message.toString();
 
+    }
+
+    public static void shutdown() {
+        Executor.shutdownNow();
     }
 }
