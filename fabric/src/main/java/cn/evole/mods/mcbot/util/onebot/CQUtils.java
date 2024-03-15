@@ -7,10 +7,7 @@ import cn.evole.onebot.sdk.event.message.MessageEvent;
 import lombok.val;
 
 import java.util.Arrays;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.FutureTask;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
+import java.util.concurrent.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -26,6 +23,7 @@ public class CQUtils {
 
     private final static String CQ_CODE_REGEX = "\\[CQ:(.*?),(.*?)]";
 
+    private static final ExecutorService Executor = Executors.newSingleThreadExecutor();  // 创建CQ码处理线程池;
 
     public static boolean hasImg(String msg) {
         String regex = "\\[CQ:image,[(\\s\\S)]*]";
@@ -100,7 +98,7 @@ public class CQUtils {
             return message.toString();
         });
         try {
-            McBot.CQUtilsExecutor.execute(call);
+            Executor.execute(call);
             back = call.get(1000 * 3, TimeUnit.MILLISECONDS);
         } catch (ExecutionException | InterruptedException | TimeoutException | IllegalStateException e) {
             back = event.getRawMessage();
@@ -108,5 +106,9 @@ public class CQUtils {
             Const.LOGGER.error(e.getLocalizedMessage());
         }
         return back;
+    }
+
+    public static void shutdown() {
+        Executor.shutdownNow();
     }
 }
