@@ -1,10 +1,13 @@
 package cn.evole.mods.mcbot.util.onebot;
 
+import cn.evole.mods.mcbot.McBot;
 import cn.evole.mods.mcbot.cmds.CustomCmd;
+import cn.evole.mods.mcbot.config.ModConfig;
 import cn.evole.mods.mcbot.init.handler.CustomCmdHandler;
 import cn.evole.onebot.sdk.event.message.GroupMessageEvent;
 import cn.evole.onebot.sdk.util.NetUtils;
 import lombok.val;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -86,8 +89,8 @@ public class BotUtils {
 
 
     /**
-     * 获取群头像
-     *
+     * 获取群头像(弃用)
+     * TODO 过时的API，无法使用
      * @param groupId 群号
      * @param size    头像尺寸
      * @return 头像链接 （size为0返回真实大小, 40(40*40), 100(100*100), 640(640*640)）
@@ -97,8 +100,8 @@ public class BotUtils {
     }
 
     /**
-     * 获取用户昵称
-     *
+     * 获取用户昵称(弃用)
+     * TODO 过时的API，无法使用
      * @param userId QQ号
      * @return 用户昵称
      */
@@ -113,8 +116,8 @@ public class BotUtils {
     }
 
     /**
-     * 获取用户头像
-     *
+     * 获取用户头像(弃用)
+     * TODO 过时的API，无法使用
      * @param userId QQ号
      * @param size   头像尺寸
      * @return 头像链接 （size为0返回真实大小, 40(40*40), 100(100*100), 640(640*640)）

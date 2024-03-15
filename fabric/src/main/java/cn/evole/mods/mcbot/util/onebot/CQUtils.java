@@ -1,10 +1,10 @@
 package cn.evole.mods.mcbot.util.onebot;
 
 import cn.evole.mods.mcbot.Const;
-import cn.evole.mods.mcbot.McBot;
 import cn.evole.mods.mcbot.config.ModConfig;
 import cn.evole.onebot.sdk.event.message.MessageEvent;
 import lombok.val;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 import java.util.concurrent.*;
@@ -32,11 +32,15 @@ public class CQUtils {
         return m.find();
     }
 
-    public static String replace(MessageEvent event) {
+    public static String replace(@NotNull MessageEvent event) {
+        return replace(event.getRawMessage());
+    }
+
+    public static String replace(String msg) {
         String back;
         StringBuffer message = new StringBuffer();
         Pattern pattern = Pattern.compile(CQ_CODE_REGEX);
-        Matcher matcher = pattern.matcher(event.getRawMessage());
+        Matcher matcher = pattern.matcher(msg);
         val call = new FutureTask<>(() -> {
             while (matcher.find()) {//全局匹配
                 val type = matcher.group(1);
@@ -58,15 +62,15 @@ public class CQUtils {
                         }
                         break;
                     case "at":
-                        val id = Arrays.stream(data.split(","))//具体数据分割
-                                .filter(it -> it.startsWith("qq"))//非空判断
-                                .map(it -> it.substring(it.indexOf('=') + 1))
-                                .findFirst();
-                        if (id.isPresent()) {
-                            matcher.appendReplacement(message, String.format("[@%s]", BotUtils.getNickname(Long.parseLong(id.get()))));
-                        } else {
-                            matcher.appendReplacement(message, "[@]");
-                        }
+//                        val id = data.split("=");
+//                        if (id.length == 2) {
+//                            if (id[0].equals("qq"))
+//                                try {
+//                                    matcher.appendReplacement(message, String.format("[@%s]", BotUtils.getNickname(Long.parseLong(id[1]))));
+//                                    break;
+//                                } catch (NumberFormatException ignored) {}
+//                        }
+                        matcher.appendReplacement(message, "[@]");
                         break;
                     case "record":
                         matcher.appendReplacement(message, "[语音]");
@@ -99,9 +103,9 @@ public class CQUtils {
         });
         try {
             Executor.execute(call);
-            back = call.get(1000 * 3, TimeUnit.MILLISECONDS);
+            back = call.get(1000 * 3, TimeUnit.MILLISECONDS);  // TODO 毫无意义的额外性能开销
         } catch (ExecutionException | InterruptedException | TimeoutException | IllegalStateException e) {
-            back = event.getRawMessage();
+            back = msg;
             call.cancel(true);
             Const.LOGGER.error(e.getLocalizedMessage());
         }
