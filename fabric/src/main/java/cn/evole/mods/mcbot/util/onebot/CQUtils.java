@@ -23,8 +23,6 @@ public class CQUtils {
 
     private final static String CQ_CODE_REGEX = "\\[CQ:(.*?),(.*?)]";
 
-    private static final ExecutorService Executor = Executors.newSingleThreadExecutor();  // 创建CQ码处理线程池;
-
     public static boolean hasImg(String msg) {
         String regex = "\\[CQ:image,[(\\s\\S)]*]";
         val p = Pattern.compile(regex);
@@ -112,9 +110,5 @@ public class CQUtils {
         matcher.appendTail(message);
         return message.toString();
 
-    }
-
-    public static void shutdown() {
-        Executor.shutdownNow();
     }
 }
