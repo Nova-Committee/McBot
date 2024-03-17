@@ -2,7 +2,9 @@ package cn.evole.mods.mcbot.util.onebot;
 
 import cn.evole.mods.mcbot.Const;
 import cn.evole.mods.mcbot.McBot;
+import cn.evole.mods.mcbot.api.McBotChatEvents;
 import com.google.gson.JsonArray;
+import net.minecraft.server.level.ServerPlayer;
 
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
@@ -43,12 +45,25 @@ public class MessageThread {
     public void submit(long groupId, Callable<String> msg, boolean autoEscape) {
         executor.submit(() -> {
             try {
-                submit(groupId, msg.call(), autoEscape);
+                McBot.onebot.getBot().sendGroupMsg(groupId, msg.call(), autoEscape);
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
         });
     }
+
+    public void submit(long groupId, Callable<String> msg, boolean autoEscape, ServerPlayer player) {
+        executor.submit(() -> {
+            try {
+                McBotChatEvents.ON_CHAT.invoker().onChat(player,
+                        McBot.onebot.getBot().sendGroupMsg(groupId, msg.call(), autoEscape).getData().getMessageId()
+                );
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        });
+    }
+
     public void stop() {
         executor.shutdownNow();
     }
