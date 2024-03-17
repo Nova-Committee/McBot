@@ -5,6 +5,7 @@ import cn.evole.mods.mcbot.util.onebot.MessageThread;
 import net.fabricmc.loader.api.FabricLoader;
 import java.nio.file.Path;
 import java.util.concurrent.Callable;
+import net.minecraft.server.level.ServerPlayer;
 //#if MC >= 11700
 //$$ import org.slf4j.Logger;
 //$$ import org.slf4j.LoggerFactory;
@@ -44,6 +45,17 @@ public class Const {
     public static void sendAllGroupMsg(Callable<String> message){
         for (long id : ModConfig.INSTANCE.getCommon().getGroupIdList()){
             sendGroupMsg(id, message);
+        }
+    }
+
+    /**
+     * 玩家在游戏里发送消息
+     * @param message 消息
+     * @param player 玩家
+     */
+    public static void sendAllGroupMsg(Callable<String> message, ServerPlayer player){
+        for (long id : ModConfig.INSTANCE.getCommon().getGroupIdList()){
+            messageThread.submit(id, message, false, player);
         }
     }
 
