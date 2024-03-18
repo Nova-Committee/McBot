@@ -28,8 +28,8 @@ public class BotConfig extends AutoLoadTomlConfig {
     @TableField(rightComment = "自动重连")
     private boolean reconnect = true;
     @TableField(rightComment = "自动重连次数")
-    private int maxReconnectAttempts = 20;
-    @TableField(rightComment = "超时宽容度")
+    private int maxReconnectAttempts = 5;
+    @TableField(rightComment = "超时宽容度（毫秒）")
     private long timeoutCompensation = 5000;
 
     public BotConfig() {
