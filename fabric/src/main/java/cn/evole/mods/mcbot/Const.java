@@ -1,9 +1,11 @@
 package cn.evole.mods.mcbot;
 
 import cn.evole.mods.mcbot.config.ModConfig;
+import cn.evole.mods.mcbot.core.event.ITickEvent;
 import cn.evole.mods.mcbot.util.onebot.MessageThread;
 import cn.evole.onebot.sdk.action.ActionPath;
 import com.google.gson.JsonObject;
+import lombok.val;
 import net.fabricmc.loader.api.FabricLoader;
 import java.nio.file.Path;
 import java.util.concurrent.Callable;
@@ -14,6 +16,12 @@ import net.minecraft.server.level.ServerPlayer;
 //#else
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
+//#endif
+
+//#if MC < 11900
+import net.minecraft.network.chat.TextComponent;
+//#else
+//$$ import net.minecraft.network.chat.Component;
 //#endif
 
 /**
@@ -32,7 +40,7 @@ public class Const {
     public static boolean isShutdown = false;
     public static Path configDir = FabricLoader.getInstance().getConfigDir();
     public static Path gameDir = FabricLoader.getInstance().getGameDir();
-    private static final MessageThread messageThread = new MessageThread();
+    public static final MessageThread messageThread = new MessageThread();
 
     public static boolean isLoad(String modId){
         return FabricLoader.getInstance().isModLoaded(modId);
@@ -70,12 +78,25 @@ public class Const {
     }
 
     /**
-     * 自定义请求
+     * 自定义请求 (不应清理)
      * @param action 请求类型
      * @param params 参数
      */
     public static void customRequest(ActionPath action, JsonObject params){
         messageThread.submit(action, params);
+    }
+
+    /**
+     * 向游戏中的所有人发送消息
+     */
+    public static void sendAllPlayerMsg(String message){
+        //#if MC >= 11900
+        //$$ val toSend = Component.literal(message);
+        //#else
+        val toSend = new TextComponent(message);
+        //#endif
+
+        ITickEvent.getSendQueue().add(toSend);
     }
 
     public static void shutdown() {

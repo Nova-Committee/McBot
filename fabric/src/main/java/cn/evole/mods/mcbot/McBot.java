@@ -10,6 +10,7 @@ import cn.evole.mods.mcbot.util.FileUtil;
 import cn.evole.mods.mcbot.util.lib.LibUtils;
 import cn.evole.mods.mcbot.util.locale.I18n;
 import cn.evole.mods.mcbot.util.onebot.CQUtils;
+import cn.evole.mods.mcbot.util.onebot.KeepAlive;
 import cn.evole.onebot.client.OneBotClient;
 import lombok.Getter;
 import net.fabricmc.api.ModInitializer;
@@ -39,6 +40,9 @@ public class McBot implements ModInitializer {
     public static McBot INSTANCE = new McBot();
 
     public static OneBotClient onebot;
+
+    public static boolean connected = false;
+    public static KeepAlive keepAlive;
 
     @Override
     public void onInitialize() {
@@ -85,8 +89,11 @@ public class McBot implements ModInitializer {
     public void onServerStarted(MinecraftServer server) {
         if (ModConfig.INSTANCE.getCommon().isAutoOpen()) {
             onebot = OneBotClient.create(ModConfig.INSTANCE.getBotConfig().build()).open().registerEvents(new IBotEvent());
+            connected = true;
         }
         CustomCmdHandler.INSTANCE.load();//自定义命令加载
+        keepAlive = new KeepAlive();
+        Const.messageThread.register(keepAlive::register);
     }
 
     public void onServerStopping(MinecraftServer server) {

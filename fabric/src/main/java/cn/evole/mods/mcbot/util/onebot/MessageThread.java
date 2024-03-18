@@ -60,6 +60,10 @@ public class MessageThread {
         executor.submit(() -> McBot.onebot.getBot().customRequest(action, params));
     }
 
+    public void register(Runnable callable) {
+        executor.submit(callable);
+    }
+
     public void stop() {
         executor.shutdownNow();
     }

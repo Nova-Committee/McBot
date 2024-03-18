@@ -6,9 +6,10 @@ import cn.evole.mods.mcbot.config.ModConfig;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.commands.CommandSourceStack;
-import net.minecraft.network.chat.Component;
 //#if MC <11900
 import net.minecraft.network.chat.TextComponent;
+//#else
+//$$ import net.minecraft.network.chat.Component;
 //#endif
 
 public class DisconnectCommand {
@@ -16,6 +17,7 @@ public class DisconnectCommand {
     public static int execute(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
         if (McBot.onebot != null) {
             McBot.onebot.close();
+            McBot.connected = false;
             if (!McBot.onebot.getWs().isOpen()) {
                 //#if MC >= 12000
                 //$$ context.getSource().sendSuccess(()->Component.literal("WebSocket已断开连接"), true);
