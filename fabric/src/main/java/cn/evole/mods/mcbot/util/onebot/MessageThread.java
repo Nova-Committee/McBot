@@ -3,7 +3,7 @@ package cn.evole.mods.mcbot.util.onebot;
 import cn.evole.mods.mcbot.Const;
 import cn.evole.mods.mcbot.McBot;
 import cn.evole.mods.mcbot.api.McBotChatEvents;
-import cn.evole.onebot.sdk.enums.ActionType;
+import cn.evole.onebot.sdk.action.ActionPath;
 import com.google.gson.JsonObject;
 import lombok.val;
 import net.minecraft.server.level.ServerPlayer;
@@ -55,7 +55,7 @@ public class MessageThread {
         });
     }
 
-    public void submit(ActionType action, JsonObject params) {
+    public void submit(ActionPath action, JsonObject params) {
         Const.LOGGER.info("执行自定义操作：{}", action);
         executor.submit(() -> McBot.onebot.getBot().customRequest(action, params));
     }
