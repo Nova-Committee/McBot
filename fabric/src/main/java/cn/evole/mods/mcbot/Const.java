@@ -2,6 +2,8 @@ package cn.evole.mods.mcbot;
 
 import cn.evole.mods.mcbot.config.ModConfig;
 import cn.evole.mods.mcbot.util.onebot.MessageThread;
+import cn.evole.onebot.sdk.enums.ActionType;
+import com.google.gson.JsonObject;
 import net.fabricmc.loader.api.FabricLoader;
 import java.nio.file.Path;
 import java.util.concurrent.Callable;
@@ -65,6 +67,15 @@ public class Const {
 
     public static void sendGroupMsg(long id, Callable<String> message){
         messageThread.submit(id, message, false);
+    }
+
+    /**
+     * 自定义请求
+     * @param action 请求类型
+     * @param params 参数
+     */
+    public static void customRequest(ActionType action, JsonObject params){
+        messageThread.submit(action, params);
     }
 
     public static void shutdown() {

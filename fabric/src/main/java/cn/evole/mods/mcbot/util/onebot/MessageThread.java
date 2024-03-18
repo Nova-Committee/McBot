@@ -3,7 +3,9 @@ package cn.evole.mods.mcbot.util.onebot;
 import cn.evole.mods.mcbot.Const;
 import cn.evole.mods.mcbot.McBot;
 import cn.evole.mods.mcbot.api.McBotChatEvents;
-import com.google.gson.JsonArray;
+import cn.evole.onebot.sdk.enums.ActionType;
+import com.google.gson.JsonObject;
+import lombok.val;
 import net.minecraft.server.level.ServerPlayer;
 
 import java.util.concurrent.Callable;
@@ -23,29 +25,16 @@ public class MessageThread {
     }
 
     public void submit(long groupId, String msg, boolean autoEscape) {
-        Const.LOGGER.debug(String.format("转发游戏消息: %s", msg));
+        Const.LOGGER.debug("转发游戏消息: {}", msg);
         executor.submit(() -> McBot.onebot.getBot().sendGroupMsg(groupId, msg, autoEscape));
-    }
-
-    public void submit(long groupId, JsonArray msg, boolean autoEscape) {
-        Const.LOGGER.debug(String.format("转发游戏消息: %s", msg));
-        executor.submit(() -> McBot.onebot.getBot().sendGroupMsg(groupId, msg, autoEscape));
-    }
-
-    public void submit(String guildID, String channelID, String message) {
-        Const.LOGGER.debug(String.format("转发游戏消息: %s", message));
-        executor.submit(() -> McBot.onebot.getBot().sendGuildMsg(guildID, channelID, message));
-    }
-
-    public void submit(String guildID, String channelID, JsonArray message) {
-        Const.LOGGER.debug(String.format("转发游戏消息: %s", message));
-        executor.submit(() -> McBot.onebot.getBot().sendGuildMsg(guildID, channelID, message));
     }
 
     public void submit(long groupId, Callable<String> msg, boolean autoEscape) {
         executor.submit(() -> {
             try {
-                McBot.onebot.getBot().sendGroupMsg(groupId, msg.call(), autoEscape);
+                val message = msg.call();
+                Const.LOGGER.debug("转发游戏消息: {}", message);
+                McBot.onebot.getBot().sendGroupMsg(groupId, message, autoEscape);
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
@@ -55,13 +44,20 @@ public class MessageThread {
     public void submit(long groupId, Callable<String> msg, boolean autoEscape, ServerPlayer player) {
         executor.submit(() -> {
             try {
+                val message = msg.call();
+                Const.LOGGER.debug("转发游戏消息: {}", message);
                 McBotChatEvents.ON_CHAT.invoker().onChat(player,
-                        McBot.onebot.getBot().sendGroupMsg(groupId, msg.call(), autoEscape).getData().getMessageId()
+                        McBot.onebot.getBot().sendGroupMsg(groupId, message, autoEscape).getData().getMessageId()
                 );
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
         });
+    }
+
+    public void submit(ActionType action, JsonObject params) {
+        Const.LOGGER.info("执行自定义操作：{}", action);
+        executor.submit(() -> McBot.onebot.getBot().customRequest(action, params));
     }
 
     public void stop() {
