@@ -1,6 +1,7 @@
 apply(plugin: "dev.architectury.loom")
 apply(plugin: "com.replaymod.preprocess")
 apply(plugin: "dev.vankka.dependencydownload.plugin")
+apply(plugin: "maven-publish")
 
 preprocess {
     int mcVersion = vars.get()["MC"]
@@ -31,6 +32,19 @@ dependencies {
     compileOnly ("org.projectlombok:lombok:1.18.24")
     annotationProcessor ("org.projectlombok:lombok:1.18.24")
 
+}
+
+publishing {
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = "https://maven.pkg.github.com/xia-mc/McBot"
+            credentials {
+                username = System.getenv("GITHUB_ACTOR")
+                password = System.getenv("GITHUB_TOKEN")
+            }
+        }
+    }
 }
 
 loom {
