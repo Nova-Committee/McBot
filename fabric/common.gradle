@@ -2,10 +2,8 @@ apply(plugin: "dev.architectury.loom")
 apply(plugin: "com.replaymod.preprocess")
 apply(plugin: "dev.vankka.dependencydownload.plugin")
 
-int mcVersion = 1
-
 preprocess {
-    mcVersion = vars.get()["MC"]
+    int mcVersion = vars.get()["MC"]
     tabIndentation = true
 }
 
