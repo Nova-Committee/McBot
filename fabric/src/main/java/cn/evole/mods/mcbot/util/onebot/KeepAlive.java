@@ -24,7 +24,12 @@ public class KeepAlive {
     }
 
     public void onHeartbeat(@NotNull HeartbeatMetaEvent event) {
-        heartBeatQueue.add(event);
+        try {
+            heartBeatQueue.add(event);
+        } catch (IllegalStateException ignored) {
+            heartBeatQueue.poll();
+            onHeartbeat(event);
+        }
     }
 
     public void register() {
