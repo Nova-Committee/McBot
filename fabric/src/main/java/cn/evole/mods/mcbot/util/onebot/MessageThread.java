@@ -47,7 +47,8 @@ public class MessageThread {
                 val message = msg.call();
                 Const.LOGGER.debug("转发游戏消息: {}", message);
                 McBotChatEvents.ON_CHAT.invoker().onChat(player,
-                        McBot.onebot.getBot().sendGroupMsg(groupId, message, autoEscape).getData().getMessageId()
+                        McBot.onebot.getBot().sendGroupMsg(groupId, message, autoEscape).getData().getMessageId(),
+                        message
                 );
             } catch (Exception e) {
                 throw new RuntimeException(e);

@@ -87,6 +87,7 @@ public class McBot implements ModInitializer {
     }
 
     public void onServerStarted(MinecraftServer server) {
+        ModConfig.INSTANCE.save();
         if (ModConfig.INSTANCE.getCommon().isAutoOpen()) {
             onebot = OneBotClient.create(ModConfig.INSTANCE.getBotConfig().build()).open().registerEvents(new IBotEvent());
             connected = true;
