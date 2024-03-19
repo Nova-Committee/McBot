@@ -1,13 +1,10 @@
 package cn.evole.mods.mcbot.util.onebot;
 
-import cn.evole.mods.mcbot.McBot;
 import cn.evole.mods.mcbot.cmds.CustomCmd;
-import cn.evole.mods.mcbot.config.ModConfig;
 import cn.evole.mods.mcbot.init.handler.CustomCmdHandler;
 import cn.evole.onebot.sdk.event.message.GroupMessageEvent;
 import cn.evole.onebot.sdk.util.NetUtils;
 import lombok.val;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 

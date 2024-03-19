@@ -11,9 +11,11 @@ import lombok.val;
 import net.minecraft.ChatFormatting;
 import net.minecraft.commands.CommandSourceStack;
 import java.util.regex.Pattern;
-import net.minecraft.network.chat.Component;
+
 //#if MC <11900
 import net.minecraft.network.chat.TextComponent;
+//#else
+//$$ import net.minecraft.network.chat.Component;
 //#endif
 
 public class ConnectCommand {
@@ -33,10 +35,7 @@ public class ConnectCommand {
             //#else
             //$$ context.getSource().sendSuccess(Component.literal("▌ " +ChatFormatting.LIGHT_PURPLE + "尝试链接框架"), true);
             //#endif
-            McBot.onebot = OneBotClient.create(ModConfig.INSTANCE.getBotConfig().build()).open().registerEvents(new IBotEvent());
-            ModConfig.INSTANCE.getStatus().setREnable(true);
-            ModConfig.INSTANCE.getCommon().setEnable(true);
-            ModConfig.INSTANCE.save();
+            cqhttpDoConnect();
             return 1;
 
         } else {
@@ -61,13 +60,16 @@ public class ConnectCommand {
         //#else
         //$$ context.getSource().sendSuccess(Component.literal("▌ " +ChatFormatting.LIGHT_PURPLE + "尝试链接框架"), true);
         //#endif
-        McBot.onebot = OneBotClient.create(ModConfig.INSTANCE.getBotConfig().build()).open().registerEvents(new IBotEvent());
-        ModConfig.INSTANCE.getStatus().setREnable(true);
-        ModConfig.INSTANCE.getCommon().setEnable(true);
-        ModConfig.INSTANCE.save();
+        cqhttpDoConnect();
         return 1;
 
     }
 
-
+    public static void cqhttpDoConnect() {
+        McBot.onebot = OneBotClient.create(ModConfig.INSTANCE.getBotConfig().build()).open().registerEvents(new IBotEvent());
+        ModConfig.INSTANCE.getStatus().setREnable(true);
+        ModConfig.INSTANCE.getCommon().setEnable(true);
+        ModConfig.INSTANCE.save();
+        McBot.connected = true;
+    }
 }

@@ -1,6 +1,7 @@
 package cn.evole.mods.mcbot.core.event;
 
 import cn.evole.mods.mcbot.Const;
+import cn.evole.mods.mcbot.McBot;
 import cn.evole.mods.mcbot.cmds.CmdApi;
 import cn.evole.mods.mcbot.core.data.ChatRecordApi;
 import cn.evole.mods.mcbot.config.ModConfig;
@@ -8,15 +9,13 @@ import cn.evole.mods.mcbot.util.onebot.CQUtils;
 import cn.evole.onebot.client.annotations.SubscribeEvent;
 import cn.evole.onebot.client.interfaces.Listener;
 import cn.evole.onebot.sdk.event.message.GroupMessageEvent;
+import cn.evole.onebot.sdk.event.meta.HeartbeatMetaEvent;
 import cn.evole.onebot.sdk.event.meta.LifecycleMetaEvent;
 import cn.evole.onebot.sdk.event.notice.group.GroupDecreaseNoticeEvent;
 import cn.evole.onebot.sdk.event.notice.group.GroupIncreaseNoticeEvent;
 import cn.evole.onebot.sdk.util.MsgUtils;
 import lombok.val;
-import net.minecraft.network.chat.Component;
-//#if MC <11900
-import net.minecraft.network.chat.TextComponent;
-//#endif
+
 
 /**
  * Description:
@@ -76,13 +75,7 @@ public class IBotEvent implements Listener {
 //                    val toSend = new TextComponent(finalMsg).append(recall);
 //                    //#endif
 
-            //#if MC >= 11900
-            //$$ val toSend = Component.literal(finalMsg);
-            //#else
-            val toSend = new TextComponent(finalMsg);
-            //#endif
-
-            ITickEvent.getSendQueue().add(toSend);
+            Const.sendAllPlayerMsg(finalMsg);
     }
 
 
@@ -120,4 +113,8 @@ public class IBotEvent implements Listener {
         }
     }
 
+    @SubscribeEvent
+    public void onHeartbeat(HeartbeatMetaEvent event) {
+        McBot.keepAlive.onHeartbeat(event);
+    }
 }
