@@ -53,6 +53,6 @@ jobs:
         path: fabric/wrapper/build/libs/${{ steps.findjar.outputs.jarname }}
 
     - name: Publish package
-      run: ./gradlew publish
+      run: ./fabric/gradlew publish
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
