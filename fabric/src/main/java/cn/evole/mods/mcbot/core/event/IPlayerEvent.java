@@ -35,6 +35,7 @@ public class IPlayerEvent {
             val toSend = new TextComponent("请先完成绑定(爱来自群服互联~)");
             //#endif
             player.connection.disconnect(toSend);
+            return;//防止冗余消息
         }
 
         if (ModConfig.INSTANCE.getStatus().isSJoinEnable() && ModConfig.INSTANCE.getStatus().isSEnable()) {
@@ -43,6 +44,9 @@ public class IPlayerEvent {
         }
     }
     public static void loggedOut(Level world, ServerPlayer player) {
+        if (ModConfig.INSTANCE.getCommon().isBindOn() && !UserBindApi.isIn(player.getGameProfile().getName())){
+            return;//防止冗余消息
+        }
         if (ModConfig.INSTANCE.getStatus().isSLeaveEnable() && ModConfig.INSTANCE.getStatus().isSEnable()) {
             val msg = player.getDisplayName().getString() + " 离开了服务器";
             send(msg);

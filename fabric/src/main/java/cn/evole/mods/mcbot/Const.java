@@ -1,8 +1,10 @@
 package cn.evole.mods.mcbot;
 
 import cn.evole.mods.mcbot.config.ModConfig;
+import cn.evole.mods.mcbot.core.event.IBotEvent;
 import cn.evole.mods.mcbot.core.event.ITickEvent;
 import cn.evole.mods.mcbot.util.onebot.MessageThread;
+import cn.evole.onebot.client.OneBotClient;
 import cn.evole.onebot.sdk.action.ActionPath;
 import com.google.gson.JsonObject;
 import lombok.val;
@@ -98,6 +100,20 @@ public class Const {
 
         ITickEvent.getSendQueue().add(toSend);
     }
+
+    /**
+     * WS连接
+     */
+    public static void wsConnect(){
+        McBot.onebot.close();//关闭线程
+        McBot.onebot = null;//强制为null
+        McBot.onebot = OneBotClient.create(ModConfig.INSTANCE.getBotConfig().build()).open().registerEvents(new IBotEvent());//重新实例化
+        ModConfig.INSTANCE.getStatus().setREnable(true);
+        ModConfig.INSTANCE.getCommon().setEnable(true);
+        ModConfig.INSTANCE.save();
+        McBot.connected = true;
+    }
+
 
     public static void shutdown() {
         messageThread.stop();
