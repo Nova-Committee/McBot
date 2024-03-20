@@ -2,7 +2,7 @@ package cn.evole.mods.mcbot.util.onebot;
 
 import cn.evole.mods.mcbot.Const;
 import cn.evole.mods.mcbot.McBot;
-import cn.evole.mods.mcbot.api.McBotChatEvents;
+import cn.evole.mods.mcbot.api.McBotEvents;
 import cn.evole.onebot.sdk.action.ActionPath;
 import com.google.gson.JsonObject;
 import lombok.val;
@@ -46,7 +46,7 @@ public class MessageThread {
             try {
                 val message = msg.call();
                 Const.LOGGER.debug("转发游戏消息: {}", message);
-                McBotChatEvents.ON_CHAT.invoker().onChat(player,
+                McBotEvents.ON_CHAT.invoker().onChat(player,
                         McBot.onebot.getBot().sendGroupMsg(groupId, message, autoEscape).getData().getMessageId(),
                         message
                 );

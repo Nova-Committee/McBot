@@ -4,7 +4,7 @@ import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
 import net.minecraft.server.level.ServerPlayer;
 
-public class McBotChatEvents {
+public class McBotEvents {
     /**
      * 当玩家发送一条消息（并转发到QQ）后触发。
      * 包含发送消息的玩家和message_id

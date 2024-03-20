@@ -57,7 +57,7 @@ public class KeepAlive {
         int hasReconnect = 0;
         while (hasReconnect <= limit) {
             Const.LOGGER.info("正在尝试重连...第{}次", hasReconnect + 1);
-            ConnectCommand.cqhttpDoConnect();
+            ConnectCommand.doConnect();
 
 //            try {
 //                getHeartbeat(100000);

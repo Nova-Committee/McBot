@@ -76,10 +76,10 @@ public class McBot implements ModInitializer {
         LIB_FOLDER = CONFIG_FOLDER.resolve("libs");
         FileUtil.checkFolder(LIB_FOLDER);
         CONFIG_FILE = CONFIG_FOLDER.resolve("config.toml");
-        LibUtils.create(LIB_FOLDER, "libs.txt").download();
-        I18n.init();
-        UserBindApi.load(CONFIG_FOLDER);
-        ChatRecordApi.load(CONFIG_FOLDER);
+        LibUtils.create(LIB_FOLDER, "libs.txt").download();//下载依赖
+        I18n.init();//初始化国际化
+        UserBindApi.load(CONFIG_FOLDER);//群服绑定
+        ChatRecordApi.load(CONFIG_FOLDER);//消息记录
     }
 
     public void onServerStarting(MinecraftServer server) {
