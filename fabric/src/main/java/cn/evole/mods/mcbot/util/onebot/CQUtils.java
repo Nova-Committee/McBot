@@ -2,10 +2,12 @@ package cn.evole.mods.mcbot.util.onebot;
 
 import cn.evole.mods.mcbot.Const;
 import cn.evole.mods.mcbot.config.ModConfig;
+import cn.evole.onebot.sdk.event.message.GroupMessageEvent;
 import cn.evole.onebot.sdk.event.message.MessageEvent;
 import io.netty.util.concurrent.SingleThreadEventExecutor;
 import lombok.val;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 import java.util.concurrent.*;
@@ -89,7 +91,6 @@ public class CQUtils {
                     }
                     break;
                 case "at":
-/* TODO @cnlimiter need to fix it.
                         val id = data.split("=");
                         if (id.length == 2) {
                             if (id[0].equals("qq"))
@@ -98,7 +99,6 @@ public class CQUtils {
                                     break;
                                 } catch (NumberFormatException ignored) {}
                         }
-*/
                     matcher.appendReplacement(message, "[@]");
                     break;
                 case "record":

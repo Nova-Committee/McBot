@@ -15,6 +15,10 @@ import cn.evole.onebot.sdk.event.notice.group.GroupDecreaseNoticeEvent;
 import cn.evole.onebot.sdk.event.notice.group.GroupIncreaseNoticeEvent;
 import cn.evole.onebot.sdk.util.MsgUtils;
 import lombok.val;
+import net.minecraft.network.chat.Component;
+//#if MC <11900
+import net.minecraft.network.chat.TextComponent;
+//#endif
 
 
 /**
