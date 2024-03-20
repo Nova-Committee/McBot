@@ -28,7 +28,7 @@ public class IChatEvent {
                     ModConfig.INSTANCE.getCmd().isMcChatPrefixOn()
                             && ModConfig.INSTANCE.getCmd().getMcChatPrefix().equals(split[0]) ? split[1] : message);
 
-            Const.sendAllGroupMsg(MsgUtils.builder().text(msg).build());
+            Const.sendAllGroupMsg(() -> MsgUtils.builder().text(msg).build(), player);
 
         }
     }

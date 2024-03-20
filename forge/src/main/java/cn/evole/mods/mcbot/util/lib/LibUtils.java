@@ -1,6 +1,7 @@
 package cn.evole.mods.mcbot.util.lib;
 
 
+import cn.evole.mods.mcbot.McBot;
 import dev.vankka.dependencydownload.DependencyManager;
 import net.minecraftforge.fml.loading.FMLLoader;
 import dev.vankka.dependencydownload.classpath.ClasspathAppender;
@@ -44,11 +45,11 @@ public class LibUtils {
     private final ClasspathAppender classpathAppender;
 
     public static LibUtils create(Path dataDirectory, String... paths) {
-        return new LibUtils(Executors.newSingleThreadExecutor(), new ForgeClassAppender(getJars(dataDirectory)), fromPaths(dataDirectory, paths));
+        return new LibUtils(Executors.newSingleThreadExecutor(), new ForgeClassAppender(getClassLoader()), fromPaths(dataDirectory, paths));
     }
 
     public static LibUtils create(Path dataDirectory, ExecutorService executor, String... paths) {
-        return new LibUtils(executor, new ForgeClassAppender(getJars(dataDirectory)), fromPaths(dataDirectory, paths));
+        return new LibUtils(executor, new ForgeClassAppender(getClassLoader()), fromPaths(dataDirectory, paths));
     }
 
     public static LibUtils create(Path dataDirectory, ClasspathAppender classpathAppender, String... paths) {
@@ -60,7 +61,7 @@ public class LibUtils {
     }
 
     public static LibUtils create(Path dataDirectory, DependencyManager dependencyManager) {
-        return new LibUtils(Executors.newSingleThreadExecutor(), new ForgeClassAppender(getJars(dataDirectory)), dependencyManager);
+        return new LibUtils(Executors.newSingleThreadExecutor(), new ForgeClassAppender(getClassLoader()), dependencyManager);
     }
 
 
@@ -135,7 +136,7 @@ public class LibUtils {
         //$$     loader = Launcher.INSTANCE.findLayerManager().flatMap(lm -> lm.getLayer(IModuleLayerManager.Layer.GAME)).orElseThrow().modules().stream().findFirst().map(Module::getClassLoader).orElse(null);
         //#endif
         if (loader == null)
-            loader = LibUtils.class.getClassLoader();
+            loader = McBot.class.getClassLoader();
         return loader;
     }
 

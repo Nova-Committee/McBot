@@ -25,10 +25,12 @@ public class BotConfig extends AutoLoadTomlConfig {
     private boolean mirai = false;
     @TableField(rightComment = "机器人qq")
     private long botId = 0L;//机器人qq
-    @TableField(rightComment = "重连（未实现）")
+    @TableField(rightComment = "自动重连")
     private boolean reconnect = true;
-    @TableField(rightComment = "重连次数（未实现）")
-    private int maxReconnectAttempts = 20;
+    @TableField(rightComment = "自动重连次数")
+    private int maxReconnectAttempts = 5;
+    @TableField(rightComment = "超时宽容度（毫秒）")
+    private long timeoutCompensation = 5000;
 
     public BotConfig() {
         super(null);

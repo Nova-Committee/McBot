@@ -6,8 +6,9 @@ import cn.evole.mods.mcbot.core.data.UserBindApi;
 import cn.evole.mods.mcbot.core.event.*;
 import cn.evole.mods.mcbot.init.handler.CustomCmdHandler;
 import cn.evole.mods.mcbot.util.FileUtil;
-import cn.evole.mods.mcbot.util.lib.LibUtils;
 import cn.evole.mods.mcbot.util.locale.I18n;
+import cn.evole.mods.mcbot.util.onebot.CQUtils;
+import cn.evole.mods.mcbot.util.onebot.KeepAlive;
 import cn.evole.onebot.client.OneBotClient;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.server.MinecraftServer;
@@ -17,8 +18,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 
 import java.nio.file.Path;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class IMcBot {
     public static MinecraftServer SERVER = null;
@@ -29,7 +28,9 @@ public class IMcBot {
     public static McBot INSTANCE = new McBot();
 
     public static OneBotClient onebot;
-    public static ExecutorService CQUtilsExecutor;
+
+    public static boolean connected = false;
+    public static KeepAlive keepAlive;
 
     public MinecraftServer getServer() {
         return SERVER;
@@ -44,7 +45,7 @@ public class IMcBot {
         FileUtil.checkFolder(CONFIG_FOLDER);
         LIB_FOLDER = CONFIG_FOLDER.resolve("libs");
         FileUtil.checkFolder(LIB_FOLDER);
-        LibUtils.create(LIB_FOLDER, "libs.txt").download();
+        //LibUtils.create(LIB_FOLDER, "libs.txt").download();//有bug，todo 修复
         CONFIG_FILE = CONFIG_FOLDER.resolve("config.toml");
         I18n.init();
         UserBindApi.load(CONFIG_FOLDER);
@@ -60,7 +61,8 @@ public class IMcBot {
             onebot = OneBotClient.create(ModConfig.INSTANCE.getBotConfig().build()).open().registerEvents(new IBotEvent());
         }
         CustomCmdHandler.INSTANCE.load();//自定义命令加载
-        CQUtilsExecutor = Executors.newSingleThreadExecutor();  // 创建CQ码处理线程池
+        keepAlive = new KeepAlive();
+        Const.messageThread.register(keepAlive::register);//自动重连注册
     }
 
     public void onServerStopping(MinecraftServer server) {
@@ -72,7 +74,8 @@ public class IMcBot {
     }
 
     public void onServerStopped(MinecraftServer server) {
-        CQUtilsExecutor.shutdownNow();
+        Const.shutdown();//消息线程关闭
+        CQUtils.shutdown();//cq转义线程关闭
         if (onebot != null) onebot.close();
     }
 

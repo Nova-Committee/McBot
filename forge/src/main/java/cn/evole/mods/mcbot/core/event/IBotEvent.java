@@ -1,6 +1,7 @@
 package cn.evole.mods.mcbot.core.event;
 
 import cn.evole.mods.mcbot.Const;
+import cn.evole.mods.mcbot.IMcBot;
 import cn.evole.mods.mcbot.cmds.CmdApi;
 import cn.evole.mods.mcbot.core.data.ChatRecordApi;
 import cn.evole.mods.mcbot.config.ModConfig;
@@ -8,6 +9,7 @@ import cn.evole.mods.mcbot.util.onebot.CQUtils;
 import cn.evole.onebot.client.annotations.SubscribeEvent;
 import cn.evole.onebot.client.interfaces.Listener;
 import cn.evole.onebot.sdk.event.message.GroupMessageEvent;
+import cn.evole.onebot.sdk.event.meta.HeartbeatMetaEvent;
 import cn.evole.onebot.sdk.event.meta.LifecycleMetaEvent;
 import cn.evole.onebot.sdk.event.notice.group.GroupDecreaseNoticeEvent;
 import cn.evole.onebot.sdk.event.notice.group.GroupIncreaseNoticeEvent;
@@ -118,6 +120,11 @@ public class IBotEvent implements Listener {
             val msg = MsgUtils.builder().text("▌ 群服互联已连接 ┈━═☆").build();
             Const.sendAllGroupMsg(msg);
         }
+    }
+
+    @SubscribeEvent
+    public void onHeartbeat(HeartbeatMetaEvent event) {
+        IMcBot.keepAlive.onHeartbeat(event);
     }
 
 }

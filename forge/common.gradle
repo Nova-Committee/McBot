@@ -23,10 +23,10 @@ dependencies {
     forge "net.minecraftforge:forge:${project.minecraft_version}-${project.forge_version}"
 
 
-    implementation forgeRuntimeLibrary (include("dev.vankka:dependencydownload-runtime:1.3.1")) {exclude module: 'jar-relocator'}
-    implementation forgeRuntimeLibrary (include("dev.vankka:dependencydownload-common:1.3.1"))
-    implementation ("cn.evole.onebot:OneBot-Client:${onebot_client_version}"){transitive = false}
-    implementation ("cn.evole.config:AtomConfig-Toml:${toml_version}"){transitive = false}
+    implementation forgeRuntimeLibrary ("dev.vankka:dependencydownload-runtime:1.3.1") {exclude module: 'jar-relocator'}
+    implementation forgeRuntimeLibrary ("dev.vankka:dependencydownload-common:1.3.1")
+    implementation forgeRuntimeLibrary (include("cn.evole.onebot:OneBot-Client:${onebot_client_version}")){transitive = false}
+    implementation forgeRuntimeLibrary (include("cn.evole.config:AtomConfig-Toml:${toml_version}")){transitive = false}
 
     if (mcVersion == 11605) include ("org.slf4j:slf4j-api:2.0.7")
     compileOnly ("org.projectlombok:lombok:1.18.24")

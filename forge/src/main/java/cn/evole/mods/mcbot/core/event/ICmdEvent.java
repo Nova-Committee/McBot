@@ -29,9 +29,9 @@ public class ICmdEvent {
                 Commands.literal("mcbot")
                         .requires(source -> source.hasPermission(2))
                         .then(Commands.literal("connect")
-                                .executes(ConnectCommand::cqhttpCommonExecute)
+                                .executes(ConnectCommand::commonExecute)
                                     .then(Commands.argument("parameter", StringArgumentType.greedyString())
-                                            .executes(ConnectCommand::cqhttpExecute)
+                                            .executes(ConnectCommand::execute)
                                     )
 
 

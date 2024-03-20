@@ -2,7 +2,6 @@ package cn.evole.mods.mcbot.command;
 
 
 import cn.evole.mods.mcbot.IMcBot;
-import cn.evole.mods.mcbot.McBot;
 import cn.evole.mods.mcbot.config.ModConfig;
 import cn.evole.mods.mcbot.core.event.IBotEvent;
 import cn.evole.onebot.client.OneBotClient;
@@ -19,7 +18,7 @@ import net.minecraft.network.chat.TextComponent;
 
 public class ConnectCommand {
 
-    public static int cqhttpExecute(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
+    public static int execute(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
         val parameter = context.getArgument("parameter", String.class);
 
 
@@ -34,10 +33,7 @@ public class ConnectCommand {
             //#else
             //$$ context.getSource().sendSuccess(Component.literal("▌ " +ChatFormatting.LIGHT_PURPLE + "尝试链接框架"), true);
             //#endif
-            IMcBot.onebot = OneBotClient.create(ModConfig.INSTANCE.getBotConfig().build()).open().registerEvents(new IBotEvent());
-            ModConfig.INSTANCE.getStatus().setREnable(true);
-            ModConfig.INSTANCE.getCommon().setEnable(true);
-            ModConfig.INSTANCE.save();
+            doConnect();
             return 1;
 
         } else {
@@ -54,7 +50,7 @@ public class ConnectCommand {
 
 
 
-    public static int cqhttpCommonExecute(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
+    public static int commonExecute(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
         //#if MC >= 12000
         //$$ context.getSource().sendSuccess(()->Component.literal("▌ " +ChatFormatting.LIGHT_PURPLE + "尝试链接框架"), true);
         //#elseif MC < 11900
@@ -62,12 +58,17 @@ public class ConnectCommand {
         //#else
         //$$ context.getSource().sendSuccess(Component.literal("▌ " +ChatFormatting.LIGHT_PURPLE + "尝试链接框架"), true);
         //#endif
+        doConnect();
+        return 1;
+
+    }
+
+    public static void doConnect() {
         IMcBot.onebot = OneBotClient.create(ModConfig.INSTANCE.getBotConfig().build()).open().registerEvents(new IBotEvent());
         ModConfig.INSTANCE.getStatus().setREnable(true);
         ModConfig.INSTANCE.getCommon().setEnable(true);
         ModConfig.INSTANCE.save();
-        return 1;
-
+        IMcBot.connected = true;
     }
 
 
