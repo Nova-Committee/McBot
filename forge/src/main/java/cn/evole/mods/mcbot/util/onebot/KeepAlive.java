@@ -2,8 +2,6 @@ package cn.evole.mods.mcbot.util.onebot;
 
 import cn.evole.mods.mcbot.Const;
 import cn.evole.mods.mcbot.IMcBot;
-import cn.evole.mods.mcbot.McBot;
-import cn.evole.mods.mcbot.command.ConnectCommand;
 import cn.evole.mods.mcbot.config.ModConfig;
 import cn.evole.onebot.sdk.event.meta.HeartbeatMetaEvent;
 import lombok.Getter;
@@ -19,7 +17,6 @@ import java.util.concurrent.TimeoutException;
 @Getter
 public class KeepAlive {
     private final Queue<HeartbeatMetaEvent> heartBeatQueue = new LinkedBlockingQueue<>(5);
-//    private long timeoutMillis = 100000;
 
     public KeepAlive() {
     }
@@ -37,11 +34,6 @@ public class KeepAlive {
         while (true) {
             val limit = ModConfig.INSTANCE.getBotConfig().getMaxReconnectAttempts();
             if (IMcBot.connected && ModConfig.INSTANCE.getBotConfig().isReconnect() && limit >= 1) {
-//                try {
-//                    timeoutMillis = getHeartbeat(timeoutMillis + ModConfig.INSTANCE.getBotConfig().getTimeoutCompensation()).getInterval();
-//                } catch (TimeoutException e) {
-//                    reconnect(limit);
-//                }
                 if (IMcBot.onebot.getWs().isClosed()) {  // 当你写完复杂的机制后突然发现有现成的api时 be like
                     reconnect(limit);
                 }
@@ -58,12 +50,7 @@ public class KeepAlive {
         int hasReconnect = 0;
         while (hasReconnect <= limit) {
             Const.LOGGER.info("正在尝试重连...第{}次", hasReconnect + 1);
-            ConnectCommand.doConnect();
-
-//            try {
-//                getHeartbeat(100000);
-//                return;
-//            } catch (TimeoutException ignored) {}
+            Const.wsConnect();
             try {
                 Thread.sleep(ModConfig.INSTANCE.getBotConfig().getTimeoutCompensation());
             } catch (InterruptedException e) {

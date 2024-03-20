@@ -1,10 +1,9 @@
 package cn.evole.mods.mcbot.command;
 
 
+import cn.evole.mods.mcbot.Const;
 import cn.evole.mods.mcbot.IMcBot;
 import cn.evole.mods.mcbot.config.ModConfig;
-import cn.evole.mods.mcbot.core.event.IBotEvent;
-import cn.evole.onebot.client.OneBotClient;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import lombok.val;
@@ -21,21 +20,13 @@ public class ConnectCommand {
     public static int execute(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
         val parameter = context.getArgument("parameter", String.class);
 
-
         val pattern = Pattern.compile("(\\d+\\.\\d+\\.\\d+\\.\\d+):(\\d+)");
         val matcher = pattern.matcher(parameter);
         if (matcher.find()) {
             ModConfig.INSTANCE.getBotConfig().setUrl(parameter);
-            //#if MC >= 12000
-            //$$ context.getSource().sendSuccess(()->Component.literal("▌ " +ChatFormatting.LIGHT_PURPLE + "尝试链接框架"), true);
-            //#elseif MC < 11900
-            context.getSource().sendSuccess(new TextComponent("▌ " + ChatFormatting.LIGHT_PURPLE + "尝试链接框架"), true);
-            //#else
-            //$$ context.getSource().sendSuccess(Component.literal("▌ " +ChatFormatting.LIGHT_PURPLE + "尝试链接框架"), true);
-            //#endif
-            doConnect();
+            ModConfig.INSTANCE.save();
+            doConnect(context);
             return 1;
-
         } else {
             //#if MC >= 12000
             //$$ context.getSource().sendSuccess(()->Component.literal("▌ " +ChatFormatting.RED + "参数错误❌"), true);
@@ -49,26 +40,30 @@ public class ConnectCommand {
     }
 
 
-
     public static int commonExecute(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
-        //#if MC >= 12000
-        //$$ context.getSource().sendSuccess(()->Component.literal("▌ " +ChatFormatting.LIGHT_PURPLE + "尝试链接框架"), true);
-        //#elseif MC < 11900
-        context.getSource().sendSuccess(new TextComponent("▌ " +ChatFormatting.LIGHT_PURPLE + "尝试链接框架"), true);
-        //#else
-        //$$ context.getSource().sendSuccess(Component.literal("▌ " +ChatFormatting.LIGHT_PURPLE + "尝试链接框架"), true);
-        //#endif
-        doConnect();
+        doConnect(context);
         return 1;
-
     }
 
-    public static void doConnect() {
-        IMcBot.onebot = OneBotClient.create(ModConfig.INSTANCE.getBotConfig().build()).open().registerEvents(new IBotEvent());
-        ModConfig.INSTANCE.getStatus().setREnable(true);
-        ModConfig.INSTANCE.getCommon().setEnable(true);
-        ModConfig.INSTANCE.save();
-        IMcBot.connected = true;
+    public static void doConnect(CommandContext<CommandSourceStack> context) {
+        if (!IMcBot.onebot.getWs().isOpen()){
+            //#if MC >= 12000
+            //$$ context.getSource().sendSuccess(()->Component.literal("▌ " +ChatFormatting.LIGHT_PURPLE + "尝试链接框架"), true);
+            //#elseif MC < 11900
+            context.getSource().sendSuccess(new TextComponent("▌ " +ChatFormatting.LIGHT_PURPLE + "尝试链接框架"), true);
+            //#else
+            //$$ context.getSource().sendSuccess(Component.literal("▌ " +ChatFormatting.LIGHT_PURPLE + "尝试链接框架"), true);
+            //#endif
+            Const.wsConnect();
+        } else {
+            //#if MC >= 12000
+            //$$ context.getSource().sendSuccess(()->Component.literal("▌ " +ChatFormatting.LIGHT_PURPLE + "已存在WS连接"), true);
+            //#elseif MC < 11900
+            context.getSource().sendSuccess(new TextComponent("▌ " + ChatFormatting.LIGHT_PURPLE + "已存在WS连接"), true);
+            //#else
+            //$$ context.getSource().sendSuccess(Component.literal("▌ " +ChatFormatting.LIGHT_PURPLE + "已存在WS连接"), true);
+            //#endif
+        }
     }
 
 

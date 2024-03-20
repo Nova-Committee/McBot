@@ -35,17 +35,21 @@ public class IPlayerEvent {
             val toSend = new TextComponent("请先完成绑定(爱来自群服互联~)");
             //#endif
             player.connection.disconnect(toSend);
+            return;//防止冗余消息
         }
 
         if (ModConfig.INSTANCE.getStatus().isSJoinEnable() && ModConfig.INSTANCE.getStatus().isSEnable()) {
             val msg = player.getDisplayName().getString() + " 加入了服务器";
-            send(msg);
+            send(msg, world);
         }
     }
     public static void loggedOut(Level world, ServerPlayer player) {
+        if (ModConfig.INSTANCE.getCommon().isBindOn() && !UserBindApi.isIn(player.getGameProfile().getName())){
+            return;//防止冗余消息
+        }
         if (ModConfig.INSTANCE.getStatus().isSLeaveEnable() && ModConfig.INSTANCE.getStatus().isSEnable()) {
             val msg = player.getDisplayName().getString() + " 离开了服务器";
-            send(msg);
+            send(msg, world);
         }
     }
     public static void death(DamageSource source, ServerPlayer player) {
@@ -75,7 +79,7 @@ public class IPlayerEvent {
                 message = !itemStack.isEmpty() && itemStack.hasCustomHoverName() ? I18n.get(string + ".item", player.getDisplayName().getString(), component.getString(), itemStack.getDisplayName().getString()) : I18n.get(string,player.getDisplayName().getString(), component.getString());
             }
             val msg = String.format(message, player.getDisplayName().getString());
-            send(msg);
+            send(msg, player.getCommandSenderWorld());
         }
     }
 
@@ -100,12 +104,12 @@ public class IPlayerEvent {
             //#endif
 
             val msg = String.format(message, player.getDisplayName().getString());
-            send(msg);
+            send(msg, player.getCommandSenderWorld());
         }
     }
 
-    private static void send(String msg){
-        Const.sendAllGroupMsg(msg);
+    private static void send(String msg, Level level){
+        if (!level.isClientSide)  Const.sendAllGroupMsg(msg);
     }
 
 }

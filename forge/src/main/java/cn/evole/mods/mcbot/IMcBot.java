@@ -25,8 +25,6 @@ public class IMcBot {
     public static Path CONFIG_FILE;
     public static Path LIB_FOLDER;
 
-    public static McBot INSTANCE = new McBot();
-
     public static OneBotClient onebot;
 
     public static boolean connected = false;
@@ -57,8 +55,10 @@ public class IMcBot {
     }
 
     public void onServerStarted(MinecraftServer server) {
+        ModConfig.INSTANCE.save();
         if (ModConfig.INSTANCE.getCommon().isAutoOpen()) {
             onebot = OneBotClient.create(ModConfig.INSTANCE.getBotConfig().build()).open().registerEvents(new IBotEvent());
+            connected = true;
         }
         CustomCmdHandler.INSTANCE.load();//自定义命令加载
         keepAlive = new KeepAlive();
@@ -68,6 +68,7 @@ public class IMcBot {
     public void onServerStopping(MinecraftServer server) {
         Const.isShutdown = true;
         Const.LOGGER.info("▌ §c正在关闭群服互联");
+        connected = false;
         UserBindApi.save(CONFIG_FOLDER);
         ChatRecordApi.save(CONFIG_FOLDER);
         CustomCmdHandler.INSTANCE.clear();//自定义命令持久层清空
