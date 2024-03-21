@@ -38,9 +38,9 @@ public abstract class MixinPlayerAdvancements {
     //#endif
 
 
-
         ServerPlayer player = this.player;
 
+        if (!player.getAdvancements().getOrStartProgress(advancement).isDone()) return;
         if (VanishAPI.isVanished(player)) return;
         //#if MC >= 12002
         //$$ IEvents.PLAYER_ADVANCEMENT.invoker().onAdvancement(player, advancement.value());
