@@ -4,8 +4,6 @@ package cn.evole.mods.mcbot.command;
 import cn.evole.mods.mcbot.Const;
 import cn.evole.mods.mcbot.McBot;
 import cn.evole.mods.mcbot.config.ModConfig;
-import cn.evole.mods.mcbot.core.event.IBotEvent;
-import cn.evole.onebot.client.OneBotClient;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import lombok.val;
@@ -20,14 +18,14 @@ import net.minecraft.network.chat.TextComponent;
 //#endif
 
 public class ConnectCommand {
+    private static final Pattern ipv4Pattern = Pattern.compile("(\\d+\\.\\d+\\.\\d+\\.\\d+):(\\d+)");
+    private static final Pattern ipv6Pattern = Pattern.compile("\\[([0-9a-fA-F:]+)]:(\\d+)");
 
     public static int execute(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
         val parameter = context.getArgument("parameter", String.class);
 
-        val pattern = Pattern.compile("(\\d+\\.\\d+\\.\\d+\\.\\d+):(\\d+)");
-        val matcher = pattern.matcher(parameter);
-        if (matcher.find()) {
-            ModConfig.INSTANCE.getBotConfig().setUrl(parameter);
+        if (ipv4Pattern.matcher(parameter).find() || ipv6Pattern.matcher(parameter).find()) {
+            ModConfig.INSTANCE.getBotConfig().setUrl(String.format("ws://%s", parameter));
             ModConfig.INSTANCE.save();
             doConnect(context);
             return 1;
@@ -44,7 +42,7 @@ public class ConnectCommand {
     }
 
 
-    public static int commonExecute(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
+    public static int commonExecute(CommandContext<CommandSourceStack> context) {
         doConnect(context);
         return 1;
     }
