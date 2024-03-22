@@ -41,8 +41,8 @@ public class KeepAlive {
             }
             try {
                 Thread.sleep(ModConfig.INSTANCE.getBotConfig().getTimeoutCompensation());
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
+            } catch (InterruptedException ignored) {
+                return;
             }
         }
     }
@@ -54,8 +54,8 @@ public class KeepAlive {
             Const.wsConnect();
             try {
                 Thread.sleep(ModConfig.INSTANCE.getBotConfig().getTimeoutCompensation());
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
+            } catch (InterruptedException ignored) {
+                return;
             }
             if (McBot.onebot.getWs().isClosed()) hasReconnect++;
             else return;
@@ -70,7 +70,7 @@ public class KeepAlive {
      * @param timeout 超时时间（毫秒）
      * @return 心跳包
      */
-    private HeartbeatMetaEvent getHeartbeat(final long timeout) throws TimeoutException {
+    private @Nullable HeartbeatMetaEvent getHeartbeat(final long timeout) throws TimeoutException {
         val startTime = System.currentTimeMillis();
         while (System.currentTimeMillis() - startTime < timeout) {
             @Nullable HeartbeatMetaEvent event = heartBeatQueue.poll();
@@ -78,7 +78,7 @@ public class KeepAlive {
                 try {
                     Thread.sleep(100);
                 } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
+                    return null;
                 }
             } else {
                 return event;
