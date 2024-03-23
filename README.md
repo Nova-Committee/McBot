@@ -38,16 +38,30 @@ _✨ 基于 [OneBot](https://github.com/howmanybots/onebot/blob/master/README.md
 ### 使用api进行请求
 
 ```java
-public class TestCmd {
-    public static ArgumentBuilder<CommandSourceStack, ?> register() {
-        return Commands.literal("test")
-                .executes(TestCmd::execute);
+public class APIDemo {
+    static {
+        // 事件回调
+        McBotEvents.ON_CHAT.register((player, msgId, msg) -> System.out.printf("McBot刚刚转发一条消息。由%s发送了%s (%s)%n", player.getName().getString(), msg, msgId));
     }
 
-    public static int execute(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
-        System.out.println(McBot.bot.sendGroupMsg(337631140, MsgUtils.builder().text("1").build(), true));
-        //群里发送消息
-        return 0;
+    /**
+     * 群里发送消息
+     * @param groupId 群号
+     * @param message 消息
+     */
+    public static void doSend(long groupId, String message) throws CommandSyntaxException {
+        Const.sendGroupMsg(groupId, message)
+    }
+
+    /**
+     * 撤回消息
+     * @param message_id 消息ID
+     */
+    public static void recallMessage(int message_id) {
+        JsonObject json = new Gson().fromJson(
+                String.format("{'message_id': %s}", message_id),
+                JsonObject.class);
+        Const.customRequest(ActionType.DELETE_MSG, json);
     }
 }
 ```

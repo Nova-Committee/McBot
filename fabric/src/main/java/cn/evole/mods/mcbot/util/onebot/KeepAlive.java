@@ -2,7 +2,6 @@ package cn.evole.mods.mcbot.util.onebot;
 
 import cn.evole.mods.mcbot.Const;
 import cn.evole.mods.mcbot.McBot;
-import cn.evole.mods.mcbot.command.ConnectCommand;
 import cn.evole.mods.mcbot.config.ModConfig;
 import cn.evole.onebot.sdk.event.meta.HeartbeatMetaEvent;
 import lombok.Getter;

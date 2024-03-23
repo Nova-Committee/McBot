@@ -1,5 +1,6 @@
 package cn.evole.mods.mcbot.init.mixins;
 
+import cn.evole.mods.mcbot.api.McBotEvents;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
 import org.spongepowered.asm.mixin.Mixin;
 import cn.evole.mods.mcbot.init.callbacks.IEvents;
@@ -24,33 +25,37 @@ public abstract class MixinServerGamePktImpl {
     //#if MC < 11700
     @Shadow
     public ServerPlayer player;
-    @Inject(method = "handleChat(Ljava/lang/String;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/players/PlayerList;broadcastMessage(Lnet/minecraft/network/chat/Component;Lnet/minecraft/network/chat/ChatType;Ljava/util/UUID;)V", shift = At.Shift.BEFORE))
+    @Inject(method = "handleChat(Ljava/lang/String;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/players/PlayerList;broadcastMessage(Lnet/minecraft/network/chat/Component;Lnet/minecraft/network/chat/ChatType;Ljava/util/UUID;)V", shift = At.Shift.BEFORE), cancellable = true)
     public void mcbot$handleChat(String string, CallbackInfo ci) {
-        IEvents.SERVER_CHAT.invoker().onChat(this.player, string);
+        if (!ci.isCancelled()) McBotEvents.BEFORE_CHAT.invoker().onChat(this.player, string, ci);
+        if (!ci.isCancelled()) IEvents.SERVER_CHAT.invoker().onChat(this.player, string);
     }
     //#elseif MC < 11900
     //$$ @Shadow
     //$$ public ServerPlayer player;
-    //$$ @Inject(method = "handleChat(Lnet/minecraft/server/network/TextFilter$FilteredText;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/players/PlayerList;broadcastMessage(Lnet/minecraft/network/chat/Component;Ljava/util/function/Function;Lnet/minecraft/network/chat/ChatType;Ljava/util/UUID;)V", shift = At.Shift.BEFORE))
+    //$$ @Inject(method = "handleChat(Lnet/minecraft/server/network/TextFilter$FilteredText;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/players/PlayerList;broadcastMessage(Lnet/minecraft/network/chat/Component;Ljava/util/function/Function;Lnet/minecraft/network/chat/ChatType;Ljava/util/UUID;)V", shift = At.Shift.BEFORE), cancellable = true)
     //$$ public void mcbot$handleChat(TextFilter.FilteredText filteredText, CallbackInfo ci) {
     //$$     String s1 = filteredText.getRaw();
-    //$$     IEvents.SERVER_CHAT.invoker().onChat(this.player, s1);
+    //$$     if (!ci.isCancelled()) McBotEvents.BEFORE_CHAT.invoker().onChat(this.player, s1, ci);
+    //$$     if (!ci.isCancelled()) IEvents.SERVER_CHAT.invoker().onChat(this.player, s1);
     //$$ }
     //#elseif MC < 11903
     //$$@Shadow
     //$$public ServerPlayer player;
-    //$$@Inject(method = "broadcastChatMessage", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/players/PlayerList;broadcastChatMessage(Lnet/minecraft/network/chat/PlayerChatMessage;Lnet/minecraft/server/level/ServerPlayer;Lnet/minecraft/network/chat/ChatType$Bound;)V", shift = At.Shift.BEFORE))
+    //$$@Inject(method = "broadcastChatMessage", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/players/PlayerList;broadcastChatMessage(Lnet/minecraft/network/chat/PlayerChatMessage;Lnet/minecraft/server/level/ServerPlayer;Lnet/minecraft/network/chat/ChatType$Bound;)V", shift = At.Shift.BEFORE), cancellable = true)
     //$$public void mcbot$handleChat(PlayerChatMessage filteredText, CallbackInfo ci) {
     //$$    String s1 = filteredText.serverContent().getString();
-    //$$    IEvents.SERVER_CHAT.invoker().onChat(this.player, s1);
+    //$$    if (!ci.isCancelled()) McBotEvents.BEFORE_CHAT.invoker().onChat(this.player, s1, ci);
+    //$$    if (!ci.isCancelled()) IEvents.SERVER_CHAT.invoker().onChat(this.player, s1);
     //$$}
     //#else
     //$$@Shadow
     //$$public ServerPlayer player;
-    //$$@Inject(method = "broadcastChatMessage", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/players/PlayerList;broadcastChatMessage(Lnet/minecraft/network/chat/PlayerChatMessage;Lnet/minecraft/server/level/ServerPlayer;Lnet/minecraft/network/chat/ChatType$Bound;)V", shift = At.Shift.BEFORE))
+    //$$@Inject(method = "broadcastChatMessage", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/players/PlayerList;broadcastChatMessage(Lnet/minecraft/network/chat/PlayerChatMessage;Lnet/minecraft/server/level/ServerPlayer;Lnet/minecraft/network/chat/ChatType$Bound;)V", shift = At.Shift.BEFORE), cancellable = true)
     //$$public void mcbot$handleChat(PlayerChatMessage filteredText, CallbackInfo ci) {
     //$$    String s1 = filteredText.decoratedContent().getString();
-    //$$    IEvents.SERVER_CHAT.invoker().onChat(this.player, s1);
+    //$$    if (!ci.isCancelled()) McBotEvents.BEFORE_CHAT.invoker().onChat(this.player, s1, ci);
+    //$$    if (!ci.isCancelled()) IEvents.SERVER_CHAT.invoker().onChat(this.player, s1);
     //$$}
     //#endif
 
