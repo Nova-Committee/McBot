@@ -1,5 +1,5 @@
 <p align="center">
-    <img width="300" src="https://s2.loli.net/2022/10/02/zrebhtAKjc3GyIl.png" alt="title">  
+    <img width="200" src="https://s2.loli.net/2022/10/02/zrebhtAKjc3GyIl.png" alt="title">  
 </p>
 <div align="center">
 
@@ -16,7 +16,7 @@ _✨ 基于 [OneBot](https://github.com/howmanybots/onebot/blob/master/README.md
     </a>
     <img src="https://img.shields.io/badge/license-GPLV3-green" alt="License">
     <a href="https://github.com/howmanybots/onebot"><img src="https://img.shields.io/badge/OneBot-v11-blue?style=flat&logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABABAMAAABYR2ztAAAAIVBMVEUAAAAAAAADAwMHBwceHh4UFBQNDQ0ZGRkoKCgvLy8iIiLWSdWYAAAAAXRSTlMAQObYZgAAAQVJREFUSMftlM0RgjAQhV+0ATYK6i1Xb+iMd0qgBEqgBEuwBOxU2QDKsjvojQPvkJ/ZL5sXkgWrFirK4MibYUdE3OR2nEpuKz1/q8CdNxNQgthZCXYVLjyoDQftaKuniHHWRnPh2GCUetR2/9HsMAXyUT4/3UHwtQT2AggSCGKeSAsFnxBIOuAggdh3AKTL7pDuCyABcMb0aQP7aM4AnAbc/wHwA5D2wDHTTe56gIIOUA/4YYV2e1sg713PXdZJAuncdZMAGkAukU9OAn40O849+0ornPwT93rphWF0mgAbauUrEOthlX8Zu7P5A6kZyKCJy75hhw1Mgr9RAUvX7A3csGqZegEdniCx30c3agAAAABJRU5ErkJggg=="></a>  
-    <a href="https://github.com/Nova-Committee/McBot/actions/workflows/fabric.yml"><img src="https://github.com/Nova-Committee/McBot/actions/workflows/fabric.yml/badge.svg"></a>  
+    <a href="https://github.com/Nova-Committee/McBot/actions/workflows/build.yml"><img src="https://github.com/Nova-Committee/McBot/actions/workflows/build.yml/badge.svg"></a>  
 </p>  
 
 
@@ -69,31 +69,18 @@ public class APIDemo {
 ### 事件监听示例
 
 ```java
-public class WebSocketServerTest {
-    public static void main(String[] args) throws Exception {
-        public static LinkedBlockingQueue<String> blockingQueue = new LinkedBlockingQueue<>();//使用队列传输数据
-        public static Thread app = new Thread(() -> {
-            service = new ConnectFactory(new BotConfig(), blockingQueue);//创建websocket连接
-            bot = service.ws.createBot();//创建机器人实例
-        }, "BotServer");
-        app.start();
-        EventBus bus = new EventBus(blockingQueue);//创建事件分发器
-        GroupMessageListener groupMessageListener = new GroupMessageListener();
-        groupMessageListener.addHandler("天气", new Handler<GroupMessageEvent>() {
-            @Override
-            public void handle(GroupMessageEvent groupMessage) {
-                System.out.println(groupMessage);
+public class ListenerDemo implements Listener {
+    static OneBotClient client;
+    public static void main(String[] args) throws InterruptedException {
+        BotConfig config = new BotConfig("ws://192.168.1.25:5800", "123456");
+        client = OneBotClient.create(config, new HandlerTest()).open();//创建websocket连接实例并监听事件
+        //client.getEventsBus().register(new HandlerTest());//监听事件
+    }
 
-            }
-        });
-        bus.addListener(groupMessageListener);//加入监听
-        bus.addListener(new SimpleListener<PrivateMessageEvent>() {//私聊监听
-            @Override
-            public void onMessage(PrivateMessageEvent privateMessage) {
-                System.out.println(privateMessage);
-            }
-        });
-
+    @SubscribeEvent(internal = true)
+    public void msg1(GroupMessageEvent event){//监听群聊消息
+        System.out.println(event.getMessage());//打印消息
+        System.out.println(event.getRawMessage());//打印原始消息
     }
 }
 ```
@@ -129,7 +116,7 @@ source product.
 
 # 致谢
 
-Thanks to [JetBrains](https://www.jetbrains.com/?from=mcbot) for allocating free open-source licences for IDEs such as [IntelliJ IDEA](https://www.jetbrains.com/idea/?from=mcbot)
+Thanks to [JetBrains](https://www.jetbrains.com/?from=mcbot) for allocating free open-source licences for IDEs such as [IntelliJ IDEA](https://www.jetbrains.com/idea/?from=mcbot)  
 [<img src=".github/jetbrains-variant-3.png" width="200"/>](https://www.jetbrains.com/?from=mcbot)
 
 ## 星星（要要）~⭐
