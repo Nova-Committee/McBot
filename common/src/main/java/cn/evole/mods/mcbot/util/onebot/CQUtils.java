@@ -59,7 +59,7 @@ public class CQUtils {
                                 && PlatformHelper.isModLoaded("chatimage")
                         ) {
                             message.append(String.format("[[CICode,url=%s,name=来自QQ的图片]]",
-                                    arrayMsg.getData().get("file").replaceAll("&amp;", "&")//转义字符转义
+                                    arrayMsg.getData().get("url").replaceAll("&amp;", "&")//转义字符转义
                             ));
                         } else {
                             message.append("[图片]");
