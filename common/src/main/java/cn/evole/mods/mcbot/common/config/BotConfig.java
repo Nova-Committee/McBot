@@ -31,9 +31,13 @@ public class BotConfig extends AutoInitConfigCategoryBase {
 
     public cn.evole.onebot.client.core.BotConfig build() {
         return new cn.evole.onebot.client.core.BotConfig(
-                url.getValue().startsWith("ws://") ? url.getValue() : "ws://" + url.getValue()
+                makeValid(url.getValue())
                 , token.getValue(), Long.parseLong(botId.getValue()), token.getValue().startsWith("mirai_"),
                 reconnect.getValue(), reconnectInterval.getValue(), reconnectMaxTimes.getValue());
     }
 
+    private static String makeValid(String url) {
+        if (url.startsWith("wss://")) return url;
+        return url.startsWith("ws://") ? url : "ws://" + url;
+    }
 }
